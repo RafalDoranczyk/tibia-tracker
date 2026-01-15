@@ -1,0 +1,22 @@
+# Format and lint
+pre-commit:
+  commands:
+    typecheck:
+      run: npm run typecheck
+      stage_fixed: false
+    
+    # Run Biome first (formatting, linting)
+    biome:
+      run: npm run lint:biome
+      stage_fixed: true
+      
+    # Then ESLint for import sorting
+    eslint:
+      run: npm run lint:eslint
+      stage_fixed: true
+
+# Validate commit messages  
+commit-msg:
+  commands:
+    "lint commit message":
+      run: npm run commitlint -- --edit {1}
