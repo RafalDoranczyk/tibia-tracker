@@ -14,20 +14,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-type CharacterBestiarySummary = {
-  total_charm_points: number;
-  unlocked_charm_points: number;
-  completed_soulpits: number;
-};
-
-type CharacterBestiaryClassSummary = {
-  bestiary_class: string;
-  total_monsters: number;
-  completed_monsters: number;
-  completed_soulpits: number;
-  total_charm_points: number;
-  unlocked_charm_points: number;
-};
+import type { CharacterBestiaryClassSummary, CharacterBestiarySummary } from "../types";
 
 type BestiaryFloatingPanelProps = {
   globalSummary: CharacterBestiarySummary;

@@ -1,30 +1,6 @@
 import { z } from "zod";
 
-export const BESTIARY_CLASSES = [
-  "Amphibic",
-  "Aquatic",
-  "Bird",
-  "Construct",
-  "Demon",
-  "Dragon",
-  "Elemental",
-  "Extra Dimensional",
-  "Fey",
-  "Giant",
-  "Human",
-  "Humanoid",
-  "Inkborn",
-  "Lycanthrope",
-  "Magical",
-  "Mammal",
-  "Plant",
-  "Reptile",
-  "Slime",
-  "Undead",
-  "Vermin",
-] as const;
-
-export type BestiaryClass = (typeof BESTIARY_CLASSES)[number];
+import { BESTIARY_CLASSES } from "./constants";
 
 export const MonsterSchema = z.object({
   id: z.number(),
@@ -44,8 +20,6 @@ export const MonsterSchema = z.object({
   }),
 });
 
-export type Monster = z.infer<typeof MonsterSchema>;
-
 export const CharacterBestiarySchema = z.object({
   id: z.number(),
   character_id: z.string().uuid(),
@@ -55,21 +29,15 @@ export const CharacterBestiarySchema = z.object({
   has_soul: z.boolean(),
 });
 
-export type CharacterBestiary = z.infer<typeof CharacterBestiarySchema>;
-
 export const CharacterBestiaryEntrySchema = CharacterBestiarySchema.extend({
   monster: MonsterSchema,
 });
-
-export type CharacterBestiaryEntry = z.infer<typeof CharacterBestiaryEntrySchema>;
 
 export const MonsterWithCharacterProgressSchema = MonsterSchema.extend({
   kills: z.number(),
   stage: z.number(),
   has_soul: z.boolean(),
 });
-
-export type MonsterWithCharacterProgress = z.infer<typeof MonsterWithCharacterProgressSchema>;
 
 // ------------------------------------
 // 🧾 Character Bestiary Summary
@@ -82,8 +50,6 @@ export const CharacterBestiarySummarySchema = z.object({
   completed_soulpits: z.number(),
 });
 
-export type CharacterBestiarySummary = z.infer<typeof CharacterBestiarySummarySchema>;
-
 export const CharacterBestiaryClassSummarySchema = z.object({
   character_id: z.string().uuid(),
   bestiary_class: z.string(),
@@ -93,5 +59,3 @@ export const CharacterBestiaryClassSummarySchema = z.object({
   total_charm_points: z.number(),
   unlocked_charm_points: z.number(),
 });
-
-export type CharacterBestiaryClassSummary = z.infer<typeof CharacterBestiaryClassSummarySchema>;

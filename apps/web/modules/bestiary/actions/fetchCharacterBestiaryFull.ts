@@ -3,13 +3,13 @@
 import { getUserScopedQuery } from "@/core";
 import { assertZodParse } from "@/utils";
 
+import { BESTIARY_DEFAULT_LIMIT, DEFAULT_BESTIARY_CLASS } from "../constants";
 import { CharacterBestiarySchema, MonsterSchema } from "../schemas";
-
-const DEFAULT_LIMIT = 15;
+import type { BestiaryClass } from "../types";
 
 type Props = {
   characterId: string;
-  bestiaryClass?: string;
+  bestiaryClass?: BestiaryClass;
   limit: number;
   page: number;
   search?: string;
@@ -18,7 +18,7 @@ type Props = {
 export async function fetchCharacterBestiaryFull({
   characterId,
   bestiaryClass,
-  limit = DEFAULT_LIMIT,
+  limit = BESTIARY_DEFAULT_LIMIT,
   page = 1,
   search,
 }: Props) {
@@ -31,7 +31,13 @@ export async function fetchCharacterBestiaryFull({
     .order("sort_order")
     .range(offset, offset + limit - 1);
 
-  if (bestiaryClass) monstersQuery = monstersQuery.eq("bestiary_class", bestiaryClass);
+  const effectiveBestiaryClass: BestiaryClass | undefined = search
+    ? undefined
+    : (bestiaryClass ?? DEFAULT_BESTIARY_CLASS);
+
+  if (effectiveBestiaryClass) {
+    monstersQuery = monstersQuery.eq("bestiary_class", effectiveBestiaryClass);
+  }
 
   if (search) {
     monstersQuery = monstersQuery.ilike("name", `%${search}%`);

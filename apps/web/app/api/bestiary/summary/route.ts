@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getUserScopedQuery } from "@/core";
-import { CharacterBestiarySummarySchema } from "@/modules/bestiary/schemas";
+import { CharacterBestiarySummarySchema } from "@/modules/bestiary";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

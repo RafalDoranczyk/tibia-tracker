@@ -100,8 +100,6 @@ export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
 
   useUnsavedChangesGuard(hasChanges);
 
-  console.log("view");
-
   useEffect(() => {
     if (!imbuingItemPrices) return;
     initialize(imbuingItemPrices);

@@ -1,6 +1,5 @@
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 
-import { EmptyState } from "@/components";
 import {
   type BestiaryClass,
   BestiaryFilters,
@@ -9,7 +8,7 @@ import {
   fetchCharacterBestiaryClassSummary,
   fetchCharacterBestiaryFull,
   fetchCharacterBestiarySummary,
-  MonsterCard,
+  MonsterCardsGrid,
 } from "@/modules/bestiary";
 import { parseFiltersFromSearchParams } from "@/utils";
 
@@ -37,21 +36,7 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Pa
   return (
     <Grid container spacing={5} direction="column">
       <BestiaryFilters />
-
-      {monsters.length ? (
-        <Grid container spacing={2} mb={2}>
-          {monsters.map((monster) => (
-            <Grid key={monster.id} sx={{ display: "flex", justifyContent: "center" }}>
-              <MonsterCard monster={monster} />
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Box display="flex" justifyContent="center" width="100%">
-          <EmptyState title="No monsters found with the selected filters." />
-        </Box>
-      )}
-
+      <MonsterCardsGrid monsters={monsters} />
       <BestiaryPagination totalPages={totalPages} />
       <BestiaryFloatingPanel globalSummary={summary} classSummary={classSummary ?? undefined} />
     </Grid>

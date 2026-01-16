@@ -5,7 +5,7 @@ import { revalidateTag } from "next/cache";
 import { getUserScopedQuery } from "@/core";
 
 import { BestiaryCacheTags } from "../cacheTags";
-import type { MonsterWithCharacterProgress } from "../schemas";
+import type { MonsterWithCharacterProgress } from "../types";
 
 type UpdateCharacterBestiaryInput = {
   characterId: string;

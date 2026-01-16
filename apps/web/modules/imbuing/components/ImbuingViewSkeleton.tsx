@@ -22,6 +22,7 @@ function SectionSkeleton({ count }: { count: number }) {
         gap={2}
       >
         {[...Array(count)].map((_, i) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           <ScrollCardSkeleton key={i} />
         ))}
       </Box>

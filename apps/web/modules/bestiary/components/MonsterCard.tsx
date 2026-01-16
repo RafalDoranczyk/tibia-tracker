@@ -19,89 +19,64 @@ import {
 import Image from "next/image";
 import { useState } from "react";
 
-import type { MonsterWithCharacterProgress } from "@/modules/bestiary";
-import { useRequiredCharacterId } from "@/providers/feature/dashboard";
+import { useMonsterProgress } from "../hooks/useMonsterProgress";
+import type { MonsterWithCharacterProgress } from "../types";
 
-import { updateCharacterBestiaryEntry } from "../actions/updateCharacterBestiary";
+function MonsterCardOverlay() {
+  return (
+    <Box
+      sx={{
+        position: "absolute",
+        inset: 0,
+        background: "rgba(0,0,0,0.3)",
+        borderRadius: 3,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 10,
+      }}
+    >
+      <LinearProgress
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: 3,
+          borderRadius: "3px 3px 0 0",
+          background: "rgba(255,255,255,0.1)",
+          "& .MuiLinearProgress-bar": {
+            backgroundColor: "#f5b342",
+          },
+        }}
+      />
+      <Typography variant="body2" fontWeight="bold">
+        Updating...
+      </Typography>
+    </Box>
+  );
+}
 
 type MonsterCardProps = {
   monster: MonsterWithCharacterProgress;
 };
 
-const BESTIARY_FULL_STAGE = 3;
+export function MonsterCard({ monster: initialMonster }: MonsterCardProps) {
+  const {
+    monster,
+    isLoading,
+    isBestiaryUnlocked,
+    isEditingKills,
+    editedKills,
+    setEditedKills,
+    startEditingKills,
+    saveKills,
+    toggleSoulpit,
+    toggleFullBestiary,
+  } = useMonsterProgress(initialMonster);
 
-export function MonsterCard({ monster }: MonsterCardProps) {
-  const characterId = useRequiredCharacterId();
-  const [localMonster, setLocalMonster] = useState(monster);
-  const [isLoading, setIsLoading] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [isEditingKills, setIsEditingKills] = useState(false);
-  const [editedKills, setEditedKills] = useState(localMonster.kills);
-
-  const resistances = localMonster.elemental_resistances;
-  const isBestiaryUnlocked = localMonster.stage === BESTIARY_FULL_STAGE;
-
-  const handleMarkSoulpit = async () => {
-    setIsLoading(true);
-    const newState = !localMonster.has_soul;
-
-    setLocalMonster((prev) => ({ ...prev, has_soul: newState }));
-
-    try {
-      await updateCharacterBestiaryEntry({
-        characterId,
-        monsterId: localMonster.id,
-        updates: { has_soul: newState },
-      });
-    } catch {
-      setLocalMonster(monster);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleMarkFull = async () => {
-    setIsLoading(true);
-    const isNowFull = localMonster.stage !== 3;
-    const newStage = isNowFull ? 3 : 0;
-    const newKills = isNowFull ? localMonster.bestiary_kills.stage3 : 0;
-
-    setLocalMonster((prev) => ({
-      ...prev,
-      stage: newStage,
-      kills: newKills,
-    }));
-
-    try {
-      await updateCharacterBestiaryEntry({
-        characterId,
-        monsterId: localMonster.id,
-        updates: { stage: newStage, kills: newKills },
-      });
-    } catch {
-      setLocalMonster(monster);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleKillsSave = async () => {
-    const newKills = Math.max(0, Math.min(editedKills, localMonster.bestiary_kills.stage3));
-    const newStage = newKills >= localMonster.bestiary_kills.stage3 ? 3 : localMonster.stage;
-
-    setLocalMonster((prev) => ({ ...prev, kills: newKills, stage: newStage }));
-    setIsEditingKills(false);
-
-    try {
-      await updateCharacterBestiaryEntry({
-        characterId,
-        monsterId: localMonster.id,
-        updates: { kills: newKills, stage: newStage },
-      });
-    } catch {
-      setLocalMonster(monster);
-    }
-  };
+  const resistances = monster.elemental_resistances;
 
   return (
     <Card
@@ -116,38 +91,7 @@ export function MonsterCard({ monster }: MonsterCardProps) {
         opacity: isBestiaryUnlocked ? 1 : 0.5,
       }}
     >
-      {isLoading && (
-        <Box
-          sx={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(0,0,0,0.3)",
-            borderRadius: 3,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 10,
-          }}
-        >
-          <LinearProgress
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: 3,
-              borderRadius: "3px 3px 0 0",
-              background: "rgba(255,255,255,0.1)",
-              "& .MuiLinearProgress-bar": {
-                backgroundColor: "#f5b342",
-              },
-            }}
-          />
-          <Typography variant="body2" color="white" fontWeight="bold">
-            Updating...
-          </Typography>
-        </Box>
-      )}
+      {isLoading && <MonsterCardOverlay />}
 
       <Box
         sx={{
@@ -160,9 +104,9 @@ export function MonsterCard({ monster }: MonsterCardProps) {
       >
         <Tooltip title="Toggle Soulpit">
           <IconButton
-            onClick={handleMarkSoulpit}
+            onClick={toggleSoulpit}
             size="small"
-            sx={{ color: localMonster.has_soul ? "#f5b342" : "#666" }}
+            sx={{ color: monster.has_soul ? "#f5b342" : "#666" }}
             disabled={isLoading}
           >
             <AutoAwesomeMosaicOutlined fontSize="small" />
@@ -170,18 +114,21 @@ export function MonsterCard({ monster }: MonsterCardProps) {
         </Tooltip>
 
         <Tooltip title={isBestiaryUnlocked ? "Unmark as fully unlocked" : "Mark as fully unlocked"}>
-          <IconButton
-            onClick={handleMarkFull}
-            size="small"
-            sx={{ color: isBestiaryUnlocked ? "lime" : "#666" }}
-            disabled={isLoading}
-          >
-            <Circle fontSize="small" />
-          </IconButton>
+          <span>
+            <IconButton
+              onClick={toggleFullBestiary}
+              size="small"
+              sx={{ color: isBestiaryUnlocked ? "lime" : "#666" }}
+              disabled={isLoading}
+            >
+              <Circle fontSize="small" />
+            </IconButton>
+          </span>
         </Tooltip>
       </Box>
 
-      {localMonster.has_soul && (
+      {/* Soulpit ribbon */}
+      {monster.has_soul && (
         <Box
           sx={{
             position: "absolute",
@@ -219,35 +166,38 @@ export function MonsterCard({ monster }: MonsterCardProps) {
         </Box>
       )}
 
+      {/* Header */}
       <Stack direction="row" spacing={2} alignItems="center">
         <Image
-          src={localMonster.image_url}
-          alt={localMonster.name}
+          src={monster.image_url}
+          alt={monster.name}
           width={64}
           height={64}
           className="rounded-md bg-neutral-900 p-1"
         />
         <Stack>
           <Typography variant="h6" fontWeight="bold">
-            {localMonster.name}
+            {monster.name}
           </Typography>
           <Typography variant="body2" color="gray">
-            {localMonster.bestiary_class}
+            {monster.bestiary_class}
           </Typography>
         </Stack>
       </Stack>
 
       <Divider sx={{ my: 1.5, borderColor: "rgba(255,255,255,0.1)" }} />
 
+      {/* Stats */}
       <Stack spacing={0.5}>
-        <Typography variant="body2">❤️ HP: {localMonster.hp}</Typography>
-        <Typography variant="body2">⭐ XP: {localMonster.exp}</Typography>
-        <Typography variant="body2">💎 Charm Points: {localMonster.charm_points}</Typography>
-        <Typography variant="body2">⚔️ Difficulty: {localMonster.bestiary_difficulty}</Typography>
+        <Typography variant="body2">❤️ HP: {monster.hp}</Typography>
+        <Typography variant="body2">⭐ XP: {monster.exp}</Typography>
+        <Typography variant="body2">💎 Charm Points: {monster.charm_points}</Typography>
+        <Typography variant="body2">⚔️ Difficulty: {monster.bestiary_difficulty}</Typography>
       </Stack>
 
       <Divider sx={{ my: 1.5, borderColor: "rgba(255,255,255,0.1)" }} />
 
+      {/* Details toggle */}
       <Stack
         direction="row"
         alignItems="center"
@@ -258,11 +208,7 @@ export function MonsterCard({ monster }: MonsterCardProps) {
         <Typography variant="subtitle2" color="gray">
           Details
         </Typography>
-        {isDetailsOpen ? (
-          <ExpandLess sx={{ color: "white" }} />
-        ) : (
-          <ExpandMore sx={{ color: "white" }} />
-        )}
+        {isDetailsOpen ? <ExpandLess /> : <ExpandMore />}
       </Stack>
 
       <Collapse in={isDetailsOpen} timeout="auto" unmountOnExit>
@@ -307,6 +253,7 @@ export function MonsterCard({ monster }: MonsterCardProps) {
 
       <Divider sx={{ my: 1.5, borderColor: "rgba(255,255,255,0.1)" }} />
 
+      {/* Kills */}
       <Box sx={{ mt: 1 }}>
         {isEditingKills ? (
           <TextField
@@ -315,10 +262,10 @@ export function MonsterCard({ monster }: MonsterCardProps) {
             value={editedKills}
             autoFocus
             onChange={(e) => setEditedKills(Number(e.target.value))}
-            onBlur={handleKillsSave}
+            onBlur={saveKills}
             inputProps={{
               min: 0,
-              max: localMonster.bestiary_kills.stage3,
+              max: monster.bestiary_kills.stage3,
               style: { color: "white", textAlign: "center", fontSize: 14 },
             }}
             sx={{
@@ -334,16 +281,16 @@ export function MonsterCard({ monster }: MonsterCardProps) {
         ) : (
           <Typography
             variant="body2"
-            onClick={() => setIsEditingKills(true)}
+            onClick={startEditingKills}
             sx={{ cursor: "pointer", "&:hover": { textDecoration: "underline" } }}
           >
-            📊 Kills: {localMonster.kills} / {localMonster.bestiary_kills.stage3}
+            📊 Kills: {monster.kills} / {monster.bestiary_kills.stage3}
           </Typography>
         )}
 
         <LinearProgress
           variant="determinate"
-          value={(localMonster.kills / localMonster.bestiary_kills.stage3) * 100}
+          value={(monster.kills / monster.bestiary_kills.stage3) * 100}
           sx={{
             height: 8,
             mt: 0.5,
