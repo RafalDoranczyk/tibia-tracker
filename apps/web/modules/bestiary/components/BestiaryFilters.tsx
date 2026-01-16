@@ -5,7 +5,10 @@ import { Button, FormControl, InputLabel, MenuItem, Select, Stack } from "@mui/m
 import { DebouncedSearchFieldURL } from "@/components";
 import { usePaginationQueryParams } from "@/hooks";
 
-import { BESTIARY_CLASSES, type BestiaryClass } from "../schemas";
+import { BESTIARY_CLASSES, DEFAULT_BESTIARY_CLASS } from "../constants";
+import type { BestiaryClass } from "../types";
+
+const DEBOUNCE_MS = 250;
 
 type BestiaryFiltersType = {
   bestiary_class?: BestiaryClass;
@@ -40,6 +43,8 @@ export function BestiaryFilters() {
   };
 
   const isClearDisabled = !filters.search && filters.bestiary_class === undefined;
+  const isSearching = Boolean(filters.search);
+  const selectedClass = filters.bestiary_class ?? DEFAULT_BESTIARY_CLASS;
 
   return (
     <Stack
@@ -47,23 +52,17 @@ export function BestiaryFilters() {
       spacing={2}
       alignItems={{ xs: "stretch", sm: "center" }}
     >
-      <FormControl size="small" sx={{ minWidth: 160 }}>
-        <InputLabel id="bestiary-class-label">Bestiary Class</InputLabel>
+      <FormControl size="small" sx={{ minWidth: 200 }} disabled={isSearching}>
+        <InputLabel id="bestiary-class-label">
+          {isSearching ? "Searching across all classes" : "Bestiary Class"}
+        </InputLabel>
         <Select
-          MenuProps={{
-            PaperProps: {
-              sx: {
-                maxHeight: 300,
-              },
-            },
-          }}
-          labelId="bestiary-class-label"
-          label="Bestiary Class"
-          value={filters.bestiary_class || ""}
           onChange={(e) => handleClassChange(e.target.value)}
+          value={selectedClass}
+          label="Bestiary Class"
         >
           {BESTIARY_CLASSES.map((el) => (
-            <MenuItem value={el} key={el}>
+            <MenuItem key={el} value={el}>
               {el}
             </MenuItem>
           ))}
@@ -73,7 +72,7 @@ export function BestiaryFilters() {
       <DebouncedSearchFieldURL
         value={filters.search || ""}
         onChange={handleSearchChange}
-        debounceMs={400}
+        debounceMs={DEBOUNCE_MS}
         placeholder="Search monster..."
       />
 
