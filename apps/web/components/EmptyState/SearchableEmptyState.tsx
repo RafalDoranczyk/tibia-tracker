@@ -1,4 +1,5 @@
-import { Add, FilterList } from "@mui/icons-material";
+import Add from "@mui/icons-material/Add";
+import FilterList from "@mui/icons-material/FilterList";
 import { Button } from "@mui/material";
 
 import { EmptyState } from "@/components";

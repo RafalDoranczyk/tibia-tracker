@@ -1,74 +1,53 @@
 import { useMemo } from "react";
+import { useShallow } from "zustand/shallow";
 
-import { useLocalStorageState, useMounted } from "@/hooks";
+import { useImbuingPriceStore } from "../imbuingPriceStore";
+import type { ImbuingPrices, Scroll } from "../types";
+import { calculateScrollEconomy } from "../utils/calculateScrollEconomy";
 
-import type { Scroll } from "../types";
-import { calculateScrollEconomy } from "../utils";
-
-type StoredScrollPricing = {
-  scrollPrice: number;
-  prices: Record<number, number>;
-};
-
-export function useScrollPricing(scroll: Scroll, tokenPrice: number) {
-  const { name, items, defaultPrice, craftMethods } = scroll;
-
-  const storageKey = `scroll-card:${name}`;
-  const mounted = useMounted();
-
-  const initialPrices = useMemo(
-    () => Object.fromEntries(items.map((i) => [i.id, i.defaultPrice ?? 0])),
-    [items]
-  );
-
-  const [stored, setStored] = useLocalStorageState<StoredScrollPricing>(storageKey, {
-    scrollPrice: defaultPrice,
-    prices: initialPrices,
-  });
-
-  const prices = useMemo(
-    () => ({
-      ...initialPrices,
-      ...stored.prices,
-    }),
-    [initialPrices, stored.prices]
-  );
-
-  const setScrollPrice = (value: number) =>
-    setStored((prev) => ({
-      ...prev,
-      scrollPrice: value,
-    }));
-
-  const setItemPrice = (itemId: number, value: number) =>
-    setStored((prev) => ({
-      ...prev,
-      prices: {
-        ...prev.prices,
-        [itemId]: value,
-      },
-    }));
-
-  const economy = useMemo(
-    () =>
-      calculateScrollEconomy({
-        scroll,
-        scrollPrice: stored.scrollPrice,
-        itemPrices: prices,
-        tokenPrice,
-      }),
-    [scroll, stored.scrollPrice, prices, tokenPrice]
-  );
-
-  const canCraftWithTokens = craftMethods.includes("tokens");
-
-  return {
-    scrollPrice: stored.scrollPrice,
-    prices,
-    setScrollPrice,
-    setItemPrice,
-    economy,
-    canCraftWithTokens,
-    ready: mounted,
+function selectPricesForScroll(scroll: Scroll, prices: ImbuingPrices) {
+  const result: Record<string, number | undefined> = {
+    gold_token: prices.gold_token,
+    [scroll.key]: prices[scroll.key],
   };
+
+  for (const item of scroll.items) {
+    result[item.key] = prices[item.key];
+  }
+
+  return result;
+}
+
+function hasAllRequiredPrices(scroll: Scroll, prices: ImbuingPrices): boolean {
+  const scrollPrice = prices[scroll.key];
+  if (typeof scrollPrice !== "number" || scrollPrice <= 0) {
+    return false;
+  }
+
+  return scroll.items.every((item) => {
+    const price = prices[item.key];
+    return typeof price === "number" && price > 0;
+  });
+}
+
+export function useScrollPricing(scroll: Scroll) {
+  const prices = useImbuingPriceStore(useShallow((s) => selectPricesForScroll(scroll, s.prices)));
+
+  const tokenPrice = prices.gold_token ?? 0;
+  const scrollPrice = prices[scroll.key] ?? 0;
+
+  const hasAllPrices = useMemo(() => hasAllRequiredPrices(scroll, prices), [scroll, prices]);
+
+  const economy = useMemo(() => {
+    if (!hasAllPrices) return null;
+
+    return calculateScrollEconomy({
+      scroll,
+      scrollPrice,
+      itemPrices: prices,
+      tokenPrice,
+    });
+  }, [hasAllPrices, scroll, scrollPrice, prices, tokenPrice]);
+
+  return { hasAllPrices, economy };
 }

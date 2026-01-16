@@ -34,7 +34,9 @@ export default [
     },
     rules: {
       'simple-import-sort/imports': 'error',
-      'simple-import-sort/exports': 'error'
+      'simple-import-sort/exports': 'error',
+      "no-duplicate-imports": ["error", { includeExports: true }]
+
     }
   },
   {
@@ -44,7 +46,8 @@ export default [
     },
     rules: {
       'simple-import-sort/imports': 'error',
-      'simple-import-sort/exports': 'error'
+      'simple-import-sort/exports': 'error',
+      "no-duplicate-imports": ["error", { includeExports: true }]
     }
   }
 ];

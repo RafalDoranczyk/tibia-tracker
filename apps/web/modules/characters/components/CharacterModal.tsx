@@ -1,9 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoadingButton } from "@mui/lab";
 import {
   Box,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -98,12 +98,12 @@ export function CharacterModal({ open, onClose, onSuccess }: Props) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <LoadingButton loading={isSubmitting} onClick={onClose}>
+          <Button loading={isSubmitting} onClick={onClose}>
             Cancel
-          </LoadingButton>
-          <LoadingButton loading={isSubmitting} type="submit" variant="contained">
+          </Button>
+          <Button loading={isSubmitting} type="submit" variant="contained">
             Add
-          </LoadingButton>
+          </Button>
         </DialogActions>
       </form>
     </Dialog>

@@ -1,15 +1,13 @@
-import {
-  AddCircle,
-  Delete,
-  Download,
-  Edit,
-  EditOff,
-  ExitToApp,
-  Lock,
-  MoreVert,
-  Save,
-  Settings,
-} from "@mui/icons-material";
+import AddCircle from "@mui/icons-material/AddCircle";
+import Delete from "@mui/icons-material/Delete";
+import Download from "@mui/icons-material/Download";
+import Edit from "@mui/icons-material/Edit";
+import EditOff from "@mui/icons-material/EditOff";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import Lock from "@mui/icons-material/Lock";
+import MoreVert from "@mui/icons-material/MoreVert";
+import Save from "@mui/icons-material/Save";
+import Settings from "@mui/icons-material/Settings";
 import { IconButton, type IconButtonProps, Tooltip } from "@mui/material";
 import { cloneElement, type ReactElement } from "react";
 

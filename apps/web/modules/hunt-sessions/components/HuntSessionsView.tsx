@@ -1,6 +1,5 @@
 "use client";
 
-import { LoadingButton } from "@mui/lab";
 import { Button, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { useState, useTransition } from "react";
@@ -96,17 +95,17 @@ export function HuntSessionsView({ count, huntSessions }: HuntSessionsViewProps)
             description="Are you sure you want to delete this hunt session? This action cannot be undone."
           />
           <ConfirmDialog.Actions>
-            <LoadingButton loading={isPending} onClick={() => setSessionToDelete(null)}>
+            <Button loading={isPending} onClick={() => setSessionToDelete(null)}>
               Cancel
-            </LoadingButton>
-            <LoadingButton
+            </Button>
+            <Button
               loading={isPending}
               color="error"
               variant="contained"
               onClick={handleDeleteSession}
             >
               Delete
-            </LoadingButton>
+            </Button>
           </ConfirmDialog.Actions>
         </ConfirmDialog.Content>
       </ConfirmDialog.Root>

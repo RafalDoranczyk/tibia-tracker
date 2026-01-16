@@ -1,13 +1,11 @@
 "use client";
 
-import {
-  BugReport,
-  ExpandMore,
-  Home,
-  Lightbulb,
-  Refresh,
-  ReportProblemRounded,
-} from "@mui/icons-material";
+import BugReport from "@mui/icons-material/BugReport";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import Home from "@mui/icons-material/Home";
+import Lightbulb from "@mui/icons-material/Lightbulb";
+import Refresh from "@mui/icons-material/Refresh";
+import ReportProblemRounded from "@mui/icons-material/ReportProblemRounded";
 import {
   Accordion,
   AccordionDetails,

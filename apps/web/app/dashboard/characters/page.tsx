@@ -1,7 +1,7 @@
 export default function CharactersPage() {
   return (
     <div>
-      <h1>characters page</h1>
+      <h1>Characters page</h1>
     </div>
   );
 }

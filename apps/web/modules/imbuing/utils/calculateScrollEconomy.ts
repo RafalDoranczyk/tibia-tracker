@@ -1,19 +1,20 @@
 import {
   BLANK_SCROLL_PRICE,
+  GOLD_TOKENS_NEEDED_FOR_SCROLL,
   INTRICATE_SCROLL_MAKING_PRICE,
   MARKET_TAX_RATE,
   POWERFULL_SCROLL_MAKING_PRICE,
-  TOKENS_NEEDED_FOR_SCROLL,
-} from "./constants";
-import type { Scroll, ScrollItem, ScrollType } from "./types";
+} from "../constants";
+import type { ImbuingPrices, Scroll, ScrollItem, ScrollType } from "../types";
+import { canBuyScrollForTokens } from "./canBuyScrollForTokens";
 
-export function getScrollLaborCost(scrollType: ScrollType) {
-  return scrollType === "powerfull"
+function getScrollLaborCost(scrollType: ScrollType) {
+  return scrollType === "powerful"
     ? POWERFULL_SCROLL_MAKING_PRICE + BLANK_SCROLL_PRICE
     : INTRICATE_SCROLL_MAKING_PRICE + BLANK_SCROLL_PRICE;
 }
 
-export function calculateScrollCostWithTokens({
+function calculateScrollCostWithTokens({
   scrollType,
   tokenPrice,
 }: { scrollType: ScrollType; tokenPrice: number }) {
@@ -23,7 +24,7 @@ export function calculateScrollCostWithTokens({
   return laborCost + tokensCost;
 }
 
-export function calculateScrollCostWithItems({
+function calculateScrollCostWithItems({
   scrollType,
   itemsPrice,
 }: { scrollType: ScrollType; itemsPrice: number }) {
@@ -32,19 +33,19 @@ export function calculateScrollCostWithItems({
   return laborCost + itemsPrice;
 }
 
-export function calculateTokenToItemsProfit({
+function calculateTokenToItemsProfit({
   items,
   itemPrices,
   tokenPrice,
 }: {
   items: ScrollItem[];
-  itemPrices: Record<number, number>;
+  itemPrices: ImbuingPrices;
   tokenPrice: number;
 }) {
   const tokensCost = tokenPrice * 6;
 
   const itemsGrossValue = items.reduce((total, item) => {
-    const price = itemPrices[item.id] ?? 0;
+    const price = itemPrices[item.key] ?? 0;
     return total + price * item.quantity;
   }, 0);
 
@@ -58,29 +59,17 @@ export function calculateTokenToItemsProfit({
   return itemsNetValue - tokensCost;
 }
 
-export function calculateProfit({ price, cost }: { price: number; cost: number }) {
+function calculateProfit({ price, cost }: { price: number; cost: number }) {
   return price * (1 - MARKET_TAX_RATE) - cost;
 }
 
-export function calculateItemsCostUsingTokens(tokenPrice: number) {
-  return tokenPrice * TOKENS_NEEDED_FOR_SCROLL;
+function calculateItemsCostUsingTokens(tokenPrice: number) {
+  return tokenPrice * GOLD_TOKENS_NEEDED_FOR_SCROLL;
 }
 
-export function calculateScrollItemsTotal(items: ScrollItem[], prices: Record<number, number>) {
-  return items.reduce((total, item) => total + (prices[item.id] ?? 0) * item.quantity, 0);
+function calculateScrollItemsTotal(items: ScrollItem[], prices: ImbuingPrices) {
+  return items.reduce((total, item) => total + (prices[item.key] ?? 0) * item.quantity, 0);
 }
-
-export function getScrollColorStyles(color: string) {
-  return { borderLeft: `6px solid ${color}` };
-}
-
-export type ScrollEconomyResult = {
-  costWithItems: number;
-  costWithTokens: number;
-  profitWithItems: number;
-  profitWithTokens: number;
-  tokenFlipProfit: number;
-};
 
 export function calculateScrollEconomy({
   scroll,
@@ -90,21 +79,20 @@ export function calculateScrollEconomy({
 }: {
   scroll: Scroll;
   scrollPrice: number;
-  itemPrices: Record<number, number>;
+  itemPrices: ImbuingPrices;
   tokenPrice: number;
-}): ScrollEconomyResult {
-  const scrollType = scroll.scrollType ?? "powerfull";
+}) {
+  const scrollType = scroll.scrollType ?? "powerful";
 
   const itemsPrice = calculateScrollItemsTotal(scroll.items, itemPrices);
+
+  let costWithTokens = 0;
+  let profitWithTokens = 0;
+  let tokenFlipProfit = 0;
 
   const costWithItems = calculateScrollCostWithItems({
     scrollType,
     itemsPrice,
-  });
-
-  const costWithTokens = calculateScrollCostWithTokens({
-    scrollType,
-    tokenPrice,
   });
 
   const profitWithItems = calculateProfit({
@@ -112,22 +100,33 @@ export function calculateScrollEconomy({
     cost: costWithItems,
   });
 
-  const profitWithTokens = calculateProfit({
-    price: scrollPrice,
-    cost: costWithTokens,
-  });
+  const supportsTokenCrafting = canBuyScrollForTokens(scroll.craftMethods);
 
-  const tokenFlipProfit = calculateTokenToItemsProfit({
-    items: scroll.items,
-    itemPrices,
-    tokenPrice,
-  });
+  if (supportsTokenCrafting) {
+    costWithTokens = calculateScrollCostWithTokens({
+      scrollType,
+      tokenPrice,
+    });
+
+    profitWithTokens = calculateProfit({
+      price: scrollPrice,
+      cost: costWithTokens,
+    });
+
+    tokenFlipProfit = calculateTokenToItemsProfit({
+      items: scroll.items,
+      itemPrices,
+      tokenPrice,
+    });
+  }
 
   return {
     costWithItems,
-    costWithTokens,
     profitWithItems,
     profitWithTokens,
     tokenFlipProfit,
+    costWithTokens,
   };
 }
+
+export type ScrollEconomyResult = ReturnType<typeof calculateScrollEconomy>;

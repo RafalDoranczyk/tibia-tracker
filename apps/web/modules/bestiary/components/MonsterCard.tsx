@@ -1,6 +1,9 @@
 "use client";
 
-import { AutoAwesomeMosaicOutlined, Circle, ExpandLess, ExpandMore } from "@mui/icons-material";
+import AutoAwesomeMosaicOutlined from "@mui/icons-material/AutoAwesomeMosaicOutlined";
+import Circle from "@mui/icons-material/Circle";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import {
   Box,
   Card,

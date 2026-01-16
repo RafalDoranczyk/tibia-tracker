@@ -1,4 +1,4 @@
-import { ShoppingBasket } from "@mui/icons-material";
+import ShoppingBasket from "@mui/icons-material/ShoppingBasket";
 import {
   Box,
   Card,
@@ -16,12 +16,14 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
+import { PRICE_DEBOUNCE_MS } from "../constants";
 import { useScrollPricing } from "../hooks/useScrollPricing";
 import { ITEM_IMAGES } from "../images";
-import type { Scroll } from "../types";
-import { getScrollColorStyles, type ScrollEconomyResult } from "../utils";
-import { ScrollCardSkeleton } from "./ScrollCardSkeleton";
+import { useImbuingPriceStore } from "../imbuingPriceStore";
+import type { ImbuingPriceKey, Scroll } from "../types";
+import type { ScrollEconomyResult } from "../utils/calculateScrollEconomy";
 
 function SummaryRow({
   children,
@@ -63,7 +65,7 @@ function ScrollSummary({
 
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Stack gap={1} direction="row" alignItems="center">
-            <Typography>Profit</Typography>
+            <Typography>Profit with items</Typography>
             <ShoppingBasket fontSize="small" />
           </Stack>
 
@@ -82,8 +84,8 @@ function ScrollSummary({
 
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <Stack gap={1} direction="row" alignItems="center">
-                <Typography>Profit</Typography>
-                <Image src={ITEM_IMAGES["Gold Token"]} alt="gold token" width={24} height={24} />
+                <Typography>Profit with tokens</Typography>
+                <Image src={ITEM_IMAGES.gold_token} alt="gold token" width={24} height={24} />
               </Stack>
 
               <Typography
@@ -114,63 +116,87 @@ function ScrollSummary({
   );
 }
 
-type ScrollTableWithSummaryProps = {
+function ScrollPriceInput({ scrollKey }: { scrollKey: ImbuingPriceKey }) {
+  const scrollPrice = useImbuingPriceStore((s) => s.prices[scrollKey]);
+  const setScrollPrice = useImbuingPriceStore((s) => s.setPrice);
+
+  const [localValue, setLocalValue] = useState(scrollPrice || 0);
+
+  useEffect(() => {
+    if (scrollPrice !== undefined) {
+      setLocalValue(scrollPrice);
+    }
+  }, [scrollPrice]);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setScrollPrice(scrollKey, localValue);
+    }, PRICE_DEBOUNCE_MS);
+
+    return () => clearTimeout(t);
+  }, [localValue, setScrollPrice, scrollKey]);
+
+  return (
+    <TextField
+      sx={{ maxWidth: 140 }}
+      label="Scroll Price"
+      value={localValue}
+      onChange={(e) => setLocalValue(Number(e.target.value))}
+    />
+  );
+}
+
+function ItemPriceInput({ itemKey }: { itemKey: ImbuingPriceKey }) {
+  const price = useImbuingPriceStore((s) => s.prices[itemKey] ?? 0);
+  const setPrice = useImbuingPriceStore((s) => s.setPrice);
+
+  return (
+    <TextField
+      size="small"
+      type="number"
+      value={price}
+      onChange={(e) => setPrice(itemKey, Number(e.target.value))}
+      sx={{ maxWidth: 120 }}
+    />
+  );
+}
+
+type ScrollCardProps = {
   scroll: Scroll;
-  tokenPrice: number;
 };
 
-export function ScrollCard({ scroll, tokenPrice }: ScrollTableWithSummaryProps) {
-  const { scrollPrice, prices, setScrollPrice, setItemPrice, economy, canCraftWithTokens, ready } =
-    useScrollPricing(scroll, tokenPrice);
-
-  const typedPrices = prices as Record<number, number>;
-
-  if (!ready) {
-    return <ScrollCardSkeleton />;
-  }
+export function ScrollCard({ scroll }: ScrollCardProps) {
+  const { economy, hasAllPrices } = useScrollPricing(scroll);
 
   const { imageUrl, color, name, items } = scroll;
 
   return (
-    <Card
-      variant="outlined"
-      sx={{
-        px: 2,
-        py: 1,
-      }}
-    >
+    <Card variant="outlined" sx={{ px: 2, py: 1 }}>
       <Stack
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
         mb={2}
         px={2}
-        sx={{ ...getScrollColorStyles(color) }}
         py={1}
+        borderLeft={`6px solid ${color}`}
       >
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Image src={imageUrl || ""} alt={name} width={40} height={40} style={{ flexShrink: 0 }} />
+          <Image src={imageUrl || ""} alt={name} width={40} height={40} />
 
           <Typography variant="h6" fontWeight={800}>
             {name.toUpperCase()}
           </Typography>
         </Stack>
 
-        <Stack gap={2} flexDirection="row" justifyContent="space-between" alignItems="center">
-          <TextField
-            type="number"
-            value={scrollPrice}
-            onChange={(e) => setScrollPrice(Number(e.target.value))}
-            sx={{ maxWidth: 140 }}
-          />
-        </Stack>
+        <ScrollPriceInput scrollKey={scroll.key} />
       </Stack>
 
-      <Grid container spacing={2} alignItems="stretch">
-        <Grid size={{ xs: 7, xxl: 7 }} display="flex">
-          <Paper sx={{ flex: 1 }} variant="outlined">
-            <TableContainer sx={{ height: "100%" }}>
-              <Table size="small" sx={{ height: "100%" }}>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 7 }}>
+          <Paper variant="outlined">
+            <TableContainer>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 600 }}>Item</TableCell>
@@ -184,11 +210,9 @@ export function ScrollCard({ scroll, tokenPrice }: ScrollTableWithSummaryProps) 
                 </TableHead>
 
                 <TableBody>
-                  {items.map(({ id, name, quantity, imageUrl }) => {
-                    const price = typedPrices[id] ?? 0;
-
+                  {items.map(({ key, name, quantity, imageUrl }) => {
                     return (
-                      <TableRow hover key={id}>
+                      <TableRow hover key={key}>
                         <TableCell>
                           <Stack direction="row" alignItems="center" spacing={1}>
                             <Image
@@ -198,19 +222,14 @@ export function ScrollCard({ scroll, tokenPrice }: ScrollTableWithSummaryProps) 
                               height={36}
                               style={{ flexShrink: 0 }}
                             />
-
                             <Typography variant="body2">{name}</Typography>
                           </Stack>
                         </TableCell>
 
                         <TableCell align="right">{quantity}</TableCell>
+
                         <TableCell align="right">
-                          <TextField
-                            size="small"
-                            type="number"
-                            value={price}
-                            onChange={(e) => setItemPrice(id, Number(e.target.value))}
-                          />
+                          <ItemPriceInput itemKey={key} />
                         </TableCell>
                       </TableRow>
                     );
@@ -221,8 +240,22 @@ export function ScrollCard({ scroll, tokenPrice }: ScrollTableWithSummaryProps) 
           </Paper>
         </Grid>
 
-        <Grid size={{ xs: 5, xxl: 5 }} display="flex">
-          <ScrollSummary {...economy} showTokenStrategies={canCraftWithTokens} />
+        <Grid size={{ xs: 5 }}>
+          {hasAllPrices && economy ? (
+            <ScrollSummary
+              {...economy}
+              showTokenStrategies={scroll.craftMethods.includes("tokens")}
+            />
+          ) : (
+            <Paper variant="outlined" sx={{ p: 2 }}>
+              <Typography color="error" fontWeight={600}>
+                Fill in item prices to see profitability
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Some required item prices are missing or set to 0.
+              </Typography>
+            </Paper>
+          )}
         </Grid>
       </Grid>
     </Card>
