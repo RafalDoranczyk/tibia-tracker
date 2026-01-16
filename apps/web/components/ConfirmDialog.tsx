@@ -1,6 +1,6 @@
 "use client";
 
-import { WarningAmber } from "@mui/icons-material";
+import WarningAmber from "@mui/icons-material/WarningAmber";
 import {
   Dialog,
   DialogActions,

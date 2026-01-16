@@ -1,4 +1,5 @@
-import { Add, Delete } from "@mui/icons-material";
+import Add from "@mui/icons-material/Add";
+import Delete from "@mui/icons-material/Delete";
 import { Box, IconButton, Paper, Stack, TextField, Typography } from "@mui/material";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 

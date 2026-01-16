@@ -1,7 +1,9 @@
 "use client";
 
-import { DashboardRounded, DatasetLinkedOutlined, ScaleOutlined } from "@mui/icons-material";
+import DashboardRounded from "@mui/icons-material/DashboardRounded";
+import DatasetLinkedOutlined from "@mui/icons-material/DatasetLinkedOutlined";
 import { Box, List, ListItemButton, ListItemIcon, Tooltip, Typography } from "@mui/material";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
@@ -9,11 +11,18 @@ import type { ReactNode } from "react";
 import { PATHS } from "@/constants";
 import { useActiveCharacter } from "@/providers/feature/dashboard";
 
+import { NAVIGATION_IMAGES } from "./images";
+
 // -------------------------------------
 // Types
 // -------------------------------------
+
+export type NavigationIcon =
+  | { type: "mui"; node: ReactNode }
+  | { type: "image"; src: StaticImageData };
+
 export type NavigationLinkElementProps = {
-  icon: ReactNode;
+  icon: NavigationIcon;
   id: string;
   text: string;
   to: string | ((paths: ReturnType<typeof PATHS.CHARACTER>) => string);
@@ -33,21 +42,27 @@ const NAVIGATION_MODULES: NavigationSection[] = [
     title: "Character Overview",
     elements: [
       {
-        icon: <DashboardRounded />,
+        icon: {
+          type: "mui",
+          node: <DashboardRounded />,
+        },
         id: "dashboard",
         text: "Dashboard",
         to: (c) => c.OVERVIEW,
         requiresCharacter: true,
       },
+      // {
+      //   icon: <DatasetLinkedOutlined />,
+      //   id: "charms",
+      //   text: "Charms",
+      //   to: (c) => c.CHARMS,
+      //   requiresCharacter: true,
+      // },
       {
-        icon: <DatasetLinkedOutlined />,
-        id: "charms",
-        text: "Charms",
-        to: (c) => c.CHARMS,
-        requiresCharacter: true,
-      },
-      {
-        icon: <DatasetLinkedOutlined />,
+        icon: {
+          type: "mui",
+          node: <DatasetLinkedOutlined />,
+        },
         id: "bestiary",
         text: "Bestiary",
         to: (c) => c.BESTIARY,
@@ -59,26 +74,32 @@ const NAVIGATION_MODULES: NavigationSection[] = [
     title: "Hunts",
     elements: [
       {
-        icon: <DatasetLinkedOutlined />,
+        icon: {
+          type: "mui",
+          node: <DatasetLinkedOutlined />,
+        },
         id: "hunt-sessions",
         text: "Session list",
         to: (c) => c.HUNT_SESSIONS.LIST,
         requiresCharacter: true,
       },
-      {
-        icon: <ScaleOutlined />,
-        id: "hunt-spots",
-        text: "Best Hunt Places",
-        to: (c) => c.SPOTS,
-        requiresCharacter: true,
-      },
+      // {
+      //   icon: <ScaleOutlined />,
+      //   id: "hunt-spots",
+      //   text: "Best Hunt Places",
+      //   to: (c) => c.SPOTS,
+      //   requiresCharacter: true,
+      // },
     ],
   },
   {
     title: "Utilities",
     elements: [
       {
-        icon: <DatasetLinkedOutlined />,
+        icon: {
+          type: "image",
+          src: NAVIGATION_IMAGES.scroll,
+        },
         id: "imbuing",
         text: "Imbuing",
         to: (c) => c.UTILITIES.IMBUING,
@@ -135,7 +156,7 @@ function NavigationLinkElement({
   isSelected,
   disabled,
 }: {
-  icon: ReactNode;
+  icon: NavigationIcon;
   text: string;
   to: string;
   isSelected: boolean;
@@ -161,7 +182,11 @@ function NavigationLinkElement({
           },
         }}
       >
-        {icon}
+        {icon.type === "mui" ? (
+          icon.node
+        ) : (
+          <Image src={icon.src} alt={text} width={20} height={20} />
+        )}
       </ListItemIcon>
       <Typography
         color="textPrimary"

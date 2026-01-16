@@ -1,6 +1,8 @@
 "use client";
 
-import { Celebration, FlashOn, LocalFireDepartment } from "@mui/icons-material";
+import Celebration from "@mui/icons-material/Celebration";
+import FlashOn from "@mui/icons-material/FlashOn";
+import LocalFireDepartment from "@mui/icons-material/LocalFireDepartment";
 import { Box, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { useState } from "react";
 

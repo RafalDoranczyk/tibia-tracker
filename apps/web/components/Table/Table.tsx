@@ -13,8 +13,7 @@ import {
   TableSortLabel,
   type Theme,
 } from "@mui/material";
-import type { PropsWithChildren } from "react";
-import { memo, useCallback, useMemo } from "react";
+import { memo, type PropsWithChildren, useCallback, useMemo } from "react";
 
 import { TableSkeleton } from "./TableSkeleton";
 

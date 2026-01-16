@@ -1,5 +1,7 @@
-import { ImbuingView } from "@/modules/imbuing";
+import { fetchImbuItemPrices, ImbuingView } from "@/modules/imbuing";
 
-export default function ImbuingPage() {
-  return <ImbuingView />;
+export default async function ImbuingPage() {
+  const imbuingItemPrices = await fetchImbuItemPrices();
+
+  return <ImbuingView imbuingItemPrices={imbuingItemPrices} />;
 }

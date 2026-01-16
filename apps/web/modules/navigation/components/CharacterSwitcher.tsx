@@ -1,6 +1,7 @@
 "use client";
 
-import { Add, Delete } from "@mui/icons-material";
+import Add from "@mui/icons-material/Add";
+import Delete from "@mui/icons-material/Delete";
 import { Box, Button, Menu, MenuItem, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
