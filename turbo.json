@@ -1,16 +1,16 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "ANTHROPIC_API_KEY",
+    "NEXT_PUBLIC_APP_URL",
+    "NEXT_PUBLIC_AUTH_CALLBACK_URL",
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "NODE_ENV"
+  ],
   "tasks": {
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "env": [
-        "ANTHROPIC_API_KEY",
-        "NEXT_PUBLIC_APP_URL",
-        "NEXT_PUBLIC_AUTH_CALLBACK_URL",
-        "NEXT_PUBLIC_SUPABASE_URL",
-        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-        "NODE_ENV"
-      ],
       "dependsOn": ["^build"],
       "outputs": ["build/**", ".vercel/**", "dist/**", ".next/**", "!.next/cache/**"]
     },
