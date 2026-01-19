@@ -18,10 +18,15 @@ import type { CharacterBestiaryClassSummary, CharacterBestiarySummary } from "..
 
 type BestiaryFloatingPanelProps = {
   globalSummary: CharacterBestiarySummary;
-  classSummary?: CharacterBestiaryClassSummary | null;
+  classSummary: CharacterBestiaryClassSummary;
+  hasSearch: boolean;
 };
 
-export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryFloatingPanelProps) {
+export function BestiaryFloatingPanel({
+  globalSummary,
+  classSummary,
+  hasSearch,
+}: BestiaryFloatingPanelProps) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -144,8 +149,21 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
           </Stack>
         </Box>
 
-        {/* Class progress (only if available) */}
-        {classSummary ? (
+        {hasSearch ? (
+          <Box
+            sx={{
+              background: "linear-gradient(90deg, #1c1c1c, #2a2a2a)",
+              borderRadius: 3,
+              p: 2.5,
+              textAlign: "center",
+              boxShadow: "0 0 10px rgba(0,0,0,0.4)",
+            }}
+          >
+            <Typography variant="body2" color="gray">
+              🔎 Searching across all classes — class summary hidden
+            </Typography>
+          </Box>
+        ) : (
           <Box
             sx={{
               background: "linear-gradient(90deg, #1c1c1c, #2a2a2a)",
@@ -228,20 +246,6 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
                 />
               </Stack>
             </Stack>
-          </Box>
-        ) : (
-          <Box
-            sx={{
-              background: "linear-gradient(90deg, #1c1c1c, #2a2a2a)",
-              borderRadius: 3,
-              p: 2.5,
-              textAlign: "center",
-              boxShadow: "0 0 10px rgba(0,0,0,0.4)",
-            }}
-          >
-            <Typography variant="body2" color="gray">
-              🔎 Searching across all classes — class summary hidden
-            </Typography>
           </Box>
         )}
       </Drawer>

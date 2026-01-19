@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select as MaterialSelect,
-} from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
 import {
   type Control,
   Controller,
@@ -15,7 +9,7 @@ import {
   type PathValue,
 } from "react-hook-form";
 
-type SelectProps<T extends FieldValues> = {
+type ControlledSelectProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
   label: string;
@@ -29,27 +23,20 @@ export function ControlledSelect<T extends FieldValues>({
   name,
   label,
   options,
-  defaultValue,
-  errorMessage,
-}: SelectProps<T>) {
+}: ControlledSelectProps<T>) {
   return (
-    <FormControl fullWidth error={!!errorMessage} sx={{ m: 1, minWidth: 120 }}>
-      <InputLabel>{label}</InputLabel>
-      <Controller
-        control={control}
-        name={name}
-        defaultValue={defaultValue ?? ("" as PathValue<T, Path<T>>)}
-        render={({ field }) => (
-          <MaterialSelect label={label} {...field}>
-            {options.map(({ id, name }) => (
-              <MenuItem key={String(id)} value={id}>
-                {name}
-              </MenuItem>
-            ))}
-          </MaterialSelect>
-        )}
-      />
-      {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
-    </FormControl>
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <TextField select label={label} fullWidth {...field}>
+          {options.map((opt) => (
+            <MenuItem key={String(opt.id)} value={opt.id}>
+              {opt.name}
+            </MenuItem>
+          ))}
+        </TextField>
+      )}
+    />
   );
 }

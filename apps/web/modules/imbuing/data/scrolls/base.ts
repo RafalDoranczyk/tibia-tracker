@@ -2,7 +2,6 @@ import { ITEM_IMAGES, SCROLL_IMAGES } from "../../images";
 import type { Scroll, ScrollItem } from "../../types";
 
 // Scroll Items
-
 const vampireTeeth: ScrollItem = {
   key: "vampire_teeth",
   name: "Vampire Teeth",
@@ -67,7 +66,6 @@ const vexclawTalon: ScrollItem = {
 };
 
 // Scrolls
-
 const vampScroll: Scroll = {
   key: "scroll_vampirism",
   name: "Vamp",

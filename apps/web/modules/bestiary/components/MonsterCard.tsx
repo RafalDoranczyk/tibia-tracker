@@ -65,7 +65,7 @@ export function MonsterCard({ monster: initialMonster }: MonsterCardProps) {
   const {
     monster,
     isLoading,
-    isBestiaryUnlocked,
+    isBestiaryCompleted,
     isEditingKills,
     editedKills,
     setEditedKills,
@@ -88,7 +88,7 @@ export function MonsterCard({ monster: initialMonster }: MonsterCardProps) {
         p: 2,
         width: 280,
         boxShadow: "0 0 20px rgba(0,0,0,0.4)",
-        opacity: isBestiaryUnlocked ? 1 : 0.5,
+        opacity: isBestiaryCompleted ? 1 : 0.5,
       }}
     >
       {isLoading && <MonsterCardOverlay />}
@@ -113,12 +113,14 @@ export function MonsterCard({ monster: initialMonster }: MonsterCardProps) {
           </IconButton>
         </Tooltip>
 
-        <Tooltip title={isBestiaryUnlocked ? "Unmark as fully unlocked" : "Mark as fully unlocked"}>
+        <Tooltip
+          title={isBestiaryCompleted ? "Unmark as fully unlocked" : "Mark as fully unlocked"}
+        >
           <span>
             <IconButton
               onClick={toggleFullBestiary}
               size="small"
-              sx={{ color: isBestiaryUnlocked ? "lime" : "#666" }}
+              sx={{ color: isBestiaryCompleted ? "lime" : "#666" }}
               disabled={isLoading}
             >
               <Circle fontSize="small" />
@@ -167,7 +169,7 @@ export function MonsterCard({ monster: initialMonster }: MonsterCardProps) {
       )}
 
       {/* Header */}
-      <Stack direction="row" spacing={2} alignItems="center">
+      <Stack direction="row" gap={1} alignItems="center">
         <Image
           src={monster.image_url}
           alt={monster.name}
@@ -263,10 +265,12 @@ export function MonsterCard({ monster: initialMonster }: MonsterCardProps) {
             autoFocus
             onChange={(e) => setEditedKills(Number(e.target.value))}
             onBlur={saveKills}
-            inputProps={{
-              min: 0,
-              max: monster.bestiary_kills.stage3,
-              style: { color: "white", textAlign: "center", fontSize: 14 },
+            slotProps={{
+              htmlInput: {
+                min: 0,
+                max: monster.bestiary_kills.stage3,
+                style: { color: "white", textAlign: "center", fontSize: 14 },
+              },
             }}
             sx={{
               width: 100,

@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { ensureUserSettings } from "@/actions/user";
 import { PATHS } from "@/constants";
 import { createSupabase } from "@/core";
 
@@ -42,15 +41,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   try {
     const supabase = await createSupabase();
-    const { error, data } = await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
       console.error("OAuth exchange error:", error);
       return redirectToError(origin);
-    }
-
-    if (data.user) {
-      await ensureUserSettings(data.user.id);
     }
 
     const redirectBase = getRedirectBase(request, origin);

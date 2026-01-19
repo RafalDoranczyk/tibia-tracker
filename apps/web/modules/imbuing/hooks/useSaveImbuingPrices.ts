@@ -1,6 +1,6 @@
 import { useTransition } from "react";
 
-import { updateItemPrices } from "../actions";
+import { updateImbuingItemPrices } from "../actions/updateImbuingItemPrices";
 import { useImbuingPriceStore } from "../imbuingPriceStore";
 import { getPriceChanges } from "../utils/getPriceChanges";
 
@@ -18,7 +18,7 @@ export function useSaveImbuingPrices() {
     return new Promise<void>((resolve, reject) => {
       startTransition(async () => {
         try {
-          await updateItemPrices(changes);
+          await updateImbuingItemPrices(changes);
           markSaved();
           resolve();
         } catch (e) {

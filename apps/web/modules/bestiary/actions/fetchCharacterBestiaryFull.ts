@@ -3,9 +3,13 @@
 import { getUserScopedQuery } from "@/core";
 import { assertZodParse } from "@/utils";
 
-import { BESTIARY_DEFAULT_LIMIT, DEFAULT_BESTIARY_CLASS } from "../constants";
-import { CharacterBestiarySchema, MonsterSchema } from "../schemas";
-import type { BestiaryClass } from "../types";
+import { BESTIARY_DEFAULT_LIMIT } from "../constants";
+import {
+  CharacterBestiarySchema,
+  MonsterSchema,
+  MonsterWithCharacterProgressSchema,
+} from "../schemas";
+import type { BestiaryClass, CharacterBestiaryFullResponse } from "../types";
 
 type Props = {
   characterId: string;
@@ -21,7 +25,7 @@ export async function fetchCharacterBestiaryFull({
   limit = BESTIARY_DEFAULT_LIMIT,
   page = 1,
   search,
-}: Props) {
+}: Props): Promise<CharacterBestiaryFullResponse> {
   const offset = (page - 1) * limit;
   const { supabase } = await getUserScopedQuery();
 
@@ -31,12 +35,8 @@ export async function fetchCharacterBestiaryFull({
     .order("sort_order")
     .range(offset, offset + limit - 1);
 
-  const effectiveBestiaryClass: BestiaryClass | undefined = search
-    ? undefined
-    : (bestiaryClass ?? DEFAULT_BESTIARY_CLASS);
-
-  if (effectiveBestiaryClass) {
-    monstersQuery = monstersQuery.eq("bestiary_class", effectiveBestiaryClass);
+  if (bestiaryClass) {
+    monstersQuery = monstersQuery.eq("bestiary_class", bestiaryClass);
   }
 
   if (search) {
@@ -44,7 +44,10 @@ export async function fetchCharacterBestiaryFull({
   }
 
   const { data: monstersData, error: monstersError, count } = await monstersQuery;
-  if (monstersError) throw new Error(monstersError.message);
+
+  if (monstersError) {
+    throw new Error("Failed to fetch monsters data.");
+  }
 
   const monsters = assertZodParse(MonsterSchema.array(), monstersData ?? []);
 
@@ -60,19 +63,24 @@ export async function fetchCharacterBestiaryFull({
     .eq("character_id", characterId)
     .in("monster_id", monsterIds);
 
-  if (bestiaryError) throw new Error(bestiaryError.message);
+  if (bestiaryError) {
+    throw new Error("Failed to fetch bestiary data.");
+  }
 
   const bestiary = assertZodParse(CharacterBestiarySchema.array(), bestiaryData ?? []);
 
-  const merged = monsters.map((monster) => {
-    const progress = bestiary.find((b) => b.monster_id === monster.id);
-    return {
-      ...monster,
-      kills: progress?.kills ?? 0,
-      stage: progress?.stage ?? 0,
-      has_soul: progress?.has_soul ?? false,
-    };
-  });
+  const merged = assertZodParse(
+    MonsterWithCharacterProgressSchema.array(),
+    monsters.map((monster) => {
+      const progress = bestiary.find((b) => b.monster_id === monster.id);
+      return {
+        ...monster,
+        kills: progress?.kills ?? 0,
+        stage: progress?.stage ?? 0,
+        has_soul: progress?.has_soul ?? false,
+      };
+    })
+  );
 
   const totalCount = count ?? 0;
   const totalPages = Math.ceil(totalCount / limit);

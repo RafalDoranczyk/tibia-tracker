@@ -50,7 +50,10 @@ export function ControlledTextField<TFieldValues extends FieldValues>({
           }}
           error={!!formState.errors?.[name]}
           label={label}
-          sx={{ width: "100%" }}
+          sx={{
+            width: "100%",
+            ...props.sx,
+          }}
         />
       )}
     />

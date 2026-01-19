@@ -1,12 +1,14 @@
 "use server";
 
-import { serverFetch } from "@/utils";
+import { assertZodParse, serverFetch } from "@/utils";
 
 import { BestiaryCacheTags } from "../cacheTags";
+import { CharacterBestiaryClassSummarySchema } from "../schemas";
+import type { BestiaryClass } from "../types";
 
 export async function fetchCharacterBestiaryClassSummary(
   characterId: string,
-  bestiaryClass: string
+  bestiaryClass: BestiaryClass
 ) {
   const res = await serverFetch(
     `/api/bestiary/class-summary?characterId=${characterId}&bestiaryClass=${encodeURIComponent(
@@ -20,10 +22,10 @@ export async function fetchCharacterBestiaryClassSummary(
   );
 
   if (!res.ok) {
-    const text = await res.text();
-    console.error("fetch class-summary failed:", res.status, text.slice(0, 100));
-    throw new Error(`Failed to fetch class summary (${res.status})`);
+    throw new Error("Failed to fetch bestiary class summary");
   }
 
-  return res.json();
+  const json = await res.json();
+
+  return assertZodParse(CharacterBestiaryClassSummarySchema, json);
 }

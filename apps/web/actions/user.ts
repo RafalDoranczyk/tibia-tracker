@@ -26,27 +26,3 @@ export async function getUser() {
     throw new AppError(AppErrorCodes.SERVER_ERROR, "Failed to get user");
   }
 }
-
-export async function ensureUserSettings(userId: string): Promise<void> {
-  try {
-    const supabase = await createSupabase();
-
-    // Check user settings exist
-    const { data: existingSettings } = await supabase
-      .from("user_settings")
-      .select("id")
-      .eq("user_id", userId)
-      .single();
-
-    if (!existingSettings) {
-      await supabase.from("user_settings").insert({
-        user_id: userId,
-        theme: "light",
-        notifications: true,
-        language: "pl",
-      });
-    }
-  } catch (error) {
-    console.error("Failed to ensure user settings:", error);
-  }
-}

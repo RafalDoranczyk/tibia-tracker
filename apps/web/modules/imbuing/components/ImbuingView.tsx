@@ -1,8 +1,9 @@
 "use client";
 
-import { Box, Button, Divider, Slide, Stack, Typography } from "@mui/material";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useEffect } from "react";
 
+import { FloatingActionButton } from "@/components";
 import { useUnsavedChangesGuard } from "@/hooks";
 import { useToast } from "@/providers/global";
 
@@ -11,7 +12,7 @@ import { elementalScrolls } from "../data/scrolls/elemental";
 import { skillScrolls } from "../data/scrolls/skill";
 import { useSaveImbuingPrices } from "../hooks/useSaveImbuingPrices";
 import { useImbuingPriceStore } from "../imbuingPriceStore";
-import type { FetchImbuItem, Scroll } from "../types";
+import type { ImbuingItem, Scroll } from "../types";
 import { ImbuingHeader } from "./ImbuingHeader";
 import { ImbuingViewSkeleton } from "./ImbuingViewSkeleton";
 import { ScrollCard } from "./ScrollCard";
@@ -35,27 +36,9 @@ function FloatingSaveImbuingButton() {
   };
 
   return (
-    <Slide direction="up" in={hasChanges} mountOnEnter unmountOnExit>
-      <Box
-        position="fixed"
-        bottom={24}
-        left="50%"
-        sx={{
-          transform: "translateX(-50%)",
-          zIndex: (theme) => theme.zIndex.snackbar,
-        }}
-      >
-        <Button
-          onClick={onClick}
-          variant="contained"
-          size="large"
-          loading={isPending}
-          disabled={isPending}
-        >
-          Save changes
-        </Button>
-      </Box>
-    </Slide>
+    <FloatingActionButton visible={hasChanges} onClick={onClick} loading={isPending}>
+      Save changes
+    </FloatingActionButton>
   );
 }
 
@@ -90,7 +73,7 @@ function ScrollsSection({ scrolls, title }: ScrollsSectionProps) {
 }
 
 type ImbuingViewProps = {
-  imbuingItemPrices: FetchImbuItem[];
+  imbuingItemPrices: ImbuingItem[];
 };
 
 export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {

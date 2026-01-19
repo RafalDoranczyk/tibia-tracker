@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack } from "@mui/material";
+import { useRef } from "react";
 
 import { DebouncedSearchFieldURL } from "@/components";
 import { usePaginationQueryParams } from "@/hooks";
@@ -17,8 +18,11 @@ type BestiaryFiltersType = {
 
 export function BestiaryFilters() {
   const { filters, updateFilter } = usePaginationQueryParams<BestiaryFiltersType>();
+  const lastBestiaryClassRef = useRef<BestiaryClass | undefined>(filters.bestiary_class);
 
   const handleClassChange = (value: BestiaryClass) => {
+    lastBestiaryClassRef.current = value;
+
     updateFilter({
       bestiary_class: value,
       search: undefined,
@@ -27,11 +31,23 @@ export function BestiaryFilters() {
   };
 
   const handleSearchChange = (val: string) => {
-    updateFilter({
-      search: val || undefined,
-      bestiary_class: val ? undefined : filters.bestiary_class,
-      page: 1,
-    });
+    if (val) {
+      if (filters.bestiary_class !== undefined) {
+        lastBestiaryClassRef.current = filters.bestiary_class;
+      }
+
+      updateFilter({
+        search: val,
+        bestiary_class: undefined,
+        page: 1,
+      });
+    } else {
+      updateFilter({
+        search: undefined,
+        bestiary_class: lastBestiaryClassRef.current,
+        page: 1,
+      });
+    }
   };
 
   const handleClearFilters = () => {
@@ -44,7 +60,8 @@ export function BestiaryFilters() {
 
   const isClearDisabled = !filters.search && filters.bestiary_class === undefined;
   const isSearching = Boolean(filters.search);
-  const selectedClass = filters.bestiary_class ?? DEFAULT_BESTIARY_CLASS;
+  const selectedClass =
+    filters.bestiary_class ?? lastBestiaryClassRef.current ?? DEFAULT_BESTIARY_CLASS;
 
   return (
     <Stack
@@ -57,6 +74,13 @@ export function BestiaryFilters() {
           {isSearching ? "Searching across all classes" : "Bestiary Class"}
         </InputLabel>
         <Select
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                maxHeight: 300,
+              },
+            },
+          }}
           onChange={(e) => handleClassChange(e.target.value)}
           value={selectedClass}
           label="Bestiary Class"
@@ -82,7 +106,7 @@ export function BestiaryFilters() {
         onClick={handleClearFilters}
         disabled={isClearDisabled}
       >
-        🧹 Clear
+        🧹 Reset default
       </Button>
     </Stack>
   );

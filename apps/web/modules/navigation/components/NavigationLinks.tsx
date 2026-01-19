@@ -1,7 +1,6 @@
 "use client";
 
-import DashboardRounded from "@mui/icons-material/DashboardRounded";
-import DatasetLinkedOutlined from "@mui/icons-material/DatasetLinkedOutlined";
+import Dashboard from "@mui/icons-material/Dashboard";
 import { Box, List, ListItemButton, ListItemIcon, Tooltip, Typography } from "@mui/material";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
@@ -12,10 +11,6 @@ import { PATHS } from "@/constants";
 import { useActiveCharacter } from "@/providers/feature/dashboard";
 
 import { NAVIGATION_IMAGES } from "./images";
-
-// -------------------------------------
-// Types
-// -------------------------------------
 
 export type NavigationIcon =
   | { type: "mui"; node: ReactNode }
@@ -39,57 +34,68 @@ type NavigationSection = {
 // -------------------------------------
 const NAVIGATION_MODULES: NavigationSection[] = [
   {
-    title: "Character Overview",
+    title: "Dashboard",
     elements: [
       {
         icon: {
           type: "mui",
-          node: <DashboardRounded />,
+          node: <Dashboard />,
         },
         id: "dashboard",
         text: "Dashboard",
+        to: PATHS.DASHBOARD,
+      },
+    ],
+  },
+
+  {
+    title: "Character Overview",
+    elements: [
+      {
+        icon: {
+          type: "image",
+          src: NAVIGATION_IMAGES.character,
+        },
+        id: "character",
+        text: "My character",
         to: (c) => c.OVERVIEW,
         requiresCharacter: true,
       },
-      // {
-      //   icon: <DatasetLinkedOutlined />,
-      //   id: "charms",
-      //   text: "Charms",
-      //   to: (c) => c.CHARMS,
-      //   requiresCharacter: true,
-      // },
+
       {
         icon: {
-          type: "mui",
-          node: <DatasetLinkedOutlined />,
+          type: "image",
+          src: NAVIGATION_IMAGES.monster,
         },
         id: "bestiary",
         text: "Bestiary",
         to: (c) => c.BESTIARY,
         requiresCharacter: true,
       },
+      // {
+      //   icon: {
+      //     type: "image",
+      //     src: NAVIGATION_IMAGES.hunt,
+      //   },
+      //   id: "hunt-sessions",
+      //   text: "Hunt sessions",
+      //   to: (c) => c.HUNT_SESSIONS.LIST,
+      //   requiresCharacter: true,
+      // },
     ],
   },
   {
-    title: "Hunts",
+    title: "My Account",
     elements: [
       {
         icon: {
-          type: "mui",
-          node: <DatasetLinkedOutlined />,
+          type: "image",
+          src: NAVIGATION_IMAGES.characters,
         },
-        id: "hunt-sessions",
-        text: "Session list",
-        to: (c) => c.HUNT_SESSIONS.LIST,
-        requiresCharacter: true,
+        id: "characters",
+        text: "Characters",
+        to: PATHS.CHARACTERS,
       },
-      // {
-      //   icon: <ScaleOutlined />,
-      //   id: "hunt-spots",
-      //   text: "Best Hunt Places",
-      //   to: (c) => c.SPOTS,
-      //   requiresCharacter: true,
-      // },
     ],
   },
   {
@@ -102,8 +108,7 @@ const NAVIGATION_MODULES: NavigationSection[] = [
         },
         id: "imbuing",
         text: "Imbuing",
-        to: (c) => c.UTILITIES.IMBUING,
-        requiresCharacter: true,
+        to: PATHS.IMBUING,
       },
     ],
   },
@@ -124,9 +129,9 @@ const SECTION_TITLE_STYLES = {
 // -------------------------------------
 // Utils
 // -------------------------------------
-function resolvePath(to: NavigationLinkElementProps["to"], characterId?: string): string {
+function resolvePath(to: NavigationLinkElementProps["to"], characterId?: string | null): string {
   if (typeof to === "function") {
-    if (!characterId) return PATHS.DASHBOARD;
+    if (!characterId) return PATHS.CHARACTERS;
     return to(PATHS.CHARACTER(characterId));
   }
 
@@ -223,10 +228,8 @@ export function NavigationLinks() {
           <Typography sx={SECTION_TITLE_STYLES}>{title}</Typography>
           <List component="nav">
             {elements.map(({ icon, id, text, to, requiresCharacter }) => {
-              // @ts-ignore
               const href = resolvePath(to, activeCharacterId);
               const selected = isPathActive(pathname, href);
-
               const disabled = requiresCharacter && !activeCharacterId;
 
               return (

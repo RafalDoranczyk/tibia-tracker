@@ -1,6 +1,8 @@
 import { Stack, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
+import { PageHeader } from "@/components";
+
 import { DEFAULT_GOLD_TOKEN_PRICE, PRICE_DEBOUNCE_MS } from "../constants";
 import { useImbuingPriceStore } from "../imbuingPriceStore";
 
@@ -24,6 +26,10 @@ export function ImbuingHeader() {
 
   return (
     <Stack direction="row" alignItems="center">
+      <PageHeader.Root
+        title="Imbuing prices"
+        description="Calculate real imbuing costs and profits based on current market prices."
+      />
       <TextField
         sx={{ maxWidth: 180, ml: "auto" }}
         label="Gold Token Price"

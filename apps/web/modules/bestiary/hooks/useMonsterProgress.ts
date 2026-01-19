@@ -3,29 +3,30 @@
 import { useState } from "react";
 
 import { useRequiredCharacterId } from "@/providers/feature/dashboard";
+import { useToast } from "@/providers/global";
 
-import { updateCharacterBestiaryEntry } from "../actions/updateCharacterBestiary";
+import { UpdateCharacterBestiary } from "../actions/updateCharacterBestiary";
+import { BESTIARY_FULL_STAGE } from "../constants";
 import type { MonsterWithCharacterProgress } from "../types";
-
-const BESTIARY_EMPTY_STAGE = 0;
-const BESTIARY_FULL_STAGE = 3;
+import { calculateBestiaryStage } from "../utils/calculateBestiaryStage";
 
 export function useMonsterProgress(initialMonster: MonsterWithCharacterProgress) {
+  const toast = useToast();
   const characterId = useRequiredCharacterId();
 
   const [monster, setMonster] = useState(initialMonster);
   const [isLoading, setIsLoading] = useState(false);
   const [isEditingKills, setIsEditingKills] = useState(false);
-  const [editedKills, setEditedKills] = useState(initialMonster.kills);
+  const [editedKills, setEditedKills] = useState(monster.kills);
 
-  const isBestiaryUnlocked = monster.stage === BESTIARY_FULL_STAGE;
+  const isBestiaryCompleted = monster.stage === BESTIARY_FULL_STAGE;
 
   const optimisticUpdate = async (updates: Partial<MonsterWithCharacterProgress>) => {
     const prev = monster;
     setMonster((m) => ({ ...m, ...updates }));
 
     try {
-      await updateCharacterBestiaryEntry({
+      await UpdateCharacterBestiary({
         characterId,
         monsterId: monster.id,
         updates,
@@ -37,47 +38,67 @@ export function useMonsterProgress(initialMonster: MonsterWithCharacterProgress)
 
   const toggleSoulpit = async () => {
     setIsLoading(true);
-    await optimisticUpdate({ has_soul: !monster.has_soul });
-    setIsLoading(false);
+    try {
+      await optimisticUpdate({ has_soul: !monster.has_soul });
+      toast.success(`Soulpit for ${monster.name} saved`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const startEditingKills = () => {
+    setEditedKills(monster.kills);
+    setIsEditingKills(true);
   };
 
   const toggleFullBestiary = async () => {
     setIsLoading(true);
+    const newKills = monster.stage === BESTIARY_FULL_STAGE ? 0 : monster.bestiary_kills.stage3;
+    const newStage = calculateBestiaryStage(newKills, monster.bestiary_kills);
 
-    const isNowFull = monster.stage !== BESTIARY_FULL_STAGE;
-    const newStage = isNowFull ? BESTIARY_FULL_STAGE : BESTIARY_EMPTY_STAGE;
-    const newKills = isNowFull ? monster.bestiary_kills.stage3 : 0;
-
-    await optimisticUpdate({
-      stage: newStage,
-      kills: newKills,
-    });
-
-    setIsLoading(false);
+    try {
+      await optimisticUpdate({
+        kills: newKills,
+        stage: newStage,
+      });
+      toast.success(`Bestiary for ${monster.name} saved`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const saveKills = async () => {
-    const maxKills = monster.bestiary_kills.stage3;
+    const { stage1, stage2, stage3 } = monster.bestiary_kills;
+
+    const maxKills = stage3;
     const newKills = Math.max(0, Math.min(editedKills, maxKills));
-    const newStage = newKills >= maxKills ? BESTIARY_FULL_STAGE : monster.stage;
+
+    const newStage = calculateBestiaryStage(newKills, {
+      stage1,
+      stage2,
+      stage3,
+    });
 
     setIsEditingKills(false);
+
     await optimisticUpdate({
       kills: newKills,
       stage: newStage,
     });
+
+    toast.success(`Kills for ${monster.name} saved`);
   };
 
   return {
     monster,
     isLoading,
-    isBestiaryUnlocked,
+    isBestiaryCompleted,
 
     // kills editing
     isEditingKills,
     editedKills,
     setEditedKills,
-    startEditingKills: () => setIsEditingKills(true),
+    startEditingKills,
     saveKills,
 
     // actions

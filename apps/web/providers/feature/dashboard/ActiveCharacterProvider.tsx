@@ -1,53 +1,35 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, type PropsWithChildren, useContext, useEffect, useState } from "react";
 
 type ActiveCharacterContextType = {
   activeCharacterId: string | null;
   setActiveCharacterId: (id: string | null) => void;
 };
 
-const STORAGE_KEY = "active_character_id";
 const ActiveCharacterContext = createContext<ActiveCharacterContextType | null>(null);
+
+type ActiveCharacterProviderProps = PropsWithChildren<{
+  initialCharacterId: string | null;
+}>;
 
 export function ActiveCharacterProvider({
   children,
-  initialCharacterId = null,
-}: {
-  children: React.ReactNode;
-  initialCharacterId: string | null;
-}) {
+  initialCharacterId,
+}: ActiveCharacterProviderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [activeCharacterId, setActiveCharacterId] = useState<string | null>(initialCharacterId);
 
+  // sync when server changes (navigation / redirect)
   useEffect(() => {
-    if (initialCharacterId !== null) {
-      setActiveCharacterId(initialCharacterId);
-      localStorage.setItem(STORAGE_KEY, initialCharacterId);
-      return;
-    }
-
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved && !activeCharacterId) {
-      setActiveCharacterId(saved);
-    }
-  }, [initialCharacterId, activeCharacterId]);
+    setActiveCharacterId(initialCharacterId);
+  }, [initialCharacterId]);
 
   const handleSetActive = (id: string | null) => {
     setActiveCharacterId(id);
-
-    if (id === null) {
-      localStorage.removeItem(STORAGE_KEY);
-      router.push("/dashboard/characters");
-      return;
-    }
-
-    localStorage.setItem(STORAGE_KEY, id);
-
     const updatedPath = pathname.replace(/\/characters\/[^/]+/, `/characters/${id}`);
-
     router.push(updatedPath);
   };
 

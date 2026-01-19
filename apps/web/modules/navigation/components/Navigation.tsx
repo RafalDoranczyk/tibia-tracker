@@ -6,7 +6,7 @@ import { DesktopNavigation } from "./DesktopNavigation/DesktopNavigation";
 import { MobileNavigation } from "./MobileNavigation/MobileNavigation";
 
 type NavigationProps = {
-  characters: Character[];
+  characters?: Character[];
 };
 
 // I can't use useMediaQuery hook here to detect what drawer to use cause it always returns false at first render

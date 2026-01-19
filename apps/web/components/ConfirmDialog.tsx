@@ -1,7 +1,11 @@
 "use client";
 
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
+import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import WarningAmber from "@mui/icons-material/WarningAmber";
 import {
+  Button,
+  type ButtonProps,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,7 +13,11 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { createContext } from "react";
+import { createContext, type PropsWithChildren, useContext } from "react";
+
+/* ======================================================
+   Context
+====================================================== */
 
 type ConfirmDialogContextType = {
   open: boolean;
@@ -18,7 +26,19 @@ type ConfirmDialogContextType = {
 
 const ConfirmDialogContext = createContext<ConfirmDialogContextType | null>(null);
 
-export function ConfirmDialogRoot({
+function useConfirmDialog() {
+  const ctx = useContext(ConfirmDialogContext);
+  if (!ctx) {
+    throw new Error("ConfirmDialog.* must be used within ConfirmDialog.Root");
+  }
+  return ctx;
+}
+
+/* ======================================================
+   Root
+====================================================== */
+
+function ConfirmDialogRoot({
   open,
   onOpenChange,
   children,
@@ -29,50 +49,183 @@ export function ConfirmDialogRoot({
 }) {
   return (
     <ConfirmDialogContext.Provider value={{ open, onClose: () => onOpenChange(false) }}>
-      <Dialog open={open} onClose={() => onOpenChange(false)} maxWidth="xs" fullWidth>
+      <Dialog
+        open={open}
+        onClose={() => onOpenChange(false)}
+        maxWidth="xs"
+        fullWidth
+        slotProps={{
+          backdrop: {
+            sx: {
+              backdropFilter: "blur(4px)",
+            },
+          },
+          paper: {
+            sx: {
+              borderRadius: 3,
+              boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+            },
+          },
+        }}
+      >
         {children}
       </Dialog>
     </ConfirmDialogContext.Provider>
   );
 }
 
-export function ConfirmDialogContent({ children }: { children: React.ReactNode }) {
-  return <DialogContent dividers>{children}</DialogContent>;
+/* ======================================================
+   Cancel
+====================================================== */
+
+function ConfirmDialogCancel({
+  children = "Cancel",
+  ...buttonProps
+}: PropsWithChildren<ButtonProps>) {
+  const { onClose } = useConfirmDialog();
+
+  return (
+    <Button variant="outlined" color="inherit" onClick={onClose} {...buttonProps}>
+      {children}
+    </Button>
+  );
 }
 
-export function ConfirmDialogHeader({
+function ConfirmDialogConfirm({
+  loading,
+  onClick,
+  children,
+  color = "error",
+}: PropsWithChildren<{
+  loading?: boolean;
+  color?: ButtonProps["color"];
+  onClick: () => void;
+}>) {
+  return (
+    <Button loading={loading} color={color} variant="contained" onClick={onClick}>
+      {children}
+    </Button>
+  );
+}
+
+/* ======================================================
+   Variants
+====================================================== */
+
+type ConfirmDialogVariant = "danger" | "warning" | "info";
+
+const VARIANT_CONFIG: Record<
+  ConfirmDialogVariant,
+  {
+    iconColor: "error" | "warning" | "info";
+  }
+> = {
+  danger: { iconColor: "error" },
+  warning: { iconColor: "warning" },
+  info: { iconColor: "info" },
+};
+
+const VARIANT_ICON: Record<ConfirmDialogVariant, React.ElementType> = {
+  danger: ErrorOutline,
+  warning: WarningAmber,
+  info: InfoOutlined,
+};
+
+/* ======================================================
+   Header
+====================================================== */
+
+function ConfirmDialogHeader({
   title,
   description,
+  variant = "warning",
 }: {
   title: string;
   description?: string;
+  variant?: ConfirmDialogVariant;
 }) {
+  const { iconColor } = VARIANT_CONFIG[variant];
+  const Icon = VARIANT_ICON[variant];
+
   return (
-    <DialogTitle>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <WarningAmber fontSize="small" color="warning" />
-        <Typography variant="subtitle1">{title}</Typography>
+    <DialogTitle sx={{ pb: 1 }}>
+      <Stack direction="row" spacing={2} alignItems="flex-start">
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          sx={{
+            width: 40,
+            height: 40,
+            borderRadius: "50%",
+            bgcolor: (t) => `${t.palette[iconColor].main}22`,
+            color: (t) => t.palette[iconColor].main,
+            flexShrink: 0,
+          }}
+        >
+          <Icon fontSize="small" />
+        </Stack>
+
+        <Stack spacing={0.5}>
+          <Typography variant="subtitle1" fontWeight={600}>
+            {title}
+          </Typography>
+
+          {description && (
+            <Typography variant="body2" color="text.secondary">
+              {description}
+            </Typography>
+          )}
+        </Stack>
       </Stack>
-      {description && (
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          {description}
-        </Typography>
-      )}
     </DialogTitle>
   );
 }
 
-export function ConfirmDialogActions({ children }: { children: React.ReactNode }) {
+/* ======================================================
+   Content
+====================================================== */
+
+function ConfirmDialogContent({ children }: { children: React.ReactNode }) {
   return (
-    <DialogActions sx={{ px: 3, pb: 2, gap: 1, justifyContent: "flex-end" }}>
+    <DialogContent
+      sx={{
+        pt: 1,
+        pb: 0,
+      }}
+    >
+      {children}
+    </DialogContent>
+  );
+}
+
+/* ======================================================
+   Actions
+====================================================== */
+
+function ConfirmDialogActions({ children }: { children: React.ReactNode }) {
+  return (
+    <DialogActions
+      sx={{
+        px: 3,
+        py: 2,
+        gap: 1,
+        justifyContent: "flex-end",
+      }}
+    >
       {children}
     </DialogActions>
   );
 }
 
+/* ======================================================
+   Public API
+====================================================== */
+
 export const ConfirmDialog = {
   Root: ConfirmDialogRoot,
-  Content: ConfirmDialogContent,
   Header: ConfirmDialogHeader,
+  Content: ConfirmDialogContent,
   Actions: ConfirmDialogActions,
+  Cancel: ConfirmDialogCancel,
+  Confirm: ConfirmDialogConfirm,
 };

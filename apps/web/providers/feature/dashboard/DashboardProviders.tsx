@@ -1,10 +1,11 @@
+import type { PropsWithChildren } from "react";
+
 import { ActiveCharacterProvider } from "./ActiveCharacterProvider";
 
-type DashboardProvidersProps = {
-  children: React.ReactNode;
+type DashboardProvidersProps = PropsWithChildren<{
   // Initial id of the active character to set on load
   initialCharacterId: string | null;
-};
+}>;
 
 export function DashboardProviders({ children, initialCharacterId }: DashboardProvidersProps) {
   return (
