@@ -1,31 +1,23 @@
-const ROOT_PATH = "/dashboard";
+const DASHBOARD_PATH = "/dashboard";
 
 const character = (characterId: string) => {
-  const base = `${ROOT_PATH}/characters/${characterId}`;
+  const base = `${DASHBOARD_PATH}/characters/${characterId}`;
 
   return {
-    ROOT: base,
-
     OVERVIEW: base,
-    CHARMS: `${base}/charms`,
     BESTIARY: `${base}/bestiary`,
-
     HUNT_SESSIONS: {
       LIST: `${base}/hunt-sessions`,
       NEW: `${base}/hunt-sessions/new`,
-      EDIT: (sessionId: string | number) => `${base}/hunt-sessions/${sessionId}`,
-    },
-
-    SPOTS: `${base}/hunt-spots`,
-
-    UTILITIES: {
-      IMBUING: `${base}/imbuing`,
+      EDIT: (sessionId: number) => `${base}/hunt-sessions/${sessionId}`,
     },
   };
 };
 
 export const PATHS = {
-  DASHBOARD: ROOT_PATH,
-  SETTINGS: `${ROOT_PATH}/settings`,
+  DASHBOARD: `${DASHBOARD_PATH}`,
+  SETTINGS: `${DASHBOARD_PATH}/settings`,
+  CHARACTERS: `${DASHBOARD_PATH}/characters`,
+  IMBUING: `${DASHBOARD_PATH}/imbuing`,
   CHARACTER: character,
 } as const;

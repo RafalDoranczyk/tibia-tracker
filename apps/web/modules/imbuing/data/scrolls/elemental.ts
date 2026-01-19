@@ -2,7 +2,6 @@ import { ITEM_IMAGES, SCROLL_IMAGES } from "../../images";
 import type { Scroll, ScrollItem } from "../../types";
 
 // Scroll items
-
 const gloomWolfFur: ScrollItem = {
   key: "gloom_wolf_fur",
   name: "Gloom Wolf Fur",
@@ -130,7 +129,6 @@ const hellspawnTail: ScrollItem = {
 };
 
 // Scrolls
-
 const lichShroudScroll: Scroll = {
   key: "scroll_lich_shroud",
   name: "Lich Shroud",

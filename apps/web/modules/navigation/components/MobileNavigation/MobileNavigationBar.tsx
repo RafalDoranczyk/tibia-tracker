@@ -7,7 +7,7 @@ import MobileDrawerToggler from "./MobileDrawerToggler";
 
 type MobileNavigationBarProps = {
   toggleOpen: () => void;
-  characters: Character[];
+  characters?: Character[];
 };
 
 export function MobileNavigationBar({ toggleOpen, characters }: MobileNavigationBarProps) {

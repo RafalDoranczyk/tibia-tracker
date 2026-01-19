@@ -1,4 +1,5 @@
 import AddCircle from "@mui/icons-material/AddCircle";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Delete from "@mui/icons-material/Delete";
 import Download from "@mui/icons-material/Download";
 import Edit from "@mui/icons-material/Edit";
@@ -21,7 +22,8 @@ type TooltipButtonType =
   | "logout"
   | "menu"
   | "save"
-  | "settings";
+  | "settings"
+  | "activate";
 
 type TooltipIconButtonProps = IconButtonProps & {
   variant: TooltipButtonType;
@@ -45,6 +47,7 @@ const IconsMap: Record<
   menu: { icon: <MoreVert />, name: "Menu" },
   save: { icon: <Save />, name: "Save" },
   settings: { icon: <Settings />, name: "Settings" },
+  activate: { icon: <CheckCircleIcon />, name: "Activate" },
 };
 
 export function TooltipIconButton({ disabled, size, variant, ...props }: TooltipIconButtonProps) {
@@ -58,5 +61,5 @@ export function TooltipIconButton({ disabled, size, variant, ...props }: Tooltip
     </IconButton>
   );
 
-  return disabled ? button : <Tooltip title={name}>{button}</Tooltip>;
+  return disabled ? button : <Tooltip title={props.name || name}>{button}</Tooltip>;
 }

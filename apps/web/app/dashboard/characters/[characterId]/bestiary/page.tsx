@@ -10,6 +10,7 @@ import {
   fetchCharacterBestiarySummary,
   MonsterCardsGrid,
 } from "@/modules/bestiary";
+import { DEFAULT_BESTIARY_CLASS } from "@/modules/bestiary/constants";
 import { parseFiltersFromSearchParams } from "@/utils";
 
 type PageProps = {
@@ -25,20 +26,30 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Pa
     bestiary_class?: BestiaryClass;
   }>(search);
 
+  const effectiveBestiaryClass: BestiaryClass = bestiaryClass || DEFAULT_BESTIARY_CLASS;
+
   const [bestiaryFull, summary, classSummary] = await Promise.all([
-    fetchCharacterBestiaryFull({ characterId, ...restFilters, bestiaryClass }),
+    fetchCharacterBestiaryFull({
+      characterId,
+      bestiaryClass: effectiveBestiaryClass,
+      ...restFilters,
+    }),
     fetchCharacterBestiarySummary(characterId),
-    bestiaryClass ? fetchCharacterBestiaryClassSummary(characterId, bestiaryClass) : null,
+    fetchCharacterBestiaryClassSummary(characterId, effectiveBestiaryClass),
   ]);
 
   const { monsters, totalPages } = bestiaryFull;
-
+  console.log(search);
   return (
     <Grid container spacing={5} direction="column">
       <BestiaryFilters />
       <MonsterCardsGrid monsters={monsters} />
       <BestiaryPagination totalPages={totalPages} />
-      <BestiaryFloatingPanel globalSummary={summary} classSummary={classSummary ?? undefined} />
+      <BestiaryFloatingPanel
+        globalSummary={summary}
+        classSummary={classSummary}
+        hasSearch={!!restFilters.search}
+      />
     </Grid>
   );
 }

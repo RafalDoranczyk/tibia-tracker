@@ -12,8 +12,10 @@ type AutocompleteProps<T extends AutocompleteOptionBase> = {
   disabled?: boolean;
   isLoading: boolean;
   label: string;
-  onChange: (element: T) => void;
   options: T[];
+
+  onChange: (element: T) => void;
+  renderOption?: (option: T) => React.ReactNode;
 };
 
 export function Autocomplete<T extends AutocompleteOptionBase>({
@@ -22,11 +24,14 @@ export function Autocomplete<T extends AutocompleteOptionBase>({
   label,
   onChange,
   options,
+  renderOption,
 }: AutocompleteProps<T>) {
   const [open, setOpen] = useState(false);
 
   return (
     <MaterialAutocomplete
+      // Need it to auto clear text inside field
+      key={options.length}
       clearOnBlur
       clearOnEscape
       disabled={disabled}
@@ -49,17 +54,24 @@ export function Autocomplete<T extends AutocompleteOptionBase>({
       }}
       open={open}
       options={options}
+      renderOption={(props, option) => (
+        <li {...props} key={option.id}>
+          {renderOption ? renderOption(option) : option.name}
+        </li>
+      )}
       renderInput={(params) => (
         <TextField
           {...params}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <>
-                {isLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </>
-            ),
+          slotProps={{
+            input: {
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {isLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                  {params.InputProps.endAdornment}
+                </>
+              ),
+            },
           }}
           label={label}
           variant="outlined"

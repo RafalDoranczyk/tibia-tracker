@@ -42,8 +42,6 @@ export function ToastProvider({ children }: React.PropsWithChildren) {
   };
 
   const isSuccess = type === "success";
-  const iconColor = isSuccess ? theme.palette.success.main : theme.palette.error.main;
-  const backgroundColor = isSuccess ? theme.palette.success.main : theme.palette.error.main;
 
   return (
     <ToastContext.Provider value={value}>
@@ -59,20 +57,33 @@ export function ToastProvider({ children }: React.PropsWithChildren) {
       >
         <SnackbarContent
           message={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
               {isSuccess ? (
-                <SuccessIcon sx={{ color: iconColor, mr: 1 }} />
+                <SuccessIcon sx={{ color: theme.palette.success.light }} />
               ) : (
-                <ErrorIcon sx={{ color: iconColor, mr: 1 }} />
+                <ErrorIcon sx={{ color: theme.palette.error.light }} />
               )}
-              {message}
+              <Box sx={{ fontWeight: 500 }}>{message}</Box>
             </Box>
           }
           sx={{
-            backgroundColor,
-            borderRadius: 1,
+            backgroundColor: isSuccess ? theme.palette.success.dark : theme.palette.error.dark,
             color: theme.palette.common.white,
-            p: "10px 20px",
+            borderRadius: 2,
+            px: 2.5,
+            py: 1.5,
+            boxShadow: theme.shadows[6],
+            position: "relative",
+            overflow: "hidden",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              left: 0,
+              top: 0,
+              width: 4,
+              height: "100%",
+              backgroundColor: isSuccess ? theme.palette.success.light : theme.palette.error.light,
+            },
           }}
         />
       </MuiSnackbar>

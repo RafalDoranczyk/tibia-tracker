@@ -1,8 +1,9 @@
 "use server";
 
-import { serverFetch } from "@/utils";
+import { assertZodParse, serverFetch } from "@/utils";
 
 import { BestiaryCacheTags } from "../cacheTags";
+import { CharacterBestiarySummarySchema } from "../schemas";
 
 export async function fetchCharacterBestiarySummary(characterId: string) {
   const res = await serverFetch(`/api/bestiary/summary?characterId=${characterId}`, {
@@ -10,10 +11,10 @@ export async function fetchCharacterBestiarySummary(characterId: string) {
   });
 
   if (!res.ok) {
-    const text = await res.text();
-    console.error(`[fetchCharacterBestiarySummary] ❌ ${res.status} | ${text.slice(0, 200)}`);
-    throw new Error(`Failed to fetch summary (${res.status})`);
+    throw new Error("Failed to fetch bestiary summary");
   }
 
-  return res.json();
+  const json = await res.json();
+
+  return assertZodParse(CharacterBestiarySummarySchema, json);
 }

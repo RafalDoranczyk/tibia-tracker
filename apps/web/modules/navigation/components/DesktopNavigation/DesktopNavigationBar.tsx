@@ -6,7 +6,7 @@ import { DESKTOP_APP_NAVIGATION_DRAWER_WIDTH } from "../..";
 import { NavigationActionButtons } from "../NavigationActionButtons";
 
 type DesktopNavigationBarProps = {
-  characters: Character[];
+  characters?: Character[];
 };
 
 export function DesktopNavigationBar({ characters }: DesktopNavigationBarProps) {

@@ -20,6 +20,9 @@ export const MonsterSchema = z.object({
   }),
 });
 
+/**
+ * Join table between character and monster bestiary progress.
+ */
 export const CharacterBestiarySchema = z.object({
   id: z.number(),
   character_id: z.string().uuid(),
@@ -39,9 +42,15 @@ export const MonsterWithCharacterProgressSchema = MonsterSchema.extend({
   has_soul: z.boolean(),
 });
 
-// ------------------------------------
-// 🧾 Character Bestiary Summary
-// ------------------------------------
+export const UpdateCharacterBestiaryEntrySchema = z.object({
+  characterId: z.string().uuid(),
+  monsterId: z.number(),
+  updates: z.object({
+    kills: z.number().optional(),
+    stage: z.number().optional(),
+    has_soul: z.boolean().optional(),
+  }),
+});
 
 export const CharacterBestiarySummarySchema = z.object({
   character_id: z.string().uuid(),
@@ -58,4 +67,12 @@ export const CharacterBestiaryClassSummarySchema = z.object({
   completed_soulpits: z.number(),
   total_charm_points: z.number(),
   unlocked_charm_points: z.number(),
+});
+
+export const FetchCharacterBestiaryFullSchema = z.object({
+  characterId: z.string().uuid(),
+  bestiaryClass: z.string().optional(),
+  limit: z.number().min(1).max(100).optional(),
+  page: z.number().min(1).optional(),
+  search: z.string().min(1).optional(),
 });

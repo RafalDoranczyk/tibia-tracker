@@ -25,3 +25,8 @@ export const BESTIARY_CLASSES = [
 export const DEFAULT_BESTIARY_CLASS = BESTIARY_CLASSES[0];
 
 export const BESTIARY_DEFAULT_LIMIT = 15;
+
+export const BESTIARY_EMPTY_STAGE = 0;
+export const BESTIARY_STAGE_1 = 1;
+export const BESTIARY_STAGE_2 = 2;
+export const BESTIARY_FULL_STAGE = 3;

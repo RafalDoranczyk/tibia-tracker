@@ -1,4 +1,17 @@
-export * from "./actions";
-export { CharacterModal } from "./components/CharacterModal";
+// ======================
+// Fetchers / server logic
+// ======================
+export { deleteCharacter } from "./actions/deleteCharacter";
+export { fetchCharacters } from "./actions/fetchCharacters";
+
+// ======================
+// UI – public components
+// ======================
+export { CharactersView } from "./components/CharactersView";
+
+// ======================
+// Shared
+// ======================
+export { ALLOWED_VOCATIONS } from "./constants";
 export * from "./schemas";
-export * from "./types";
+export type { Character } from "./types";

@@ -9,7 +9,7 @@ import { MobileNavigationBar } from "./MobileNavigationBar";
 import { MobileNavigationDrawer } from "./MobileNavigationDrawer";
 
 type MobileNavigationProps = {
-  characters: Character[];
+  characters?: Character[];
 };
 
 export function MobileNavigation({ characters }: MobileNavigationProps) {

@@ -11,62 +11,56 @@ import {
   MenuItem,
   TextField,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
-import {
-  addCharacter,
-  type AddCharacterInput,
-  AddCharacterSchema,
-  ALLOWED_VOCATIONS,
-} from "@/modules/characters";
-import { useActiveCharacter } from "@/providers/feature/dashboard";
+import { createCharacter } from "../actions/createCharacter";
+import { updateCharacter } from "../actions/updateCharacter";
+import { ALLOWED_VOCATIONS } from "../constants";
+import { createCharacterSchema } from "../schemas";
+import type { Character, CreateCharacterPayload } from "../types";
 
-type Props = {
+type CharacterModalProps = {
   open: boolean;
   onClose: () => void;
+  character?: Character;
   onSuccess?: () => void;
-  existingCount?: number;
 };
 
-export function CharacterModal({ open, onClose, onSuccess }: Props) {
-  const router = useRouter();
-  const { setActiveCharacterId } = useActiveCharacter();
+export function CharacterModal({ open, onClose, character, onSuccess }: CharacterModalProps) {
+  const isEdit = Boolean(character?.id);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<AddCharacterInput>({
-    resolver: zodResolver(AddCharacterSchema),
+    control,
+  } = useForm<CreateCharacterPayload>({
+    resolver: zodResolver(createCharacterSchema),
+    values: {
+      name: character?.name || "",
+      vocation: character?.vocation || ALLOWED_VOCATIONS[0],
+      world: character?.world || "",
+    },
   });
 
-  const onSubmit = async (data: AddCharacterInput) => {
-    const formData = new FormData();
-    for (const [key, value] of Object.entries(data)) {
-      formData.append(key, String(value));
-    }
-
-    const res = await addCharacter(formData);
-    if (res.success) {
-      const newChar = res.data?.[0];
-      if (newChar) setActiveCharacterId(newChar.id);
-
-      reset();
-      onClose();
-
-      if (onSuccess) onSuccess();
-      else router.refresh();
+  const onSubmit = handleSubmit(async (data) => {
+    if (isEdit && character?.id) {
+      await updateCharacter({ ...data, id: character.id });
     } else {
-      console.error(res);
+      await createCharacter(data);
     }
-  };
+
+    reset();
+    onClose();
+    onSuccess?.();
+  });
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-      <DialogTitle>Add new character</DialogTitle>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <DialogTitle>{isEdit ? "Edit character" : "Add new character"}</DialogTitle>
+
+      <form onSubmit={onSubmit}>
         <DialogContent>
           <Box display="flex" flexDirection="column" gap={2}>
             <TextField
@@ -75,20 +69,27 @@ export function CharacterModal({ open, onClose, onSuccess }: Props) {
               error={!!errors.name}
               helperText={errors.name?.message}
             />
-            <TextField
-              label="Vocation"
-              select
-              defaultValue={ALLOWED_VOCATIONS[0]}
-              {...register("vocation")}
-              error={!!errors.vocation}
-              helperText={errors.vocation?.message}
-            >
-              {ALLOWED_VOCATIONS.map((vocation) => (
-                <MenuItem key={vocation} value={vocation}>
-                  {vocation}
-                </MenuItem>
-              ))}
-            </TextField>
+
+            <Controller
+              name="vocation"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Vocation"
+                  select
+                  error={!!errors.vocation}
+                  helperText={errors.vocation?.message}
+                >
+                  {ALLOWED_VOCATIONS.map((vocation) => (
+                    <MenuItem key={vocation} value={vocation}>
+                      {vocation}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
+
             <TextField
               label="World"
               {...register("world")}
@@ -97,12 +98,13 @@ export function CharacterModal({ open, onClose, onSuccess }: Props) {
             />
           </Box>
         </DialogContent>
+
         <DialogActions>
           <Button loading={isSubmitting} onClick={onClose}>
             Cancel
           </Button>
-          <Button loading={isSubmitting} type="submit" variant="contained">
-            Add
+          <Button type="submit" variant="contained" loading={isSubmitting}>
+            {isEdit ? "Save changes" : "Add"}
           </Button>
         </DialogActions>
       </form>

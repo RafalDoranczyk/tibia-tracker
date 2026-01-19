@@ -5,7 +5,7 @@ import { DesktopNavigationBar } from "./DesktopNavigationBar";
 import { DesktopNavigationDrawer } from "./DesktopNavigationDrawer";
 
 type DesktopNavigationProps = {
-  characters: Character[];
+  characters?: Character[];
 };
 
 export function DesktopNavigation({ characters }: DesktopNavigationProps) {

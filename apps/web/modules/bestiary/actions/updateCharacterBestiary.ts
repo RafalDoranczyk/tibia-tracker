@@ -3,21 +3,17 @@
 import { revalidateTag } from "next/cache";
 
 import { getUserScopedQuery } from "@/core";
+import { assertZodParse } from "@/utils";
 
 import { BestiaryCacheTags } from "../cacheTags";
-import type { MonsterWithCharacterProgress } from "../types";
+import { UpdateCharacterBestiaryEntrySchema } from "../schemas";
 
-type UpdateCharacterBestiaryInput = {
-  characterId: string;
-  monsterId: number;
-  updates: Partial<MonsterWithCharacterProgress>;
-};
+export async function UpdateCharacterBestiary(input: unknown) {
+  const { characterId, monsterId, updates } = assertZodParse(
+    UpdateCharacterBestiaryEntrySchema,
+    input
+  );
 
-export async function updateCharacterBestiaryEntry({
-  characterId,
-  monsterId,
-  updates,
-}: UpdateCharacterBestiaryInput) {
   const { supabase } = await getUserScopedQuery();
 
   const { data: existing, error: selectError } = await supabase
@@ -27,18 +23,22 @@ export async function updateCharacterBestiaryEntry({
     .eq("monster_id", monsterId)
     .maybeSingle();
 
-  if (selectError) throw new Error(selectError.message);
+  if (selectError) {
+    throw new Error("Failed to fetch character bestiary entry");
+  }
 
   if (existing) {
-    const { error: updateError } = await supabase
+    const { error } = await supabase
       .from("character_bestiary")
       .update(updates)
       .eq("character_id", characterId)
       .eq("monster_id", monsterId);
 
-    if (updateError) throw new Error(updateError.message);
+    if (error) {
+      throw new Error("Failed to update character bestiary entry");
+    }
   } else {
-    const { error: insertError } = await supabase.from("character_bestiary").insert([
+    const { error } = await supabase.from("character_bestiary").insert([
       {
         character_id: characterId,
         monster_id: monsterId,
@@ -48,7 +48,9 @@ export async function updateCharacterBestiaryEntry({
       },
     ]);
 
-    if (insertError) throw new Error(insertError.message);
+    if (error) {
+      throw new Error("Failed to create character bestiary entry");
+    }
   }
 
   const { data: monster, error: monsterError } = await supabase
@@ -57,7 +59,9 @@ export async function updateCharacterBestiaryEntry({
     .eq("id", monsterId)
     .maybeSingle();
 
-  if (monsterError) throw new Error(monsterError.message);
+  if (monsterError) {
+    throw new Error("Failed to resolve monster bestiary class");
+  }
 
   if (monster?.bestiary_class) {
     revalidateTag(BestiaryCacheTags.classSummary(characterId, monster.bestiary_class));

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 import { DEFAULT_GOLD_TOKEN_PRICE } from "./constants";
-import type { FetchImbuItem, ImbuingPriceKey, ImbuingPrices } from "./types";
+import type { ImbuingItem, ImbuingPriceKey, ImbuingPrices } from "./types";
 import { hasPriceChanges } from "./utils/hasPriceChanges";
 import { mapImbuingItemPricesFromDb } from "./utils/mapImbuingItemPricesFromDb";
 
@@ -11,7 +11,7 @@ type ImbuingPriceStore = {
   isInitialized: boolean;
   hasChanges: boolean;
 
-  initialize: (prices: FetchImbuItem[]) => void;
+  initialize: (prices: ImbuingItem[]) => void;
   setPrice: (key: ImbuingPriceKey, price: number) => void;
   markSaved: () => void;
   reset: () => void;
