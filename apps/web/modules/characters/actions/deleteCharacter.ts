@@ -6,11 +6,11 @@ import { PATHS } from "@/constants";
 import { getUserScopedQuery } from "@/core";
 import { assertZodParse } from "@/utils";
 
-import { deleteCharacterSchema } from "../schemas";
+import { DeleteCharacterSchema } from "../schemas";
 import type { DeleteCharacterPayload } from "../types";
 
 export async function deleteCharacter(id: DeleteCharacterPayload) {
-  const parsed = assertZodParse(deleteCharacterSchema, id);
+  const parsed = assertZodParse(DeleteCharacterSchema, id);
 
   const { supabase } = await getUserScopedQuery();
 

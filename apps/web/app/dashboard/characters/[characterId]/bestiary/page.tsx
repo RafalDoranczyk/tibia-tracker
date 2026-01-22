@@ -13,12 +13,9 @@ import {
 import { DEFAULT_BESTIARY_CLASS } from "@/modules/bestiary/constants";
 import { parseFiltersFromSearchParams } from "@/utils";
 
-type PageProps = {
-  params: Promise<{ characterId: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
+import type { CharacterPageProps } from "../../types";
 
-export default async function CharacterBestiaryPage({ params, searchParams }: PageProps) {
+export default async function CharacterBestiaryPage({ params, searchParams }: CharacterPageProps) {
   const { characterId } = await params;
   const search = await searchParams;
 
@@ -39,7 +36,7 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Pa
   ]);
 
   const { monsters, totalPages } = bestiaryFull;
-  console.log(search);
+
   return (
     <Grid container spacing={5} direction="column">
       <BestiaryFilters />

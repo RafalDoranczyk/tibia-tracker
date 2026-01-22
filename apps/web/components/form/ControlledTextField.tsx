@@ -34,7 +34,7 @@ export function ControlledTextField<TFieldValues extends FieldValues>({
       control={control}
       name={name}
       defaultValue={defaultValue}
-      render={({ field, formState }) => (
+      render={({ field, fieldState }) => (
         <MaterialTextField
           {...props}
           {...field}
@@ -43,17 +43,14 @@ export function ControlledTextField<TFieldValues extends FieldValues>({
           onChange={(e) => {
             const value = e.target.value;
             if (isNumber) {
-              field.onChange(value === "" || value === null ? undefined : Number(value));
+              field.onChange(value === "" ? undefined : Number(value));
             } else {
               field.onChange(value);
             }
           }}
-          error={!!formState.errors?.[name]}
+          error={!!fieldState.error}
           label={label}
-          sx={{
-            width: "100%",
-            ...props.sx,
-          }}
+          sx={{ width: "100%", ...props.sx }}
         />
       )}
     />

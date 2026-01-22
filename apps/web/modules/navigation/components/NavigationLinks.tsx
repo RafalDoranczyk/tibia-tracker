@@ -1,248 +1,135 @@
 "use client";
 
-import Dashboard from "@mui/icons-material/Dashboard";
 import { Box, List, ListItemButton, ListItemIcon, Tooltip, Typography } from "@mui/material";
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
 
-import { PATHS } from "@/constants";
 import { useActiveCharacter } from "@/providers/feature/dashboard";
 
-import { NAVIGATION_IMAGES } from "./images";
-
-export type NavigationIcon =
-  | { type: "mui"; node: ReactNode }
-  | { type: "image"; src: StaticImageData };
-
-export type NavigationLinkElementProps = {
-  icon: NavigationIcon;
-  id: string;
-  text: string;
-  to: string | ((paths: ReturnType<typeof PATHS.CHARACTER>) => string);
-  requiresCharacter?: boolean;
-};
-
-type NavigationSection = {
-  elements: NavigationLinkElementProps[];
-  title: string;
-};
-
-// -------------------------------------
-// Navigation Config
-// -------------------------------------
-const NAVIGATION_MODULES: NavigationSection[] = [
-  {
-    title: "Dashboard",
-    elements: [
-      {
-        icon: {
-          type: "mui",
-          node: <Dashboard />,
-        },
-        id: "dashboard",
-        text: "Dashboard",
-        to: PATHS.DASHBOARD,
-      },
-    ],
-  },
-
-  {
-    title: "Character Overview",
-    elements: [
-      {
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.character,
-        },
-        id: "character",
-        text: "My character",
-        to: (c) => c.OVERVIEW,
-        requiresCharacter: true,
-      },
-
-      {
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.monster,
-        },
-        id: "bestiary",
-        text: "Bestiary",
-        to: (c) => c.BESTIARY,
-        requiresCharacter: true,
-      },
-      // {
-      //   icon: {
-      //     type: "image",
-      //     src: NAVIGATION_IMAGES.hunt,
-      //   },
-      //   id: "hunt-sessions",
-      //   text: "Hunt sessions",
-      //   to: (c) => c.HUNT_SESSIONS.LIST,
-      //   requiresCharacter: true,
-      // },
-    ],
-  },
-  {
-    title: "My Account",
-    elements: [
-      {
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.characters,
-        },
-        id: "characters",
-        text: "Characters",
-        to: PATHS.CHARACTERS,
-      },
-    ],
-  },
-  {
-    title: "Utilities",
-    elements: [
-      {
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.scroll,
-        },
-        id: "imbuing",
-        text: "Imbuing",
-        to: PATHS.IMBUING,
-      },
-    ],
-  },
-];
-
-// -------------------------------------
-// Styles
-// -------------------------------------
-const SECTION_TITLE_STYLES = {
-  color: "text.secondary",
-  cursor: "default",
-  fontSize: 12,
-  fontWeight: 700,
-  pl: 2,
-  textTransform: "uppercase",
-} as const;
-
-// -------------------------------------
-// Utils
-// -------------------------------------
-function resolvePath(to: NavigationLinkElementProps["to"], characterId?: string | null): string {
-  if (typeof to === "function") {
-    if (!characterId) return PATHS.CHARACTERS;
-    return to(PATHS.CHARACTER(characterId));
-  }
-
-  return to;
-}
-
-function isPathActive(pathname: string, href: string) {
-  const cleanPath = pathname.split("?")[0];
-
-  const pathSegments = cleanPath.split("/").filter(Boolean);
-  const hrefSegments = href.split("/").filter(Boolean);
-
-  if (pathSegments.length === hrefSegments.length) {
-    return cleanPath === href;
-  }
-
-  return false;
-}
+import { NAVIGATION_MODULES } from "./constants";
+import type { NavigationLinkElementProps } from "./types";
+import { isPathActive } from "./utils/isPathActive";
+import { resolvePath } from "./utils/resolvePath";
 
 // -------------------------------------
 // Single Link Element
 // -------------------------------------
-function NavigationLinkElement({
-  icon,
-  text,
-  to,
-  isSelected,
-  disabled,
+function NavItem({
+  element,
+  depth = 0,
 }: {
-  icon: NavigationIcon;
-  text: string;
-  to: string;
-  isSelected: boolean;
-  disabled?: boolean;
+  element: NavigationLinkElementProps;
+  depth?: number;
 }) {
+  const pathname = usePathname();
+  const { activeCharacterId } = useActiveCharacter();
+
+  const { icon, text, to, requiresCharacter, matchStrategy, children } = element;
+
+  const href = resolvePath(to, activeCharacterId);
+  const isSelected = isPathActive(pathname, href, matchStrategy);
+  const disabled = requiresCharacter && !activeCharacterId;
+
+  const isSubItem = depth > 0;
+
   const content = (
     <ListItemButton
       component={Link}
-      href={disabled ? "#" : to}
+      href={disabled ? "#" : href}
       selected={isSelected}
       disabled={disabled}
       sx={{
-        textDecoration: "none",
+        pl: 2,
+        borderRadius: 1,
+        mx: 1,
+        mb: 0.5,
+        py: isSubItem ? 0.5 : 1,
         opacity: disabled ? 0.5 : 1,
-        pointerEvents: disabled ? "none" : "auto",
       }}
     >
-      <ListItemIcon
-        sx={{
-          svg: {
-            color: ({ palette }) => (isSelected ? palette.primary.main : "unset"),
-            height: 20,
-          },
-        }}
-      >
-        {icon.type === "mui" ? (
-          icon.node
-        ) : (
-          <Image src={icon.src} alt={text} width={20} height={20} />
-        )}
-      </ListItemIcon>
+      {icon && (
+        <ListItemIcon sx={{ minWidth: 36 }}>
+          {icon.type === "mui" ? (
+            icon.node
+          ) : (
+            <Image
+              src={icon.src}
+              alt={text}
+              width={isSubItem ? 16 : 24}
+              height={isSubItem ? 16 : 24}
+            />
+          )}
+        </ListItemIcon>
+      )}
+
+      {!icon && isSubItem && <Box sx={{ width: 12 }} />}
+
       <Typography
-        color="textPrimary"
-        fontWeight={isSelected ? "bold" : "normal"}
-        variant="subtitle2"
+        variant="body2"
+        color={isSelected ? "primary.main" : "text.primary"}
+        fontWeight={isSelected ? 600 : 400}
+        fontSize={isSubItem ? "0.8rem" : "0.9rem"}
       >
         {text}
       </Typography>
     </ListItemButton>
   );
 
-  if (disabled) {
-    return (
-      <Tooltip title="Select a character first" placement="right">
-        <Box>{content}</Box>
-      </Tooltip>
-    );
-  }
+  return (
+    <>
+      {disabled ? (
+        <Tooltip title="Select a character first" placement="right">
+          <Box>{content}</Box>
+        </Tooltip>
+      ) : (
+        content
+      )}
 
-  return content;
+      {children && (
+        <Box
+          sx={{
+            ml: 3.5,
+            borderLeft: "1px solid",
+            borderColor: "divider",
+            my: 0.5,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {children.map((child) => (
+            <NavItem key={child.id} element={child} depth={depth + 1} />
+          ))}
+        </Box>
+      )}
+    </>
+  );
 }
 
 // -------------------------------------
 // Main NavigationLinks Component
 // -------------------------------------
 export function NavigationLinks() {
-  const pathname = usePathname();
-  const { activeCharacterId } = useActiveCharacter();
-
   return (
     <>
       {NAVIGATION_MODULES.map(({ elements, title }) => (
         <Box key={title} mt={3}>
-          <Typography sx={SECTION_TITLE_STYLES}>{title}</Typography>
-          <List component="nav">
-            {elements.map(({ icon, id, text, to, requiresCharacter }) => {
-              const href = resolvePath(to, activeCharacterId);
-              const selected = isPathActive(pathname, href);
-              const disabled = requiresCharacter && !activeCharacterId;
-
-              return (
-                <NavigationLinkElement
-                  key={id}
-                  icon={icon}
-                  text={text}
-                  to={href}
-                  isSelected={selected}
-                  disabled={disabled}
-                />
-              );
-            })}
+          <Typography
+            sx={{
+              color: "text.secondary",
+              cursor: "default",
+              fontSize: 12,
+              fontWeight: 700,
+              pl: 2,
+              textTransform: "uppercase",
+            }}
+          >
+            {title}
+          </Typography>
+          <List component="nav" disablePadding>
+            {elements.map((element) => (
+              <NavItem key={element.id} element={element} />
+            ))}
           </List>
         </Box>
       ))}

@@ -1,0 +1,81 @@
+"use client";
+
+import { Stack } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import { ConfirmDialog } from "@/components";
+import { PATHS } from "@/constants";
+import { usePagination } from "@/hooks";
+import { useRequiredCharacterId } from "@/providers/feature/dashboard";
+
+import { HUNT_SESSION_PAGINATION_LIMIT } from "../constants";
+import { useDeleteHuntSession } from "../hooks/useDeleteHuntSession";
+import type { HuntSession } from "../types";
+import { HuntSessionsTable } from "./HuntSessionsTable";
+
+type HuntSessionsViewProps = {
+  count: number;
+  huntSessions: HuntSession[];
+};
+
+export function HuntSessionsView({ count, huntSessions }: HuntSessionsViewProps) {
+  const router = useRouter();
+  const characterId = useRequiredCharacterId();
+  const pagination = usePagination({ limit: HUNT_SESSION_PAGINATION_LIMIT });
+  const [sessionIdToDelete, setSessionIdToDelete] = useState<number | null>(null);
+
+  const { deleteSession, isPending } = useDeleteHuntSession();
+
+  const handleDeleteSession = async () => {
+    if (!sessionIdToDelete) return;
+
+    await deleteSession(sessionIdToDelete);
+    setSessionIdToDelete(null);
+  };
+
+  const handleRowClick = (sessionId: number) => {
+    router.push(PATHS.CHARACTER(characterId).HUNT_SESSIONS.EDIT(sessionId));
+  };
+
+  return (
+    <Stack spacing={3}>
+      <HuntSessionsTable
+        huntSessions={huntSessions}
+        page={pagination.page}
+        rowsPerPage={pagination.limitParam}
+        onPageChange={pagination.onPageChange}
+        onRowClick={handleRowClick}
+        onDeleteClick={setSessionIdToDelete}
+        onSort={() => {
+          console.log("on sort");
+        }}
+        count={count}
+        onRowsPerPageChange={(limit) =>
+          pagination.onParamsChange([{ param: "limit", value: limit }])
+        }
+      />
+
+      <ConfirmDialog.Root
+        open={sessionIdToDelete !== null}
+        onOpenChange={(open) => {
+          if (!open) setSessionIdToDelete(null);
+        }}
+      >
+        <ConfirmDialog.Content>
+          <ConfirmDialog.Header
+            title="Delete Hunt Session"
+            description="Are you sure you want to delete this hunt session? This action cannot be undone."
+          />
+          <ConfirmDialog.Actions>
+            <ConfirmDialog.Cancel loading={isPending} />
+
+            <ConfirmDialog.Confirm loading={isPending} onClick={handleDeleteSession}>
+              Delete
+            </ConfirmDialog.Confirm>
+          </ConfirmDialog.Actions>
+        </ConfirmDialog.Content>
+      </ConfirmDialog.Root>
+    </Stack>
+  );
+}

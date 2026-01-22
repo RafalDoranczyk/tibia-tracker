@@ -1,8 +1,6 @@
 import { fetchCharacters } from "@/modules/characters";
 
-type CharacterPageProps = {
-  params: Promise<{ characterId: string }>;
-};
+import type { CharacterPageProps } from "../types";
 
 export default async function CharacterPage({ params }: CharacterPageProps) {
   const awaitedParams = await params;

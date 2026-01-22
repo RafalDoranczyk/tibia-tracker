@@ -1,7 +1,9 @@
 import { z } from "zod";
 
 export const HuntPlaceSchema = z.object({
+  // Hunt place ID is a number in supabase db
   id: z.number(),
+
   name: z.string(),
   image_url: z.string().url().nullable().optional(),
 });
@@ -15,7 +17,7 @@ export const UpdateHuntPlacePayloadSchema = HuntPlaceSchema.partial().omit({
 });
 
 export const DeleteHuntPlacePayloadSchema = z.object({
-  id: z.number(),
+  id: HuntPlaceSchema.shape.id,
 });
 
 export const FetchHuntPlacesResponseSchema = z.array(HuntPlaceSchema);

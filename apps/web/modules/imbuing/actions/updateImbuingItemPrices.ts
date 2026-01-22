@@ -7,10 +7,13 @@ import { UpdateImbuingPricesSchema } from "../schemas";
 import type { ImbuingPrices } from "../types";
 
 export async function updateImbuingItemPrices(prices: ImbuingPrices) {
+  const { user } = await getUserScopedQuery();
+
   const parsed = assertZodParse(UpdateImbuingPricesSchema, {
     items: Object.entries(prices).map(([key, price]) => ({
       key,
       price,
+      user_id: user.id,
     })),
   });
 
@@ -21,7 +24,7 @@ export async function updateImbuingItemPrices(prices: ImbuingPrices) {
     .upsert(parsed.items, { onConflict: "user_id, key" });
 
   if (error) {
-    console.error(error);
+    console.log(error);
     throw new Error("Failed to update imbuing item prices");
   }
 }

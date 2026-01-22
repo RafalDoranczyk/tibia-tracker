@@ -3,17 +3,20 @@
 import { Box, type BoxProps, Fade, Stack, Typography } from "@mui/material";
 
 import { DefaultImage } from "./DefaultImage";
-import { EmptyChartImage } from "./EmptyChartImage";
-import { EmptyFoodImage } from "./EmptyFoodImage";
-import { EmptyHistoryImage } from "./EmptyHistoryImage";
-import { EmptyPlateImage } from "./EmptyPlateImage";
+import { EmptyMonstersImage } from "./EmptyMonstersImage";
+
+/* ----------------------------------------
+ * Types
+ * ------------------------------------- */
 
 export type EmptySvgProps = {
   height: number;
   width: number;
 };
 
-type ImageType = "default" | "plate" | "food" | "chart" | "history";
+type EmptyImageComponent = (props: EmptySvgProps) => React.ReactNode;
+
+type ImageType = "default" | "monsters";
 type Sizes = "big" | "medium" | "small";
 
 type EmptyStateProps = BoxProps & {
@@ -25,12 +28,9 @@ type EmptyStateProps = BoxProps & {
   type?: ImageType;
 };
 
-const ImageMap: Record<ImageType, React.FC<EmptySvgProps>> = {
+const ImageMap: Record<ImageType, EmptyImageComponent> = {
   default: DefaultImage,
-  plate: EmptyPlateImage,
-  food: EmptyFoodImage,
-  chart: EmptyChartImage,
-  history: EmptyHistoryImage,
+  monsters: EmptyMonstersImage,
 };
 
 const ImageSizesMap: Record<Sizes, EmptySvgProps> = {
@@ -38,6 +38,10 @@ const ImageSizesMap: Record<Sizes, EmptySvgProps> = {
   medium: { height: 150, width: 150 },
   small: { height: 100, width: 100 },
 };
+
+/* ----------------------------------------
+ * Component
+ * ------------------------------------- */
 
 export function EmptyState({
   action,
@@ -64,7 +68,7 @@ export function EmptyState({
         <Stack alignItems="center" spacing={2} maxWidth={360} textAlign="center">
           <Box
             sx={{
-              opacity: 0.8,
+              opacity: 0.85,
               transition: "opacity 0.2s ease",
               "&:hover": { opacity: 1 },
             }}

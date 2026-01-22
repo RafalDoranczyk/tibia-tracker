@@ -6,11 +6,11 @@ import { PATHS } from "@/constants";
 import { getUserScopedQuery } from "@/core";
 import { assertZodParse } from "@/utils";
 
-import { characterSchema, createCharacterSchema } from "../schemas";
+import { CharacterSchema, CreateCharacterSchema } from "../schemas";
 import type { Character, CreateCharacterPayload } from "../types";
 
 export async function createCharacter(payload: CreateCharacterPayload): Promise<Character> {
-  const parsed = assertZodParse(createCharacterSchema, payload);
+  const parsed = assertZodParse(CreateCharacterSchema, payload);
 
   const { supabase } = await getUserScopedQuery();
 
@@ -24,7 +24,7 @@ export async function createCharacter(payload: CreateCharacterPayload): Promise<
     throw new Error("Failed to create character");
   }
 
-  assertZodParse(characterSchema, data);
+  assertZodParse(CharacterSchema, data);
 
   revalidatePath(PATHS.CHARACTERS);
   return data;

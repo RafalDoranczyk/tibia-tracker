@@ -29,8 +29,11 @@ export const validationMessages = {
 
 export const SupabaseId = z.string().uuid(validationMessages.string.required("ID"));
 
+export const DateInputSchema = z.string().transform((value) => value.slice(0, 10));
+
 export const CreatedAt = z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
   message: validationMessages.date.invalid("Created at"),
 });
 
 export const PositiveNumber = z.number().min(0);
+export const PositiveNumberNonZero = z.number().min(1);

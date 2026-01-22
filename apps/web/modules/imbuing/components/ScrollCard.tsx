@@ -193,7 +193,7 @@ export function ScrollCard({ scroll }: ScrollCardProps) {
       </Stack>
 
       <Grid container spacing={2}>
-        <Grid size={{ xs: 7 }}>
+        <Grid size={{ xs: 12, xl: 7, xxl: 6 }}>
           <Paper variant="outlined">
             <TableContainer>
               <Table size="small">
@@ -240,7 +240,7 @@ export function ScrollCard({ scroll }: ScrollCardProps) {
           </Paper>
         </Grid>
 
-        <Grid size={{ xs: 5 }}>
+        <Grid size={{ xs: 12, xl: 5, xxl: 6 }}>
           {hasAllPrices && economy ? (
             <ScrollSummary
               {...economy}

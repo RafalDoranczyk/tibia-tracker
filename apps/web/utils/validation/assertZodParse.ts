@@ -1,4 +1,4 @@
-import type { ZodError, ZodType } from "zod";
+import type { z, ZodError, ZodTypeAny } from "zod";
 
 import { AppError, AppErrorCodes } from "@/core";
 
@@ -44,18 +44,23 @@ function mapZodErrorToAppError(error: ZodError): AppError {
  * @returns The validated and parsed data as type T.
  * @throws AppError if validation fails (with code VALIDATION_ERROR).
  */
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export function assertZodParse<T>(schema: ZodType<T, any>, data: unknown): T {
+
+export function assertZodParse<T extends ZodTypeAny>(schema: T, data: unknown): z.output<T> {
   const result = schema.safeParse(data);
 
   if (!result.success) {
     // Log detailed error information for debugging purposes
-    console.error("Zod validation failed:", {
-      inputData: data,
-      errors: result.error.errors,
-      formatted: result.error.format(),
-      flattened: result.error.flatten(),
-    });
+
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Zod validation failed:", {
+        inputData: data,
+        errors: result.error.errors,
+        formatted: result.error.format(),
+        flattened: result.error.flatten(),
+      });
+    } else {
+      console.error("Zod validation failed:", { errors: result.error.errors });
+    }
 
     throw mapZodErrorToAppError(result.error);
   }
