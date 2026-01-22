@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { PositiveNumber } from "@/schemas/shared";
+
 import { IMBUING_SCROLL_ITEM_KEYS, IMBUING_SCROLL_KEYS } from "./constants";
 
 export const ImbuingPriceKeySchema = z.union([
@@ -8,17 +10,10 @@ export const ImbuingPriceKeySchema = z.union([
 ]);
 
 export const ImbuingItemSchema = z.object({
-  key: z.string(),
-  price: z.number(),
+  key: ImbuingPriceKeySchema,
+  price: PositiveNumber,
 });
 
 export const UpdateImbuingPricesSchema = z.object({
-  items: z.array(
-    z.object({
-      key: z.string(),
-      price: z.number(),
-    })
-  ),
+  items: z.array(ImbuingItemSchema),
 });
-
-export const ImbuingItemListSchema = z.array(ImbuingItemSchema);

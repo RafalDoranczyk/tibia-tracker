@@ -50,10 +50,11 @@ function ConfirmDialogRoot({
   return (
     <ConfirmDialogContext.Provider value={{ open, onClose: () => onOpenChange(false) }}>
       <Dialog
+        maxWidth="xs"
+        disableRestoreFocus
+        fullWidth
         open={open}
         onClose={() => onOpenChange(false)}
-        maxWidth="xs"
-        fullWidth
         slotProps={{
           backdrop: {
             sx: {
@@ -85,7 +86,7 @@ function ConfirmDialogCancel({
   const { onClose } = useConfirmDialog();
 
   return (
-    <Button variant="outlined" color="inherit" onClick={onClose} {...buttonProps}>
+    <Button autoFocus variant="outlined" color="inherit" onClick={onClose} {...buttonProps}>
       {children}
     </Button>
   );

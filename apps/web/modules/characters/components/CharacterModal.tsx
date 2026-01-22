@@ -16,7 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import { createCharacter } from "../actions/createCharacter";
 import { updateCharacter } from "../actions/updateCharacter";
 import { ALLOWED_VOCATIONS } from "../constants";
-import { createCharacterSchema } from "../schemas";
+import { CreateCharacterSchema } from "../schemas";
 import type { Character, CreateCharacterPayload } from "../types";
 
 type CharacterModalProps = {
@@ -36,7 +36,7 @@ export function CharacterModal({ open, onClose, character, onSuccess }: Characte
     reset,
     control,
   } = useForm<CreateCharacterPayload>({
-    resolver: zodResolver(createCharacterSchema),
+    resolver: zodResolver(CreateCharacterSchema),
     values: {
       name: character?.name || "",
       vocation: character?.vocation || ALLOWED_VOCATIONS[0],

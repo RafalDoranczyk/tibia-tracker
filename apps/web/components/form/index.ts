@@ -3,5 +3,4 @@ export { ControlledSelect } from "./ControlledSelect";
 export { ControlledTextField } from "./ControlledTextField";
 export { DebouncedSearchFieldURL } from "./DebouncedSearchFieldURL";
 export { DebouncedTextField } from "./DebouncedTextField";
-export { MultiSelect } from "./MultiSelect";
 export { SearchFieldURL } from "./SearchFieldURL";

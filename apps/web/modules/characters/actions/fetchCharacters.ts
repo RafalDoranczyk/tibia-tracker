@@ -5,7 +5,7 @@ import { z } from "zod";
 import { getUserScopedQuery } from "@/core";
 import { assertZodParse } from "@/utils";
 
-import { characterSchema } from "../schemas";
+import { CharacterSchema } from "../schemas";
 import type { Character } from "../types";
 
 export async function fetchCharacters(): Promise<Character[]> {
@@ -17,5 +17,5 @@ export async function fetchCharacters(): Promise<Character[]> {
     throw new Error("Fetching characters failed");
   }
 
-  return assertZodParse(z.array(characterSchema), data);
+  return assertZodParse(z.array(CharacterSchema), data);
 }

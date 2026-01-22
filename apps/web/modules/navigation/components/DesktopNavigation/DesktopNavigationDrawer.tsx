@@ -4,7 +4,7 @@ import type { PropsWithChildren } from "react";
 import { getUser } from "@/actions/user";
 import { APP_NAME } from "@/constants";
 
-export const DESKTOP_APP_NAVIGATION_DRAWER_WIDTH = "220px";
+export const DESKTOP_APP_NAVIGATION_DRAWER_WIDTH = "240px";
 export const APP_BAR_HEIGHT = "64px";
 
 export async function DesktopNavigationDrawer({ children }: PropsWithChildren) {

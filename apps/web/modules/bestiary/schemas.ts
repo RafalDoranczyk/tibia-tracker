@@ -1,22 +1,27 @@
 import { z } from "zod";
 
+import { PositiveNumber, PositiveNumberNonZero } from "@/schemas/shared";
+
+import { CharacterSchema } from "../characters";
 import { BESTIARY_CLASSES } from "./constants";
 
 export const MonsterSchema = z.object({
+  // Monsters ID is a number in supabase db
   id: z.number(),
+
   name: z.string(),
-  exp: z.number(),
+  exp: PositiveNumber,
   image_url: z.string().url(),
-  hp: z.number(),
+  hp: PositiveNumberNonZero,
   elemental_resistances: z.record(z.string(), z.number()),
-  charm_points: z.number(),
+  charm_points: PositiveNumberNonZero,
   bestiary_class: z.enum(BESTIARY_CLASSES),
-  bestiary_difficulty: z.number(),
-  sort_order: z.number(),
+  bestiary_difficulty: PositiveNumber,
+  sort_order: PositiveNumber,
   bestiary_kills: z.object({
-    stage1: z.number(),
-    stage2: z.number(),
-    stage3: z.number(),
+    stage1: PositiveNumber,
+    stage2: PositiveNumber,
+    stage3: PositiveNumber,
   }),
 });
 
@@ -24,11 +29,12 @@ export const MonsterSchema = z.object({
  * Join table between character and monster bestiary progress.
  */
 export const CharacterBestiarySchema = z.object({
+  // This is a number in supabase db
   id: z.number(),
-  character_id: z.string().uuid(),
-  monster_id: z.number(),
-  kills: z.number(),
-  stage: z.number(),
+  character_id: CharacterSchema.shape.id,
+  monster_id: MonsterSchema.shape.id,
+  kills: PositiveNumber,
+  stage: PositiveNumber,
   has_soul: z.boolean(),
 });
 
@@ -37,41 +43,42 @@ export const CharacterBestiaryEntrySchema = CharacterBestiarySchema.extend({
 });
 
 export const MonsterWithCharacterProgressSchema = MonsterSchema.extend({
-  kills: z.number(),
-  stage: z.number(),
+  kills: PositiveNumber,
+  stage: PositiveNumber,
   has_soul: z.boolean(),
 });
 
 export const UpdateCharacterBestiaryEntrySchema = z.object({
-  characterId: z.string().uuid(),
-  monsterId: z.number(),
+  characterId: CharacterSchema.shape.id,
+  monsterId: MonsterSchema.shape.id,
   updates: z.object({
-    kills: z.number().optional(),
-    stage: z.number().optional(),
+    kills: PositiveNumber.optional(),
+    stage: PositiveNumber.optional(),
     has_soul: z.boolean().optional(),
   }),
 });
 
 export const CharacterBestiarySummarySchema = z.object({
-  character_id: z.string().uuid(),
-  unlocked_charm_points: z.number(),
-  total_charm_points: z.number(),
-  completed_soulpits: z.number(),
+  character_id: CharacterSchema.shape.id,
+  unlocked_charm_points: PositiveNumber,
+  total_charm_points: PositiveNumber,
+  completed_soulpits: PositiveNumber,
 });
 
 export const CharacterBestiaryClassSummarySchema = z.object({
-  character_id: z.string().uuid(),
-  bestiary_class: z.string(),
-  total_monsters: z.number(),
-  completed_monsters: z.number(),
-  completed_soulpits: z.number(),
-  total_charm_points: z.number(),
-  unlocked_charm_points: z.number(),
+  character_id: CharacterSchema.shape.id,
+  bestiary_class: z.enum(BESTIARY_CLASSES),
+  total_monsters: PositiveNumber,
+  completed_monsters: PositiveNumber,
+  completed_soulpits: PositiveNumber,
+  total_charm_points: PositiveNumber,
+  unlocked_charm_points: PositiveNumber,
 });
 
 export const FetchCharacterBestiaryFullSchema = z.object({
-  characterId: z.string().uuid(),
-  bestiaryClass: z.string().optional(),
+  characterId: CharacterSchema.shape.id,
+  bestiaryClass: z.enum(BESTIARY_CLASSES).optional(),
+
   limit: z.number().min(1).max(100).optional(),
   page: z.number().min(1).optional(),
   search: z.string().min(1).optional(),
