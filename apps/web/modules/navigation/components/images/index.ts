@@ -1,4 +1,5 @@
 import BlankImbuementScroll from "./blank_imbuement_scroll.gif";
+import Calculator from "./calculator.png";
 import Character from "./character.png";
 import Characters from "./characters.png";
 import HuntBow from "./hunt_bow.png";
@@ -12,6 +13,7 @@ export const NAVIGATION_IMAGES = {
   huntGold: HuntBowGold,
   character: Character,
   characters: Characters,
+  calculator: Calculator,
 } as const;
 
 export type NavigationImageKey = keyof typeof NAVIGATION_IMAGES;

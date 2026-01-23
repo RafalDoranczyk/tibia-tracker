@@ -14,8 +14,8 @@ import { useSaveImbuingPrices } from "../hooks/useSaveImbuingPrices";
 import { useImbuingPriceStore } from "../imbuingPriceStore";
 import type { ImbuingItem, Scroll } from "../types";
 import { ImbuingHeader } from "./ImbuingHeader";
+import { ImbuingScrollCard } from "./ImbuingScrollCard";
 import { ImbuingViewSkeleton } from "./ImbuingViewSkeleton";
-import { ScrollCard } from "./ScrollCard";
 
 type ScrollsSectionProps = {
   scrolls: Scroll[];
@@ -65,7 +65,7 @@ function ScrollsSection({ scrolls, title }: ScrollsSectionProps) {
         gap={2}
       >
         {scrolls.map((scroll) => (
-          <ScrollCard key={scroll.name} scroll={scroll} />
+          <ImbuingScrollCard key={scroll.name} scroll={scroll} />
         ))}
       </Box>
     </div>

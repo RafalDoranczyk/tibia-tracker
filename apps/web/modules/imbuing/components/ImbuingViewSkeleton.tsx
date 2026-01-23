@@ -1,6 +1,6 @@
 import { Box, Skeleton, Stack } from "@mui/material";
 
-import { ScrollCardSkeleton } from "./ScrollCardSkeleton";
+import { ImbuingScrollCardSkeleton } from "./ImbuingScrollCardSkeleton";
 
 function SectionSkeleton({ count }: { count: number }) {
   return (
@@ -23,7 +23,7 @@ function SectionSkeleton({ count }: { count: number }) {
       >
         {[...Array(count)].map((_, i) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          <ScrollCardSkeleton key={i} />
+          <ImbuingScrollCardSkeleton key={i} />
         ))}
       </Box>
     </Stack>

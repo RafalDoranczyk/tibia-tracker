@@ -14,8 +14,8 @@ import type { BestiaryClass, CharacterBestiaryFullResponse } from "../types";
 type Props = {
   characterId: string;
   bestiaryClass?: BestiaryClass;
-  limit: number;
-  page: number;
+  limit?: number;
+  page?: number;
   search?: string;
 };
 
@@ -69,10 +69,12 @@ export async function fetchCharacterBestiaryFull({
 
   const bestiary = assertZodParse(CharacterBestiarySchema.array(), bestiaryData ?? []);
 
+  const bestiaryMap = new Map(bestiary.map((b) => [b.monster_id, b]));
+
   const merged = assertZodParse(
     MonsterWithCharacterProgressSchema.array(),
     monsters.map((monster) => {
-      const progress = bestiary.find((b) => b.monster_id === monster.id);
+      const progress = bestiaryMap.get(monster.id);
       return {
         ...monster,
         kills: progress?.kills ?? 0,
@@ -85,5 +87,9 @@ export async function fetchCharacterBestiaryFull({
   const totalCount = count ?? 0;
   const totalPages = Math.ceil(totalCount / limit);
 
-  return { monsters: merged, totalCount, totalPages };
+  return {
+    monsters: merged,
+    totalCount,
+    totalPages,
+  };
 }

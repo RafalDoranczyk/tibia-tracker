@@ -7,7 +7,6 @@ const character = (characterId: string) => {
     OVERVIEW: base,
     BESTIARY: `${base}/bestiary`,
     HUNT_PLACES: `${base}/hunt-places`,
-    STAMINA_CALCULATOR: `${base}/stamina-calculator`,
     HUNT_SESSIONS: {
       LIST: `${base}/hunt-sessions`,
       NEW: `${base}/hunt-sessions/new`,
@@ -21,5 +20,6 @@ export const PATHS = {
   SETTINGS: `${DASHBOARD_PATH}/settings`,
   CHARACTERS: `${DASHBOARD_PATH}/characters`,
   IMBUING: `${DASHBOARD_PATH}/imbuing`,
+  STAMINA_CALCULATOR: `${DASHBOARD_PATH}/stamina-calculator`,
   CHARACTER: character,
 } as const;
