@@ -156,16 +156,16 @@ function ItemPriceInput({ itemKey }: { itemKey: ImbuingPriceKey }) {
       type="number"
       value={price}
       onChange={(e) => setPrice(itemKey, Number(e.target.value))}
-      sx={{ maxWidth: 120 }}
+      sx={{ maxWidth: 220 }}
     />
   );
 }
 
-type ScrollCardProps = {
+type ImbuingScrollCardProps = {
   scroll: Scroll;
 };
 
-export function ScrollCard({ scroll }: ScrollCardProps) {
+export function ImbuingScrollCard({ scroll }: ImbuingScrollCardProps) {
   const { economy, hasAllPrices } = useScrollPricing(scroll);
 
   const { imageUrl, color, name, items } = scroll;

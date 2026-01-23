@@ -40,36 +40,47 @@ function NavItem({
       selected={isSelected}
       disabled={disabled}
       sx={{
-        pl: 2,
+        pl: isSubItem ? 1.5 : 2, // Mniejszy padding wewnętrzny
+        pr: 1,
         borderRadius: 1,
         mx: 1,
-        mb: 0.5,
-        py: isSubItem ? 0.5 : 1,
+        mb: 0.25, // Zmniejszony odstęp między linkami z 0.5 na 0.25
+        py: isSubItem ? 0.3 : 0.6, // Znacznie mniejszy padding pionowy
+        minHeight: isSubItem ? 28 : 36, // Stała, mniejsza wysokość
         opacity: disabled ? 0.5 : 1,
+        "&.Mui-selected": {
+          bgcolor: "action.selected",
+        },
       }}
     >
       {icon && (
-        <ListItemIcon sx={{ minWidth: 36 }}>
+        <ListItemIcon sx={{ minWidth: 30 }}>
+          {" "}
+          {/* Zmniejszone z 36 */}
           {icon.type === "mui" ? (
-            icon.node
+            // Jeśli to ikona MUI, zmniejszamy jej font-size
+            <Box sx={{ fontSize: isSubItem ? 16 : 20, display: "flex" }}>{icon.node}</Box>
           ) : (
             <Image
               src={icon.src}
               alt={text}
-              width={isSubItem ? 16 : 24}
-              height={isSubItem ? 16 : 24}
+              width={isSubItem ? 14 : 18} // Zmniejszone ikony obrazkowe
+              height={isSubItem ? 14 : 18}
             />
           )}
         </ListItemIcon>
       )}
 
-      {!icon && isSubItem && <Box sx={{ width: 12 }} />}
+      {!icon && isSubItem && <Box sx={{ width: 8 }} />}
 
       <Typography
         variant="body2"
         color={isSelected ? "primary.main" : "text.primary"}
         fontWeight={isSelected ? 600 : 400}
-        fontSize={isSubItem ? "0.8rem" : "0.9rem"}
+        sx={{
+          fontSize: isSubItem ? "0.75rem" : "0.85rem", // Zmniejszony font o ~0.05rem
+          lineHeight: 1.2,
+        }}
       >
         {text}
       </Typography>
@@ -89,10 +100,10 @@ function NavItem({
       {children && (
         <Box
           sx={{
-            ml: 3.5,
+            ml: 2.5, // Zmniejszone wcięcie dla dzieci (z 3.5)
             borderLeft: "1px solid",
             borderColor: "divider",
-            my: 0.5,
+            my: 0.25,
             display: "flex",
             flexDirection: "column",
           }}
@@ -113,7 +124,7 @@ export function NavigationLinks() {
   return (
     <>
       {NAVIGATION_MODULES.map(({ elements, title }) => (
-        <Box key={title} mt={3}>
+        <Box key={title} mt={2}>
           <Typography
             sx={{
               color: "text.secondary",

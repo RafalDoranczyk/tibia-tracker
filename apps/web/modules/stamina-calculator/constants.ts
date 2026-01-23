@@ -1,0 +1,2 @@
+export const FULL_STAMINA_MINUTES = 42;
+export const ORANGE_STAMINA_MINUTES = 39;

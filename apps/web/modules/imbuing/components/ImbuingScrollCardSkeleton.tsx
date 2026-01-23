@@ -1,6 +1,6 @@
 import { Card, Grid, Paper, Skeleton, Stack } from "@mui/material";
 
-export function ScrollCardSkeleton() {
+export function ImbuingScrollCardSkeleton() {
   return (
     <Card variant="outlined" sx={{ px: 2, py: 1 }}>
       {/* Header */}

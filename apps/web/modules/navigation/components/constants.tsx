@@ -106,6 +106,15 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
           src: NAVIGATION_IMAGES.scroll,
         },
       },
+      {
+        id: "stamina-calculator",
+        text: "Stamina Calculator",
+        to: PATHS.STAMINA_CALCULATOR,
+        icon: {
+          type: "image",
+          src: NAVIGATION_IMAGES.calculator,
+        },
+      },
     ],
   },
 ];
