@@ -115,6 +115,15 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
           src: NAVIGATION_IMAGES.calculator,
         },
       },
+      {
+        id: "training-calculator",
+        text: "Training Calculator",
+        to: PATHS.TRAINING_CALCULATOR,
+        icon: {
+          type: "image",
+          src: NAVIGATION_IMAGES.training,
+        },
+      },
     ],
   },
 ];

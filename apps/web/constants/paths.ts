@@ -21,5 +21,6 @@ export const PATHS = {
   CHARACTERS: `${DASHBOARD_PATH}/characters`,
   IMBUING: `${DASHBOARD_PATH}/imbuing`,
   STAMINA_CALCULATOR: `${DASHBOARD_PATH}/stamina-calculator`,
+  TRAINING_CALCULATOR: `${DASHBOARD_PATH}/training-calculator`,
   CHARACTER: character,
 } as const;

@@ -13,5 +13,5 @@ export { CharactersView } from "./components/CharactersView";
 // Shared
 // ======================
 export { ALLOWED_VOCATIONS } from "./constants";
-export * from "./schemas";
-export type { Character } from "./types";
+export { CharacterSchema } from "./schemas";
+export type { Character, CharacterVocation } from "./types";
