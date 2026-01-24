@@ -5,6 +5,7 @@ import Characters from "./characters.png";
 import HuntBow from "./hunt_bow.png";
 import HuntBowGold from "./hunt_bow_gold.png";
 import Monster from "./the_monster.gif";
+import Training from "./training.png";
 
 export const NAVIGATION_IMAGES = {
   scroll: BlankImbuementScroll,
@@ -14,6 +15,7 @@ export const NAVIGATION_IMAGES = {
   character: Character,
   characters: Characters,
   calculator: Calculator,
+  training: Training,
 } as const;
 
 export type NavigationImageKey = keyof typeof NAVIGATION_IMAGES;

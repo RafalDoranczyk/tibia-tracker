@@ -63,7 +63,5 @@ export async function fetchHuntSession(sessionId: number): Promise<HuntSession |
     return null;
   }
 
-  console.log(data);
-
   return assertZodParse(HuntSessionSchema, data);
 }
