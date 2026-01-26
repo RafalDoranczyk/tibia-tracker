@@ -30,11 +30,24 @@ function hasAllRequiredPrices(scroll: Scroll, prices: ImbuingPrices): boolean {
   });
 }
 
+export function hasScrollPriceChanges(
+  scroll: Scroll,
+  prices: ImbuingPrices,
+  savedPrices: ImbuingPrices
+) {
+  const current = selectPricesForScroll(scroll, prices);
+  const saved = selectPricesForScroll(scroll, savedPrices);
+
+  return Object.keys(current).some((key) => current[key] !== saved[key]);
+}
+
 export function useScrollPricing(scroll: Scroll) {
   const prices = useImbuingPriceStore(useShallow((s) => selectPricesForScroll(scroll, s.prices)));
 
   const tokenPrice = prices.gold_token ?? 0;
   const scrollPrice = prices[scroll.key] ?? 0;
+
+  // console.log(scroll);
 
   const hasAllPrices = useMemo(() => hasAllRequiredPrices(scroll, prices), [scroll, prices]);
 

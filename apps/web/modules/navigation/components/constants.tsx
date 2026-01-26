@@ -107,21 +107,21 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
         },
       },
       {
-        id: "stamina-calculator",
-        text: "Stamina Calculator",
-        to: PATHS.STAMINA_CALCULATOR,
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.calculator,
-        },
-      },
-      {
         id: "training-calculator",
         text: "Training Calculator",
         to: PATHS.TRAINING_CALCULATOR,
         icon: {
           type: "image",
           src: NAVIGATION_IMAGES.training,
+        },
+      },
+      {
+        id: "stamina-calculator",
+        text: "Stamina Calculator",
+        to: PATHS.STAMINA_CALCULATOR,
+        icon: {
+          type: "image",
+          src: NAVIGATION_IMAGES.calculator,
         },
       },
     ],

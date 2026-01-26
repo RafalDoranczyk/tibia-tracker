@@ -6,8 +6,6 @@ export async function insertSessionDamageElements(
   sessionId: number,
   damageElements: DamageElementCount[]
 ) {
-  if (!damageElements.length) return;
-
   const { supabase } = await getUserScopedQuery();
 
   const payload = damageElements.map((d) => ({
@@ -15,8 +13,6 @@ export async function insertSessionDamageElements(
     percent: d.percent,
     damage_element_id: d.id,
   }));
-
-  if (!payload.length) return;
 
   const { error } = await supabase.from("hunt_session_damage_elements").insert(payload);
 

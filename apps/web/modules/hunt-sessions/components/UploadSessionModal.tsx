@@ -74,7 +74,7 @@ export function UploadSessionModal({ open, monsterList, onClose }: UploadSession
         "damage_sources",
         monstersWithIds.map(({ id, name, image_url }) => ({
           id,
-          percent: 0,
+          percent: 100 / monstersWithIds.length,
           damage_source: {
             id,
             name,

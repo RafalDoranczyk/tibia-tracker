@@ -44,20 +44,20 @@ export async function updateHuntSession(
 
   // replace supplies (DELETE + INSERT)
   await deleteSessionSupplies(id);
-  if (supplies.length > 0) {
+  if (supplies && supplies.length > 0) {
     const suppliesWithPerHour = calcCountPerHour(supplies, dbPayload.minutes);
     await insertSessionSupplies(id, suppliesWithPerHour);
   }
 
   // replace damage elements (DELETE + INSERT)
   await deleteSessionDamageElements(id);
-  if (damage_elements.length > 0) {
+  if (damage_elements && damage_elements.length > 0) {
     await insertSessionDamageElements(id, damage_elements);
   }
 
   // replace damage sources (DELETE + INSERT)
   await deleteSessionDamageSources(id);
-  if (damage_sources.length > 0) {
+  if (damage_sources && damage_sources.length > 0) {
     await insertSessionDamageSources(id, damage_sources);
   }
 

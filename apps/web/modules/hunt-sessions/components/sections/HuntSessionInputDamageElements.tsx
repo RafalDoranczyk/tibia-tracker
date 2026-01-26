@@ -1,7 +1,7 @@
 "use client";
 
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartmentSharp";
-import { Avatar, Divider, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
 import {
   type Control,
@@ -15,6 +15,7 @@ import { Autocomplete, ControlledTextField, TooltipIconButton } from "@/componen
 
 import type { DamageElement, HuntSessionFormValues } from "../../types";
 
+/* ------------------------- Picker ------------------------- */
 type DamageElementPickerProps = {
   damageElements: DamageElement[];
   usedIds: number[];
@@ -23,7 +24,11 @@ type DamageElementPickerProps = {
 
 function DamageElementPicker({ damageElements, usedIds, onAdd }: DamageElementPickerProps) {
   const options = useMemo(
-    () => damageElements.filter((d) => !usedIds.includes(d.id)),
+    () =>
+      damageElements.map((d) => ({
+        ...d,
+        disabled: usedIds.includes(d.id),
+      })),
     [damageElements, usedIds]
   );
 
@@ -31,11 +36,10 @@ function DamageElementPicker({ damageElements, usedIds, onAdd }: DamageElementPi
     <Stack direction="row" spacing={1} alignItems="center">
       <Autocomplete
         label="Add damage element"
-        options={options}
-        isLoading={false}
+        options={options.filter((o) => !o.disabled)}
         onChange={onAdd}
         renderOption={(o) => (
-          <Stack direction="row" gap={2} alignItems="center">
+          <Stack direction="row" gap={1.5} alignItems="center">
             <Avatar src={o.image_url} sx={{ width: 24, height: 24 }} variant="rounded" />
             {o.name}
           </Stack>
@@ -45,6 +49,63 @@ function DamageElementPicker({ damageElements, usedIds, onAdd }: DamageElementPi
   );
 }
 
+/* ------------------------- Row ------------------------- */
+
+type DamageElementRowProps = {
+  i: number;
+  field: FieldArrayWithId<HuntSessionFormValues, "damage_elements", "id">;
+  remove: (index: number) => void;
+  control: Control<HuntSessionFormValues>;
+  damageElementMap: Map<number, DamageElement>;
+};
+
+function DamageElementRow({ i, field, remove, control, damageElementMap }: DamageElementRowProps) {
+  const id = useWatch({ control, name: `damage_elements.${i}.id` });
+  const element = id ? damageElementMap.get(id) : null;
+
+  return (
+    <Stack
+      key={field.id}
+      direction="row"
+      alignItems="center"
+      spacing={2}
+      px={1}
+      py={0.5}
+      sx={{
+        borderRadius: 1,
+        "&:hover": { bgcolor: "action.hover" },
+      }}
+    >
+      {/* Element */}
+      <Stack direction="row" spacing={1} alignItems="center" sx={{ flex: 1 }}>
+        <Avatar
+          src={element?.image_url}
+          alt={element?.name}
+          sx={{ width: 28, height: 28 }}
+          variant="rounded"
+        />
+        <Typography variant="body2" fontWeight={500}>
+          {element?.name}
+        </Typography>
+      </Stack>
+
+      {/* Percent */}
+      <ControlledTextField
+        size="small"
+        control={control}
+        name={`damage_elements.${i}.percent`}
+        type="number"
+        sx={{ width: 90 }}
+      />
+
+      {/* Delete */}
+      <TooltipIconButton variant="delete" onClick={() => remove(i)} />
+    </Stack>
+  );
+}
+
+/* ------------------------- List ------------------------- */
+
 type DamageElementListProps = {
   fields: FieldArrayWithId<HuntSessionFormValues, "damage_elements", "id">[];
   remove: (index: number) => void;
@@ -53,47 +114,36 @@ type DamageElementListProps = {
 };
 
 function DamageElementList({ fields, remove, control, damageElementMap }: DamageElementListProps) {
-  const watchedDamageElements = useWatch({
-    control,
-    name: "damage_elements",
-  });
-
   return (
-    <Stack spacing={2}>
-      {fields.map((field, i) => {
-        const actualId = watchedDamageElements?.[i]?.id;
-        const damageElement = actualId ? damageElementMap.get(actualId) : null;
+    <Stack spacing={1}>
+      {/* Header */}
+      <Stack direction="row" spacing={2} px={1}>
+        <Typography variant="caption" color="text.secondary" sx={{ flex: 1 }}>
+          Element
+        </Typography>
+        <Typography variant="caption" color="text.secondary" sx={{ width: 90 }}>
+          Percent
+        </Typography>
+        <Box sx={{ width: 32 }} />
+      </Stack>
 
-        return (
-          <Stack key={field.id} direction="row" alignItems="center" justifyContent="space-between">
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Avatar
-                src={damageElement?.image_url}
-                alt={damageElement?.name}
-                sx={{ width: 28, height: 28 }}
-                variant="rounded"
-              />
+      <Divider />
 
-              <Typography>{damageElement?.name}</Typography>
-            </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <ControlledTextField
-                size="small"
-                control={control}
-                name={`damage_elements.${i}.percent`}
-                type="number"
-                label="Percent"
-                sx={{ width: 90 }}
-              />
-
-              <TooltipIconButton variant="delete" onClick={() => remove(i)} />
-            </Stack>
-          </Stack>
-        );
-      })}
+      {fields.map((field, i) => (
+        <DamageElementRow
+          key={field.id}
+          i={i}
+          field={field}
+          remove={remove}
+          control={control}
+          damageElementMap={damageElementMap}
+        />
+      ))}
     </Stack>
   );
 }
+
+/* ------------------------- Main Component ------------------------- */
 
 type HuntSessionInputDamageElementsProps = {
   damageElementList: DamageElement[];
@@ -112,7 +162,7 @@ export function HuntSessionInputDamageElements({
   const usedIds = useWatch({ control, name: "damage_elements" })?.map((s) => s.id) ?? [];
 
   const damageElementMap = useMemo(
-    () => new Map(damageElementList.map((s) => [s.id, s])),
+    () => new Map<number, DamageElement>(damageElementList.map((s) => [s.id, s])),
     [damageElementList]
   );
 
@@ -130,15 +180,12 @@ export function HuntSessionInputDamageElements({
         }
       />
 
-      <div>
-        <Stack direction="row" alignItems="center" gap={1} mb={1}>
-          <LocalFireDepartmentIcon fontSize="small" />
-          <Typography variant="subtitle2" fontWeight="bold">
-            Damage Elements
-          </Typography>
-        </Stack>
-        <Divider />
-      </div>
+      {/* Section Header */}
+      <Stack direction="row" alignItems="center" spacing={1} mt={1}>
+        <LocalFireDepartmentIcon color="error" fontSize="small" />
+        <Typography fontWeight={700}>Damage Elements</Typography>
+      </Stack>
+      <Divider />
 
       {fields.length === 0 ? (
         <Typography variant="body2" color="text.secondary">
