@@ -1,5 +1,5 @@
 import InvertColorsRounded from "@mui/icons-material/InventoryTwoTone";
-import { Avatar, Divider, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
 import {
   type Control,
@@ -31,7 +31,6 @@ function SupplyPicker({ supplyList, usedIds, onAdd }: SupplyPickerProps) {
       <Autocomplete
         label="Add supply"
         options={options}
-        isLoading={false}
         onChange={onAdd}
         renderOption={(o) => (
           <Stack direction="row" gap={2} alignItems="center">
@@ -52,41 +51,57 @@ type SupplyListProps = {
 };
 
 function SupplyList({ fields, remove, control, supplyMap }: SupplyListProps) {
-  const watchedSupplies = useWatch({
-    control,
-    name: "supplies",
-  });
+  const watchedSupplies = useWatch({ control, name: "supplies" });
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={1}>
+      {/* Header */}
+      <Stack direction="row" spacing={2} px={1}>
+        <Typography variant="caption" color="text.secondary" sx={{ flex: 1 }}>
+          Supply
+        </Typography>
+        <Typography variant="caption" color="text.secondary" sx={{ width: 90 }}>
+          Count
+        </Typography>
+        <Box sx={{ width: 32 }} />
+      </Stack>
+
+      <Divider />
+
+      {/* Rows */}
       {fields.map((field, i) => {
         const actualId = watchedSupplies?.[i]?.id;
         const supply = actualId ? supplyMap.get(actualId) : null;
 
         return (
-          <Stack key={field.id} direction="row" alignItems="center" justifyContent="space-between">
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Avatar
-                src={supply?.image_url}
-                alt={supply?.name}
-                sx={{ width: 28, height: 28 }}
-                variant="rounded"
-              />
-
-              <Typography>{supply?.name}</Typography>
+          <Stack
+            key={field.id}
+            direction="row"
+            alignItems="center"
+            spacing={2}
+            px={1}
+            py={0.5}
+            sx={{
+              borderRadius: 1,
+              "&:hover": { bgcolor: "action.hover" },
+            }}
+          >
+            <Stack direction="row" spacing={1} alignItems="center" sx={{ flex: 1 }}>
+              <Avatar src={supply?.image_url} sx={{ width: 28, height: 28 }} variant="rounded" />
+              <Typography variant="body2" fontWeight={500}>
+                {supply?.name}
+              </Typography>
             </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <ControlledTextField
-                size="small"
-                control={control}
-                name={`supplies.${i}.count`}
-                type="number"
-                label="Count"
-                sx={{ width: 90 }}
-              />
 
-              <TooltipIconButton variant="delete" onClick={() => remove(i)} />
-            </Stack>
+            <ControlledTextField
+              size="small"
+              control={control}
+              name={`supplies.${i}.count`}
+              type="number"
+              sx={{ width: 90 }}
+            />
+
+            <TooltipIconButton variant="delete" onClick={() => remove(i)} />
           </Stack>
         );
       })}
@@ -127,7 +142,7 @@ export function HuntSessionSuppliesAnalyzer({ supplyList }: HuntSessionSuppliesA
 
         <div>
           <Stack direction="row" alignItems="center" gap={1} mb={1}>
-            <InvertColorsRounded fontSize="small" />
+            <InvertColorsRounded color="secondary" fontSize="small" />
             <Typography variant="subtitle2" fontWeight="bold">
               Used Supplies
             </Typography>

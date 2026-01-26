@@ -40,13 +40,13 @@ function NavItem({
       selected={isSelected}
       disabled={disabled}
       sx={{
-        pl: isSubItem ? 1.5 : 2, // Mniejszy padding wewnętrzny
+        pl: isSubItem ? 1.5 : 2,
         pr: 1,
         borderRadius: 1,
         mx: 1,
-        mb: 0.25, // Zmniejszony odstęp między linkami z 0.5 na 0.25
-        py: isSubItem ? 0.3 : 0.6, // Znacznie mniejszy padding pionowy
-        minHeight: isSubItem ? 28 : 36, // Stała, mniejsza wysokość
+        mb: 0.25,
+        py: isSubItem ? 0.3 : 0.6,
+        minHeight: isSubItem ? 28 : 36,
         opacity: disabled ? 0.5 : 1,
         "&.Mui-selected": {
           bgcolor: "action.selected",
@@ -56,15 +56,13 @@ function NavItem({
       {icon && (
         <ListItemIcon sx={{ minWidth: 30 }}>
           {" "}
-          {/* Zmniejszone z 36 */}
           {icon.type === "mui" ? (
-            // Jeśli to ikona MUI, zmniejszamy jej font-size
             <Box sx={{ fontSize: isSubItem ? 16 : 20, display: "flex" }}>{icon.node}</Box>
           ) : (
             <Image
               src={icon.src}
               alt={text}
-              width={isSubItem ? 14 : 18} // Zmniejszone ikony obrazkowe
+              width={isSubItem ? 14 : 18}
               height={isSubItem ? 14 : 18}
             />
           )}
@@ -78,7 +76,7 @@ function NavItem({
         color={isSelected ? "primary.main" : "text.primary"}
         fontWeight={isSelected ? 600 : 400}
         sx={{
-          fontSize: isSubItem ? "0.75rem" : "0.85rem", // Zmniejszony font o ~0.05rem
+          fontSize: isSubItem ? "0.75rem" : "0.85rem",
           lineHeight: 1.2,
         }}
       >
@@ -100,7 +98,7 @@ function NavItem({
       {children && (
         <Box
           sx={{
-            ml: 2.5, // Zmniejszone wcięcie dla dzieci (z 3.5)
+            ml: 2.5,
             borderLeft: "1px solid",
             borderColor: "divider",
             my: 0.25,

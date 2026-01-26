@@ -2,11 +2,62 @@
 
 import BugReportSharp from "@mui/icons-material/BugReportSharp";
 import { Avatar, Divider, Stack, Typography } from "@mui/material";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import {
+  type Control,
+  type FieldArrayWithId,
+  useFieldArray,
+  useFormContext,
+} from "react-hook-form";
 
 import { ControlledTextField } from "@/components/form/ControlledTextField";
 
 import type { HuntSessionFormValues } from "../../types";
+
+type DamageSourceRowProps = {
+  i: number;
+  field: FieldArrayWithId<HuntSessionFormValues, "damage_sources", "id">;
+  control: Control<HuntSessionFormValues>;
+};
+
+function DamageSourceRow({ i, field, control }: DamageSourceRowProps) {
+  const source = field?.damage_source;
+
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={2}
+      px={1}
+      py={0.5}
+      sx={{
+        borderRadius: 1,
+        "&:hover": { bgcolor: "action.hover" },
+      }}
+    >
+      {/* Source */}
+      <Stack direction="row" spacing={1} alignItems="center" sx={{ flex: 1 }}>
+        <Avatar
+          src={source?.image_url}
+          alt={source?.name}
+          sx={{ width: 28, height: 28 }}
+          variant="rounded"
+        />
+        <Typography variant="body2" fontWeight={500}>
+          {source?.name}
+        </Typography>
+      </Stack>
+
+      {/* Percent */}
+      <ControlledTextField
+        size="small"
+        control={control}
+        name={`damage_sources.${i}.percent`}
+        type="number"
+        sx={{ width: 90 }}
+      />
+    </Stack>
+  );
+}
 
 export function HuntSessionInputDamageSources() {
   const { control } = useFormContext<HuntSessionFormValues>();
@@ -18,52 +69,36 @@ export function HuntSessionInputDamageSources() {
 
   return (
     <Stack spacing={2}>
-      <div>
-        <Stack direction="row" alignItems="center" gap={1} mb={1}>
-          <BugReportSharp fontSize="small" />
-          <Typography variant="subtitle2" fontWeight="bold">
-            Damage Sources
-          </Typography>
-        </Stack>
-        <Divider />
-      </div>
+      {/* Section Header */}
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <BugReportSharp color="info" fontSize="small" />
+        <Typography fontWeight={700}>Damage Sources</Typography>
+      </Stack>
+      <Divider />
 
       {fields.length === 0 ? (
         <Typography variant="body2" color="text.secondary">
           Upload session log to adjust damage sources
         </Typography>
       ) : (
-        fields.map((field, i) => {
-          return (
-            <Stack
-              key={field.id}
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Avatar
-                  src={field?.damage_source.image_url}
-                  alt={field?.damage_source.name}
-                  sx={{ width: 28, height: 28 }}
-                  variant="rounded"
-                />
+        <Stack spacing={1}>
+          {/* Header row */}
+          <Stack direction="row" spacing={2} px={1}>
+            <Typography variant="caption" color="text.secondary" sx={{ flex: 1 }}>
+              Source
+            </Typography>
+            <Typography variant="caption" color="text.secondary" sx={{ width: 90 }}>
+              Percent
+            </Typography>
+          </Stack>
 
-                <Typography>{field?.damage_source.name}</Typography>
-              </Stack>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <ControlledTextField
-                  size="small"
-                  control={control}
-                  name={`damage_sources.${i}.percent`}
-                  type="number"
-                  label="Percent"
-                  sx={{ width: 90 }}
-                />
-              </Stack>
-            </Stack>
-          );
-        })
+          <Divider />
+
+          {/* Rows */}
+          {fields.map((field, i) => (
+            <DamageSourceRow key={field.id} i={i} field={field} control={control} />
+          ))}
+        </Stack>
       )}
     </Stack>
   );

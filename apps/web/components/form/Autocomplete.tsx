@@ -10,7 +10,7 @@ type AutocompleteOptionBase = {
 
 type AutocompleteProps<T extends AutocompleteOptionBase> = {
   disabled?: boolean;
-  isLoading: boolean;
+  isLoading?: boolean;
   label: string;
   options: T[];
 
@@ -20,7 +20,7 @@ type AutocompleteProps<T extends AutocompleteOptionBase> = {
 
 export function Autocomplete<T extends AutocompleteOptionBase>({
   disabled = false,
-  isLoading,
+  isLoading = false,
   label,
   onChange,
   options,

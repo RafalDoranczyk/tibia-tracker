@@ -132,9 +132,9 @@ export const FetchHuntSessionsListResponseSchema = z.object({
 /* --- Mutations --- */
 const HuntSessionPayloadBaseSchema = HuntSessionDbFieldsSchema.extend({
   monsters: MonsterCountSchema.array(),
-  supplies: SupplyCountSchema.array(),
-  damage_elements: DamageElementCountSchema.array(),
-  damage_sources: HuntSessionDamageSourceSchema.array(),
+  supplies: SupplyCountSchema.array().optional(),
+  damage_elements: DamageElementCountSchema.array().optional(),
+  damage_sources: HuntSessionDamageSourceSchema.array().optional(),
 }).omit({
   id: true,
   raw_exp_per_hour: true,
@@ -168,16 +168,19 @@ export const HuntSessionFormSchema = HuntSessionDbFieldsSchema.omit({
   monsters: MonsterCountSchema.array().refine((items) => uniqueNames(items), {
     message: "Monsters must be unique",
   }),
-  supplies: SupplyCountSchema.array().refine((items) => uniqueNames(items), {
-    message: "Supplies must be unique",
-  }),
-  damage_elements: DamageElementCountSchema.array().refine((items) => uniqueNames(items), {
-    message: "Damage elements must be unique",
-  }),
-  damage_sources: HuntSessionDamageSourceSchema.array().refine(
-    (items) => new Set(items.map((i) => i.id)).size === items.length,
-    {
+  supplies: SupplyCountSchema.array()
+    .refine((items) => uniqueNames(items), {
+      message: "Supplies must be unique",
+    })
+    .optional(),
+  damage_elements: DamageElementCountSchema.array()
+    .refine((items) => uniqueNames(items), {
+      message: "Damage elements must be unique",
+    })
+    .optional(),
+  damage_sources: HuntSessionDamageSourceSchema.array()
+    .refine((items) => new Set(items.map((i) => i.id)).size === items.length, {
       message: "Damage sources must be unique",
-    }
-  ),
+    })
+    .optional(),
 });

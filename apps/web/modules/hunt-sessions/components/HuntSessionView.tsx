@@ -69,7 +69,9 @@ export function HuntSessionView({
         },
   });
 
-  const { handleSubmit, formState } = methods;
+  const { handleSubmit, watch } = methods;
+
+  const monsters = watch("monsters");
 
   // useUnsavedChangesGuard(formState.isDirty);
 
@@ -95,6 +97,7 @@ export function HuntSessionView({
         <Grid container spacing={4}>
           <Grid size={{ xs: 12, lg: 6, xl: 4 }}>
             <HuntSessionLogDetails
+              monsters={monsters}
               isHuntSession={!!huntSession}
               monsterList={monsterList}
               huntPlaceList={huntPlaceList}
@@ -111,7 +114,7 @@ export function HuntSessionView({
         </Grid>
       </Box>
 
-      <FloatingActionButton visible={formState.isDirty} onClick={onSubmit} loading={isPending}>
+      <FloatingActionButton visible={monsters.length > 0} onClick={onSubmit} loading={isPending}>
         Save changes
       </FloatingActionButton>
     </FormProvider>

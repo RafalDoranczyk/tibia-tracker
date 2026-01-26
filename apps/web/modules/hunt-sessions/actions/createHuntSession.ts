@@ -27,9 +27,18 @@ export async function createHuntSession(
   }
 
   await insertSessionMonsters(data.id, monsters);
-  await insertSessionSupplies(data.id, supplies);
-  await insertSessionDamageElements(data.id, damage_elements);
-  await insertSessionDamageSources(data.id, damage_sources);
+
+  if (supplies && supplies.length > 0) {
+    await insertSessionSupplies(data.id, supplies);
+  }
+
+  if (damage_elements && damage_elements?.length > 0) {
+    await insertSessionDamageElements(data.id, damage_elements);
+  }
+
+  if (damage_sources && damage_sources?.length > 0) {
+    await insertSessionDamageSources(data.id, damage_sources);
+  }
 
   return assertZodParse(HuntSessionDbFieldsSchema, data);
 }

@@ -1,3 +1,4 @@
+export { useDebouncedEffect } from "./useDebouncedEffect";
 export { useDebouncedValue } from "./useDebounceValue";
 export { useLocalStorageState } from "./useLocalStorageState";
 export { useMounted } from "./useMounted";

@@ -68,7 +68,7 @@ const vexclawTalon: ScrollItem = {
 // Scrolls
 const vampScroll: Scroll = {
   key: "scroll_vampirism",
-  name: "Vamp",
+  name: "Vampirism",
   craftMethods: ["items", "tokens"],
   color: "#C62828",
   imageUrl: SCROLL_IMAGES.scroll_vampirism,

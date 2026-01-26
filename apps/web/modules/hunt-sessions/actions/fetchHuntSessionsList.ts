@@ -30,6 +30,7 @@ export async function fetchHuntSessionsList(
   let query = supabase
     .from("hunt_sessions")
     .select(HUNT_SESSIONS_SELECT, { count: "exact" })
+    .order("date", { ascending: false })
     .eq("character_id", payload.character_id);
 
   if (orderBy) {
