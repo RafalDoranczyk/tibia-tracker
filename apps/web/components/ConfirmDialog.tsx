@@ -187,16 +187,7 @@ function ConfirmDialogHeader({
 ====================================================== */
 
 function ConfirmDialogContent({ children }: { children: React.ReactNode }) {
-  return (
-    <DialogContent
-      sx={{
-        pt: 1,
-        pb: 0,
-      }}
-    >
-      {children}
-    </DialogContent>
-  );
+  return <DialogContent dividers>{children}</DialogContent>;
 }
 
 /* ======================================================

@@ -7,8 +7,9 @@ import { assertZodParse } from "@/utils";
 
 import { BestiaryCacheTags } from "../cacheTags";
 import { UpdateCharacterBestiaryEntrySchema } from "../schemas";
+import type { UpdateCharacterBestiaryEntry } from "../types";
 
-export async function UpdateCharacterBestiary(input: unknown) {
+export async function UpdateCharacterBestiary(input: UpdateCharacterBestiaryEntry) {
   const { characterId, monsterId, updates } = assertZodParse(
     UpdateCharacterBestiaryEntrySchema,
     input
