@@ -47,8 +47,6 @@ export function useScrollPricing(scroll: Scroll) {
   const tokenPrice = prices.gold_token ?? 0;
   const scrollPrice = prices[scroll.key] ?? 0;
 
-  // console.log(scroll);
-
   const hasAllPrices = useMemo(() => hasAllRequiredPrices(scroll, prices), [scroll, prices]);
 
   const economy = useMemo(() => {

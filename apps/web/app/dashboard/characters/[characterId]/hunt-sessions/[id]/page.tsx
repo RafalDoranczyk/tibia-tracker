@@ -13,15 +13,13 @@ import {
   HuntSessionView,
 } from "@/modules/hunt-sessions";
 
-import type { CharacterRouteParams } from "../../../types";
+import type { CharacterPageProps } from "../../../types";
 
-type EditHuntSessionPageProps = {
-  params: Promise<CharacterRouteParams & { id: string }>;
-};
+type EditHuntSessionPageProps = CharacterPageProps<{ id: string }>;
 
 export default async function EditHuntSessionPage({ params }: EditHuntSessionPageProps) {
-  const awaitedParams = await params;
-  const huntSessionId = Number(awaitedParams.id);
+  const { characterId, id } = await params;
+  const huntSessionId = Number(id);
 
   const [monsterList, huntPlaceList, supplyList, damageElementList, huntSession] =
     await Promise.all([
@@ -43,7 +41,7 @@ export default async function EditHuntSessionPage({ params }: EditHuntSessionPag
           component={LinkNext}
           underline="hover"
           color="inherit"
-          href={PATHS.CHARACTER(awaitedParams.characterId).HUNT_SESSIONS.LIST}
+          href={PATHS.CHARACTER(characterId).HUNT_SESSIONS.LIST}
         >
           Hunt Sessions
         </Link>

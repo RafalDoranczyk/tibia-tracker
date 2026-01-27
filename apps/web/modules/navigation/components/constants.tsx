@@ -35,6 +35,16 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
         },
       },
       {
+        id: "charms",
+        text: "Charms",
+        to: (c) => c.CHARMS,
+        requiresCharacter: true,
+        icon: {
+          type: "image",
+          src: NAVIGATION_IMAGES.charms,
+        },
+      },
+      {
         id: "bestiary",
         text: "Bestiary",
         to: (c) => c.BESTIARY,

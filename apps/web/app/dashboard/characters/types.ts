@@ -1,10 +1,7 @@
-export type CharacterRouteParams = {
-  characterId: string;
-};
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
-export type CharacterSearchParams = Record<string, string | string[] | undefined>;
-
-export type CharacterPageProps = {
-  params: Promise<CharacterRouteParams>;
-  searchParams?: Promise<CharacterSearchParams>;
+// Prop characterId is required in the params for all character pages
+export type CharacterPageProps<TParams extends Record<string, string> = { characterId: string }> = {
+  params: Promise<TParams & { characterId: string }>;
+  searchParams: SearchParams;
 };

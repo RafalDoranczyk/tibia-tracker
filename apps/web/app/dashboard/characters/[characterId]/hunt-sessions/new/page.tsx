@@ -12,14 +12,11 @@ import {
   HuntSessionView,
 } from "@/modules/hunt-sessions";
 
-import type { CharacterRouteParams } from "../../../types";
+import type { CharacterPageProps } from "../../../types";
 
-type NewHuntSessionPageProps = {
-  params: Promise<CharacterRouteParams>;
-};
+export default async function NewHuntSessionPage({ params }: CharacterPageProps) {
+  const { characterId } = await params;
 
-export default async function NewHuntSessionPage({ params }: NewHuntSessionPageProps) {
-  const awaitedParams = await params;
   const [monsterList, huntPlaceList, supplyList, damageElementList] = await Promise.all([
     fetchMonstersPreview(),
     fetchHuntPlaces(),
@@ -38,7 +35,7 @@ export default async function NewHuntSessionPage({ params }: NewHuntSessionPageP
           component={LinkNext}
           underline="hover"
           color="inherit"
-          href={PATHS.CHARACTER(awaitedParams.characterId).HUNT_SESSIONS.LIST}
+          href={PATHS.CHARACTER(characterId).HUNT_SESSIONS.LIST}
         >
           Hunt Sessions
         </Link>

@@ -75,10 +75,6 @@ export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
     return <ImbuingViewSkeleton />;
   }
 
-  console.log(imbuingItemPrices);
-
-  console.log("render");
-
   return (
     <Stack spacing={3}>
       <Stack>

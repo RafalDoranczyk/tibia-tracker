@@ -11,7 +11,7 @@ const gloomWolfFur: ScrollItem = {
 
 const flaskOfEmbalmingFluid: ScrollItem = {
   key: "flask_of_embalming_fluid",
-  name: "Embalming Fluid",
+  name: "Flask of Embalming Fluid",
   quantity: 25,
   imageUrl: ITEM_IMAGES.flask_of_embalming_fluid,
 };
@@ -25,7 +25,7 @@ const mysticalHourglass: ScrollItem = {
 
 const pieceOfSwamplingWood: ScrollItem = {
   key: "piece_of_swampling_wood",
-  name: "Swampling Wood",
+  name: "Piece of Swampling Wood",
   quantity: 25,
   imageUrl: ITEM_IMAGES.piece_of_swampling_wood,
 };
