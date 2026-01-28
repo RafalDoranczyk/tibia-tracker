@@ -1,7 +1,8 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Divider, Stack, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { FormProvider, useForm, useFormContext, useFormState } from "react-hook-form";
 
 import { FloatingActionButton } from "@/components";
 
@@ -9,27 +10,16 @@ import { baseScrolls } from "../data/scrolls/base";
 import { elementalScrolls } from "../data/scrolls/elemental";
 import { skillScrolls } from "../data/scrolls/skill";
 import { useSaveImbuingPrices } from "../hooks/useSaveImbuingPrices";
-import { useImbuingPriceStore } from "../imbuingPriceStore";
-import type { ImbuingItem, Scroll } from "../types";
+import { mapImbuingItemPricesFromDb } from "../mappers/mapImbuingItemPricesFromDb";
+import { ImbuingFormSchema } from "../schemas";
+import type { ImbuingFormValues, ImbuingItem, Scroll } from "../types";
 import { ImbuingScrollCard } from "./ImbuingScrollCard";
 import { ImbuingScrollCardPriceInput } from "./ImbuingScrollCardPriceInput";
-import { ImbuingViewSkeleton } from "./ImbuingViewSkeleton";
 
 type ScrollsSectionProps = {
   scrolls: Scroll[];
   title: string;
 };
-
-function FloatingSaveImbuingButton() {
-  const hasChanges = useImbuingPriceStore((s) => s.hasChanges);
-  const { onSave, isPending } = useSaveImbuingPrices();
-
-  return (
-    <FloatingActionButton visible={hasChanges} onClick={onSave} loading={isPending}>
-      Save changes
-    </FloatingActionButton>
-  );
-}
 
 function ScrollsSection({ scrolls, title }: ScrollsSectionProps) {
   return (
@@ -38,7 +28,6 @@ function ScrollsSection({ scrolls, title }: ScrollsSectionProps) {
         <Typography variant="h5" fontWeight={800}>
           {title}
         </Typography>
-
         <Divider sx={{ flexGrow: 1 }} />
       </Stack>
 
@@ -52,10 +41,22 @@ function ScrollsSection({ scrolls, title }: ScrollsSectionProps) {
         gap={2}
       >
         {scrolls.map((scroll) => (
-          <ImbuingScrollCard key={scroll.name} scroll={scroll} />
+          <ImbuingScrollCard key={scroll.key} scroll={scroll} />
         ))}
       </Box>
     </div>
+  );
+}
+
+function FloatingSaveImbuingButton() {
+  const { onSave, isPending } = useSaveImbuingPrices();
+  const { handleSubmit, control } = useFormContext();
+  const isDirty = useFormState({ control }).isDirty;
+
+  return (
+    <FloatingActionButton visible={isDirty} onClick={handleSubmit(onSave)} loading={isPending}>
+      Save changes
+    </FloatingActionButton>
   );
 }
 
@@ -64,30 +65,27 @@ type ImbuingViewProps = {
 };
 
 export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
-  const initialize = useImbuingPriceStore((s) => s.initialize);
-  const isInitialized = useImbuingPriceStore((s) => s.isInitialized);
+  const defaultValues = mapImbuingItemPricesFromDb(imbuingItemPrices);
 
-  useEffect(() => {
-    initialize(imbuingItemPrices);
-  }, [imbuingItemPrices, initialize]);
-
-  if (!isInitialized) {
-    return <ImbuingViewSkeleton />;
-  }
+  const form = useForm<ImbuingFormValues>({
+    defaultValues,
+    resolver: zodResolver(ImbuingFormSchema),
+  });
 
   return (
-    <Stack spacing={3}>
-      <Stack>
-        <ImbuingScrollCardPriceInput
-          label="Gold Token Price"
-          inputKey="gold_token"
-          sx={{ width: 120, ml: "auto" }}
-        />
+    <FormProvider {...form}>
+      <Stack spacing={3}>
+        <Box display="flex" justifyContent="flex-end">
+          <Box width={140}>
+            <ImbuingScrollCardPriceInput label="Gold Token Price" inputKey="gold_token" />
+          </Box>
+        </Box>
+
+        <ScrollsSection title="Basic Scrolls" scrolls={baseScrolls} />
+        <ScrollsSection title="Elemental Scrolls" scrolls={elementalScrolls} />
+        <ScrollsSection title="Skill Scrolls" scrolls={skillScrolls} />
+        <FloatingSaveImbuingButton />
       </Stack>
-      <ScrollsSection title="Basic Scrolls" scrolls={baseScrolls} />
-      <ScrollsSection title="Elemental Scrolls" scrolls={elementalScrolls} />
-      <ScrollsSection title="Skill Scrolls" scrolls={skillScrolls} />
-      <FloatingSaveImbuingButton />
-    </Stack>
+    </FormProvider>
   );
 }

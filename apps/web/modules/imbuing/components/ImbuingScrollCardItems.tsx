@@ -53,7 +53,7 @@ export function ImbuingScrollCardItems({ items }: ImbuingScrollCardItemsProps) {
                   </TableCell>
                   <TableCell align="right">{quantity}</TableCell>
                   <TableCell align="right" width={130}>
-                    <ImbuingScrollCardPriceInput label="Price (each)" inputKey={key} />
+                    <ImbuingScrollCardPriceInput size="small" label="Price (each)" inputKey={key} />
                   </TableCell>
                 </TableRow>
               );

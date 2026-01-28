@@ -5,7 +5,7 @@ import { useTheme } from "@mui/material";
 import type { EmptySvgProps } from "./EmptyState";
 
 // Default geometric empty state icon
-export function DefaultImage({ height, width }: EmptySvgProps) {
+export function DefaultEmptyImage({ height, width }: EmptySvgProps) {
   const { palette } = useTheme();
 
   return (

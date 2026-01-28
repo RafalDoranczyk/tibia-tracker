@@ -29,24 +29,14 @@ function SummaryRow({
 }
 
 type Props = {
-  showTokenStrategies: boolean;
   economy: ScrollEconomyResult;
+  showTokenStrategies: boolean;
 };
 
 export function ImbuingScrollCardSummary({ economy, showTokenStrategies }: Props) {
-  const { costWithItems, profitWithItems, costWithTokens, profitWithTokens, tokenFlipProfit } =
-    economy;
-
   return (
-    <Paper
-      sx={{
-        p: 2,
-        width: "100%",
-        height: "100%",
-      }}
-      variant="outlined"
-    >
-      {/* ================= ITEMS ================= */}
+    <Paper sx={{ p: 2, width: "100%", height: "100%" }} variant="outlined">
+      {/* ITEMS */}
       <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
         <Typography variant="subtitle2" fontWeight={700}>
           Using items
@@ -55,18 +45,16 @@ export function ImbuingScrollCardSummary({ economy, showTokenStrategies }: Props
       </Stack>
 
       <Stack spacing={0.75}>
-        <SummaryRow label="Cost" value={costWithItems} />
-
+        <SummaryRow label="Cost" value={economy.costWithItems} />
         <SummaryRow
           label="Profit"
-          value={profitWithItems}
-          color={profitWithItems > 0 ? "success.main" : "error.main"}
+          value={economy.profitWithItems}
+          color={economy.profitWithItems > 0 ? "success.main" : "error.main"}
         />
       </Stack>
 
       <Divider sx={{ my: 1 }} />
 
-      {/* ================= TOKENS ================= */}
       {showTokenStrategies && (
         <>
           <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
@@ -77,18 +65,16 @@ export function ImbuingScrollCardSummary({ economy, showTokenStrategies }: Props
           </Stack>
 
           <Stack spacing={0.75}>
-            <SummaryRow label="Cost" value={costWithTokens} />
-
+            <SummaryRow label="Cost" value={economy.costWithTokens} />
             <SummaryRow
               label="Profit"
-              value={profitWithTokens}
-              color={profitWithTokens > 0 ? "success.main" : "error.main"}
+              value={economy.profitWithTokens}
+              color={economy.profitWithTokens > 0 ? "success.main" : "error.main"}
             />
-
             <SummaryRow
               label="Tokens → Items"
-              value={tokenFlipProfit}
-              color={tokenFlipProfit > 0 ? "success.main" : "error.main"}
+              value={economy.tokenFlipProfit}
+              color={economy.tokenFlipProfit > 0 ? "success.main" : "error.main"}
             />
           </Stack>
         </>

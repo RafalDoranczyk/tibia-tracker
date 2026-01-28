@@ -13,7 +13,7 @@ export async function fetchCharacterCharmEconomy(characterId: string): Promise<C
     .from("character_charm_economy")
     .select("*")
     .eq("character_id", characterId)
-    .single();
+    .maybeSingle();
 
   if (error) {
     throw new Error("Failed to fetch character charm economy");

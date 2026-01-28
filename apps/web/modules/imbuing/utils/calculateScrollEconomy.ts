@@ -5,7 +5,7 @@ import {
   MARKET_TAX_RATE,
   POWERFULL_SCROLL_MAKING_PRICE,
 } from "../constants";
-import type { ImbuingPrices, Scroll, ScrollItem, ScrollType } from "../types";
+import type { ImbuingFormValues, Scroll, ScrollItem, ScrollType } from "../types";
 import { canBuyScrollForTokens } from "./canBuyScrollForTokens";
 
 function getScrollLaborCost(scrollType: ScrollType) {
@@ -26,11 +26,11 @@ function calculateScrollCostWithTokens({
 
 function calculateScrollCostWithItems({
   scrollType,
-  itemsPrice,
-}: { scrollType: ScrollType; itemsPrice: number }) {
+  itemsTotalCost,
+}: { scrollType: ScrollType; itemsTotalCost: number }) {
   const laborCost = getScrollLaborCost(scrollType);
 
-  return laborCost + itemsPrice;
+  return laborCost + itemsTotalCost;
 }
 
 function calculateTokenToItemsProfit({
@@ -39,11 +39,13 @@ function calculateTokenToItemsProfit({
   tokenPrice,
 }: {
   items: ScrollItem[];
-  itemPrices: ImbuingPrices;
+  itemPrices: ImbuingFormValues;
   tokenPrice: number;
 }) {
-  const tokensCost = tokenPrice * 6;
+  // 1. cost of tokens
+  const tokensCost = tokenPrice * GOLD_TOKENS_NEEDED_FOR_SCROLL;
 
+  // 2. gross value of items
   const itemsGrossValue = items.reduce((total, item) => {
     const price = itemPrices[item.key] ?? 0;
     return total + price * item.quantity;
@@ -60,6 +62,7 @@ function calculateTokenToItemsProfit({
 }
 
 function calculateProfit({ price, cost }: { price: number; cost: number }) {
+  // price = market price, tax applied on sale
   return price * (1 - MARKET_TAX_RATE) - cost;
 }
 
@@ -67,7 +70,7 @@ function calculateItemsCostUsingTokens(tokenPrice: number) {
   return tokenPrice * GOLD_TOKENS_NEEDED_FOR_SCROLL;
 }
 
-function calculateScrollItemsTotal(items: ScrollItem[], prices: ImbuingPrices) {
+function calculateScrollItemsTotal(items: ScrollItem[], prices: ImbuingFormValues) {
   return items.reduce((total, item) => total + (prices[item.key] ?? 0) * item.quantity, 0);
 }
 
@@ -79,12 +82,12 @@ export function calculateScrollEconomy({
 }: {
   scroll: Scroll;
   scrollPrice: number;
-  itemPrices: ImbuingPrices;
+  itemPrices: ImbuingFormValues;
   tokenPrice: number;
 }) {
   const scrollType = scroll.scrollType ?? "powerful";
 
-  const itemsPrice = calculateScrollItemsTotal(scroll.items, itemPrices);
+  const itemsTotalCost = calculateScrollItemsTotal(scroll.items, itemPrices);
 
   let costWithTokens = 0;
   let profitWithTokens = 0;
@@ -92,7 +95,7 @@ export function calculateScrollEconomy({
 
   const costWithItems = calculateScrollCostWithItems({
     scrollType,
-    itemsPrice,
+    itemsTotalCost,
   });
 
   const profitWithItems = calculateProfit({

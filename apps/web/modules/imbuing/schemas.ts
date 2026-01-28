@@ -17,3 +17,5 @@ export const ImbuingItemSchema = z.object({
 export const UpdateImbuingPricesSchema = z.object({
   items: z.array(ImbuingItemSchema),
 });
+
+export const ImbuingFormSchema = z.record(ImbuingPriceKeySchema, z.coerce.number().nonnegative());

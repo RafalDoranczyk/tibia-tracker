@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: APP_DESCRIPTION,
 };
 
-export default async function RootLayout({ children }: PropsWithChildren) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className={fonts.variable}>
       <body>

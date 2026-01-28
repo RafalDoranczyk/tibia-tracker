@@ -3,24 +3,16 @@ import { useTransition } from "react";
 import { useToast } from "@/providers/global";
 
 import { updateImbuingItemPrices } from "../actions/updateImbuingItemPrices";
-import { useImbuingPriceStore } from "../imbuingPriceStore";
-import { getPriceChanges } from "../utils/getPriceChanges";
+import type { ImbuingFormValues } from "../types";
 
 export function useSaveImbuingPrices() {
-  const [isPending, startTransition] = useTransition();
   const toast = useToast();
+  const [isPending, startTransition] = useTransition();
 
-  const markSaved = useImbuingPriceStore((s) => s.markSaved);
-
-  const onSave = async () => {
-    const { prices, savedPrices } = useImbuingPriceStore.getState();
-    const changes = getPriceChanges(prices, savedPrices);
-    if (!Object.keys(changes).length) return;
-
+  const onSave = async (values: ImbuingFormValues) => {
     startTransition(async () => {
       try {
-        await updateImbuingItemPrices(changes);
-        markSaved();
+        await updateImbuingItemPrices(values);
         toast.success("Prices saved");
       } catch {
         toast.error("Failed to save prices");

@@ -9,6 +9,12 @@ eslint: {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "saoouvvhunyuohwqmbwy.supabase.co",
+       pathname: "/storage/v1/object/public/**",
+
+      },
+      {
+        protocol: "https",
         hostname: "tibiadraptor.com",
         pathname: "/images/monsters/**",
       },
