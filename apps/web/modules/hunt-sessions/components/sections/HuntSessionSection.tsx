@@ -54,7 +54,7 @@ export function HuntSessionSection({ children, title, isRequired }: HuntSessionS
           borderRadius: 3,
           border: "1px solid",
           borderColor: (t) => (isRequired ? t.palette.primary.main : t.palette.divider),
-          borderWidth: isRequired ? 2 : 1,
+          borderWidth: isRequired ? 1.5 : 1,
           bgcolor: (t) => (isRequired ? `${t.palette.primary.main}08` : "background.paper"),
           boxShadow: isRequired ? (t) => `0 0 0 2px ${t.palette.primary.main}20` : undefined,
           transition: "all .2s ease",

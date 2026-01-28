@@ -4,9 +4,9 @@ import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { UpdateImbuingPricesSchema } from "../schemas";
-import type { ImbuingPrices } from "../types";
+import type { ImbuingFormValues } from "../types";
 
-export async function updateImbuingItemPrices(prices: ImbuingPrices) {
+export async function updateImbuingItemPrices(prices: ImbuingFormValues) {
   const { user } = await getUserScopedQuery();
 
   const parsed = assertZodParse(UpdateImbuingPricesSchema, {
@@ -24,7 +24,6 @@ export async function updateImbuingItemPrices(prices: ImbuingPrices) {
     .upsert(parsed.items, { onConflict: "user_id, key" });
 
   if (error) {
-    console.log(error);
     throw new Error("Failed to update imbuing item prices");
   }
 }

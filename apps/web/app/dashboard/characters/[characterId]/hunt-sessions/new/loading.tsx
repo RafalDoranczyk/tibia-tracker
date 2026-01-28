@@ -1,5 +1,5 @@
 import { HuntSessionPageLoading } from "@/modules/hunt-sessions";
 
-export default async function Loading() {
+export default function Loading() {
   return <HuntSessionPageLoading />;
 }

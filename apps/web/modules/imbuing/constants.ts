@@ -4,7 +4,6 @@ export const INTRICATE_SCROLL_MAKING_PRICE = 60_000;
 export const GOLD_TOKENS_NEEDED_FOR_SCROLL = 6;
 export const DEFAULT_GOLD_TOKEN_PRICE = 48_000;
 export const MARKET_TAX_RATE = 0.02;
-export const PRICE_DEBOUNCE_MS = 600;
 
 export const IMBUING_SCROLL_ITEM_KEYS = [
   // tokens

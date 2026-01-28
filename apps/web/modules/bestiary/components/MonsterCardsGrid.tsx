@@ -19,7 +19,7 @@ export function MonsterCardsGrid({ monsters }: MonsterCardsGridProps) {
     </Grid>
   ) : (
     <Box display="flex" justifyContent="center" width="100%">
-      <EmptyState type="monsters" title="No monsters found with the selected filters." />
+      <EmptyState variant="monsters" title="No monsters found with the selected filters." />
     </Box>
   );
 }

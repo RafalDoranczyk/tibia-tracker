@@ -93,108 +93,114 @@ export function HuntSessionLogDetails({
   const isBtnVisible = !(isHuntSession || monsters.length > 0);
 
   return (
-    <HuntSessionSection isRequired title="Session Details">
-      <Stack spacing={SPACING}>
-        <Stack direction="row" justifyContent="flex-end" alignItems="center">
-          <Tooltip
-            slots={{
-              transition: Fade,
-            }}
-            slotProps={{
-              transition: { timeout: 400 },
-            }}
-            placement="left"
-            title="Upload a session log to auto-fill the form"
-            arrow
-            open={isBtnVisible}
-          >
-            <Button
-              disabled={isBtnDisabled}
-              variant="contained"
-              color="secondary"
-              onClick={() => setOpen(true)}
-            >
-              Upload Session Log
-            </Button>
-          </Tooltip>
-        </Stack>
+    <Tooltip
+      slots={{
+        transition: Fade,
+      }}
+      slotProps={{
+        transition: { timeout: 400 },
+      }}
+      placement="top-end"
+      title="Upload a session log to auto-fill the form"
+      arrow
+      open={isBtnVisible}
+    >
+      <div>
+        <HuntSessionSection isRequired title="Session Details">
+          <Stack spacing={SPACING}>
+            <Stack direction="row" justifyContent="flex-end" alignItems="center">
+              <Button
+                disabled={isBtnDisabled}
+                variant="contained"
+                color="secondary"
+                onClick={() => setOpen(true)}
+              >
+                Upload Session Log
+              </Button>
+            </Stack>
 
-        <Stack direction="row" spacing={SPACING}>
-          <ControlledSelect
-            label="Hunt Place"
-            name="place_id"
-            control={control}
-            options={huntPlaceList}
-          />
+            <Stack direction="row" spacing={SPACING}>
+              <ControlledSelect
+                label="Hunt Place"
+                name="place_id"
+                control={control}
+                options={huntPlaceList}
+              />
 
-          <ControlledTextField control={control} name="date" type="date" label="Date" />
-        </Stack>
+              <ControlledTextField control={control} name="date" type="date" label="Date" />
+            </Stack>
 
-        <Stack direction={{ xs: "column", xl: "row" }} spacing={SPACING}>
-          <ControlledSelect
-            label="Player count"
-            name="player_count"
-            control={control}
-            options={HUNT_SESSION_PLAYER_OPTIONS}
-          />
+            <Stack direction={{ xs: "column", xl: "row" }} spacing={SPACING}>
+              <ControlledSelect
+                label="Player count"
+                name="player_count"
+                control={control}
+                options={HUNT_SESSION_PLAYER_OPTIONS}
+              />
 
-          <ControlledTextField
-            control={control}
-            name="level"
-            type="number"
-            label="Level"
-            fullWidth
-          />
+              <ControlledTextField
+                control={control}
+                name="level"
+                type="number"
+                label="Level"
+                fullWidth
+              />
 
-          <ControlledTextField control={control} name="minutes" type="number" label="Minutes" />
-        </Stack>
+              <ControlledTextField control={control} name="minutes" type="number" label="Minutes" />
+            </Stack>
 
-        <Stack direction={{ xs: "column", xl: "row" }} spacing={SPACING}>
-          <ControlledTextField
-            control={control}
-            name="balance"
-            type="number"
-            label="Balance"
-            fullWidth
-          />
+            <Stack direction={{ xs: "column", xl: "row" }} spacing={SPACING}>
+              <ControlledTextField
+                control={control}
+                name="balance"
+                type="number"
+                label="Balance"
+                fullWidth
+              />
 
-          <ControlledTextField
-            control={control}
-            name="raw_xp_gain"
-            type="number"
-            label="Raw XP Gain"
-            fullWidth
-          />
+              <ControlledTextField
+                control={control}
+                name="raw_xp_gain"
+                type="number"
+                label="Raw XP Gain"
+                fullWidth
+              />
 
-          <ControlledTextField
-            control={control}
-            name="xp_gain"
-            type="number"
-            label="XP Gain"
-            fullWidth
-          />
-        </Stack>
+              <ControlledTextField
+                control={control}
+                name="xp_gain"
+                type="number"
+                label="XP Gain"
+                fullWidth
+              />
+            </Stack>
 
-        <div>
-          <Stack direction="row" alignItems="center" gap={1} mb={1}>
-            <BugReportOutlined fontSize="small" color="success" />
-            <Typography variant="subtitle2" fontWeight="bold">
-              Killed Monsters
-            </Typography>
+            <div>
+              <Stack direction="row" alignItems="center" gap={1} mb={1}>
+                <BugReportOutlined fontSize="small" color="success" />
+                <Typography variant="subtitle2" fontWeight="bold">
+                  Killed Monsters
+                </Typography>
+              </Stack>
+              <Divider flexItem />
+
+              {monsters.length === 0 ? (
+                <Typography mt={2} variant="body2" color="text.secondary">
+                  Monsters killed will be displayed here once you add them to the session log.
+                </Typography>
+              ) : (
+                <MonsterList monsters={monsters} monsterList={monsterList} />
+              )}
+            </div>
           </Stack>
-          <Divider flexItem />
 
-          {monsters.length === 0 ? (
-            <Typography mt={2} variant="body2" color="text.secondary">
-              Monsters killed will be displayed here once you add them to the session log.
-            </Typography>
-          ) : (
-            <MonsterList monsters={monsters} monsterList={monsterList} />
-          )}
-        </div>
-      </Stack>
-
-      <UploadSessionModal monsterList={monsterList} open={open} onClose={() => setOpen(false)} />
-    </HuntSessionSection>
+          <UploadSessionModal
+            monsterList={monsterList}
+            open={open}
+            onClose={() => setOpen(false)}
+          />
+        </HuntSessionSection>
+      </div>
+    </Tooltip>
   );
 }

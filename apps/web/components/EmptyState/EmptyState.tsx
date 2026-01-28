@@ -2,9 +2,9 @@
 
 import { Box, type BoxProps, Fade, Stack, Typography } from "@mui/material";
 
-import { DefaultImage } from "./DefaultImage";
+import { DefaultEmptyImage } from "./DefaultEmptyImage";
+import { EmptyEconomyImage } from "./EmptyEconomyImage";
 import { EmptyMonstersImage } from "./EmptyMonstersImage";
-
 /* ----------------------------------------
  * Types
  * ------------------------------------- */
@@ -16,7 +16,7 @@ export type EmptySvgProps = {
 
 type EmptyImageComponent = (props: EmptySvgProps) => React.ReactNode;
 
-type ImageType = "default" | "monsters";
+type ImageType = "default" | "monsters" | "economy";
 type Sizes = "big" | "medium" | "small";
 
 type EmptyStateProps = BoxProps & {
@@ -25,12 +25,13 @@ type EmptyStateProps = BoxProps & {
   size?: Sizes;
   subtitle?: string;
   title?: string;
-  type?: ImageType;
+  variant?: ImageType;
 };
 
 const ImageMap: Record<ImageType, EmptyImageComponent> = {
-  default: DefaultImage,
+  default: DefaultEmptyImage,
   monsters: EmptyMonstersImage,
+  economy: EmptyEconomyImage,
 };
 
 const ImageSizesMap: Record<Sizes, EmptySvgProps> = {
@@ -49,10 +50,10 @@ export function EmptyState({
   size = "big",
   subtitle,
   title = "Nothing here yet",
-  type = "default",
+  variant = "default",
   ...boxProps
 }: EmptyStateProps) {
-  const Image = ImageMap[type];
+  const Image = ImageMap[variant];
   const imageSize = ImageSizesMap[size];
 
   return (

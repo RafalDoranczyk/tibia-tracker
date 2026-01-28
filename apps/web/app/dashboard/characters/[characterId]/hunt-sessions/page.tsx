@@ -8,7 +8,7 @@ import { fetchHuntSessionsList, HuntSessionsView } from "@/modules/hunt-sessions
 import type { CharacterPageProps } from "../../types";
 
 export default async function HuntSessions({ params }: CharacterPageProps) {
-  const characterId = (await params).characterId;
+  const { characterId } = await params;
   const { data: huntSessions, count } = await fetchHuntSessionsList({
     limit: 10,
     character_id: characterId,
@@ -53,7 +53,6 @@ export default async function HuntSessions({ params }: CharacterPageProps) {
             </Button>
           }
           title="No hunt sessions"
-          type="default"
         />
       ) : (
         <HuntSessionsView huntSessions={huntSessions} count={count} />

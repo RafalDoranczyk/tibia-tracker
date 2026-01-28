@@ -1,3 +1,3 @@
-export default async function HuntPlaces() {
+export default function HuntPlaces() {
   return <div>Hunt Places</div>;
 }
