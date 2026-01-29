@@ -9,6 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 
+import { AdminOnly } from "@/modules/user";
+
 import type { HuntSessionUnknownEntities, HuntSessionUnknownEntity } from "../types";
 
 type UnknownEntitiesModalProps = {
@@ -67,6 +69,10 @@ export function UnknownEntitiesModal({
           <UnknownChips title="Unknown items" items={items} />
           <UnknownChips title="Unknown monsters" items={monsters} />
         </Stack>
+
+        <AdminOnly>
+          <div>admin only</div>
+        </AdminOnly>
       </DialogContent>
     </Dialog>
   );

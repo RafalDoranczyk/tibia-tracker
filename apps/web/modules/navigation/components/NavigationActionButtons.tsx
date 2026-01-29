@@ -2,9 +2,9 @@
 
 import { Box } from "@mui/material";
 
-import { logout } from "@/actions/auth";
 import { TooltipIconButton } from "@/components";
 import type { Character } from "@/modules/characters";
+import { logout } from "@/modules/user";
 import { useActiveCharacter } from "@/providers/feature/dashboard";
 
 import { CharacterSwitcher } from "./CharacterSwitcher";

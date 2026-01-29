@@ -7,6 +7,7 @@ import {
   DESKTOP_APP_NAVIGATION_DRAWER_WIDTH,
   Navigation,
 } from "@/modules/navigation";
+import { getUser } from "@/modules/user";
 import { DashboardProviders } from "@/providers/feature/dashboard/DashboardProviders";
 
 type DashboardLayoutProps = PropsWithChildren<{
@@ -14,6 +15,7 @@ type DashboardLayoutProps = PropsWithChildren<{
 }>;
 
 export default async function DashboardLayout({ children, params }: DashboardLayoutProps) {
+  const user = await getUser();
   const characters = await fetchCharacters();
   const { characterId } = await params;
 
@@ -24,7 +26,7 @@ export default async function DashboardLayout({ children, params }: DashboardLay
   }
 
   return (
-    <DashboardProviders initialCharacterId={initialCharacterId}>
+    <DashboardProviders initialUser={user} initialCharacterId={initialCharacterId}>
       <Navigation characters={characters} />
       <Box ml={{ lg: DESKTOP_APP_NAVIGATION_DRAWER_WIDTH }} mt={APP_BAR_HEIGHT} p={4}>
         {children}

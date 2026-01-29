@@ -22,7 +22,7 @@ import type {
 } from "../types";
 import { HuntSessionParseError, parseHuntSessionJSON } from "../utils/parseHuntSessionJSON";
 
-function patchFormValues<T extends Record<string, any>>(
+function patchFormValues<T extends Record<string, unknown>>(
   values: T,
   setValue: (name: keyof T, value: T[keyof T]) => void
 ) {

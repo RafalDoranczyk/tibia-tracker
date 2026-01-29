@@ -1,4 +1,4 @@
-import { getUser } from "@/actions/user";
+import { getUser } from "@/modules/user";
 
 import { createSupabase } from "./config";
 
