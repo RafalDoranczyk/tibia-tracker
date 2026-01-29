@@ -14,7 +14,7 @@ const HuntSessionDbKeys = Object.keys(HuntSessionDbFieldsSchema.shape).join(", "
 
 const HUNT_SESSIONS_SELECT = `
   ${HuntSessionDbKeys},
-  place:hunting_places!inner(id, name, image_url)
+  place:hunt_places!inner(id, name, image_path)
 `;
 
 export async function fetchHuntSessionsList(
@@ -50,6 +50,8 @@ export async function fetchHuntSessionsList(
   if (error) {
     throw new Error("Failed to fetch hunt sessions");
   }
+
+  console.log(data);
 
   return assertZodParse(FetchHuntSessionsListResponseSchema, { count, data });
 }

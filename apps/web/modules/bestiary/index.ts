@@ -20,5 +20,6 @@ export { BestiaryCacheTags } from "./cacheTags";
 export {
   CharacterBestiaryClassSummarySchema,
   CharacterBestiarySummarySchema,
+  MonsterSchema,
 } from "./schemas";
 export type { BestiaryClass, Monster } from "./types";

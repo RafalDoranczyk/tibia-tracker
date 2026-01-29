@@ -15,7 +15,7 @@ export async function insertSessionMonsters(sessionId: number, monsters: Monster
 
   if (!payload.length) return;
 
-  const { error } = await supabase.from("hunt_session_monsters").insert(payload);
+  const { error } = await supabase.from("hunt_session_monster_kills").insert(payload);
 
   if (error) {
     throw new Error("Failed to insert session monsters");
@@ -26,7 +26,7 @@ export async function deleteSessionMonsters(sessionId: number) {
   const { supabase } = await getUserScopedQuery();
 
   const { error } = await supabase
-    .from("hunt_session_monsters")
+    .from("hunt_session_monster_kills")
     .delete()
     .eq("session_id", sessionId);
 

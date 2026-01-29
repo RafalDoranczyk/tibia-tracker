@@ -13,8 +13,8 @@ export async function fetchHuntPlaces() {
   const { user, supabase } = await getUserScopedQuery();
 
   const { data, error } = await supabase
-    .from("hunting_places")
-    .select("id, user_id, name, image_url")
+    .from("hunt_places")
+    .select("id, user_id, name, image_path")
     .or(`user_id.eq.${user.id},user_id.is.null`);
 
   if (error) {

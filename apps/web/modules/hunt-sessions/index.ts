@@ -10,6 +10,7 @@ export { fetchSupplies } from "./actions/fetchSupplies";
 // ======================
 // UI – public components
 // ======================
+export { HuntSessionFormProvider } from "./components/HuntSessionFormProvider";
+export { HuntSessionListView } from "./components/HuntSessionListView";
 export { HuntSessionPageLoading } from "./components/HuntSessionPageLoading";
-export { HuntSessionsView } from "./components/HuntSessionsView";
 export { HuntSessionView } from "./components/HuntSessionView";

@@ -18,15 +18,10 @@ import type { CharacterBestiaryClassSummary, CharacterBestiarySummary } from "..
 
 type BestiaryFloatingPanelProps = {
   globalSummary: CharacterBestiarySummary;
-  classSummary: CharacterBestiaryClassSummary;
-  hasSearch: boolean;
+  classSummary: CharacterBestiaryClassSummary | null;
 };
 
-export function BestiaryFloatingPanel({
-  globalSummary,
-  classSummary,
-  hasSearch,
-}: BestiaryFloatingPanelProps) {
+export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryFloatingPanelProps) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -149,7 +144,7 @@ export function BestiaryFloatingPanel({
           </Stack>
         </Box>
 
-        {hasSearch ? (
+        {!classSummary ? (
           <Box
             sx={{
               background: "linear-gradient(90deg, #1c1c1c, #2a2a2a)",

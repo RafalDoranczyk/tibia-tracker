@@ -1,10 +1,12 @@
 import { Box, Card, CardContent, CardMedia, Chip, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 
+import { getImageUrl } from "@/lib/supabase";
+
 type CharmCardLayoutProps = {
   name: string;
   description?: string | null;
-  imageUrl: string;
+  imagePath: string;
   unlocked: boolean;
   level?: number;
   children?: ReactNode;
@@ -13,7 +15,7 @@ type CharmCardLayoutProps = {
 export function CharmCardLayout({
   name,
   description,
-  imageUrl,
+  imagePath,
   unlocked,
   level,
   children,
@@ -37,7 +39,7 @@ export function CharmCardLayout({
       <Box sx={{ display: "flex", justifyContent: "center", pt: 2 }}>
         <CardMedia
           component="img"
-          image={imageUrl}
+          image={getImageUrl(imagePath)}
           alt={name}
           sx={{
             width: 32,

@@ -45,7 +45,7 @@ export const CharmSchema = z.object({
   type: CharmTypeSchema,
   description: z.string().nullable(),
   levels: CharmLevelsSchema,
-  image_url: z.string().url(),
+  image_path: z.string(),
 });
 
 /* =========================================================
@@ -66,7 +66,7 @@ export const CharmRowSchema = z.object({
   effect_lvl2: z.string().nullable(),
   effect_lvl3: z.string().nullable(),
 
-  image_url: z.string().url(),
+  image_path: z.string(),
 });
 
 /* =========================================================

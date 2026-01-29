@@ -2,22 +2,21 @@ import type { HuntSession, HuntSessionFormValues } from "../types";
 
 export function mapHuntSessionToFormValues(huntSession: HuntSession): HuntSessionFormValues {
   return {
-    id: huntSession.id,
-    character_id: huntSession.character_id,
-    date: huntSession.date,
-    level: huntSession.level,
-    raw_xp_gain: huntSession.raw_xp_gain,
-    xp_gain: huntSession.xp_gain,
-    balance: huntSession.balance,
-    minutes: huntSession.minutes,
-    player_count: huntSession.player_count,
+    ...huntSession,
     place_id: huntSession.place.id,
 
     monsters:
-      huntSession.monsters?.map((m) => ({
+      huntSession.monsters.map((m) => ({
         name: m.monster.name,
         id: m.monster.id,
         count: m.count,
+      })) ?? [],
+
+    items:
+      huntSession.items?.map((i) => ({
+        name: i.item.name,
+        id: i.item.id,
+        count: i.count,
       })) ?? [],
 
     supplies:
@@ -42,7 +41,7 @@ export function mapHuntSessionToFormValues(huntSession: HuntSession): HuntSessio
         damage_source: {
           name: ds.damage_source.name,
           id: ds.damage_source.id,
-          image_url: ds.damage_source.image_url,
+          image_path: ds.damage_source.image_path,
         },
       })) ?? [],
   };

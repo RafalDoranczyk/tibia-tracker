@@ -11,15 +11,15 @@ import { useRequiredCharacterId } from "@/providers/feature/dashboard";
 
 import { HUNT_SESSION_PAGINATION_LIMIT } from "../constants";
 import { useDeleteHuntSession } from "../hooks/useDeleteHuntSession";
-import type { HuntSession } from "../types";
+import type { HuntSessionListItem } from "../types";
 import { HuntSessionsTable } from "./HuntSessionsTable";
 
-type HuntSessionsViewProps = {
+type HuntSessionListViewProps = {
   count: number;
-  huntSessions: HuntSession[];
+  huntSessionList: HuntSessionListItem[];
 };
 
-export function HuntSessionsView({ count, huntSessions }: HuntSessionsViewProps) {
+export function HuntSessionListView({ count, huntSessionList }: HuntSessionListViewProps) {
   const router = useRouter();
   const characterId = useRequiredCharacterId();
   const pagination = usePagination({ limit: HUNT_SESSION_PAGINATION_LIMIT });
@@ -41,7 +41,7 @@ export function HuntSessionsView({ count, huntSessions }: HuntSessionsViewProps)
   return (
     <Stack spacing={3}>
       <HuntSessionsTable
-        huntSessions={huntSessions}
+        huntSessionList={huntSessionList}
         page={pagination.page}
         rowsPerPage={pagination.limitParam}
         onPageChange={pagination.onPageChange}

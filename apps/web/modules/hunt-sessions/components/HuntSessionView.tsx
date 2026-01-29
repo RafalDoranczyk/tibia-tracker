@@ -1,122 +1,127 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Grid } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { Box, Container, Divider, Tab, Tabs } from "@mui/material";
+import { useState, useTransition } from "react";
+import { useFormContext } from "react-hook-form";
 
 import { FloatingActionButton } from "@/components";
-// import { useUnsavedChangesGuard } from "@/hooks";
 import type { HuntPlace } from "@/modules/hunt-places";
-import { useRequiredCharacterId } from "@/providers/feature/dashboard";
-import { useToast } from "@/providers/global";
 
-import { createHuntSession } from "../actions/createHuntSession";
-import { updateHuntSession } from "../actions/updateHuntSession";
-import { HuntSessionFormSchema } from "../schemas";
+import { useSaveHuntSession } from "../hooks/useSaveHuntSession";
 import type {
   DamageElement,
   HuntSession,
   HuntSessionFormValues,
+  HuntSessionUnknownEntities,
+  ItemPreview,
   MonsterPreview,
   SupplyItem,
 } from "../types";
-import { mapHuntSessionToFormValues } from "../utils/mapHuntSessionToFormValues";
+import { HuntSessionSummaryStats } from "./HuntSessionSummaryStats";
 import { HuntSessionInputAnalyzer } from "./sections/HuntSessionInputAnalyzer";
 import { HuntSessionLogDetails } from "./sections/HuntSessionLogDetails";
 import { HuntSessionSuppliesAnalyzer } from "./sections/HuntSessionSuppliesAnalyzer";
+import { UnknownEntitiesModal } from "./UnknownEntitiesModal";
+import { UploadSessionModal } from "./UploadSessionModal";
+
+function TabPanel({
+  value,
+  index,
+  children,
+}: React.PropsWithChildren<{ value: number; index: number }>) {
+  return <Box sx={{ display: value === index ? "block" : "none" }}>{children}</Box>;
+}
 
 type HuntSessionViewProps = {
   monsterList: MonsterPreview[];
+  itemList: ItemPreview[];
   huntPlaceList: HuntPlace[];
   supplyList: SupplyItem[];
   damageElementList: DamageElement[];
   huntSession?: HuntSession | null;
 };
 
-export function HuntSessionView({
-  monsterList,
-  huntPlaceList,
-  supplyList,
-  damageElementList,
-  huntSession,
-}: HuntSessionViewProps) {
-  const router = useRouter();
-  const toast = useToast();
-  const characterId = useRequiredCharacterId();
+export function HuntSessionView(props: HuntSessionViewProps) {
+  const { monsterList, itemList, huntPlaceList, supplyList, damageElementList, huntSession } =
+    props;
 
   const [isPending, startTransition] = useTransition();
 
-  const methods = useForm<HuntSessionFormValues>({
-    resolver: zodResolver(HuntSessionFormSchema),
-    defaultValues: huntSession
-      ? mapHuntSessionToFormValues(huntSession)
-      : {
-          character_id: characterId,
-          date: new Date().toISOString().slice(0, 10),
-          level: 100,
-          raw_xp_gain: 0,
-          xp_gain: 0,
-          balance: 0,
-          minutes: 0,
-          player_count: 1,
-          monsters: [],
-          supplies: [],
-          damage_elements: [],
-          place_id: huntPlaceList[0].id,
-          damage_sources: [],
-        },
-  });
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [unknownEntitiesModalOpen, setUnknownEntitiesModalOpen] = useState(false);
+  const [unknownEntities, setUnknownEntities] = useState<HuntSessionUnknownEntities>(null);
+  const [tab, setTab] = useState(0);
 
-  const { handleSubmit, watch } = methods;
+  const { handleSubmit, formState } = useFormContext<HuntSessionFormValues>();
 
-  const monsters = watch("monsters");
-
-  // useUnsavedChangesGuard(formState.isDirty);
+  const saveHuntSession = useSaveHuntSession(huntSession?.id);
 
   const onSubmit = handleSubmit((data) => {
     startTransition(async () => {
-      try {
-        if (huntSession) {
-          await updateHuntSession({ ...data, id: huntSession.id });
-        } else {
-          await createHuntSession(data);
-        }
-        toast.success("Hunt session saved");
-        router.push(`/dashboard/characters/${characterId}/hunt-sessions`);
-      } catch (err) {
-        toast.error(`Hunt session saving error: ${err}`);
-      }
+      await saveHuntSession(data);
     });
   });
 
   return (
-    <FormProvider {...methods}>
-      <Box maxWidth={1600}>
-        <Grid container spacing={4}>
-          <Grid size={{ xs: 12, lg: 6, xl: 4 }}>
-            <HuntSessionLogDetails
-              monsters={monsters}
-              isHuntSession={!!huntSession}
-              monsterList={monsterList}
-              huntPlaceList={huntPlaceList}
-            />
-          </Grid>
+    <Container maxWidth="lg">
+      {/* Tabs */}
+      <Tabs
+        value={tab}
+        onChange={(_, v) => setTab(v)}
+        sx={{
+          mb: 2,
+        }}
+      >
+        <Tab label="Session" />
+        <Tab label="Damage" />
+        <Tab label="Supplies" />
+      </Tabs>
 
-          <Grid size={{ xs: 12, lg: 6, xl: 4 }}>
-            <HuntSessionInputAnalyzer damageElementList={damageElementList} />
-          </Grid>
+      {/* Summary Stats */}
+      <HuntSessionSummaryStats />
 
-          <Grid size={{ xs: 12, lg: 6, xl: 4 }}>
-            <HuntSessionSuppliesAnalyzer supplyList={supplyList} />
-          </Grid>
-        </Grid>
-      </Box>
+      <Divider sx={{ my: 2 }} />
 
-      <FloatingActionButton visible={monsters.length > 0} onClick={onSubmit} loading={isPending}>
+      {/* Panels */}
+      <TabPanel value={tab} index={0}>
+        <HuntSessionLogDetails
+          unknownEntities={unknownEntities}
+          itemList={itemList}
+          monsterList={monsterList}
+          huntPlaceList={huntPlaceList}
+          openUnknownEntitiesModal={() => setUnknownEntitiesModalOpen(true)}
+          setOpen={setUploadModalOpen}
+        />
+      </TabPanel>
+
+      <TabPanel value={tab} index={1}>
+        <HuntSessionInputAnalyzer damageElementList={damageElementList} />
+      </TabPanel>
+
+      <TabPanel value={tab} index={2}>
+        <HuntSessionSuppliesAnalyzer supplyList={supplyList} />
+      </TabPanel>
+
+      {/* Floating Save */}
+      <FloatingActionButton visible={formState.isDirty} onClick={onSubmit} loading={isPending}>
         Save changes
       </FloatingActionButton>
-    </FormProvider>
+
+      {/* Upload log modal */}
+      <UploadSessionModal
+        monsterList={monsterList}
+        itemList={itemList}
+        setUnknownEntities={setUnknownEntities}
+        open={uploadModalOpen}
+        onClose={() => setUploadModalOpen(false)}
+      />
+
+      {/* Unknown entities modal */}
+      <UnknownEntitiesModal
+        open={unknownEntitiesModalOpen}
+        unknownEntities={unknownEntities}
+        onClose={() => setUnknownEntitiesModalOpen(false)}
+      />
+    </Container>
   );
 }

@@ -9,7 +9,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 
-import { ControlledTextField } from "@/components/form/ControlledTextField";
+import { ControlledTextField } from "@/components";
 
 import type { HuntSessionFormValues } from "../../types";
 
@@ -17,9 +17,10 @@ type DamageSourceRowProps = {
   i: number;
   field: FieldArrayWithId<HuntSessionFormValues, "damage_sources", "id">;
   control: Control<HuntSessionFormValues>;
+  disabled: boolean;
 };
 
-function DamageSourceRow({ i, field, control }: DamageSourceRowProps) {
+function DamageSourceRow({ i, field, control, disabled }: DamageSourceRowProps) {
   const source = field?.damage_source;
 
   return (
@@ -37,7 +38,7 @@ function DamageSourceRow({ i, field, control }: DamageSourceRowProps) {
       {/* Source */}
       <Stack direction="row" spacing={1} alignItems="center" sx={{ flex: 1 }}>
         <Avatar
-          src={source?.image_url}
+          src={source?.image_path}
           alt={source?.name}
           sx={{ width: 28, height: 28 }}
           variant="rounded"
@@ -49,6 +50,7 @@ function DamageSourceRow({ i, field, control }: DamageSourceRowProps) {
 
       {/* Percent */}
       <ControlledTextField
+        disabled={disabled}
         size="small"
         control={control}
         name={`damage_sources.${i}.percent`}
@@ -70,15 +72,17 @@ export function HuntSessionInputDamageSources() {
   return (
     <Stack spacing={2}>
       {/* Section Header */}
+
       <Stack direction="row" alignItems="center" spacing={1}>
         <BugReportSharp color="info" fontSize="small" />
         <Typography fontWeight={700}>Damage Sources</Typography>
       </Stack>
+
       <Divider />
 
       {fields.length === 0 ? (
         <Typography variant="body2" color="text.secondary">
-          Upload session log to adjust damage sources
+          Upload session log to adjust damage sources.
         </Typography>
       ) : (
         <Stack spacing={1}>
@@ -96,7 +100,14 @@ export function HuntSessionInputDamageSources() {
 
           {/* Rows */}
           {fields.map((field, i) => (
-            <DamageSourceRow key={field.id} i={i} field={field} control={control} />
+            <DamageSourceRow
+              key={field.id}
+              i={i}
+              field={field}
+              control={control}
+              // No need to change anything if one source only
+              disabled={fields.length === 1}
+            />
           ))}
         </Stack>
       )}

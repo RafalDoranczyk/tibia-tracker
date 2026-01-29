@@ -9,7 +9,7 @@ import { usePaginationQueryParams } from "@/hooks";
 import { BESTIARY_CLASSES, DEFAULT_BESTIARY_CLASS } from "../constants";
 import type { BestiaryClass } from "../types";
 
-const DEBOUNCE_MS = 250;
+const DEBOUNCE_MS = 500;
 
 type BestiaryFiltersType = {
   bestiary_class?: BestiaryClass;
@@ -32,25 +32,21 @@ export function BestiaryFilters() {
 
   const handleSearchChange = (val: string) => {
     if (val) {
-      if (filters.bestiary_class !== undefined) {
-        lastBestiaryClassRef.current = filters.bestiary_class;
-      }
-
       updateFilter({
         search: val,
-        bestiary_class: undefined,
         page: 1,
       });
     } else {
       updateFilter({
         search: undefined,
-        bestiary_class: lastBestiaryClassRef.current,
         page: 1,
       });
     }
   };
 
   const handleClearFilters = () => {
+    lastBestiaryClassRef.current = DEFAULT_BESTIARY_CLASS;
+
     updateFilter({
       bestiary_class: undefined,
       search: undefined,
@@ -60,8 +56,7 @@ export function BestiaryFilters() {
 
   const isClearDisabled = !filters.search && filters.bestiary_class === undefined;
   const isSearching = Boolean(filters.search);
-  const selectedClass =
-    filters.bestiary_class ?? lastBestiaryClassRef.current ?? DEFAULT_BESTIARY_CLASS;
+  const selectedClass = filters.bestiary_class ?? DEFAULT_BESTIARY_CLASS;
 
   return (
     <Stack

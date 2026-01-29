@@ -3,13 +3,13 @@ import Link from "next/link";
 
 import { EmptyState, PageHeader } from "@/components";
 import { PATHS } from "@/constants";
-import { fetchHuntSessionsList, HuntSessionsView } from "@/modules/hunt-sessions";
+import { fetchHuntSessionsList, HuntSessionListView } from "@/modules/hunt-sessions";
 
 import type { CharacterPageProps } from "../../types";
 
 export default async function HuntSessions({ params }: CharacterPageProps) {
   const { characterId } = await params;
-  const { data: huntSessions, count } = await fetchHuntSessionsList({
+  const { data: huntSessionList, count } = await fetchHuntSessionsList({
     limit: 10,
     character_id: characterId,
   });
@@ -23,10 +23,10 @@ export default async function HuntSessions({ params }: CharacterPageProps) {
           description="Track and review your hunt sessions to analyze XP/h, profit, and efficiency over time."
         />
 
-        {huntSessions.length > 0 && (
+        {huntSessionList.length > 0 && (
           <Stack spacing={2} alignItems="flex-end">
             <Typography variant="subtitle2" color="text.secondary">
-              Showing {huntSessions.length} of {count} sessions
+              Showing {huntSessionList.length} of {count} sessions
             </Typography>
 
             <Button
@@ -40,7 +40,7 @@ export default async function HuntSessions({ params }: CharacterPageProps) {
         )}
       </Stack>
 
-      {!huntSessions.length ? (
+      {!huntSessionList.length ? (
         <EmptyState
           size="big"
           action={
@@ -55,7 +55,7 @@ export default async function HuntSessions({ params }: CharacterPageProps) {
           title="No hunt sessions"
         />
       ) : (
-        <HuntSessionsView huntSessions={huntSessions} count={count} />
+        <HuntSessionListView huntSessionList={huntSessionList} count={count} />
       )}
     </Stack>
   );

@@ -14,7 +14,7 @@ export const HUNT_SESSIONS_TABLE_HEAD_CELLS: TableHeadCell[] = [
     sortable: true,
   },
   { id: "place", label: "Place", width: HUNT_SESSIONS_TABLE_CELL_WIDTH, sortable: true },
-  { id: "balance", label: "Balance", width: HUNT_SESSIONS_TABLE_CELL_WIDTH, sortable: true },
+  { id: "profit", label: "Balance", width: HUNT_SESSIONS_TABLE_CELL_WIDTH, sortable: true },
 ] as const;
 
 export const HUNT_SESSION_PLAYER_OPTIONS = [

@@ -5,7 +5,7 @@ export const HuntPlaceSchema = z.object({
   id: z.number(),
 
   name: z.string(),
-  image_url: z.string().url().nullable().optional(),
+  image_path: z.string().url().nullable().optional(),
 });
 
 export const CreateHuntPlacePayloadSchema = HuntPlaceSchema.omit({

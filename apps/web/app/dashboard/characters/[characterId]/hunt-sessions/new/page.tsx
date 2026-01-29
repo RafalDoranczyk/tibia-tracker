@@ -9,15 +9,18 @@ import {
   fetchDamageElements,
   fetchMonstersPreview,
   fetchSupplies,
+  HuntSessionFormProvider,
   HuntSessionView,
 } from "@/modules/hunt-sessions";
+import { fetchItems } from "@/modules/items";
 
 import type { CharacterPageProps } from "../../../types";
 
 export default async function NewHuntSessionPage({ params }: CharacterPageProps) {
   const { characterId } = await params;
 
-  const [monsterList, huntPlaceList, supplyList, damageElementList] = await Promise.all([
+  const [itemList, monsterList, huntPlaceList, supplyList, damageElementList] = await Promise.all([
+    fetchItems(),
     fetchMonstersPreview(),
     fetchHuntPlaces(),
     fetchSupplies(),
@@ -43,14 +46,21 @@ export default async function NewHuntSessionPage({ params }: CharacterPageProps)
         <Typography color="text.primary">New Hunt Session</Typography>
       </Breadcrumbs>
 
-      <PageHeader.Root title="Add Hunt Session" description="Create your hunt session." />
-
-      <HuntSessionView
-        supplyList={supplyList}
-        huntPlaceList={huntPlaceList}
-        monsterList={monsterList}
-        damageElementList={damageElementList}
+      <PageHeader.Root
+        title="Add Hunt Session"
+        description={`Create and analyze your hunt session.
+          Paste your Tibia session log to automatically calculate experience, profit, supplies, damage, and monster statistics`}
       />
+
+      <HuntSessionFormProvider placeId={huntPlaceList[0].id}>
+        <HuntSessionView
+          itemList={itemList}
+          supplyList={supplyList}
+          huntPlaceList={huntPlaceList}
+          monsterList={monsterList}
+          damageElementList={damageElementList}
+        />
+      </HuntSessionFormProvider>
     </>
   );
 }

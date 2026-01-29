@@ -100,8 +100,8 @@ export function StaminaCalculator() {
     const regenMinutes = calculateStaminaRegenTime(current, target);
 
     const hours = Math.floor(regenMinutes / 60);
-    const minutes = regenMinutes % 60;
-    const timeRemainingLabel = `${hours} hours and ${minutes} minutes`;
+    const duration_seconds = regenMinutes % 60;
+    const timeRemainingLabel = `${hours} hours and ${duration_seconds} minutes`;
 
     const readyAt = new Date(Date.now() + regenMinutes * 60_000);
 
