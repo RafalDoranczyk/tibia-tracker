@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import { AppError, AppErrorCodes, createSupabase, mapSupabaseErrorToAppError } from "@/core";
 
-type OAuthProvider = "github" | "google";
+import type { OAuthProvider } from "../types";
 
 async function loginWithOAuth(provider: OAuthProvider) {
   const supabase = await createSupabase();

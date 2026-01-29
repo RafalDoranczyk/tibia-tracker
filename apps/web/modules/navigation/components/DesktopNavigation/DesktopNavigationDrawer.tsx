@@ -1,8 +1,8 @@
 import { Box, Drawer, Typography } from "@mui/material";
 import type { PropsWithChildren } from "react";
 
-import { getUser } from "@/actions/user";
 import { APP_NAME } from "@/constants";
+import { getUser } from "@/modules/user";
 
 export const DESKTOP_APP_NAVIGATION_DRAWER_WIDTH = "240px";
 export const APP_BAR_HEIGHT = "64px";
@@ -10,7 +10,7 @@ export const APP_BAR_HEIGHT = "64px";
 export async function DesktopNavigationDrawer({ children }: PropsWithChildren) {
   const user = await getUser();
 
-  const email = user.email || user.user_metadata?.email || "Unknown user";
+  const email = user.email || "Unknown user";
 
   return (
     <Drawer

@@ -1,8 +1,6 @@
-import type { PropsWithChildren } from "react";
-
 import { DateProvider, QueryParamsProvider, ThemeProvider, ToastProvider } from "./global";
 
-export function AppProviders({ children }: PropsWithChildren) {
+export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <ToastProvider>

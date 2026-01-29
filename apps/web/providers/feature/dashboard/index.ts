@@ -1,5 +1,5 @@
+export { useUser } from "../../../modules/user/UserProvider";
 export {
-  ActiveCharacterProvider,
   useActiveCharacter,
   useRequiredCharacterId,
 } from "./ActiveCharacterProvider";

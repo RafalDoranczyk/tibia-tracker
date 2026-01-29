@@ -29,7 +29,6 @@ export async function setCharacterCharmLevel(payload: unknown) {
   });
 
   if (error) {
-    console.error("unlock_charm failed", error);
     throw new Error(error.message);
   }
 

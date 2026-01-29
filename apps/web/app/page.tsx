@@ -3,8 +3,8 @@ import GitHub from "@mui/icons-material/GitHub";
 import Google from "@mui/icons-material/Google";
 import { Box, Button, Container, Divider, Paper, Stack, Typography } from "@mui/material";
 
-import { loginWithGithub, loginWithGoogle } from "@/actions/auth";
 import { APP_NAME } from "@/constants";
+import { loginWithGithub, loginWithGoogle } from "@/modules/user";
 
 export default function Home() {
   return (
