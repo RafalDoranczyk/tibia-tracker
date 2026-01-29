@@ -15,40 +15,6 @@ import { Autocomplete, ControlledTextField, TooltipIconButton } from "@/componen
 
 import type { DamageElement, HuntSessionFormValues } from "../../types";
 
-/* ------------------------- Picker ------------------------- */
-type DamageElementPickerProps = {
-  damageElements: DamageElement[];
-  usedIds: number[];
-  onAdd: (item: DamageElement) => void;
-};
-
-function DamageElementPicker({ damageElements, usedIds, onAdd }: DamageElementPickerProps) {
-  const options = useMemo(
-    () =>
-      damageElements.map((d) => ({
-        ...d,
-        disabled: usedIds.includes(d.id),
-      })),
-    [damageElements, usedIds]
-  );
-
-  return (
-    <Stack direction="row" spacing={1} alignItems="center">
-      <Autocomplete
-        label="Add damage element"
-        options={options.filter((o) => !o.disabled)}
-        onChange={onAdd}
-        renderOption={(o) => (
-          <Stack direction="row" gap={1.5} alignItems="center">
-            <Avatar src={o.image_url} sx={{ width: 24, height: 24 }} variant="rounded" />
-            {o.name}
-          </Stack>
-        )}
-      />
-    </Stack>
-  );
-}
-
 /* ------------------------- Row ------------------------- */
 
 type DamageElementRowProps = {
@@ -79,7 +45,7 @@ function DamageElementRow({ i, field, remove, control, damageElementMap }: Damag
       {/* Element */}
       <Stack direction="row" spacing={1} alignItems="center" sx={{ flex: 1 }}>
         <Avatar
-          src={element?.image_url}
+          src={element?.image_path}
           alt={element?.name}
           sx={{ width: 28, height: 28 }}
           variant="rounded"
@@ -166,32 +132,50 @@ export function HuntSessionInputDamageElements({
     [damageElementList]
   );
 
+  const options = useMemo(
+    () =>
+      damageElementList.map((d) => ({
+        ...d,
+        disabled: usedIds.includes(d.id),
+      })),
+    [damageElementList, usedIds]
+  );
+
   return (
     <Stack spacing={2}>
-      <DamageElementPicker
-        damageElements={damageElementList}
-        usedIds={usedIds}
-        onAdd={(item) =>
-          append({
-            id: item.id,
-            name: item.name,
-            percent: 0,
-          })
-        }
-      />
-
-      {/* Section Header */}
       <Stack direction="row" alignItems="center" spacing={1} mt={1}>
         <LocalFireDepartmentIcon color="error" fontSize="small" />
         <Typography fontWeight={700}>Damage Elements</Typography>
       </Stack>
+
       <Divider />
 
-      {fields.length === 0 ? (
-        <Typography variant="body2" color="text.secondary">
-          No damage elements added yet
-        </Typography>
-      ) : (
+      <Typography maxWidth={650} variant="caption" color="text.secondary">
+        Add the damage elements you received during the hunt session. Tibia only reports damage from
+        the last few seconds, so this data is approximate, but it can still give useful insights.
+      </Typography>
+
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Autocomplete
+          label="Add damage element"
+          options={options.filter((o) => !o.disabled)}
+          onChange={(item) =>
+            append({
+              id: item.id,
+              name: item.name,
+              percent: 0,
+            })
+          }
+          renderOption={(o) => (
+            <Stack direction="row" gap={1.5} alignItems="center">
+              <Avatar src={o.image_path} sx={{ width: 24, height: 24 }} variant="rounded" />
+              {o.name}
+            </Stack>
+          )}
+        />
+      </Stack>
+
+      {fields.length !== 0 && (
         <DamageElementList
           fields={fields}
           remove={remove}

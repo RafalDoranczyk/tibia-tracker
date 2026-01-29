@@ -11,91 +11,88 @@ import {
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-import type { HuntSessionFormValues, HuntSessionLogParseResult, MonsterPreview } from "../types";
-import { HuntSessionParseError, parseHuntSessionText } from "../utils/parseHuntSessionText";
+import { monstersToDamageSources } from "../mappers/mapMonstersToDamageSources";
+import { mapParsedEntitiesToCatalog } from "../mappers/mapParsedSessionToCatalog";
+import { HuntSessionRawParsedSchema } from "../schemas";
+import type {
+  HuntSessionFormValues,
+  HuntSessionUnknownEntities,
+  ItemPreview,
+  MonsterPreview,
+} from "../types";
+import { HuntSessionParseError, parseHuntSessionJSON } from "../utils/parseHuntSessionJSON";
+
+function patchFormValues<T extends Record<string, any>>(
+  values: T,
+  setValue: (name: keyof T, value: T[keyof T]) => void
+) {
+  for (const key of Object.keys(values) as (keyof T)[]) {
+    setValue(key, values[key]);
+  }
+}
 
 type UploadSessionModalProps = {
   open: boolean;
   monsterList: MonsterPreview[];
+  itemList: ItemPreview[];
+  setUnknownEntities: (unknownEntities: HuntSessionUnknownEntities) => void;
   onClose: () => void;
 };
 
-export function UploadSessionModal({ open, monsterList, onClose }: UploadSessionModalProps) {
+export function UploadSessionModal({
+  open,
+  monsterList,
+  itemList,
+  setUnknownEntities,
+  onClose,
+}: UploadSessionModalProps) {
   const { setValue } = useFormContext<HuntSessionFormValues>();
 
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (open) {
+    if (!open) {
       setText("");
       setError(null);
     }
   }, [open]);
 
-  const handleImport = (parsed: HuntSessionLogParseResult) => {
-    if (parsed.xp_gain !== undefined) {
-      setValue("xp_gain", parsed.xp_gain, { shouldDirty: true });
-    }
-
-    if (parsed.raw_xp_gain !== undefined) {
-      setValue("raw_xp_gain", parsed.raw_xp_gain, { shouldDirty: true });
-    }
-
-    if (parsed.balance !== undefined) {
-      setValue("balance", parsed.balance, { shouldDirty: true });
-    }
-
-    if (parsed.minutes !== undefined) {
-      setValue("minutes", parsed.minutes, { shouldDirty: true });
-    }
-
-    if (parsed.date !== undefined) {
-      setValue("date", parsed.date, { shouldDirty: true });
-    }
-
-    if (parsed.monsters) {
-      const monsterMap = new Map(monsterList.map((m) => [m.name.toLowerCase(), m]));
-
-      const monstersWithIds = parsed.monsters
-        .flatMap((pm) => {
-          const m = monsterMap.get(pm.name.toLowerCase());
-          return m ? [{ id: m.id, name: m.name, count: pm.count, image_url: m.image_url }] : [];
-        })
-        .sort((a, b) => b.count - a.count);
-
-      setValue(
-        "monsters",
-        monstersWithIds.map(({ image_url, ...m }) => m),
-        { shouldDirty: true }
-      );
-
-      setValue(
-        "damage_sources",
-        monstersWithIds.map(({ id, name, image_url }) => ({
-          id,
-          percent: 100 / monstersWithIds.length,
-          damage_source: {
-            id,
-            name,
-            image_url,
-          },
-        })),
-        { shouldDirty: true }
-      );
-    }
-  };
-
   const handleParseAndImport = () => {
     if (!text.trim()) return;
 
+    if (text.length > 100_000) {
+      setError("Log too large");
+      return;
+    }
+
     try {
-      const parsed = parseHuntSessionText(text);
-      handleImport(parsed);
+      const parsed = parseHuntSessionJSON(text);
+      const parsedPayload = HuntSessionRawParsedSchema.parse(parsed);
+      const { monsters, items, ...rest } = parsedPayload;
+
+      patchFormValues(rest, (name, value) => setValue(name, value));
+
+      const { mapped: parsedMonsters, unknown: monstersUnknown } = mapParsedEntitiesToCatalog(
+        parsed.monsters,
+        monsterList
+      );
+      const { mapped: parsedItems, unknown: itemsUnknown } = mapParsedEntitiesToCatalog(
+        parsed.items,
+        itemList
+      );
+      const damageSources = monstersToDamageSources(parsedMonsters);
+
+      setValue("monsters", parsedMonsters, { shouldDirty: true });
+      setValue("items", parsedItems, { shouldDirty: true });
+      setValue("damage_sources", damageSources, { shouldDirty: true });
+
+      // Import report unknown entities
+      setUnknownEntities({ monsters: monstersUnknown, items: itemsUnknown });
       onClose();
     } catch (err) {
       if (err instanceof HuntSessionParseError) {
-        setError(`Missing or invalid fields:\n${err.missingFields.join(", ")}`);
+        setError(`Missing fields: ${err.missingFields.join(", ")}`);
       } else {
         setError("Could not parse session data. Invalid format.");
       }
@@ -103,9 +100,15 @@ export function UploadSessionModal({ open, monsterList, onClose }: UploadSession
   };
 
   return (
-    <Dialog disableRestoreFocus open={open} onClose={onClose} fullWidth maxWidth="xs">
-      <DialogTitle>Upload Hunt Session JSON</DialogTitle>
-
+    <Dialog
+      aria-labelledby="upload-session-title"
+      disableRestoreFocus
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+    >
+      <DialogTitle id="upload-session-title">Upload Hunt Session Log</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -116,15 +119,10 @@ export function UploadSessionModal({ open, monsterList, onClose }: UploadSession
           value={text}
           onChange={(e) => setText(e.target.value)}
           error={!!error}
-          helperText={error || "Paste JSON log exported from Tibia folder."}
+          helperText={error || "Paste JSON session log exported from Tibia."}
         />
       </DialogContent>
-
       <DialogActions>
-        <Button onClick={onClose} color="inherit">
-          Cancel
-        </Button>
-
         <Button variant="contained" onClick={handleParseAndImport} disabled={!text.trim()}>
           Import
         </Button>

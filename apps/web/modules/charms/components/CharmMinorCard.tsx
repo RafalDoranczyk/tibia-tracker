@@ -14,7 +14,7 @@ type CharmMinorCardProps = {
 };
 
 export function CharmMinorCard({ charm, availableMinorPoints, onSelect }: CharmMinorCardProps) {
-  const { name, description, image_url, progress } = charm;
+  const { name, description, image_path, progress } = charm;
   const { unlocked, level } = progress;
 
   const isMaxLevel = unlocked && level >= CHARM_MAX_LEVEL;
@@ -39,7 +39,7 @@ export function CharmMinorCard({ charm, availableMinorPoints, onSelect }: CharmM
     <CharmCardLayout
       name={name}
       description={description}
-      imageUrl={image_url}
+      imagePath={image_path}
       unlocked={unlocked}
       level={unlocked ? level : undefined}
     >

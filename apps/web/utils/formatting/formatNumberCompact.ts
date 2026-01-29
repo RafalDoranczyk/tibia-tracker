@@ -1,19 +1,17 @@
 export function formatNumberCompact(value: number, precision = 2): string {
-  if (value === 0) return "0";
+  if (!value) return "0";
 
-  const absValue = Math.abs(value);
-  const isNegative = value < 0;
+  const abs = Math.abs(value);
+  const sign = value < 0 ? "-" : "";
 
-  if (absValue >= 1_000_000) {
-    const millions = absValue / 1_000_000;
-    const formatted = millions.toFixed(precision).replace(/\.?0+$/, "");
-    return `${isNegative ? "-" : ""}${formatted}kk`;
+  if (abs >= 1_000_000) {
+    const v = (abs / 1_000_000).toFixed(precision).replace(/\.?0+$/, "");
+    return `${sign}${v}M`;
   }
 
-  if (absValue >= 1_000) {
-    const thousands = absValue / 1_000;
-    const formatted = thousands.toFixed(precision).replace(/\.?0+$/, "");
-    return `${isNegative ? "-" : ""}${formatted}k`;
+  if (abs >= 1_000) {
+    const v = (abs / 1_000).toFixed(precision).replace(/\.?0+$/, "");
+    return `${sign}${v}k`;
   }
 
   return value.toString();

@@ -11,7 +11,7 @@ export const MonsterSchema = z.object({
 
   name: z.string(),
   exp: PositiveNumber,
-  image_url: z.string().url(),
+  image_path: z.string(),
   hp: PositiveNumberNonZero,
   elemental_resistances: z.record(z.string(), z.number()),
   charm_points: PositiveNumberNonZero,

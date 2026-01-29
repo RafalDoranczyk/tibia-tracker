@@ -15,7 +15,6 @@ import { deleteSessionMonsters, insertSessionMonsters } from "../db/huntSessionM
 import { deleteSessionSupplies, insertSessionSupplies } from "../db/huntSessionSupplies";
 import { HuntSessionDbFieldsSchema, UpdateHuntSessionPayloadSchema } from "../schemas";
 import type { HuntSessionDbFields, UpdateHuntSessionPayload } from "../types";
-import { calcCountPerHour } from "../utils/calcCountPerHour";
 
 export async function updateHuntSession(
   payload: UpdateHuntSessionPayload
@@ -45,8 +44,7 @@ export async function updateHuntSession(
   // replace supplies (DELETE + INSERT)
   await deleteSessionSupplies(id);
   if (supplies && supplies.length > 0) {
-    const suppliesWithPerHour = calcCountPerHour(supplies, dbPayload.minutes);
-    await insertSessionSupplies(id, suppliesWithPerHour);
+    await insertSessionSupplies(id, supplies);
   }
 
   // replace damage elements (DELETE + INSERT)

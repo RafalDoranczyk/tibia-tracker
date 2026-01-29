@@ -4,18 +4,18 @@ import { Table, type TableOrder, TooltipIconButton } from "@/components";
 import { formatDate, formatNumberCompact } from "@/utils";
 
 import { HUNT_SESSIONS_TABLE_HEAD_CELLS } from "../constants";
-import type { HuntSession } from "../types";
+import type { HuntSessionListItem } from "../types";
 
-function formatSessionRow(session: HuntSession) {
+function formatSessionRow(session: HuntSessionListItem) {
   return {
     date: formatDate(session.date),
     rawXp: formatNumberCompact(session.raw_xp_gain),
-    balance: formatNumberCompact(session.balance),
+    profit: formatNumberCompact(session.profit),
   };
 }
 
 type SessionTableProps = {
-  huntSessions: HuntSession[];
+  huntSessionList: HuntSessionListItem[];
   count: number;
   page: number;
   rowsPerPage: number;
@@ -30,7 +30,7 @@ type SessionTableProps = {
 };
 
 export function HuntSessionsTable({
-  huntSessions,
+  huntSessionList,
   count,
   page,
   rowsPerPage,
@@ -56,9 +56,9 @@ export function HuntSessionsTable({
         />
 
         <Table.Body>
-          {huntSessions.map((session) => {
-            const { date, rawXp, balance } = formatSessionRow(session);
-            const { id, level, place, minutes } = session;
+          {huntSessionList.map((session) => {
+            const { date, rawXp, profit } = formatSessionRow(session);
+            const { id, level, place, duration_seconds } = session;
 
             return (
               <Table.ZebraRow
@@ -80,10 +80,10 @@ export function HuntSessionsTable({
               >
                 <Table.Cell>{date}</Table.Cell>
                 <Table.Cell>{level}</Table.Cell>
-                <Table.Cell>{minutes}</Table.Cell>
+                <Table.Cell>{duration_seconds}</Table.Cell>
                 <Table.Cell>{rawXp}</Table.Cell>
                 <Table.Cell>{place.name}</Table.Cell>
-                <Table.Cell>{balance}</Table.Cell>
+                <Table.Cell>{profit}</Table.Cell>
 
                 <Table.Cell align="center" sx={{ width: 60 }}>
                   <Box className="row-actions">

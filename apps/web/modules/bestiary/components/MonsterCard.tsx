@@ -171,7 +171,7 @@ export function MonsterCard({ monster: initialMonster }: MonsterCardProps) {
       {/* Header */}
       <Stack direction="row" gap={1} alignItems="center">
         <Image
-          src={monster.image_url}
+          src={monster.image_path}
           alt={monster.name}
           width={64}
           height={64}

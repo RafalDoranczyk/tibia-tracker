@@ -5,6 +5,7 @@ import { assertZodParse } from "@/utils";
 
 import { insertSessionDamageElements } from "../db/huntSessionDamageElements";
 import { insertSessionDamageSources } from "../db/huntSessionDamageSources";
+import { insertSessionLootedItems } from "../db/huntSessionLootedItems";
 import { insertSessionMonsters } from "../db/huntSessionMonsters";
 import { insertSessionSupplies } from "../db/huntSessionSupplies";
 import { CreateHuntSessionPayloadSchema, HuntSessionDbFieldsSchema } from "../schemas";
@@ -17,7 +18,7 @@ export async function createHuntSession(
 
   const { supabase } = await getUserScopedQuery();
 
-  const { monsters, supplies, damage_elements, damage_sources, ...dbPayload } = parsed;
+  const { monsters, supplies, items, damage_elements, damage_sources, ...dbPayload } = parsed;
 
   const { data, error } = await supabase.from("hunt_sessions").insert(dbPayload).select().single();
 
@@ -27,6 +28,10 @@ export async function createHuntSession(
   }
 
   await insertSessionMonsters(data.id, monsters);
+
+  if (items && items.length > 0) {
+    await insertSessionLootedItems(data.id, items);
+  }
 
   if (supplies && supplies.length > 0) {
     await insertSessionSupplies(data.id, supplies);

@@ -35,7 +35,7 @@ export async function fetchCharacterBestiaryFull({
     .order("sort_order")
     .range(offset, offset + limit - 1);
 
-  if (bestiaryClass) {
+  if (!search && bestiaryClass) {
     monstersQuery = monstersQuery.eq("bestiary_class", bestiaryClass);
   }
 

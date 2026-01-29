@@ -1,3 +1,4 @@
+export { getImageUrl } from "./assets";
 export { createSupabaseClient } from "./client";
 export { createSupabaseErrorMapper } from "./errorMapper";
 export { createSupabaseMiddleware } from "./middleware";
