@@ -3,7 +3,7 @@ import type { Control, FieldArrayWithId } from "react-hook-form";
 
 import { ControlledTextField, TooltipIconButton } from "@/components";
 
-import type { HuntSessionForm, ItemPreview } from "../../types";
+import type { HuntSessionForm, ItemPreview } from "../../schemas";
 
 type SupplyField = FieldArrayWithId<HuntSessionForm, "supplies"> & {
   supplyId: number;

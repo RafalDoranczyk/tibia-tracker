@@ -1,4 +1,4 @@
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 
 import { BestiaryCacheTags } from "../cacheTags";
 import { CharacterBestiarySummarySchema } from "../schemas";

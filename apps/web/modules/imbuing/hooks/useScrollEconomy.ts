@@ -1,6 +1,7 @@
 import { useFormContext, useWatch } from "react-hook-form";
 
-import type { ImbuingFormValues, Scroll } from "../types";
+import type { ImbuingFormValues } from "../schemas";
+import type { Scroll } from "../types";
 import { calculateScrollEconomy } from "../utils/calculateScrollEconomy";
 
 function hasAllRequiredPrices(scroll: Scroll, prices: Record<string, number>): boolean {

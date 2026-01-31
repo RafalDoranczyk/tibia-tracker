@@ -26,12 +26,13 @@ import {
 import type { CharacterVocation } from "@/modules/characters";
 
 import {
+  ALLOWED_SKILLS_FOR_VOCATION,
   LOYALTY_MARKS,
   LOYALTY_POINT_STEP,
   MAX_LOYALTY_POINTS,
-  SKILLS_FOR_VOCATION,
 } from "../constants";
-import type { LoyaltyPointValues, UseOnlineTrainingState } from "../types";
+import type { UseOnlineTrainingState } from "../hooks/useOnlineTrainingState";
+import type { LoyaltyPointValues } from "../types";
 
 const SECTION_GAP = 2;
 
@@ -58,7 +59,7 @@ export function TrainingWeaponCharacterCard({ weaponsState }: TrainingWeaponChar
     setLoyalty,
   } = weaponsState;
 
-  const allowedSkills = SKILLS_FOR_VOCATION[character.vocation] || [];
+  const allowedSkills = ALLOWED_SKILLS_FOR_VOCATION[character.vocation] || [];
 
   return (
     <Card sx={{ height: "100%" }} variant="outlined">
@@ -82,8 +83,8 @@ export function TrainingWeaponCharacterCard({ weaponsState }: TrainingWeaponChar
               onChange={(_, v: CharacterVocation) => {
                 if (!v || v === character.vocation) return;
 
-                const isAllowed = SKILLS_FOR_VOCATION[v].includes(character.skill);
-                if (!isAllowed) setSkill(SKILLS_FOR_VOCATION[v][0]);
+                const isAllowed = ALLOWED_SKILLS_FOR_VOCATION[v].includes(character.skill);
+                if (!isAllowed) setSkill(ALLOWED_SKILLS_FOR_VOCATION[v][0]);
 
                 setVocation(v);
               }}
@@ -191,7 +192,7 @@ export function TrainingWeaponCharacterCard({ weaponsState }: TrainingWeaponChar
               min={0}
               max={MAX_LOYALTY_POINTS}
               step={LOYALTY_POINT_STEP}
-              marks={LOYALTY_MARKS}
+              marks={[...LOYALTY_MARKS]}
               onChange={(_, v) => setLoyalty(v as LoyaltyPointValues)}
             />
           </Stack>

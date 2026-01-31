@@ -1,18 +1,20 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
+import { CharacterIDSchema } from "@/modules/characters";
 import { assertZodParse } from "@/utils";
 
-import { CharmEconomySchema } from "../schemas";
-import type { CharmEconomy } from "../types";
+import { type CharmEconomy, CharmEconomySchema } from "../schemas";
 
-export async function fetchCharacterCharmEconomy(characterId: string): Promise<CharmEconomy> {
+export async function fetchCharacterCharmEconomy(characterId: unknown): Promise<CharmEconomy> {
+  const parsedCharacterId = assertZodParse(CharacterIDSchema, characterId);
+
   const { supabase } = await getUserScopedQuery();
 
   const { data, error } = await supabase
     .from("character_charm_economy")
     .select("*")
-    .eq("character_id", characterId)
+    .eq("character_id", parsedCharacterId)
     .maybeSingle();
 
   if (error) {

@@ -1,4 +1,4 @@
-import type { HuntSession, HuntSessionForm } from "../types";
+import type { HuntSession, HuntSessionForm } from "../schemas";
 
 export function mapHuntSessionToForm(huntSession: HuntSession): HuntSessionForm {
   return {

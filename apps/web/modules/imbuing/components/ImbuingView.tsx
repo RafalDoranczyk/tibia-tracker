@@ -10,9 +10,9 @@ import { baseScrolls } from "../data/scrolls/base";
 import { elementalScrolls } from "../data/scrolls/elemental";
 import { skillScrolls } from "../data/scrolls/skill";
 import { useSaveImbuingPrices } from "../hooks/useSaveImbuingPrices";
-import { mapImbuingItemPricesFromDb } from "../mappers/mapImbuingItemPricesFromDb";
-import { ImbuingFormSchema } from "../schemas";
-import type { ImbuingFormValues, ImbuingItem, Scroll } from "../types";
+import { mapItemPricesFromDb } from "../mappers/mapItemPricesFromDb";
+import { ImbuingFormSchema, type ImbuingFormValues, type ImbuingItem } from "../schemas";
+import type { Scroll } from "../types";
 import { ImbuingScrollCard } from "./ImbuingScrollCard";
 import { ImbuingScrollCardPriceInput } from "./ImbuingScrollCardPriceInput";
 
@@ -65,7 +65,7 @@ type ImbuingViewProps = {
 };
 
 export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
-  const defaultValues = mapImbuingItemPricesFromDb(imbuingItemPrices);
+  const defaultValues = mapItemPricesFromDb(imbuingItemPrices);
 
   const form = useForm<ImbuingFormValues>({
     defaultValues,

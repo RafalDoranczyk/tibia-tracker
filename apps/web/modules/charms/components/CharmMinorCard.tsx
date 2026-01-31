@@ -3,7 +3,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 
 import { CHARM_MAX_LEVEL } from "../constants";
-import type { CharmWithProgress } from "../types";
+import type { CharmWithProgress } from "../schemas";
 import { canAffordNextCharmLevel, getCharmNextLevelCost } from "../utils/getCharmEconomy";
 import { CharmCardLayout } from "./CharmCardLayout";
 

@@ -7,7 +7,7 @@ import { useRequiredCharacterId } from "@/providers/feature/dashboard";
 import { useToast } from "@/providers/global";
 
 import { setCharacterCharmLevel } from "../actions/setCharacterCharmLevel";
-import type { CharmLevel, CharmWithProgress } from "../types";
+import type { CharmLevel, CharmWithProgress } from "../schemas";
 import { CharmMajorCard } from "./CharmMajorCard";
 import { CharmMinorCard } from "./CharmMinorCard";
 import { SetCharmLevelModal } from "./SetCharmLevelModal";

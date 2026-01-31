@@ -1,4 +1,4 @@
-import type { CharmLevel } from "./types";
+import type { CharmLevel } from "./schemas";
 
 export const MINOR_CHARM_PROMOTION_BONUS = 100;
 export const CHARM_MAX_LEVEL = 3;

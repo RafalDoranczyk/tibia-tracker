@@ -1,16 +1,17 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { insertSessionMonstersWithPrey } from "../db/insertMonsterRows";
 import { insertSessionRows } from "../db/insertSessionRows";
-import { CreateHuntSessionPayloadSchema, HuntSessionDbFieldsSchema } from "../schemas";
-import type { CreateHuntSessionPayload, HuntSessionDbFields } from "../types";
+import {
+  CreateHuntSessionPayloadSchema,
+  type HuntSessionDbFields,
+  HuntSessionDbFieldsSchema,
+} from "../schemas";
 
-export async function createHuntSession(
-  payload: CreateHuntSessionPayload
-): Promise<HuntSessionDbFields> {
+export async function createHuntSession(payload: unknown): Promise<HuntSessionDbFields> {
   const parsed = assertZodParse(CreateHuntSessionPayloadSchema, payload);
 
   const { supabase } = await getUserScopedQuery();

@@ -1,14 +1,18 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { HuntSessionDbFieldsSchema, HuntSessionSchema } from "../schemas";
-import type { FetchHuntSessionPayload, HuntSession } from "../types";
+import {
+  FetchHuntSessionPayloadSchema,
+  type HuntSession,
+  HuntSessionDbFieldsSchema,
+  HuntSessionSchema,
+} from "../schemas";
 
 const HuntSessionDbKeys = Object.keys(HuntSessionDbFieldsSchema.shape).join(", ");
 
-const HUNT_SESSIONS_SELECT = `
+const SELECT = `
   ${HuntSessionDbKeys},
   place:hunt_places!inner(id, name, image_path),
   supplies:hunt_session_supplies(
@@ -67,15 +71,14 @@ killed_monsters:hunt_session_killed_monsters(
   )
 `;
 
-export async function fetchHuntSession({
-  id,
-  character_id,
-}: FetchHuntSessionPayload): Promise<HuntSession | null> {
+export async function fetchHuntSession(payload: unknown): Promise<HuntSession | null> {
+  const { id, character_id } = assertZodParse(FetchHuntSessionPayloadSchema, payload);
+
   const { supabase } = await getUserScopedQuery();
 
   const { data } = await supabase
     .from("hunt_sessions")
-    .select(HUNT_SESSIONS_SELECT)
+    .select(SELECT)
     .eq("id", id)
     .eq("character_id", character_id)
     .maybeSingle();

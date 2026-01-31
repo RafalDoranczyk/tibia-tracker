@@ -15,7 +15,7 @@ import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
 import { EmptyState } from "@/components";
 
-import type { HuntSessionForm, MonsterPreview, PreyBonus } from "../../types";
+import type { HuntSessionForm, MonsterPreview, PreyBonus } from "../../schemas";
 
 type PreyChipEditorProps = {
   value?: number | null; // preyBonusId

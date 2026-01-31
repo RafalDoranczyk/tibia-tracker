@@ -8,7 +8,7 @@ import { ControlledSelect, ControlledTextField } from "@/components";
 import type { HuntPlace } from "@/modules/hunt-places";
 
 import { HUNT_SESSION_PLAYER_OPTIONS } from "../../constants";
-import type { HuntSessionForm } from "../../types";
+import type { HuntSessionForm } from "../../schemas";
 
 type HuntSetupProps = {
   huntPlaceList: HuntPlace[];

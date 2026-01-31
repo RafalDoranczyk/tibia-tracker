@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { CharacterSchema } from "@/modules/characters";
 import { HuntPlaceSchema } from "@/modules/hunt-places";
-import { ISODateToYYYYMMDD, PositiveNumberNonZero } from "@/schemas";
+import { ISODate, PositiveInt } from "@/schemas";
 
 import {
   HuntSessionDamageElementSchema,
@@ -14,36 +14,37 @@ import {
 
 // Computed fields on the server side
 const HuntSessionDbFieldsComputedSchema = z.object({
-  created_at: ISODateToYYYYMMDD,
-  raw_xp_per_hour: PositiveNumberNonZero,
+  created_at: ISODate,
+  raw_xp_per_hour: PositiveInt,
   profit_per_hour: z.number(),
-  healing_per_hour: PositiveNumberNonZero,
-  damage_per_hour: PositiveNumberNonZero,
-  xp_per_hour: PositiveNumberNonZero,
+  healing_per_hour: PositiveInt,
+  damage_per_hour: PositiveInt,
+  xp_per_hour: PositiveInt,
 });
 
 export const HuntSessionDbBaseFieldsSchema = z.object({
   id: z.number(),
   character_id: CharacterSchema.shape.id,
   place_id: HuntPlaceSchema.shape.id,
-  date: ISODateToYYYYMMDD,
-  started_at: ISODateToYYYYMMDD,
-  ended_at: ISODateToYYYYMMDD,
-  level: PositiveNumberNonZero,
-  player_count: PositiveNumberNonZero,
-  duration_seconds: PositiveNumberNonZero,
+  date: ISODate,
+  started_at: ISODate,
+  ended_at: ISODate,
+  level: PositiveInt,
+  player_count: PositiveInt,
+  duration_seconds: PositiveInt,
   profit: z.number(),
-  loot_value: PositiveNumberNonZero,
-  supplies_cost: PositiveNumberNonZero,
-  damage: PositiveNumberNonZero,
-  healing: PositiveNumberNonZero,
-  raw_xp_gain: PositiveNumberNonZero,
-  xp_gain: PositiveNumberNonZero,
+  loot_value: PositiveInt,
+  supplies_cost: PositiveInt,
+  damage: PositiveInt,
+  healing: PositiveInt,
+  raw_xp_gain: PositiveInt,
+  xp_gain: PositiveInt,
 });
 
 export const HuntSessionDbFieldsSchema = HuntSessionDbBaseFieldsSchema.merge(
   HuntSessionDbFieldsComputedSchema
 );
+export type HuntSessionDbFields = z.infer<typeof HuntSessionDbFieldsSchema>;
 
 /* Full session with relations for single view */
 export const HuntSessionSchema = HuntSessionDbFieldsSchema.extend({
@@ -54,8 +55,10 @@ export const HuntSessionSchema = HuntSessionDbFieldsSchema.extend({
   damage_elements: HuntSessionDamageElementSchema.array(),
   damage_sources: HuntSessionDamageSourceSchema.array(),
 });
+export type HuntSession = z.infer<typeof HuntSessionSchema>;
 
 /* Session for list view */
 export const HuntSessionListItemSchema = HuntSessionDbFieldsSchema.extend({
   place: HuntPlaceSchema,
 });
+export type HuntSessionListItem = z.infer<typeof HuntSessionListItemSchema>;

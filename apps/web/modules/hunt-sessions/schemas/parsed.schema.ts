@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { MonsterSchema } from "@/modules/bestiary";
-import { PositiveNumberNonZero } from "@/schemas";
+import { PositiveInt } from "@/schemas";
 
 import { HuntSessionDbBaseFieldsSchema } from "./db.schema";
 
@@ -15,14 +15,16 @@ export const HuntSessionLogParsedSchema = HuntSessionDbBaseFieldsSchema.omit({
 }).extend({
   killed_monsters: z
     .object({
-      count: PositiveNumberNonZero,
+      count: PositiveInt,
       name: MonsterSchema.shape.name,
     })
     .array(),
   looted_items: z
     .object({
-      count: PositiveNumberNonZero,
+      count: PositiveInt,
       name: MonsterSchema.shape.name,
     })
     .array(),
 });
+
+export type HuntSessionRawParsed = z.infer<typeof HuntSessionLogParsedSchema>;

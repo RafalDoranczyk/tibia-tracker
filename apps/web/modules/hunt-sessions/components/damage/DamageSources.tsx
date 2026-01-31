@@ -12,7 +12,7 @@ import {
 
 import { ControlledTextField } from "@/components";
 
-import type { HuntSessionForm, MonsterPreview } from "../../types";
+import type { HuntSessionForm, MonsterPreview } from "../../schemas";
 
 type DamageSourceField = FieldArrayWithId<HuntSessionForm, "damage_sources"> & {
   damageSourceId: number;

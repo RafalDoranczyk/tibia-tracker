@@ -1,6 +1,3 @@
-export { getImageUrl } from "./assets";
-export { createSupabaseClient } from "./client";
 export { createSupabaseErrorMapper } from "./errorMapper";
 export { createSupabaseMiddleware } from "./middleware";
 export { createSupabaseServer } from "./server";
-export type { SupabaseConfig } from "./types";

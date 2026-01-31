@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 
-import { ErrorPage } from "@/components";
-import { AppError, AppErrorCodes } from "@/core";
+import { AppError, AppErrorCodes } from "@/core/errors";
 import { env } from "@/env";
+import { ErrorPage } from "@/layout/page/ErrorPage";
 import { useToast } from "@/providers/global";
 
 export default function GlobalError({

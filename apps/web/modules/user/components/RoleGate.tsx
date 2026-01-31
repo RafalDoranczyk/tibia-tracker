@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 
-import type { UserRole } from "../types";
+import type { UserRole } from "../schemas";
 import { useUser } from "../UserProvider";
 
 export function RoleGate({

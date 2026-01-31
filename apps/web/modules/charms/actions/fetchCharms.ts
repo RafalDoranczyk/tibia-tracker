@@ -1,11 +1,10 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { mapCharmRowToCharm } from "../mappers/mapCharmRowToCharm";
-import { CharmRowSchema } from "../schemas";
-import type { Charm } from "../types";
+import { type Charm, CharmRowSchema } from "../schemas";
 
 const charmKeys = CharmRowSchema.keyof().options.join(",");
 

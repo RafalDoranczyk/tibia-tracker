@@ -5,7 +5,8 @@ import {
   MARKET_TAX_RATE,
   POWERFULL_SCROLL_MAKING_PRICE,
 } from "../constants";
-import type { ImbuingFormValues, Scroll, ScrollItem, ScrollType } from "../types";
+import type { ImbuingFormValues } from "../schemas";
+import type { Scroll, ScrollItem, ScrollType } from "../types";
 import { canBuyScrollForTokens } from "./canBuyScrollForTokens";
 
 function getScrollLaborCost(scrollType: ScrollType) {

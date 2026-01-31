@@ -2,14 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 
-import { PATHS } from "@/constants";
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
+import { PATHS } from "@/paths";
 import { assertZodParse } from "@/utils";
 
-import { CharacterSchema, CreateCharacterSchema } from "../schemas";
-import type { Character, CreateCharacterPayload } from "../types";
+import { type Character, CharacterSchema, CreateCharacterSchema } from "../schemas";
 
-export async function createCharacter(payload: CreateCharacterPayload): Promise<Character> {
+export async function createCharacter(payload: unknown): Promise<Character> {
   const parsed = assertZodParse(CreateCharacterSchema, payload);
 
   const { supabase } = await getUserScopedQuery();
@@ -25,7 +24,7 @@ export async function createCharacter(payload: CreateCharacterPayload): Promise<
   }
 
   assertZodParse(CharacterSchema, data);
-
   revalidatePath(PATHS.CHARACTERS);
+
   return data;
 }

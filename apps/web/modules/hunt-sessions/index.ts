@@ -3,7 +3,7 @@
 // ======================
 export { fetchDamageElements } from "./actions/fetchDamageElements";
 export { fetchHuntSession } from "./actions/fetchHuntSession";
-export { fetchHuntSessionsList } from "./actions/fetchHuntSessionsList";
+export { fetchHuntSessionList } from "./actions/fetchHuntSessionList";
 export { fetchMonstersPreview } from "./actions/fetchMonstersPreview";
 export { fetchPreyBonuses } from "./actions/fetchPreyBonuses";
 export { fetchSupplies } from "./actions/fetchSupplies";

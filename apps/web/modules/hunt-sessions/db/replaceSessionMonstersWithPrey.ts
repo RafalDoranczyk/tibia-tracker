@@ -1,11 +1,11 @@
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 
-import type { CreateHuntSessionPayload } from "../types";
+import type { HuntSessionKilledMonsterInput } from "../schemas";
 import { insertSessionMonstersWithPrey } from "./insertMonsterRows";
 
 export async function replaceSessionMonstersWithPrey(
   session_id: number,
-  monsters: CreateHuntSessionPayload["killed_monsters"]
+  monsters: HuntSessionKilledMonsterInput[]
 ) {
   const { supabase } = await getUserScopedQuery();
 

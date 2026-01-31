@@ -2,9 +2,10 @@
 
 import { cache } from "react";
 
-import { AppError, AppErrorCodes, createSupabase, mapSupabaseErrorToAppError } from "@/core";
+import { AppError, AppErrorCodes } from "@/core/errors";
+import { createSupabase, mapSupabaseErrorToAppError } from "@/core/supabase";
 
-import type { AppUser } from "../types";
+import type { AppUser } from "../schemas";
 
 async function internalGetUser(): Promise<AppUser> {
   try {

@@ -2,8 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { mapHuntSessionToForm } from "../mappers/mapHuntSessionToForm";
-import { HuntSessionFormSchema } from "../schemas";
-import type { HuntSession, HuntSessionForm } from "../types";
+import { type HuntSession, type HuntSessionForm, HuntSessionFormSchema } from "../schemas";
 
 const startDate = new Date().toISOString().slice(0, 10);
 

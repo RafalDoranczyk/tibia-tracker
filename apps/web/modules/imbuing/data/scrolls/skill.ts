@@ -2,7 +2,6 @@ import { ITEM_IMAGES, SCROLL_IMAGES } from "../../images";
 import type { Scroll, ScrollItem } from "../../types";
 
 // Scroll items
-
 const elvishTalisman: ScrollItem = {
   key: "elvish_talisman",
   name: "Elvish Talisman",

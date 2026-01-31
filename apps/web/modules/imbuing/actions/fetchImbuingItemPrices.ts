@@ -5,8 +5,7 @@ import { z } from "zod";
 import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { ImbuingItemSchema } from "../schemas";
-import type { ImbuingItem } from "../types";
+import { type ImbuingItem, ImbuingItemSchema } from "../schemas";
 
 const imbuingItemKeys = Object.keys(ImbuingItemSchema.shape).join(", ");
 

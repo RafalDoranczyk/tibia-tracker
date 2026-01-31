@@ -5,7 +5,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { Autocomplete } from "@/components";
 
-import type { HuntSessionForm, ItemPreview } from "../../types";
+import type { HuntSessionForm, ItemPreview } from "../../schemas";
 import { SupplyList } from "./SupplyList";
 
 type HuntSessionSuppliesAnalyzerProps = {

@@ -1,14 +1,14 @@
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
-import { PATHS } from "@/constants";
+import { PATHS } from "@/paths";
 import { useRequiredCharacterId } from "@/providers/feature/dashboard";
 import { useToast } from "@/providers/global";
 
 import { createHuntSession } from "../actions/createHuntSession";
 import { updateHuntSession } from "../actions/updateHuntSession";
 import { mapHuntSessionFormToPayload } from "../mappers/mapHuntSessionFormToPayload";
-import type { HuntSession, HuntSessionForm } from "../types";
+import type { HuntSession, HuntSessionForm } from "../schemas";
 
 export const useSaveHuntSession = () => {
   const character_id = useRequiredCharacterId();

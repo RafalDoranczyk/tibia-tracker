@@ -15,9 +15,8 @@ import { Controller, useForm } from "react-hook-form";
 
 import { createCharacter } from "../actions/createCharacter";
 import { updateCharacter } from "../actions/updateCharacter";
-import { ALLOWED_VOCATIONS } from "../constants";
-import { CreateCharacterSchema } from "../schemas";
-import type { Character, CreateCharacterPayload } from "../types";
+import { CHARACTER_VOCATION } from "../constants";
+import { type Character, type CreateCharacterPayload, CreateCharacterSchema } from "../schemas";
 
 type CharacterModalProps = {
   open: boolean;
@@ -39,7 +38,7 @@ export function CharacterModal({ open, onClose, character, onSuccess }: Characte
     resolver: zodResolver(CreateCharacterSchema),
     values: {
       name: character?.name || "",
-      vocation: character?.vocation || ALLOWED_VOCATIONS[0],
+      vocation: character?.vocation || CHARACTER_VOCATION[0],
       world: character?.world || "",
     },
   });
@@ -81,7 +80,7 @@ export function CharacterModal({ open, onClose, character, onSuccess }: Characte
                   error={!!errors.vocation}
                   helperText={errors.vocation?.message}
                 >
-                  {ALLOWED_VOCATIONS.map((vocation) => (
+                  {CHARACTER_VOCATION.map((vocation) => (
                     <MenuItem key={vocation} value={vocation}>
                       {vocation}
                     </MenuItem>

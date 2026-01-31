@@ -1,4 +1,4 @@
-import type { CreateHuntSessionPayload, HuntSessionForm } from "../types";
+import type { CreateHuntSessionPayload, HuntSessionForm } from "../schemas";
 
 export const mapHuntSessionFormToPayload = (
   form: HuntSessionForm

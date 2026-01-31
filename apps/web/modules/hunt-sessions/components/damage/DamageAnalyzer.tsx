@@ -2,7 +2,7 @@
 
 import { Grid } from "@mui/material";
 
-import type { DamageElement, MonsterPreview } from "../../types";
+import type { DamageElement, MonsterPreview } from "../../schemas";
 import { DamageElements } from "./DamageElements";
 import { DamageSources } from "./DamageSources";
 

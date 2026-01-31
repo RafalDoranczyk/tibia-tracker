@@ -1,4 +1,4 @@
-import { PATHS } from "@/constants";
+import { PATHS } from "@/paths";
 
 import type { NavigationLinkElementProps } from "../types";
 

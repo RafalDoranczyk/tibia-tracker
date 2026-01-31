@@ -1,4 +1,4 @@
-import type { Charm, CharmRow } from "../types";
+import type { Charm, CharmRow } from "../schemas";
 
 export function mapCharmRowToCharm(row: CharmRow): Charm {
   return {

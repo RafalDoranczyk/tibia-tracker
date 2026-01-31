@@ -1,6 +1,6 @@
 import { Container, Grid, Skeleton, Stack } from "@mui/material";
 
-import { PageHeader } from "@/components";
+import { PageHeaderSkeleton } from "@/layout/page";
 
 function StatCardSkeleton() {
   return (
@@ -87,7 +87,7 @@ export default function HuntSessionPageLoading() {
         <Skeleton variant="text" width={10} height={32} />
         <Skeleton variant="text" width={100} height={32} />
       </Stack>
-      <PageHeader.Skeleton />
+      <PageHeaderSkeleton />
       {/* TOP STATS */}
       <Container maxWidth="lg" sx={{ mt: 10 }}>
         <Grid container spacing={2} mb={2}>

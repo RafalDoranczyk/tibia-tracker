@@ -1,41 +1,43 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import {
   FetchHuntSessionListPayloadSchema,
+  type FetchHuntSessionListResponse,
   FetchHuntSessionListResponseSchema,
   HuntSessionDbFieldsSchema,
 } from "../schemas";
-import type { FetchHuntSessionListPayload, FetchHuntSessionListResponse } from "../types";
 
 const HuntSessionDbKeys = Object.keys(HuntSessionDbFieldsSchema.shape).join(", ");
 
-const HUNT_SESSIONS_SELECT = `
+const SELECT = `
   ${HuntSessionDbKeys},
   place:hunt_places!inner(id, name, image_path)
 `;
 
-export async function fetchHuntSessionsList(
-  payload: FetchHuntSessionListPayload
+export async function fetchHuntSessionList(
+  payload: unknown
 ): Promise<FetchHuntSessionListResponse> {
-  const { limit, offset, order, orderBy } = assertZodParse(
+  const { limit, page, sortBy, sortDirection, character_id } = assertZodParse(
     FetchHuntSessionListPayloadSchema,
     payload
   );
+
+  const offset = page && limit ? (page - 1) * limit : undefined;
 
   const { supabase } = await getUserScopedQuery();
 
   let query = supabase
     .from("hunt_sessions")
-    .select(HUNT_SESSIONS_SELECT, { count: "exact" })
+    .select(SELECT, { count: "exact" })
     .order("date", { ascending: false })
-    .eq("character_id", payload.character_id);
+    .eq("character_id", character_id);
 
-  if (orderBy) {
-    query = query.order(orderBy, {
-      ascending: order !== "desc",
+  if (sortBy) {
+    query = query.order(sortBy, {
+      ascending: sortDirection !== "desc",
     });
   }
 

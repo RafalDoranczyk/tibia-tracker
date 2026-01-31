@@ -1,15 +1,16 @@
 import { Button, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 
-import { EmptyState, PageHeader } from "@/components";
-import { PATHS } from "@/constants";
-import { fetchHuntSessionsList, HuntSessionListView } from "@/modules/hunt-sessions";
+import { EmptyState } from "@/components";
+import { PageHeader } from "@/layout/page";
+import { fetchHuntSessionList, HuntSessionListView } from "@/modules/hunt-sessions";
+import { PATHS } from "@/paths";
 
-import type { CharacterPageProps } from "../../types";
+import type { CharacterPageProps } from "../../../types";
 
 export default async function HuntSessions({ params }: CharacterPageProps) {
   const { characterId } = await params;
-  const { data: huntSessionList, count } = await fetchHuntSessionsList({
+  const { data: huntSessionList, count } = await fetchHuntSessionList({
     limit: 10,
     character_id: characterId,
   });
@@ -18,7 +19,7 @@ export default async function HuntSessions({ params }: CharacterPageProps) {
     <Stack spacing={4}>
       {/* Header row */}
       <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <PageHeader.Root
+        <PageHeader
           title="Hunt Sessions"
           description="Track and review your hunt sessions to analyze XP/h, profit, and efficiency over time."
         />

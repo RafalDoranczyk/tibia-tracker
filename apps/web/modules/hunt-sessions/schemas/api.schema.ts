@@ -1,9 +1,10 @@
 import { z } from "zod";
 
+import { PaginationSchema } from "@/lib/pagination";
 import { MonsterSchema } from "@/modules/bestiary";
 import { CharacterSchema } from "@/modules/characters";
 import { ItemSchema } from "@/modules/items";
-import { PositiveNumber, PositiveNumberNonZero } from "@/schemas";
+import { NonNegativeInt, PositiveInt } from "@/schemas";
 
 import { DamageElementSchema, DamageSourceSchema, PreyBonusSchema } from "./catalog.schema";
 import {
@@ -17,54 +18,53 @@ export const FetchHuntSessionPayloadSchema = z.object({
   character_id: CharacterSchema.shape.id,
 });
 
-export const FetchHuntSessionListPayloadSchema = z.object({
+export const FetchHuntSessionListPayloadSchema = PaginationSchema.extend({
   character_id: CharacterSchema.shape.id,
-  limit: z.number().min(1).optional(),
-  offset: z.number().min(0).optional(),
-  order: z.enum(["asc", "desc"]).optional(),
-  orderBy: z.enum(["date"]).optional(),
 });
 
 export const FetchHuntSessionListResponseSchema = z.object({
-  count: PositiveNumber,
+  count: NonNegativeInt,
   data: z.array(HuntSessionListItemSchema),
 });
+export type FetchHuntSessionListResponse = z.infer<typeof FetchHuntSessionListResponseSchema>;
+
+const HuntSessionKilledMonsterInputSchema = z.object({
+  monster_id: MonsterSchema.shape.id,
+  count: PositiveInt,
+  prey_bonus_id: PreyBonusSchema.shape.id.nullable().optional(),
+});
+export type HuntSessionKilledMonsterInput = z.input<typeof HuntSessionKilledMonsterInputSchema>;
 
 export const CreateHuntSessionPayloadSchema = HuntSessionDbBaseFieldsSchema.omit({
   id: true,
 }).extend({
-  killed_monsters: z.array(
-    z.object({
-      monster_id: MonsterSchema.shape.id,
-      count: PositiveNumberNonZero,
-      prey_bonus_id: PreyBonusSchema.shape.id.nullable().optional(),
-    })
-  ),
+  killed_monsters: HuntSessionKilledMonsterInputSchema.array(),
   looted_items: z.array(
     z.object({
       item_id: ItemSchema.shape.id,
-      count: PositiveNumberNonZero,
+      count: PositiveInt,
     })
   ),
   supplies: z.array(
     z.object({
       supply_id: ItemSchema.shape.id,
-      count: PositiveNumberNonZero,
+      count: PositiveInt,
     })
   ),
   damage_elements: z.array(
     z.object({
       damage_element_id: DamageElementSchema.shape.id,
-      percent: PositiveNumberNonZero,
+      percent: PositiveInt,
     })
   ),
   damage_sources: z.array(
     z.object({
       damage_source_id: DamageSourceSchema.shape.id,
-      percent: PositiveNumberNonZero,
+      percent: PositiveInt,
     })
   ),
 });
+export type CreateHuntSessionPayload = z.input<typeof CreateHuntSessionPayloadSchema>;
 
 export const UpdateHuntSessionPayloadSchema = CreateHuntSessionPayloadSchema.extend({
   id: HuntSessionSchema.shape.id,

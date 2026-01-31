@@ -1,4 +1,4 @@
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 
 export async function deleteSessionRows(table: string, sessionId: number) {
   const { supabase } = await getUserScopedQuery();

@@ -13,7 +13,6 @@ const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(mi
 
 export function useOnlineTrainingState() {
   const [exerciseDummy, setExerciseDummy] = useState(false);
-  // const [weaponType, setWeaponType] = useState<ExerciseWeaponType>("lasting");
   const [doubleEvent, setDoubleEvent] = useState(false);
   const [character, setCharacter] = useState<OnlineTrainingCharacterState>(
     CHARACTER_ONLINE_TRAINING_DEFAULT
@@ -23,8 +22,6 @@ export function useOnlineTrainingState() {
     character,
     exerciseDummy,
     setExerciseDummy,
-    // weaponType,
-    // setWeaponType,
     doubleEvent,
     setDoubleEvent,
     setVocation: (vocation: CharacterVocation) => setCharacter((c) => ({ ...c, vocation })),
@@ -55,3 +52,5 @@ export function useOnlineTrainingState() {
       })),
   };
 }
+
+export type UseOnlineTrainingState = ReturnType<typeof useOnlineTrainingState>;

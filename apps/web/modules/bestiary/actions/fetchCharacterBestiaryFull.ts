@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { BESTIARY_DEFAULT_LIMIT } from "../constants";

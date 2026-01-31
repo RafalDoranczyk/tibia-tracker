@@ -4,7 +4,7 @@ import { Table, type TableOrder, TooltipIconButton } from "@/components";
 import { formatDate, formatNumberCompact } from "@/utils";
 
 import { HUNT_SESSIONS_TABLE_HEAD_CELLS } from "../constants";
-import type { HuntSessionListItem } from "../types";
+import type { HuntSessionListItem } from "../schemas";
 
 function formatSessionRow(session: HuntSessionListItem) {
   return {

@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { EmptyState } from "@/components";
-import { getImageUrl } from "@/lib/supabase";
+import { getImageUrl } from "@/core/supabase";
 
-import type { HuntSessionForm, ItemPreview } from "../../types";
+import type { HuntSessionForm, ItemPreview } from "../../schemas";
 
 type LootedItemsProps = {
   itemList: ItemPreview[];

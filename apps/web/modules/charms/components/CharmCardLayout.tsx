@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, CardMedia, Chip, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 
-import { getImageUrl } from "@/lib/supabase";
+import { getImageUrl } from "@/core/supabase";
 
 type CharmCardLayoutProps = {
   name: string;

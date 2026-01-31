@@ -1,17 +1,18 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { deleteSessionRows } from "../db/deleteSessionRows";
 import { insertSessionRows } from "../db/insertSessionRows";
 import { replaceSessionMonstersWithPrey } from "../db/replaceSessionMonstersWithPrey";
-import { HuntSessionDbFieldsSchema, UpdateHuntSessionPayloadSchema } from "../schemas";
-import type { HuntSessionDbFields, UpdateHuntSessionPayload } from "../types";
+import {
+  type HuntSessionDbFields,
+  HuntSessionDbFieldsSchema,
+  UpdateHuntSessionPayloadSchema,
+} from "../schemas";
 
-export async function updateHuntSession(
-  payload: UpdateHuntSessionPayload
-): Promise<HuntSessionDbFields> {
+export async function updateHuntSession(payload: unknown): Promise<HuntSessionDbFields> {
   const parsed = assertZodParse(UpdateHuntSessionPayloadSchema, payload);
 
   const { supabase } = await getUserScopedQuery();
@@ -34,7 +35,6 @@ export async function updateHuntSession(
     .single();
 
   if (error || !data) {
-    console.log(error);
     throw new Error("Failed to update hunt session");
   }
 

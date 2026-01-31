@@ -1,7 +1,6 @@
-import { Box, Skeleton, Typography } from "@mui/material";
+import { Box, Skeleton, Stack, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 
-// Shared styling constants
 const PAGE_HEADER_STYLING = {
   display: "flex",
   justifyContent: "space-between",
@@ -10,14 +9,6 @@ const PAGE_HEADER_STYLING = {
   gap: 2,
 } as const;
 
-// Types
-type PageHeaderRootProps = {
-  title: string;
-  description?: string;
-  action?: ReactNode;
-  subtitle?: string;
-};
-
 type PageHeaderSkeletonProps = {
   hasAction?: boolean;
   hasSubtitle?: boolean;
@@ -25,49 +16,40 @@ type PageHeaderSkeletonProps = {
   descriptionWidth?: number | string;
 };
 
-function PageHeaderRoot({ title, description, action, subtitle }: PageHeaderRootProps) {
+type PageHeaderProps = {
+  title: string;
+  description?: string;
+  action?: ReactNode;
+  subtitle?: string;
+};
+
+export function PageHeader({ title, description, action, subtitle }: PageHeaderProps) {
   return (
-    <Box sx={PAGE_HEADER_STYLING}>
-      <Box sx={{ flex: 1 }}>
+    <Stack sx={PAGE_HEADER_STYLING}>
+      <Stack spacing={0.5} flex={1}>
         {subtitle && (
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              textTransform: "uppercase",
-              fontWeight: 600,
-              letterSpacing: 0.5,
-              mb: 0.5,
-            }}
-          >
+          <Typography variant="overline" color="text.secondary">
             {subtitle}
           </Typography>
         )}
 
-        <Typography
-          variant="h4"
-          component="h1"
-          sx={{
-            fontWeight: 600,
-            mb: description ? 1 : 0,
-          }}
-        >
+        <Typography variant="h4" component="h1">
           {title}
         </Typography>
 
         {description && (
-          <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 600 }}>
+          <Typography color="text.secondary" maxWidth={640}>
             {description}
           </Typography>
         )}
-      </Box>
+      </Stack>
 
-      {action && <Box sx={{ flexShrink: 0 }}>{action}</Box>}
-    </Box>
+      {action}
+    </Stack>
   );
 }
 
-function PageHeaderSkeleton({
+export function PageHeaderSkeleton({
   hasAction = false,
   hasSubtitle = false,
   titleWidth = 200,
@@ -89,8 +71,3 @@ function PageHeaderSkeleton({
     </Box>
   );
 }
-
-export const PageHeader = {
-  Root: PageHeaderRoot,
-  Skeleton: PageHeaderSkeleton,
-};

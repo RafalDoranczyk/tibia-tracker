@@ -4,7 +4,7 @@ import { Avatar, Paper, Stack, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 
 import { useHuntStats } from "../hooks/useHuntStats";
-import type { HuntSessionForm, MonsterPreview, PreyBonus } from "../types";
+import type { HuntSessionForm, MonsterPreview, PreyBonus } from "../schemas";
 
 type SummaryStatProps = {
   title: string;

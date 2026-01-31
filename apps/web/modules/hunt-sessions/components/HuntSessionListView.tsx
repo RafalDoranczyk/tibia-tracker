@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { ConfirmDialog } from "@/components";
-import { PATHS } from "@/constants";
 import { usePagination } from "@/hooks";
+import { PATHS } from "@/paths";
 import { useRequiredCharacterId } from "@/providers/feature/dashboard";
 
 import { HUNT_SESSION_PAGINATION_LIMIT } from "../constants";
 import { useDeleteHuntSession } from "../hooks/useDeleteHuntSession";
-import type { HuntSessionListItem } from "../types";
+import type { HuntSessionListItem } from "../schemas";
 import { SessionsTable } from "./SessionsTable";
 
 type HuntSessionListViewProps = {

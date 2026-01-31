@@ -1,12 +1,8 @@
-import { AppError, type AppErrorCodes } from "@/core";
+import { AppError, type AppErrorCodes } from "@/core/errors";
 import { env } from "@/env";
-import {
-  createSupabaseErrorMapper,
-  createSupabaseServer,
-  type SupabaseConfig,
-} from "@/lib/supabase";
+import { createSupabaseErrorMapper, createSupabaseServer } from "@/lib/supabase";
 
-export const supabaseConfig: SupabaseConfig = {
+export const supabaseConfig = {
   url: env.NEXT_PUBLIC_SUPABASE_URL,
   key: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
 };

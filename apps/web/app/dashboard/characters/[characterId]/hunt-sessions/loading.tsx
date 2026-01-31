@@ -1,9 +1,10 @@
-import { PageHeader, Table } from "@/components";
+import { Table } from "@/components";
+import { PageHeaderSkeleton } from "@/layout/page";
 
 export default function HuntSessionsLoading() {
   return (
     <>
-      <PageHeader.Skeleton />
+      <PageHeaderSkeleton />
       <Table.Skeleton />
     </>
   );

@@ -3,7 +3,7 @@ import { useTransition } from "react";
 import { useToast } from "@/providers/global";
 
 import { updateImbuingItemPrices } from "../actions/updateImbuingItemPrices";
-import type { ImbuingFormValues } from "../types";
+import type { ImbuingFormValues } from "../schemas";
 
 export function useSaveImbuingPrices() {
   const toast = useToast();

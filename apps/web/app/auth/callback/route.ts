@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { PATHS } from "@/constants";
-import { createSupabase } from "@/core";
+import { createSupabase } from "@/core/supabase";
 import { env } from "@/env";
+import { PATHS } from "@/paths";
 
 // Helper functions
 function isValidRedirectPath(path: string): boolean {

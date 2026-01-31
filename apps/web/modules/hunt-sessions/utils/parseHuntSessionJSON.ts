@@ -1,4 +1,4 @@
-import type { HuntSessionRawParsed } from "../types";
+import type { HuntSessionRawParsed } from "../schemas";
 
 export class HuntSessionParseError extends Error {
   constructor(public missingFields: string[]) {

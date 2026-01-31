@@ -1,7 +1,19 @@
 const DASHBOARD_PATH = "/dashboard";
 
+export type CharacterPaths = {
+  OVERVIEW: string;
+  BESTIARY: string;
+  HUNT_PLACES: string;
+  CHARMS: string;
+  HUNT_SESSIONS: {
+    LIST: string;
+    NEW: string;
+    EDIT: (sessionId: number) => string;
+  };
+};
+
 // Specific paths for a character
-const character = (characterId: string) => {
+const character = (characterId: string): CharacterPaths => {
   const base = `${DASHBOARD_PATH}/characters/${characterId}`;
 
   return {

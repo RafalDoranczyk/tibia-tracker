@@ -39,3 +39,5 @@ export const HuntSessionFormSchema = HuntSessionDbBaseFieldsSchema.omit({
   damage_sources: DamageSourceFormSchema.array(),
   supplies: SupplyCountFormSchema.array(),
 });
+
+export type HuntSessionForm = z.infer<typeof HuntSessionFormSchema>;

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { PaginationSchema } from "@/lib/pagination";
 import { CharacterSchema } from "@/modules/characters";
-import { PositiveNumber } from "@/schemas";
+import { NonNegativeInt } from "@/schemas";
 
 import { BestiaryClassSchema } from "./bestiaryFilters.schema";
 import { MonsterSchema } from "./monster.schema";
@@ -11,11 +11,11 @@ import { MonsterSchema } from "./monster.schema";
  * Relation: Character ↔ Monster bestiary progress
  */
 export const CharacterBestiarySchema = z.object({
-  id: z.number(),
+  id: NonNegativeInt,
   character_id: CharacterSchema.shape.id,
   monster_id: MonsterSchema.shape.id,
-  kills: PositiveNumber,
-  stage: PositiveNumber,
+  kills: NonNegativeInt,
+  stage: NonNegativeInt,
   has_soul: z.boolean(),
 });
 
@@ -37,8 +37,8 @@ export const UpdateCharacterBestiaryEntrySchema = z.object({
   characterId: CharacterSchema.shape.id,
   monsterId: MonsterSchema.shape.id,
   updates: z.object({
-    kills: PositiveNumber.optional(),
-    stage: PositiveNumber.optional(),
+    kills: NonNegativeInt.optional(),
+    stage: NonNegativeInt.optional(),
     has_soul: z.boolean().optional(),
   }),
 });

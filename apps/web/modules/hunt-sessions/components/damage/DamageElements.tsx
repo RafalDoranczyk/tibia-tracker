@@ -12,7 +12,7 @@ import {
 
 import { Autocomplete, ControlledTextField, TooltipIconButton } from "@/components";
 
-import type { DamageElement, HuntSessionForm } from "../../types";
+import type { DamageElement, HuntSessionForm } from "../../schemas";
 
 // RHF field with domain id
 type DamageElementField = FieldArrayWithId<HuntSessionForm, "damage_elements", "id"> & {

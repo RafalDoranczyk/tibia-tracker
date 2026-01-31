@@ -1,4 +1,4 @@
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 
 export async function insertSessionRows<T>(table: string, session_id: number, rows?: T[]) {
   if (!rows?.length) return;

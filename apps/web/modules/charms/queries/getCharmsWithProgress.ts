@@ -3,7 +3,7 @@
 import { fetchCharacterCharms } from "../actions/fetchCharacterCharms";
 import { fetchCharms } from "../actions/fetchCharms";
 import { mapCharmsWithProgress } from "../mappers/mapCharmsWithProgress";
-import type { CharmWithProgress } from "../types";
+import type { CharmWithProgress } from "../schemas";
 
 export async function getCharmsWithProgress(characterId: string): Promise<CharmWithProgress[]> {
   const [charms, characterCharms] = await Promise.all([

@@ -2,7 +2,7 @@ import { Box, Drawer, Grid, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 
-import type { HuntSessionForm } from "../../types";
+import type { HuntSessionForm } from "../../schemas";
 
 type ComputedStatProps = {
   label: string;

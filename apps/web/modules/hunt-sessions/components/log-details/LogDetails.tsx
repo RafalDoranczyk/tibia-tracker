@@ -8,13 +8,8 @@ import { useFormContext } from "react-hook-form";
 import { TooltipIconButton } from "@/components";
 import type { HuntPlace } from "@/modules/hunt-places";
 
-import type {
-  HuntSessionForm,
-  HuntSessionUnknownEntities,
-  ItemPreview,
-  MonsterPreview,
-  PreyBonus,
-} from "../../types";
+import type { HuntSessionForm, ItemPreview, MonsterPreview, PreyBonus } from "../../schemas";
+import type { HuntSessionUnknownEntities } from "../../types";
 import { ComputedValuesDrawer } from "./ComputedValuesDrawer";
 import { HuntSetup } from "./HuntSetup";
 import { KilledMonsters } from "./KilledMonsters";

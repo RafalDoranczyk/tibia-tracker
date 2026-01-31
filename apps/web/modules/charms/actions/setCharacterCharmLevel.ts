@@ -2,15 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 
-import { PATHS } from "@/constants";
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
+import { PATHS } from "@/paths";
 import { assertZodParse } from "@/utils";
 
 import { CHARM_MAX_LEVEL } from "../constants";
 import { CharacterCharmUpsertPayloadSchema } from "../schemas";
-import type { CharacterCharmUpsertPayload } from "../types";
 
-export async function setCharacterCharmLevel(payload: CharacterCharmUpsertPayload) {
+export async function setCharacterCharmLevel(payload: unknown) {
   const { characterId, charmId, level } = assertZodParse(
     CharacterCharmUpsertPayloadSchema,
     payload

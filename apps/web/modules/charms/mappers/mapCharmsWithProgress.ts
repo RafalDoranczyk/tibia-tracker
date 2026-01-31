@@ -1,4 +1,4 @@
-import type { CharacterCharmRowWithCharm, Charm, CharmWithProgress } from "../types";
+import type { CharacterCharmRowWithCharm, Charm, CharmWithProgress } from "../schemas";
 
 export function mapCharmsWithProgress(
   charms: Charm[],

@@ -12,11 +12,11 @@ import type {
   DamageElement,
   HuntSession,
   HuntSessionForm,
-  HuntSessionUnknownEntities,
   ItemPreview,
   MonsterPreview,
   PreyBonus,
-} from "../types";
+} from "../schemas";
+import type { HuntSessionUnknownEntities } from "../types";
 import { DamageAnalyzer } from "./damage/DamageAnalyzer";
 import { LogDetails } from "./log-details/LogDetails";
 import { SummaryStats } from "./SummaryStats";

@@ -2,7 +2,7 @@
 
 import { revalidateTag } from "next/cache";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { BestiaryCacheTags } from "../cacheTags";

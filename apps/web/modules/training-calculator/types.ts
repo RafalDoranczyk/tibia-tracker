@@ -1,22 +1,15 @@
-import type { CharacterVocation } from "../characters";
-import type { useOnlineTrainingState } from "./hooks/useOnlineTrainingState";
+import type { CharacterVocation } from "../characters/schemas";
+import type {
+  EXERCISE_DUMMIES,
+  LOYALTY_MARKS,
+  SKILL_VARIANTS,
+  SKILL_WEAPON_TYPES,
+  VOCATION_ONLINE_TRAINING_CONFIG,
+} from "./constants";
 
-export type CharacterSkillVariant = "melee" | "distance" | "shield" | "fist" | "ml";
-export type ExerciseDummy = "regular" | "house";
-export type ExerciseWeaponType = "lasting" | "durable" | "regular";
-
-export type LoyaltyPointValues =
-  | 0
-  | 360
-  | 720
-  | 1080
-  | 1440
-  | 1800
-  | 2160
-  | 2520
-  | 2880
-  | 3240
-  | 3600;
+export type CharacterSkillVariant = (typeof SKILL_VARIANTS)[number];
+export type ExerciseWeaponType = (typeof SKILL_WEAPON_TYPES)[number]["label"];
+export type LoyaltyPointValues = (typeof LOYALTY_MARKS)[number]["value"];
 
 export type OnlineTrainingCharacterState = {
   vocation: CharacterVocation;
@@ -27,15 +20,7 @@ export type OnlineTrainingCharacterState = {
   loyaltyPoints: LoyaltyPointValues;
 };
 
-export type VocationOnlineTrainingConfig = {
-  [key in CharacterSkillVariant]?: {
-    constant: number;
-    base: number;
-    rate: number;
-    multiplier?: number; // Specific for mages
-    timeMult?: number;
-    offset?: number;
-  };
-};
+export type VocationOnlineTrainingConfig =
+  (typeof VOCATION_ONLINE_TRAINING_CONFIG)[CharacterVocation];
 
-export type UseOnlineTrainingState = ReturnType<typeof useOnlineTrainingState>;
+export type ExerciseDummy = (typeof EXERCISE_DUMMIES)[number];

@@ -1,6 +1,6 @@
 import type { z, ZodError, ZodTypeAny } from "zod";
 
-import { AppError, AppErrorCodes } from "@/core";
+import { AppError, AppErrorCodes } from "@/core/errors";
 import { env } from "@/env";
 
 function mapZodErrorToAppError(error: ZodError): AppError {

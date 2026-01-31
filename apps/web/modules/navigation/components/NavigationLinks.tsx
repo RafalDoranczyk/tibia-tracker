@@ -7,10 +7,10 @@ import { usePathname } from "next/navigation";
 
 import { useActiveCharacter } from "@/providers/feature/dashboard";
 
-import { NAVIGATION_MODULES } from "./constants";
-import type { NavigationLinkElementProps } from "./types";
-import { isPathActive } from "./utils/isPathActive";
-import { resolvePath } from "./utils/resolvePath";
+import { NAVIGATION_MODULES } from "../constants";
+import type { NavigationLinkElementProps } from "../types";
+import { isPathActive } from "../utils/isPathActive";
+import { resolvePath } from "../utils/resolvePath";
 
 // -------------------------------------
 // Single Link Element

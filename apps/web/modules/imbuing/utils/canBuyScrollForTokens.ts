@@ -1,5 +1,5 @@
-import type { Scroll } from "../types";
+import type { CraftMethod } from "../types";
 
-export function canBuyScrollForTokens(craftMethods: Scroll["craftMethods"]) {
+export function canBuyScrollForTokens(craftMethods: CraftMethod[]) {
   return craftMethods.includes("tokens");
 }
