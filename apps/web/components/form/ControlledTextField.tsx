@@ -50,7 +50,7 @@ export function ControlledTextField<TFieldValues extends FieldValues>({
           }}
           error={!!fieldState.error}
           label={label}
-          sx={{ width: "100%", ...props.sx }}
+          fullWidth
         />
       )}
     />

@@ -3,16 +3,9 @@
 import { getUserScopedQuery } from "@/core";
 import { assertZodParse } from "@/utils";
 
-import {
-  deleteSessionDamageElements,
-  insertSessionDamageElements,
-} from "../db/huntSessionDamageElements";
-import {
-  deleteSessionDamageSources,
-  insertSessionDamageSources,
-} from "../db/huntSessionDamageSources";
-import { deleteSessionMonsters, insertSessionMonsters } from "../db/huntSessionMonsters";
-import { deleteSessionSupplies, insertSessionSupplies } from "../db/huntSessionSupplies";
+import { deleteSessionRows } from "../db/deleteSessionRows";
+import { insertSessionRows } from "../db/insertSessionRows";
+import { replaceSessionMonstersWithPrey } from "../db/replaceSessionMonstersWithPrey";
 import { HuntSessionDbFieldsSchema, UpdateHuntSessionPayloadSchema } from "../schemas";
 import type { HuntSessionDbFields, UpdateHuntSessionPayload } from "../types";
 
@@ -23,7 +16,15 @@ export async function updateHuntSession(
 
   const { supabase } = await getUserScopedQuery();
 
-  const { id, monsters, supplies, damage_elements, damage_sources, ...dbPayload } = parsed;
+  const {
+    id,
+    killed_monsters,
+    supplies,
+    damage_elements,
+    damage_sources,
+    looted_items,
+    ...dbPayload
+  } = parsed;
 
   const { data, error } = await supabase
     .from("hunt_sessions")
@@ -37,26 +38,31 @@ export async function updateHuntSession(
     throw new Error("Failed to update hunt session");
   }
 
-  // replace monsters (DELETE + INSERT)
-  await deleteSessionMonsters(id);
-  await insertSessionMonsters(id, monsters);
+  // replace monsters + prey
+  await replaceSessionMonstersWithPrey(id, killed_monsters);
+
+  // replace looted items (DELETE + INSERT)
+  await deleteSessionRows("hunt_session_looted_items", id);
+  if (looted_items && looted_items.length > 0) {
+    await insertSessionRows("hunt_session_looted_items", id, looted_items);
+  }
 
   // replace supplies (DELETE + INSERT)
-  await deleteSessionSupplies(id);
+  await deleteSessionRows("hunt_session_supplies", id);
   if (supplies && supplies.length > 0) {
-    await insertSessionSupplies(id, supplies);
+    await insertSessionRows("hunt_session_supplies", id, supplies);
   }
 
   // replace damage elements (DELETE + INSERT)
-  await deleteSessionDamageElements(id);
+  await deleteSessionRows("hunt_session_damage_elements", id);
   if (damage_elements && damage_elements.length > 0) {
-    await insertSessionDamageElements(id, damage_elements);
+    await insertSessionRows("hunt_session_damage_elements", id, damage_elements);
   }
 
   // replace damage sources (DELETE + INSERT)
-  await deleteSessionDamageSources(id);
+  await deleteSessionRows("hunt_session_damage_sources", id);
   if (damage_sources && damage_sources.length > 0) {
-    await insertSessionDamageSources(id, damage_sources);
+    await insertSessionRows("hunt_session_damage_sources", id, damage_sources);
   }
 
   // return updated db row

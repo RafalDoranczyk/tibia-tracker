@@ -9,17 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 
-import { AdminOnly } from "@/modules/user";
+import type { HuntSessionUnknownEntities } from "../types";
 
-import type { HuntSessionUnknownEntities, HuntSessionUnknownEntity } from "../types";
-
-type UnknownEntitiesModalProps = {
-  open: boolean;
-  unknownEntities: HuntSessionUnknownEntities;
-  onClose: () => void;
-};
-
-function UnknownChips({ title, items }: { title: string; items: HuntSessionUnknownEntity[] }) {
+function UnknownChips({ title, items }: { title: string; items: string[] }) {
   if (!items.length) return null;
 
   return (
@@ -38,13 +30,19 @@ function UnknownChips({ title, items }: { title: string; items: HuntSessionUnkno
           overflowY: "auto",
         }}
       >
-        {items.map((i) => (
-          <Chip key={i.name} label={`${i.name} ×${i.count}`} size="small" variant="outlined" />
+        {items.map((item) => (
+          <Chip key={item} label={item} size="small" variant="outlined" />
         ))}
       </Box>
     </Stack>
   );
 }
+
+type UnknownEntitiesModalProps = {
+  open: boolean;
+  unknownEntities: HuntSessionUnknownEntities;
+  onClose: () => void;
+};
 
 export function UnknownEntitiesModal({
   open,
@@ -69,10 +67,6 @@ export function UnknownEntitiesModal({
           <UnknownChips title="Unknown items" items={items} />
           <UnknownChips title="Unknown monsters" items={monsters} />
         </Stack>
-
-        <AdminOnly>
-          <div>admin only</div>
-        </AdminOnly>
       </DialogContent>
     </Dialog>
   );

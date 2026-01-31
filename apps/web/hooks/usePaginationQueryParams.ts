@@ -3,11 +3,13 @@ import { useCallback } from "react";
 import * as R from "remeda";
 import { useQueryParam } from "use-query-params";
 
-import { PAGINATION_INITIAL_FILTERS } from "@/constants";
+import { PaginationSchema } from "@/lib/pagination";
 
 export function isEmpty<T extends object>(obj: T) {
   return R.values(obj).length === 0;
 }
+
+export const DEFAULT_PAGINATION = PaginationSchema.parse({});
 
 export const DEFAULT_PARAM_TOKEN = "filters" as const;
 
@@ -32,7 +34,7 @@ type ReservedKeysType = (typeof ReservedKeys)[number];
 type FiltersType = Record<string, JsonAllowedTypes>;
 type AllowedExternalFilters<TData extends FiltersType> = Omit<TData, ReservedKeysType>;
 
-export type FiltersValue<TData extends FiltersType> = typeof PAGINATION_INITIAL_FILTERS &
+export type FiltersValue<TData extends FiltersType> = typeof DEFAULT_PAGINATION &
   SortPayload &
   AllowedExternalFilters<TData>;
 
@@ -52,26 +54,22 @@ export function usePaginationQueryParams<TData extends FiltersType>(
         try {
           return JSON.parse(decodeURIComponent(val));
         } catch {
-          return { ...PAGINATION_INITIAL_FILTERS, ...params?.defaultFilters };
+          return { ...DEFAULT_PAGINATION, ...params?.defaultFilters };
         }
       }
-      return val ?? { ...PAGINATION_INITIAL_FILTERS, ...params?.defaultFilters };
+      return val ?? { ...DEFAULT_PAGINATION, ...params?.defaultFilters };
     },
-    default: { ...PAGINATION_INITIAL_FILTERS, ...params?.defaultFilters },
+    default: { ...DEFAULT_PAGINATION, ...params?.defaultFilters },
     encode: (val) => encodeURIComponent(JSON.stringify(val)),
     equals: R.isDeepEqual,
   });
 
   const updateFilter = useCallback(
-    (
-      newValue:
-        | Partial<typeof PAGINATION_INITIAL_FILTERS & SortPayload>
-        | Partial<FiltersValue<TData>>
-    ) => {
+    (newValue: Partial<typeof DEFAULT_PAGINATION & SortPayload> | Partial<FiltersValue<TData>>) => {
       setJson({
         ...json,
         ...newValue,
-        page: PAGINATION_INITIAL_FILTERS.page, // zawsze resetujemy paginację
+        page: DEFAULT_PAGINATION.page, // zawsze resetujemy paginację
       });
     },
     [json, setJson]
@@ -108,7 +106,7 @@ export function usePaginationQueryParams<TData extends FiltersType>(
   );
 
   const clearFilters = useCallback(() => {
-    setJson({ ...PAGINATION_INITIAL_FILTERS, ...params?.defaultFilters });
+    setJson({ ...DEFAULT_PAGINATION, ...params?.defaultFilters });
   }, [setJson, params?.defaultFilters]);
 
   const updateSort = useCallback((sort: SortPayload) => updateFilter(sort), [updateFilter]);

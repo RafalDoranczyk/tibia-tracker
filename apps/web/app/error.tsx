@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { ErrorPage } from "@/components";
 import { AppError, AppErrorCodes } from "@/core";
+import { env } from "@/env";
 import { useToast } from "@/providers/global";
 
 export default function GlobalError({
@@ -15,6 +16,8 @@ export default function GlobalError({
 }) {
   const toast = useToast();
 
+  const isDev = env.NODE_ENV === "development";
+
   useEffect(() => {
     // Only show toast for unexpected errors
     if (!(error instanceof AppError)) {
@@ -22,7 +25,7 @@ export default function GlobalError({
     }
 
     // Log error for debugging (only in development)
-    if (process.env.NODE_ENV === "development") {
+    if (isDev) {
       console.error("Global Error:", {
         message: error.message,
         stack: error.stack,
@@ -31,7 +34,7 @@ export default function GlobalError({
         code: error instanceof AppError ? error.code : undefined,
       });
     }
-  }, [error, toast]);
+  }, [error, toast, isDev]);
 
   const errorDetails = getErrorDetails(error);
 
@@ -42,7 +45,7 @@ export default function GlobalError({
       technicalDetails={errorDetails.technicalDetails}
       suggestions={errorDetails.suggestions}
       reset={reset}
-      showDetails={process.env.NODE_ENV === "development"}
+      showDetails={isDev}
       errorCode={error instanceof AppError ? error.code : undefined}
       digest={error instanceof AppError ? undefined : error.digest}
     />

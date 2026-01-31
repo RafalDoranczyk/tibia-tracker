@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { PositiveNumber } from "@/schemas/shared";
+import { PositiveNumber } from "@/schemas";
 
 import { IMBUING_SCROLL_ITEM_KEYS, IMBUING_SCROLL_KEYS } from "./constants";
 

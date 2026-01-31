@@ -17,7 +17,6 @@ export async function deleteHuntSession(payload: DeleteHuntSessionPayload): Prom
   const { error } = await supabase.from("hunt_sessions").delete().eq("id", data.id);
 
   if (error) {
-    console.log(error);
     throw new Error("Failed to delete hunt session");
   }
 

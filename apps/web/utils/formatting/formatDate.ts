@@ -1,17 +1,13 @@
-export const formatDate = (date: string | Date) => {
-  const dateObj = new Date(date);
-  const now = new Date();
+import { dayjs } from "@/lib/dayjs";
 
-  if (dateObj.getFullYear() === now.getFullYear()) {
-    return new Intl.DateTimeFormat("en-US", {
-      month: "short",
-      day: "numeric",
-    }).format(dateObj);
+export const formatDate = (date: string, locale = "en") => {
+  const d = dayjs(date).locale(locale);
+
+  if (!d.isValid()) {
+    throw new Error(`Invalid date passed to formatDate: ${date}`);
   }
 
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "2-digit",
-  }).format(dateObj);
+  const now = dayjs().locale(locale);
+
+  return d.isSame(now, "year") ? d.format("MMM D") : d.format("MMM D, YY");
 };

@@ -8,6 +8,7 @@ import { fetchHuntPlaces } from "@/modules/hunt-places";
 import {
   fetchDamageElements,
   fetchMonstersPreview,
+  fetchPreyBonuses,
   fetchSupplies,
   HuntSessionFormProvider,
   HuntSessionView,
@@ -19,13 +20,15 @@ import type { CharacterPageProps } from "../../../types";
 export default async function NewHuntSessionPage({ params }: CharacterPageProps) {
   const { characterId } = await params;
 
-  const [itemList, monsterList, huntPlaceList, supplyList, damageElementList] = await Promise.all([
-    fetchItems(),
-    fetchMonstersPreview(),
-    fetchHuntPlaces(),
-    fetchSupplies(),
-    fetchDamageElements(),
-  ]);
+  const [itemList, monsterList, huntPlaceList, supplyList, damageElementList, preyBonusList] =
+    await Promise.all([
+      fetchItems(),
+      fetchMonstersPreview(),
+      fetchHuntPlaces(),
+      fetchSupplies(),
+      fetchDamageElements(),
+      fetchPreyBonuses(),
+    ]);
 
   return (
     <>
@@ -58,6 +61,7 @@ export default async function NewHuntSessionPage({ params }: CharacterPageProps)
           supplyList={supplyList}
           huntPlaceList={huntPlaceList}
           monsterList={monsterList}
+          preyBonusList={preyBonusList}
           damageElementList={damageElementList}
         />
       </HuntSessionFormProvider>

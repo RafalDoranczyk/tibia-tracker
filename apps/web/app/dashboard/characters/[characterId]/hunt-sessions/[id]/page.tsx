@@ -1,6 +1,7 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Breadcrumbs, Link, Typography } from "@mui/material";
 import LinkNext from "next/link";
+import { notFound } from "next/navigation";
 
 import { PageHeader } from "@/components";
 import { PATHS } from "@/constants";
@@ -9,6 +10,7 @@ import {
   fetchDamageElements,
   fetchHuntSession,
   fetchMonstersPreview,
+  fetchPreyBonuses,
   fetchSupplies,
   HuntSessionFormProvider,
   HuntSessionView,
@@ -23,15 +25,27 @@ export default async function EditHuntSessionPage({ params }: EditHuntSessionPag
   const { characterId, id } = await params;
   const huntSessionId = Number(id);
 
-  const [itemList, monsterList, huntPlaceList, supplyList, damageElementList, huntSession] =
-    await Promise.all([
-      fetchItems(),
-      fetchMonstersPreview(),
-      fetchHuntPlaces(),
-      fetchSupplies(),
-      fetchDamageElements(),
-      fetchHuntSession(huntSessionId),
-    ]);
+  const [
+    itemList,
+    monsterList,
+    huntPlaceList,
+    supplyList,
+    damageElementList,
+    preyBonusList,
+    huntSession,
+  ] = await Promise.all([
+    fetchItems(),
+    fetchMonstersPreview(),
+    fetchHuntPlaces(),
+    fetchSupplies(),
+    fetchDamageElements(),
+    fetchPreyBonuses(),
+    fetchHuntSession({ id: huntSessionId, character_id: characterId }),
+  ]);
+
+  if (!huntSession) {
+    notFound();
+  }
 
   return (
     <>
@@ -56,10 +70,12 @@ export default async function EditHuntSessionPage({ params }: EditHuntSessionPag
 
       <HuntSessionFormProvider huntSession={huntSession} placeId={huntPlaceList[0].id}>
         <HuntSessionView
+          huntSessionId={huntSession?.id}
           itemList={itemList}
           supplyList={supplyList}
           huntPlaceList={huntPlaceList}
           monsterList={monsterList}
+          preyBonusList={preyBonusList}
           damageElementList={damageElementList}
         />
       </HuntSessionFormProvider>

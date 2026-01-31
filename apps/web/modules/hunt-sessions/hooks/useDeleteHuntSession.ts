@@ -1,4 +1,4 @@
-import { useTransition } from "react";
+import { useCallback, useState } from "react";
 
 import { useToast } from "@/providers/global";
 
@@ -6,26 +6,22 @@ import { deleteHuntSession } from "../actions/deleteHuntSession";
 
 export function useDeleteHuntSession() {
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
 
-  const [isPending, startTransition] = useTransition();
+  const mutate = useCallback(
+    async (id: number) => {
+      try {
+        setLoading(true);
+        await deleteHuntSession({ id });
+        toast.success("Hunt session deleted");
+      } catch {
+        toast.error("Failed to delete hunt session");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [toast]
+  );
 
-  const deleteSession = async (id: number) => {
-    return new Promise<void>((resolve, reject) => {
-      startTransition(async () => {
-        try {
-          await deleteHuntSession({ id });
-          toast.success("Hunt session successfully deleted");
-          resolve();
-        } catch (err) {
-          toast.error("Deleting hunt session failed");
-          reject(err);
-        }
-      });
-    });
-  };
-
-  return {
-    deleteSession,
-    isPending,
-  };
+  return { mutate, loading };
 }

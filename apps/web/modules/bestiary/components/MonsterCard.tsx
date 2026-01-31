@@ -20,7 +20,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { useMonsterProgress } from "../hooks/useMonsterProgress";
-import type { MonsterWithCharacterProgress } from "../types";
+import type { MonsterWithCharacterProgress } from "../schemas";
 
 function MonsterCardOverlay() {
   return (

@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-import type { CharacterBestiaryClassSummary, CharacterBestiarySummary } from "../types";
+import type { CharacterBestiaryClassSummary, CharacterBestiarySummary } from "../schemas";
 
 type BestiaryFloatingPanelProps = {
   globalSummary: CharacterBestiarySummary;

@@ -4,27 +4,44 @@ import { getUserScopedQuery } from "@/core";
 import { assertZodParse } from "@/utils";
 
 import { HuntSessionDbFieldsSchema, HuntSessionSchema } from "../schemas";
-import type { HuntSession } from "../types";
+import type { FetchHuntSessionPayload, HuntSession } from "../types";
 
 const HuntSessionDbKeys = Object.keys(HuntSessionDbFieldsSchema.shape).join(", ");
 
 const HUNT_SESSIONS_SELECT = `
   ${HuntSessionDbKeys},
   place:hunt_places!inner(id, name, image_path),
-  supplies:hunt_session_consumed_items(
+  supplies:hunt_session_supplies(
     id,
     count,
-    count_per_hour,
     supply:supplies(
       id,
       name, 
       image_path
     )
   ),
-  monsters:hunt_session_monster_kills(
+killed_monsters:hunt_session_killed_monsters(
+  id,
+  count,
+  monster:monsters(
+    id,
+    name,
+    image_path
+  ),
+  prey_bonus:hunt_session_prey_bonuses(
+    id,
+    prey:prey_bonuses(
+      id,
+      description,
+      bonus_value,
+      bonus_type
+    )
+  )
+),
+    looted_items:hunt_session_looted_items(
     id,
     count,
-    monster:monsters(
+    item:items(
       id,
       name,
       image_path
@@ -50,14 +67,18 @@ const HUNT_SESSIONS_SELECT = `
   )
 `;
 
-export async function fetchHuntSession(sessionId: number): Promise<HuntSession | null> {
+export async function fetchHuntSession({
+  id,
+  character_id,
+}: FetchHuntSessionPayload): Promise<HuntSession | null> {
   const { supabase } = await getUserScopedQuery();
 
   const { data } = await supabase
     .from("hunt_sessions")
     .select(HUNT_SESSIONS_SELECT)
-    .eq("id", sessionId)
-    .single();
+    .eq("id", id)
+    .eq("character_id", character_id)
+    .maybeSingle();
 
   if (!data) {
     return null;

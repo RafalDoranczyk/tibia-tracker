@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { PositiveNumber, SupabaseId } from "@/schemas/shared";
+import { PositiveNumber, Uuid } from "@/schemas";
 
 import { CHARM_MAX_LEVEL } from "./constants";
 
@@ -30,7 +30,7 @@ export const CharmLevelsSchema = z.object({
 
 // View in supabase
 export const CharmEconomySchema = z.object({
-  character_id: SupabaseId,
+  character_id: Uuid,
   major_unlocked: PositiveNumber,
   major_spent: PositiveNumber,
   major_available: PositiveNumber,
@@ -40,7 +40,7 @@ export const CharmEconomySchema = z.object({
 });
 
 export const CharmSchema = z.object({
-  id: SupabaseId,
+  id: Uuid,
   name: z.string(),
   type: CharmTypeSchema,
   description: z.string().nullable(),
@@ -53,7 +53,7 @@ export const CharmSchema = z.object({
  * ======================================================= */
 
 export const CharmRowSchema = z.object({
-  id: SupabaseId,
+  id: Uuid,
   name: z.string(),
   type: CharmTypeSchema,
   description: z.string().nullable(),
@@ -74,9 +74,9 @@ export const CharmRowSchema = z.object({
  * ======================================================= */
 
 export const CharacterCharmRowSchema = z.object({
-  id: SupabaseId,
-  character_id: SupabaseId,
-  charm_id: SupabaseId,
+  id: Uuid,
+  character_id: Uuid,
+  charm_id: Uuid,
   level: CharmLevelSchema,
   unlocked_at: z.string(),
 });
@@ -106,12 +106,12 @@ export const CharmWithProgressSchema = CharmSchema.extend({
 export const FetchCharacterCharmsResponseSchema = z.array(CharacterCharmRowWithCharmSchema);
 
 export const CharacterCharmUpsertPayloadSchema = z.object({
-  characterId: SupabaseId,
-  charmId: SupabaseId,
+  characterId: Uuid,
+  charmId: Uuid,
   level: CharmLevelSchema,
 });
 
 export const DeleteCharacterCharmPayloadSchema = z.object({
-  charmId: SupabaseId,
-  characterId: SupabaseId,
+  charmId: Uuid,
+  characterId: Uuid,
 });

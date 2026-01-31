@@ -7,8 +7,8 @@ import { useToast } from "@/providers/global";
 
 import { UpdateCharacterBestiary } from "../actions/updateCharacterBestiary";
 import { BESTIARY_FULL_STAGE } from "../constants";
-import type { MonsterWithCharacterProgress } from "../types";
-import { calculateBestiaryStage } from "../utils/calculateBestiaryStage";
+import type { MonsterWithCharacterProgress } from "../schemas";
+import { getBestiaryStage } from "../utils/getBestiaryStage";
 
 export function useMonsterProgress(initialMonster: MonsterWithCharacterProgress) {
   const toast = useToast();
@@ -54,7 +54,7 @@ export function useMonsterProgress(initialMonster: MonsterWithCharacterProgress)
   const toggleFullBestiary = async () => {
     setIsLoading(true);
     const newKills = monster.stage === BESTIARY_FULL_STAGE ? 0 : monster.bestiary_kills.stage3;
-    const newStage = calculateBestiaryStage(newKills, monster.bestiary_kills);
+    const newStage = getBestiaryStage(newKills, monster.bestiary_kills);
 
     try {
       await optimisticUpdate({
@@ -73,7 +73,7 @@ export function useMonsterProgress(initialMonster: MonsterWithCharacterProgress)
     const maxKills = stage3;
     const newKills = Math.max(0, Math.min(editedKills, maxKills));
 
-    const newStage = calculateBestiaryStage(newKills, {
+    const newStage = getBestiaryStage(newKills, {
       stage1,
       stage2,
       stage3,

@@ -105,6 +105,7 @@ function assertDefined<T>(
 
 /* ================= Main Parser ================= */
 
+// Parses a hunt session log in text format and returns structured data.
 export function parseHuntSessionJSON(input: string): HuntSessionRawParsed {
   const normalized = input.replace(/\r/g, "").trim();
 
@@ -180,7 +181,7 @@ export function parseHuntSessionJSON(input: string): HuntSessionRawParsed {
     date,
     duration_seconds: parseDuration(sessionDuration),
     ...sessionTimes,
-    monsters: parseMonsters(normalized),
-    items: parseItems(normalized),
+    killed_monsters: parseMonsters(normalized),
+    looted_items: parseItems(normalized),
   };
 }

@@ -4,11 +4,11 @@ import { getUserScopedQuery } from "@/core";
 import { assertZodParse } from "@/utils";
 
 import {
-  FetchHuntSessionsListPayloadSchema,
-  FetchHuntSessionsListResponseSchema,
+  FetchHuntSessionListPayloadSchema,
+  FetchHuntSessionListResponseSchema,
   HuntSessionDbFieldsSchema,
 } from "../schemas";
-import type { FetchHuntSessionsListPayload, FetchHuntSessionsListResponse } from "../types";
+import type { FetchHuntSessionListPayload, FetchHuntSessionListResponse } from "../types";
 
 const HuntSessionDbKeys = Object.keys(HuntSessionDbFieldsSchema.shape).join(", ");
 
@@ -18,10 +18,10 @@ const HUNT_SESSIONS_SELECT = `
 `;
 
 export async function fetchHuntSessionsList(
-  payload: FetchHuntSessionsListPayload
-): Promise<FetchHuntSessionsListResponse> {
+  payload: FetchHuntSessionListPayload
+): Promise<FetchHuntSessionListResponse> {
   const { limit, offset, order, orderBy } = assertZodParse(
-    FetchHuntSessionsListPayloadSchema,
+    FetchHuntSessionListPayloadSchema,
     payload
   );
 
@@ -51,7 +51,5 @@ export async function fetchHuntSessionsList(
     throw new Error("Failed to fetch hunt sessions");
   }
 
-  console.log(data);
-
-  return assertZodParse(FetchHuntSessionsListResponseSchema, { count, data });
+  return assertZodParse(FetchHuntSessionListResponseSchema, { count, data });
 }

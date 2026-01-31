@@ -7,6 +7,7 @@ import EditOff from "@mui/icons-material/EditOff";
 import ExitToApp from "@mui/icons-material/ExitToApp";
 import Lock from "@mui/icons-material/Lock";
 import MoreVert from "@mui/icons-material/MoreVert";
+import QueryStats from "@mui/icons-material/QueryStats";
 import Save from "@mui/icons-material/Save";
 import Settings from "@mui/icons-material/Settings";
 import { IconButton, type IconButtonProps, Tooltip } from "@mui/material";
@@ -23,7 +24,8 @@ type TooltipButtonType =
   | "menu"
   | "save"
   | "settings"
-  | "activate";
+  | "activate"
+  | "stats";
 
 type TooltipIconButtonProps = IconButtonProps & {
   variant: TooltipButtonType;
@@ -48,9 +50,16 @@ const IconsMap: Record<
   save: { icon: <Save />, name: "Save" },
   settings: { icon: <Settings />, name: "Settings" },
   activate: { icon: <CheckCircleIcon />, name: "Activate" },
+  stats: { icon: <QueryStats />, name: "Statistics" },
 };
 
-export function TooltipIconButton({ disabled, size, variant, ...props }: TooltipIconButtonProps) {
+export function TooltipIconButton({
+  disabled,
+  size,
+  variant,
+  title,
+  ...props
+}: TooltipIconButtonProps) {
   const { color = "default", icon, name } = IconsMap[variant];
 
   const Icon = cloneElement(icon, { fontSize: size } as { fontSize: IconButtonProps["size"] });
@@ -61,5 +70,5 @@ export function TooltipIconButton({ disabled, size, variant, ...props }: Tooltip
     </IconButton>
   );
 
-  return disabled ? button : <Tooltip title={props.name || name}>{button}</Tooltip>;
+  return disabled ? button : <Tooltip title={title || name}>{button}</Tooltip>;
 }

@@ -3,13 +3,14 @@
 import { redirect } from "next/navigation";
 
 import { AppError, AppErrorCodes, createSupabase, mapSupabaseErrorToAppError } from "@/core";
+import { env } from "@/env";
 
 import type { OAuthProvider } from "../types";
 
 async function loginWithOAuth(provider: OAuthProvider) {
   const supabase = await createSupabase();
 
-  const redirectTo = process.env.NEXT_PUBLIC_AUTH_CALLBACK_URL;
+  const redirectTo = env.NEXT_PUBLIC_AUTH_CALLBACK_URL;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     options: {

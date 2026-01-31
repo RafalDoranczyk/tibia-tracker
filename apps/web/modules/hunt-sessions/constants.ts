@@ -1,6 +1,7 @@
 import type { TableHeadCell } from "@/components";
 
 export const HUNT_SESSION_PAGINATION_LIMIT = 25;
+
 const HUNT_SESSIONS_TABLE_CELL_WIDTH = 100;
 
 export const HUNT_SESSIONS_TABLE_HEAD_CELLS: TableHeadCell[] = [

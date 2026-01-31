@@ -1,6 +1,7 @@
 import type { z, ZodError, ZodTypeAny } from "zod";
 
 import { AppError, AppErrorCodes } from "@/core";
+import { env } from "@/env";
 
 function mapZodErrorToAppError(error: ZodError): AppError {
   const formattedErrors = error.errors.map((err) => {
@@ -51,7 +52,7 @@ export function assertZodParse<T extends ZodTypeAny>(schema: T, data: unknown): 
   if (!result.success) {
     // Log detailed error information for debugging purposes
 
-    if (process.env.NODE_ENV !== "production") {
+    if (env.NODE_ENV !== "production") {
       console.error("Zod validation failed:", {
         inputData: data,
         errors: result.error.errors,

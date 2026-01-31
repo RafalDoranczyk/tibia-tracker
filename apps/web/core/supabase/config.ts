@@ -1,23 +1,15 @@
 import { AppError, type AppErrorCodes } from "@/core";
+import { env } from "@/env";
 import {
   createSupabaseErrorMapper,
   createSupabaseServer,
   type SupabaseConfig,
 } from "@/lib/supabase";
 
-// --- ENV CHECKS ---
-if (!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
-  throw new Error("Supabase envs not provided");
-}
-
 export const supabaseConfig: SupabaseConfig = {
-  url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-  key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  url: env.NEXT_PUBLIC_SUPABASE_URL,
+  key: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
 };
-
-if (!(supabaseConfig.url && supabaseConfig.key)) {
-  throw new Error("Missing Supabase environment variables");
-}
 
 // --- Project-specific error mapper ---
 export const mapSupabaseErrorToAppError = createSupabaseErrorMapper(

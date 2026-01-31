@@ -144,6 +144,17 @@ export const theme = createTheme({
       },
     },
 
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          width: 420,
+          background: "linear-gradient(180deg, rgba(30,30,50,0.95), rgba(20,20,30,0.98))",
+          borderLeft: "1px solid rgba(255,255,255,0.08)",
+          backdropFilter: "blur(12px)",
+        },
+      },
+    },
+
     MuiPaper: {
       styleOverrides: {
         root: {

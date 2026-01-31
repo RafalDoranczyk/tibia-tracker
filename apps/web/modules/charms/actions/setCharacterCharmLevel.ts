@@ -8,8 +8,9 @@ import { assertZodParse } from "@/utils";
 
 import { CHARM_MAX_LEVEL } from "../constants";
 import { CharacterCharmUpsertPayloadSchema } from "../schemas";
+import type { CharacterCharmUpsertPayload } from "../types";
 
-export async function setCharacterCharmLevel(payload: unknown) {
+export async function setCharacterCharmLevel(payload: CharacterCharmUpsertPayload) {
   const { characterId, charmId, level } = assertZodParse(
     CharacterCharmUpsertPayloadSchema,
     payload

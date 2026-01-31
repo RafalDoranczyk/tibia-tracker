@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { PATHS } from "@/constants";
 import { createSupabase } from "@/core";
+import { env } from "@/env";
 
 // Helper functions
 function isValidRedirectPath(path: string): boolean {
@@ -15,9 +16,9 @@ function redirectToError(origin: string): NextResponse {
 
 function getRedirectBase(request: NextRequest, origin: string): string {
   const forwardedHost = request.headers.get("x-forwarded-host");
-  const isLocalEnv = process.env.NODE_ENV === "development";
+  const isDev = env.NODE_ENV === "development";
 
-  if (isLocalEnv) {
+  if (isDev) {
     return origin;
   }
 

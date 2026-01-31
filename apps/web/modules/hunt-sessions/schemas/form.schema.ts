@@ -1,8 +1,41 @@
-import { HuntSessionPayloadBaseSchema } from "./api.schema";
-import { HuntSessionDbFieldsSchema } from "./db.schema";
+import { z } from "zod";
 
-export const HuntSessionFormSchema = HuntSessionPayloadBaseSchema.omit({
+import { HuntSessionDbBaseFieldsSchema } from "./db.schema";
+
+const KilledMonsterSchema = z.object({
+  monsterId: z.number(),
+  count: z.number(),
+  preyBonusId: z.number().nullable().optional(),
+});
+
+const LootedItemsFormSchema = z.object({
+  itemId: z.number(),
+  count: z.number(),
+});
+
+const DamageElementFormSchema = z.object({
+  damageElementId: z.number(),
+  percent: z.number(),
+});
+
+const DamageSourceFormSchema = z.object({
+  damageSourceId: z.number(),
+  percent: z.number(),
+});
+
+const SupplyCountFormSchema = z.object({
+  supplyId: z.number(),
+  count: z.number(),
+});
+
+// Full form schema. Id is optional for new sessions
+export const HuntSessionFormSchema = HuntSessionDbBaseFieldsSchema.omit({
   character_id: true,
 }).extend({
-  id: HuntSessionDbFieldsSchema.shape.id.optional(),
+  id: HuntSessionDbBaseFieldsSchema.shape.id.optional(),
+  killed_monsters: KilledMonsterSchema.array(),
+  looted_items: LootedItemsFormSchema.array(),
+  damage_elements: DamageElementFormSchema.array(),
+  damage_sources: DamageSourceFormSchema.array(),
+  supplies: SupplyCountFormSchema.array(),
 });

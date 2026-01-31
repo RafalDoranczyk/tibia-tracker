@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Container, Divider, Tab, Tabs } from "@mui/material";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { FloatingActionButton } from "@/components";
@@ -11,18 +11,17 @@ import { useSaveHuntSession } from "../hooks/useSaveHuntSession";
 import type {
   DamageElement,
   HuntSession,
-  HuntSessionFormValues,
+  HuntSessionForm,
   HuntSessionUnknownEntities,
   ItemPreview,
   MonsterPreview,
-  SupplyItem,
+  PreyBonus,
 } from "../types";
-import { HuntSessionSummaryStats } from "./HuntSessionSummaryStats";
-import { HuntSessionInputAnalyzer } from "./sections/HuntSessionInputAnalyzer";
-import { HuntSessionLogDetails } from "./sections/HuntSessionLogDetails";
-import { HuntSessionSuppliesAnalyzer } from "./sections/HuntSessionSuppliesAnalyzer";
+import { DamageAnalyzer } from "./damage/DamageAnalyzer";
+import { LogDetails } from "./log-details/LogDetails";
+import { SummaryStats } from "./SummaryStats";
+import { SuppliesAnalyzer } from "./supplies/SuppliesAnalyzer";
 import { UnknownEntitiesModal } from "./UnknownEntitiesModal";
-import { UploadSessionModal } from "./UploadSessionModal";
 
 function TabPanel({
   value,
@@ -36,87 +35,75 @@ type HuntSessionViewProps = {
   monsterList: MonsterPreview[];
   itemList: ItemPreview[];
   huntPlaceList: HuntPlace[];
-  supplyList: SupplyItem[];
+  supplyList: ItemPreview[];
   damageElementList: DamageElement[];
-  huntSession?: HuntSession | null;
+  preyBonusList: PreyBonus[];
+  huntSessionId?: HuntSession["id"];
 };
 
-export function HuntSessionView(props: HuntSessionViewProps) {
-  const { monsterList, itemList, huntPlaceList, supplyList, damageElementList, huntSession } =
-    props;
-
-  const [isPending, startTransition] = useTransition();
-
-  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+export function HuntSessionView({
+  monsterList,
+  itemList,
+  huntPlaceList,
+  supplyList,
+  damageElementList,
+  preyBonusList,
+  huntSessionId,
+}: HuntSessionViewProps) {
   const [unknownEntitiesModalOpen, setUnknownEntitiesModalOpen] = useState(false);
   const [unknownEntities, setUnknownEntities] = useState<HuntSessionUnknownEntities>(null);
   const [tab, setTab] = useState(0);
 
-  const { handleSubmit, formState } = useFormContext<HuntSessionFormValues>();
-
-  const saveHuntSession = useSaveHuntSession(huntSession?.id);
-
-  const onSubmit = handleSubmit((data) => {
-    startTransition(async () => {
-      await saveHuntSession(data);
-    });
-  });
+  const { handleSubmit, formState } = useFormContext<HuntSessionForm>();
+  const saveHuntSession = useSaveHuntSession();
+  const onSubmit = handleSubmit((data) => saveHuntSession(data, huntSessionId));
 
   return (
-    <Container maxWidth="lg">
-      {/* Tabs */}
+    <Container maxWidth="xl">
+      <SummaryStats preyBonusList={preyBonusList} monsterList={monsterList} />
+
       <Tabs
         value={tab}
         onChange={(_, v) => setTab(v)}
         sx={{
-          mb: 2,
+          my: 2,
         }}
       >
-        <Tab label="Session" />
+        <Tab label="Log Details" />
         <Tab label="Damage" />
         <Tab label="Supplies" />
       </Tabs>
 
-      {/* Summary Stats */}
-      <HuntSessionSummaryStats />
-
       <Divider sx={{ my: 2 }} />
 
-      {/* Panels */}
       <TabPanel value={tab} index={0}>
-        <HuntSessionLogDetails
-          unknownEntities={unknownEntities}
+        <LogDetails
+          preyBonusList={preyBonusList}
+          huntPlaceList={huntPlaceList}
           itemList={itemList}
           monsterList={monsterList}
-          huntPlaceList={huntPlaceList}
+          unknownEntities={unknownEntities}
+          setUnknownEntities={setUnknownEntities}
           openUnknownEntitiesModal={() => setUnknownEntitiesModalOpen(true)}
-          setOpen={setUploadModalOpen}
         />
       </TabPanel>
 
       <TabPanel value={tab} index={1}>
-        <HuntSessionInputAnalyzer damageElementList={damageElementList} />
+        <DamageAnalyzer monsterList={monsterList} damageElementList={damageElementList} />
       </TabPanel>
 
       <TabPanel value={tab} index={2}>
-        <HuntSessionSuppliesAnalyzer supplyList={supplyList} />
+        <SuppliesAnalyzer supplyList={supplyList} />
       </TabPanel>
 
-      {/* Floating Save */}
-      <FloatingActionButton visible={formState.isDirty} onClick={onSubmit} loading={isPending}>
+      <FloatingActionButton
+        visible={formState.isDirty}
+        loading={formState.isSubmitting}
+        onClick={onSubmit}
+      >
         Save changes
       </FloatingActionButton>
 
-      {/* Upload log modal */}
-      <UploadSessionModal
-        monsterList={monsterList}
-        itemList={itemList}
-        setUnknownEntities={setUnknownEntities}
-        open={uploadModalOpen}
-        onClose={() => setUploadModalOpen(false)}
-      />
-
-      {/* Unknown entities modal */}
       <UnknownEntitiesModal
         open={unknownEntitiesModalOpen}
         unknownEntities={unknownEntities}

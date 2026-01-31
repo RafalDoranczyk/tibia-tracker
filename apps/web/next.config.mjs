@@ -10,8 +10,7 @@ eslint: {
       {
         protocol: "https",
         hostname: "saoouvvhunyuohwqmbwy.supabase.co",
-       pathname: "/storage/v1/object/public/**",
-
+        pathname: "/storage/v1/object/public/**",
       },
       {
         protocol: "https",

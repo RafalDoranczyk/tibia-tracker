@@ -16,6 +16,8 @@ type ControlledSelectProps<T extends FieldValues> = {
   options: { id: PathValue<T, Path<T>>; name: string }[];
   defaultValue?: PathValue<T, Path<T>>;
   errorMessage?: string;
+  size?: "small" | "medium";
+  disabled?: boolean;
 };
 
 export function ControlledSelect<T extends FieldValues>({
@@ -23,13 +25,15 @@ export function ControlledSelect<T extends FieldValues>({
   name,
   label,
   options,
+  size = "medium",
+  disabled = false,
 }: ControlledSelectProps<T>) {
   return (
     <Controller
       control={control}
       name={name}
       render={({ field }) => (
-        <TextField select label={label} fullWidth {...field}>
+        <TextField disabled={disabled} select label={label} fullWidth size={size} {...field}>
           {options.map((opt) => (
             <MenuItem key={String(opt.id)} value={opt.id}>
               {opt.name}
