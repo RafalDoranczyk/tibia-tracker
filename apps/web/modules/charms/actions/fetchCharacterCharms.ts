@@ -1,31 +1,36 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
+import { CharacterIDSchema } from "@/modules/characters";
 import { assertZodParse } from "@/utils";
 
-import { CharacterCharmRowSchema, FetchCharacterCharmsResponseSchema } from "../schemas";
-import type { CharacterCharmRowWithCharm } from "../types";
+import {
+  CharacterCharmRowSchema,
+  type CharacterCharmRowWithCharm,
+  FetchCharacterCharmsResponseSchema,
+} from "../schemas";
 
 const characterCharmKeys = CharacterCharmRowSchema.keyof().options.join(",");
 
-const CHARM_SELECT = `
+const SELECT = `
   ${characterCharmKeys},
   charm:charms(*)
 `;
 
 export async function fetchCharacterCharms(
-  characterId: string
+  characterId: unknown
 ): Promise<CharacterCharmRowWithCharm[]> {
+  const parsedCharacterId = assertZodParse(CharacterIDSchema, characterId);
+
   const { supabase } = await getUserScopedQuery();
 
   const { data, error } = await supabase
     .from("character_charms")
-    .select(CHARM_SELECT)
-    .eq("character_id", characterId)
+    .select(SELECT)
+    .eq("character_id", parsedCharacterId)
     .order("unlocked_at", { ascending: true });
 
   if (error) {
-    console.log(error);
     throw new Error("Failed to fetch character charms");
   }
 

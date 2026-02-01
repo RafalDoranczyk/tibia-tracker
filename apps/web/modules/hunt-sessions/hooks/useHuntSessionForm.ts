@@ -1,15 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { mapHuntSessionToFormValues } from "../mappers/mapHuntSessionToFormValues";
-import { HuntSessionFormSchema } from "../schemas";
-import type { HuntSession, HuntSessionFormValues } from "../types";
+import { mapHuntSessionToForm } from "../mappers/mapHuntSessionToForm";
+import { type HuntSession, type HuntSessionForm, HuntSessionFormSchema } from "../schemas";
 
 const startDate = new Date().toISOString().slice(0, 10);
 
 const getDefaultValues = ({
   placeId,
-}: { placeId: HuntSessionFormValues["place_id"] }): HuntSessionFormValues => ({
+}: { placeId: HuntSessionForm["place_id"] }): HuntSessionForm => ({
   damage: 0,
   healing: 0,
   place_id: placeId,
@@ -24,11 +23,11 @@ const getDefaultValues = ({
   supplies_cost: 0,
   duration_seconds: 0,
   player_count: 1,
-  monsters: [],
+  killed_monsters: [],
   supplies: [],
   damage_elements: [],
   damage_sources: [],
-  items: [],
+  looted_items: [],
 });
 
 export function useHuntSessionForm({
@@ -38,11 +37,9 @@ export function useHuntSessionForm({
   huntSession?: HuntSession | null;
   placeId: number;
 }) {
-  return useForm<HuntSessionFormValues>({
+  return useForm<HuntSessionForm>({
     resolver: zodResolver(HuntSessionFormSchema),
-    defaultValues: huntSession
-      ? mapHuntSessionToFormValues(huntSession)
-      : getDefaultValues({ placeId }),
+    defaultValues: huntSession ? mapHuntSessionToForm(huntSession) : getDefaultValues({ placeId }),
     shouldUnregister: false,
   });
 }

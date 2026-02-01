@@ -1,30 +1,25 @@
-import type { HuntSessionUnknownEntity } from "../types";
-
 export function mapParsedEntitiesToCatalog<
-  TParsed extends HuntSessionUnknownEntity,
-  TCatalog extends { id: number; name: string; image_path?: string | null },
+  TParsed extends { name: string; count: number },
+  TCatalog extends { id: number; name: string },
 >(parsed: TParsed[], catalog: TCatalog[]) {
-  const catalogMap = new Map(catalog.map((e) => [e.name.toLowerCase(), e]));
+  const catalogMap = new Map(catalog.map((c) => [c.name.toLowerCase(), c]));
 
-  const mapped: (TCatalog & { count: number })[] = [];
-  const unknown: HuntSessionUnknownEntity[] = [];
+  const mapped = [];
+  const unknown = [];
 
   for (const p of parsed) {
-    const key = p.name.toLowerCase();
-    const found = catalogMap.get(key);
+    const match = catalogMap.get(p.name.toLowerCase());
 
-    if (!found) {
-      unknown.push(p);
+    if (!match) {
+      unknown.push(p.name);
       continue;
     }
 
     mapped.push({
-      ...found,
+      id: match.id,
       count: p.count,
     });
   }
-
-  mapped.sort((a, b) => b.count - a.count);
 
   return { mapped, unknown };
 }

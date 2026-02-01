@@ -6,8 +6,8 @@ import { Box, Button, Menu, MenuItem, Typography } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
 
-import { PATHS } from "@/constants";
 import type { Character } from "@/modules/characters";
+import { PATHS } from "@/paths";
 
 type CharacterSwitcherProps = {
   characters: Character[];

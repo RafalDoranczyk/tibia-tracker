@@ -30,23 +30,19 @@ function StaminaInput({ control, label, name }: StaminaInputProps) {
       control={control}
       render={({ field, fieldState }) => {
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          // Pobieramy tylko cyfry
           let raw = e.target.value.replace(/\D/g, "");
 
-          // Ograniczamy do 4 cyfr (HHMM)
           raw = raw.slice(0, 4);
 
           let formatted = raw;
 
           if (raw.length > 0) {
-            // Obliczamy godziny (max 42)
             let h = raw.slice(0, 2);
             if (Number.parseInt(h) > 42) h = "42";
 
             if (raw.length <= 2) {
               formatted = h;
             } else {
-              // Obliczamy minuty (max 59)
               let m = raw.slice(2, 4);
               if (Number.parseInt(m) > 59) m = "59";
               formatted = `${h}:${m}`;

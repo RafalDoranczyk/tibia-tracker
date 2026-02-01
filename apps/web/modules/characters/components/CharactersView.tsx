@@ -7,7 +7,7 @@ import { ConfirmDialog, EmptyState } from "@/components";
 import { useActiveCharacter } from "@/providers/feature/dashboard";
 
 import { deleteCharacter } from "../actions/deleteCharacter";
-import type { Character } from "../types";
+import type { Character } from "../schemas";
 import { CharacterModal } from "./CharacterModal";
 import { CharactersGrid } from "./CharactersGrid";
 

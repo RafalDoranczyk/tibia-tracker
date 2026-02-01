@@ -5,7 +5,8 @@ import { Card, Checkbox, Chip, Divider, FormControlLabel, Stack, Typography } fr
 import { useMemo } from "react";
 
 import { SKILL_WEAPON_TYPES } from "../constants";
-import type { ExerciseWeaponType, UseOnlineTrainingState } from "../types";
+import type { UseOnlineTrainingState } from "../hooks/useOnlineTrainingState";
+import type { ExerciseWeaponType } from "../types";
 import { calculateOnlineTraining } from "../utils/calculateOnlineTraining";
 import { calculateTrainingCost } from "../utils/calculateTrainingCost";
 

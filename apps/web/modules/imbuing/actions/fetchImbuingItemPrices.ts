@@ -5,15 +5,14 @@ import { z } from "zod";
 import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { ImbuingItemSchema } from "../schemas";
-import type { ImbuingItem } from "../types";
+import { type ImbuingItem, ImbuingItemSchema } from "../schemas";
 
-const imbuingItemKeys = Object.keys(ImbuingItemSchema.shape).join(", ");
+const SELECT = Object.keys(ImbuingItemSchema.shape).join(", ");
 
 export async function fetchImbuingItemPrices(): Promise<ImbuingItem[]> {
   const { supabase } = await getUserScopedQuery();
 
-  const { data, error } = await supabase.from("imbuing_prices").select(imbuingItemKeys);
+  const { data, error } = await supabase.from("imbuing_prices").select(SELECT);
 
   if (error) {
     throw new Error("Failed to fetch imbuing item prices");

@@ -1,9 +1,11 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { FetchHuntPlacesResponseSchema } from "../schemas";
+import { FetchHuntPlacesResponseSchema, HuntPlaceSchema } from "../schemas";
+
+const SELECT = HuntPlaceSchema.keyof().options.join(", ");
 
 /**
  * Fetches available hunt places for the current user.
@@ -14,7 +16,7 @@ export async function fetchHuntPlaces() {
 
   const { data, error } = await supabase
     .from("hunt_places")
-    .select("id, user_id, name, image_path")
+    .select(SELECT)
     .or(`user_id.eq.${user.id},user_id.is.null`);
 
   if (error) {

@@ -3,20 +3,19 @@
 import { cache } from "react";
 import { z } from "zod";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { MonsterPreviewSchema } from "../schemas";
-import type { MonsterPreview } from "../types";
+import { type MonsterPreview, MonsterPreviewSchema } from "../schemas";
 
-const monsterColumns = Object.keys(MonsterPreviewSchema.shape).join(", ");
+const SELECT = Object.keys(MonsterPreviewSchema.shape).join(", ");
 
 async function fetchMonstersInternal(): Promise<MonsterPreview[]> {
   const { supabase } = await getUserScopedQuery();
 
   const { data, error } = await supabase
     .from("monsters")
-    .select(monsterColumns)
+    .select(SELECT)
     .order("name", { ascending: true });
 
   if (error) {

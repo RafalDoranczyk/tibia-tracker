@@ -2,30 +2,33 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Breadcrumbs, Link, Typography } from "@mui/material";
 import LinkNext from "next/link";
 
-import { PageHeader } from "@/components";
-import { PATHS } from "@/constants";
+import { PageHeader } from "@/layout/page";
 import { fetchHuntPlaces } from "@/modules/hunt-places";
 import {
   fetchDamageElements,
   fetchMonstersPreview,
+  fetchPreyBonuses,
   fetchSupplies,
   HuntSessionFormProvider,
   HuntSessionView,
 } from "@/modules/hunt-sessions";
 import { fetchItems } from "@/modules/items";
+import { PATHS } from "@/paths";
 
-import type { CharacterPageProps } from "../../../types";
+import type { CharacterPageProps } from "../../../../types";
 
 export default async function NewHuntSessionPage({ params }: CharacterPageProps) {
   const { characterId } = await params;
 
-  const [itemList, monsterList, huntPlaceList, supplyList, damageElementList] = await Promise.all([
-    fetchItems(),
-    fetchMonstersPreview(),
-    fetchHuntPlaces(),
-    fetchSupplies(),
-    fetchDamageElements(),
-  ]);
+  const [itemList, monsterList, huntPlaceList, supplyList, damageElementList, preyBonusList] =
+    await Promise.all([
+      fetchItems(),
+      fetchMonstersPreview(),
+      fetchHuntPlaces(),
+      fetchSupplies(),
+      fetchDamageElements(),
+      fetchPreyBonuses(),
+    ]);
 
   return (
     <>
@@ -46,7 +49,7 @@ export default async function NewHuntSessionPage({ params }: CharacterPageProps)
         <Typography color="text.primary">New Hunt Session</Typography>
       </Breadcrumbs>
 
-      <PageHeader.Root
+      <PageHeader
         title="Add Hunt Session"
         description={`Create and analyze your hunt session.
           Paste your Tibia session log to automatically calculate experience, profit, supplies, damage, and monster statistics`}
@@ -58,6 +61,7 @@ export default async function NewHuntSessionPage({ params }: CharacterPageProps)
           supplyList={supplyList}
           huntPlaceList={huntPlaceList}
           monsterList={monsterList}
+          preyBonusList={preyBonusList}
           damageElementList={damageElementList}
         />
       </HuntSessionFormProvider>

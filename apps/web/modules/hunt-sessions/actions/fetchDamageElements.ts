@@ -3,20 +3,19 @@
 import { cache } from "react";
 import { z } from "zod";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { DamageElementSchema } from "../schemas";
-import type { DamageElement } from "../types";
+import { type DamageElement, DamageElementSchema } from "../schemas";
 
-const damageElementColumns = Object.keys(DamageElementSchema.shape).join(", ");
+const SELECT = Object.keys(DamageElementSchema.shape).join(", ");
 
 async function fetchDamageElementsInternal(): Promise<DamageElement[]> {
   const { supabase } = await getUserScopedQuery();
 
   const { data, error } = await supabase
     .from("damage_elements")
-    .select(damageElementColumns)
+    .select(SELECT)
     .order("name", { ascending: true });
 
   if (error) {

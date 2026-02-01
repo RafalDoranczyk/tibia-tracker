@@ -1,4 +1,4 @@
-import type { CharmLevel, CharmWithProgress } from "../types";
+import type { CharmLevel, CharmWithProgress } from "../schemas";
 
 export function getCharmTotalCostToLevel(
   charm: CharmWithProgress,

@@ -1,48 +1,46 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { insertSessionDamageElements } from "../db/huntSessionDamageElements";
-import { insertSessionDamageSources } from "../db/huntSessionDamageSources";
-import { insertSessionLootedItems } from "../db/huntSessionLootedItems";
-import { insertSessionMonsters } from "../db/huntSessionMonsters";
-import { insertSessionSupplies } from "../db/huntSessionSupplies";
-import { CreateHuntSessionPayloadSchema, HuntSessionDbFieldsSchema } from "../schemas";
-import type { CreateHuntSessionPayload, HuntSessionDbFields } from "../types";
+import { insertSessionMonstersWithPrey } from "../db/insertMonsterRows";
+import { insertSessionRows } from "../db/insertSessionRows";
+import {
+  CreateHuntSessionPayloadSchema,
+  type HuntSessionDbFields,
+  HuntSessionDbFieldsSchema,
+} from "../schemas";
 
-export async function createHuntSession(
-  payload: CreateHuntSessionPayload
-): Promise<HuntSessionDbFields> {
+export async function createHuntSession(payload: unknown): Promise<HuntSessionDbFields> {
   const parsed = assertZodParse(CreateHuntSessionPayloadSchema, payload);
 
   const { supabase } = await getUserScopedQuery();
 
-  const { monsters, supplies, items, damage_elements, damage_sources, ...dbPayload } = parsed;
+  const { killed_monsters, supplies, looted_items, damage_elements, damage_sources, ...dbPayload } =
+    parsed;
 
   const { data, error } = await supabase.from("hunt_sessions").insert(dbPayload).select().single();
 
   if (error || !data) {
-    console.log(error);
     throw new Error("Failed to create hunt session");
   }
 
-  await insertSessionMonsters(data.id, monsters);
+  await insertSessionMonstersWithPrey(data.id, killed_monsters);
 
-  if (items && items.length > 0) {
-    await insertSessionLootedItems(data.id, items);
+  if (looted_items && looted_items.length > 0) {
+    await insertSessionRows("hunt_session_looted_items", data.id, looted_items);
   }
 
   if (supplies && supplies.length > 0) {
-    await insertSessionSupplies(data.id, supplies);
+    await insertSessionRows("hunt_session_supplies", data.id, supplies);
   }
 
   if (damage_elements && damage_elements?.length > 0) {
-    await insertSessionDamageElements(data.id, damage_elements);
+    await insertSessionRows("hunt_session_damage_elements", data.id, damage_elements);
   }
 
   if (damage_sources && damage_sources?.length > 0) {
-    await insertSessionDamageSources(data.id, damage_sources);
+    await insertSessionRows("hunt_session_damage_sources", data.id, damage_sources);
   }
 
   return assertZodParse(HuntSessionDbFieldsSchema, data);

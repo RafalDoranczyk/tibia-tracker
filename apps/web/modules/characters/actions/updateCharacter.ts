@@ -2,15 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 
-import { PATHS } from "@/constants";
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
+import { PATHS } from "@/paths";
 import { assertZodParse } from "@/utils";
 
-import { updateCharacterSchema } from "../schemas";
-import type { Character, UpdateCharacterPayload } from "../types";
+import { type Character, UpdateCharacterSchema } from "../schemas";
 
-export async function updateCharacter(payload: UpdateCharacterPayload): Promise<Character> {
-  const parsed = assertZodParse(updateCharacterSchema, payload);
+export async function updateCharacter(payload: unknown): Promise<Character> {
+  const parsed = assertZodParse(UpdateCharacterSchema, payload);
+
   const { id, ...data } = parsed;
 
   const { supabase } = await getUserScopedQuery();
@@ -26,7 +26,8 @@ export async function updateCharacter(payload: UpdateCharacterPayload): Promise<
     throw new Error("Failed to update character");
   }
 
-  assertZodParse(updateCharacterSchema, updated);
+  assertZodParse(UpdateCharacterSchema, updated);
   revalidatePath(PATHS.CHARACTERS);
+
   return updated;
 }

@@ -2,14 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 
-import { PATHS } from "@/constants";
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
+import { PATHS } from "@/paths";
 import { assertZodParse } from "@/utils";
 
 import { DeleteCharacterSchema } from "../schemas";
-import type { DeleteCharacterPayload } from "../types";
 
-export async function deleteCharacter(id: DeleteCharacterPayload) {
+export async function deleteCharacter(id: unknown): Promise<void> {
   const parsed = assertZodParse(DeleteCharacterSchema, id);
 
   const { supabase } = await getUserScopedQuery();

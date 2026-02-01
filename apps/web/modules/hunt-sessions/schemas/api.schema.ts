@@ -1,51 +1,75 @@
 import { z } from "zod";
 
+import { PaginationSchema } from "@/lib/pagination";
+import { MonsterSchema } from "@/modules/bestiary";
 import { CharacterSchema } from "@/modules/characters";
-import { zodOmitKeys } from "@/utils";
+import { ItemSchema } from "@/modules/items";
+import { NonNegativeInt, PositiveInt } from "@/schemas";
 
-import { HuntSessionDbFieldsComputedSchema, HuntSessionDbFieldsSchema } from "./db.schema";
-import { HuntSessionListItemSchema } from "./list.schema";
+import { DamageElementSchema, DamageSourceSchema, PreyBonusSchema } from "./catalog.schema";
 import {
-  DamageElementCountSchema,
-  HuntSessionDamageSourceSchema,
-  LootedItemCountSchema,
-  MonsterCountSchema,
-  SupplyCountSchema,
-} from "./relations.schema";
+  HuntSessionDbBaseFieldsSchema,
+  HuntSessionListItemSchema,
+  HuntSessionSchema,
+} from "./db.schema";
 
-export const HuntSessionPayloadBaseSchema = HuntSessionDbFieldsSchema.omit({
-  id: true,
-  created_at: true,
-  ...zodOmitKeys(HuntSessionDbFieldsComputedSchema),
-}).extend({
-  monsters: MonsterCountSchema.array(),
-  items: LootedItemCountSchema.array(),
-
-  // OPTIONAL
-  supplies: SupplyCountSchema.array().optional(),
-  damage_elements: DamageElementCountSchema.array().optional(),
-  damage_sources: HuntSessionDamageSourceSchema.array().optional(),
-});
-
-export const FetchHuntSessionsListPayloadSchema = z.object({
+export const FetchHuntSessionPayloadSchema = z.object({
+  id: HuntSessionSchema.shape.id,
   character_id: CharacterSchema.shape.id,
-  limit: z.number().min(1).optional(),
-  offset: z.number().min(0).optional(),
-  order: z.enum(["asc", "desc"]).optional(),
-  orderBy: z.enum(["date", "level", "duration_seconds", "raw_xp_gain", "profit"]).optional(),
 });
 
-export const FetchHuntSessionsListResponseSchema = z.object({
-  count: z.number(),
+export const FetchHuntSessionListPayloadSchema = PaginationSchema.extend({
+  character_id: CharacterSchema.shape.id,
+});
+
+export const FetchHuntSessionListResponseSchema = z.object({
+  count: NonNegativeInt,
   data: z.array(HuntSessionListItemSchema),
 });
+export type FetchHuntSessionListResponse = z.infer<typeof FetchHuntSessionListResponseSchema>;
 
-export const CreateHuntSessionPayloadSchema = HuntSessionPayloadBaseSchema;
+const HuntSessionKilledMonsterInputSchema = z.object({
+  monster_id: MonsterSchema.shape.id,
+  count: PositiveInt,
+  prey_bonus_id: PreyBonusSchema.shape.id.nullable().optional(),
+});
+export type HuntSessionKilledMonsterInput = z.input<typeof HuntSessionKilledMonsterInputSchema>;
 
-export const UpdateHuntSessionPayloadSchema = HuntSessionPayloadBaseSchema.extend({
-  id: z.number(),
+export const CreateHuntSessionPayloadSchema = HuntSessionDbBaseFieldsSchema.omit({
+  id: true,
+}).extend({
+  killed_monsters: HuntSessionKilledMonsterInputSchema.array(),
+  looted_items: z.array(
+    z.object({
+      item_id: ItemSchema.shape.id,
+      count: PositiveInt,
+    })
+  ),
+  supplies: z.array(
+    z.object({
+      supply_id: ItemSchema.shape.id,
+      count: PositiveInt,
+    })
+  ),
+  damage_elements: z.array(
+    z.object({
+      damage_element_id: DamageElementSchema.shape.id,
+      percent: PositiveInt,
+    })
+  ),
+  damage_sources: z.array(
+    z.object({
+      damage_source_id: DamageSourceSchema.shape.id,
+      percent: PositiveInt,
+    })
+  ),
+});
+export type CreateHuntSessionPayload = z.input<typeof CreateHuntSessionPayloadSchema>;
+
+export const UpdateHuntSessionPayloadSchema = CreateHuntSessionPayloadSchema.extend({
+  id: HuntSessionSchema.shape.id,
 });
 
 export const DeleteHuntSessionPayloadSchema = z.object({
-  id: z.number(),
+  id: HuntSessionSchema.shape.id,
 });

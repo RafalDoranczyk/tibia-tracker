@@ -2,14 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 
-import { PATHS } from "@/constants";
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
+import { PATHS } from "@/paths";
 import { assertZodParse } from "@/utils";
 
 import { DeleteHuntSessionPayloadSchema } from "../schemas";
-import type { DeleteHuntSessionPayload } from "../types";
 
-export async function deleteHuntSession(payload: DeleteHuntSessionPayload): Promise<void> {
+export async function deleteHuntSession(payload: unknown): Promise<void> {
   const data = assertZodParse(DeleteHuntSessionPayloadSchema, payload);
 
   const { supabase } = await getUserScopedQuery();
@@ -17,7 +16,6 @@ export async function deleteHuntSession(payload: DeleteHuntSessionPayload): Prom
   const { error } = await supabase.from("hunt_sessions").delete().eq("id", data.id);
 
   if (error) {
-    console.log(error);
     throw new Error("Failed to delete hunt session");
   }
 

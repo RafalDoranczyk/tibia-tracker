@@ -1,26 +1,18 @@
-import type { CharacterVocation } from "../characters/types";
-import type {
-  CharacterSkillVariant,
-  ExerciseWeaponType,
-  LoyaltyPointValues,
-  OnlineTrainingCharacterState,
-  VocationOnlineTrainingConfig,
-} from "./types";
+import type { CharacterVocation } from "@/modules/characters";
 
-export const SKILLS_FOR_VOCATION: Record<CharacterVocation, CharacterSkillVariant[]> = {
-  knight: ["melee", "ml", "shield"],
-  paladin: ["distance", "ml"],
-  sorcerer: ["ml"],
-  druid: ["ml"],
-  monk: ["fist", "ml", "melee"],
-};
-
+/**
+ * BONUSES
+ */
 export const DOUBLE_EVENT_BONUS = 2.0;
 export const HOUSE_DUMMY_BONUS = 1.1;
-export const LOYALTY_POINT_STEP: LoyaltyPointValues = 360; // Each 360 loyalty points equals 5% bonus
-export const MAX_LOYALTY_POINTS: LoyaltyPointValues = 3600; // Maximum loyalty points (50% bonus)
 
-export const LOYALTY_MARKS: { value: LoyaltyPointValues; label: string }[] = [
+/**
+ * LOYALTY
+ */
+export const LOYALTY_POINT_STEP = 360;
+export const MAX_LOYALTY_POINTS = 3600;
+
+export const LOYALTY_MARKS = [
   { value: 0, label: "None" },
   { value: 360, label: "5%" },
   { value: 720, label: "10%" },
@@ -32,15 +24,28 @@ export const LOYALTY_MARKS: { value: LoyaltyPointValues; label: string }[] = [
   { value: 2880, label: "40%" },
   { value: 3240, label: "45%" },
   { value: 3600, label: "50%" },
-];
+] as const;
 
-export const SKILL_WEAPON_TYPES: {
-  label: ExerciseWeaponType;
-  charges: number;
-  seconds: number;
-  formattedTime: string;
-  price: number;
-}[] = [
+/**
+ * SKILLS
+ */
+export const SKILL_VARIANTS = ["melee", "distance", "shield", "fist", "ml"] as const;
+
+export const ALLOWED_SKILLS_FOR_VOCATION: Record<
+  CharacterVocation,
+  readonly (typeof SKILL_VARIANTS)[number][]
+> = {
+  knight: ["melee", "ml", "shield"],
+  paladin: ["distance", "ml"],
+  sorcerer: ["ml"],
+  druid: ["ml"],
+  monk: ["fist", "ml", "melee"],
+};
+
+/**
+ * EXERCISE WEAPONS
+ */
+export const SKILL_WEAPON_TYPES = [
   {
     label: "lasting",
     charges: 14400,
@@ -62,26 +67,34 @@ export const SKILL_WEAPON_TYPES: {
     formattedTime: "16m 40sec",
     price: 347_222,
   },
-];
+] as const;
 
-export const CHARACTER_ONLINE_TRAINING_DEFAULT: OnlineTrainingCharacterState = {
+/**
+ * EXERCISE DUMMIES
+ */
+export const EXERCISE_DUMMIES = ["regular", "house"] as const;
+
+/**
+ * DEFAULT STATE
+ */
+export const CHARACTER_ONLINE_TRAINING_DEFAULT = {
   vocation: "knight",
   skill: "melee",
   currentSkill: 50,
   targetSkill: 70,
   percentLeft: 100,
   loyaltyPoints: 360,
-};
+} as const;
 
-export const VOCATION_ONLINE_TRAINING_CONFIG: Record<
-  CharacterVocation,
-  VocationOnlineTrainingConfig
-> = {
+/**
+ * VOCATION CONFIG
+ */
+export const VOCATION_ONLINE_TRAINING_CONFIG = {
   sorcerer: {
     ml: {
       constant: 1.1,
       base: 1600,
-      rate: 300, // Standard magic rate
+      rate: 300,
       multiplier: 1.1,
     },
   },
@@ -151,4 +164,4 @@ export const VOCATION_ONLINE_TRAINING_CONFIG: Record<
       offset: 10,
     },
   },
-};
+} as const;

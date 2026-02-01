@@ -1,14 +1,22 @@
-import { PageHeader } from "@/components";
+import type { Metadata } from "next";
+
+import { PageHeader } from "@/layout/page";
 import { CharacterTrainingView } from "@/modules/training-calculator";
 
-export default function TrainingCalculator() {
+export const metadata: Metadata = {
+  title: "Training Time Calculator",
+  description:
+    "Estimate the time required to reach your desired skill level while training offline or online.",
+};
+
+export default function TrainingCalculatorPage() {
   return (
-    <div>
-      <PageHeader.Root
+    <>
+      <PageHeader
         title="Training Time Calculator"
         description="Estimate the time required to reach your desired skill level while training offline or online."
       />
       <CharacterTrainingView />
-    </div>
+    </>
   );
 }

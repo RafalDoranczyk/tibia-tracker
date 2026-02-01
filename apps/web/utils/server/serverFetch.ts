@@ -2,10 +2,10 @@
 
 import { headers } from "next/headers";
 
-export async function serverFetch(path: string, init?: RequestInit) {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL;
+import { env } from "@/env";
 
-  return fetch(`${baseUrl}${path}`, {
+export async function serverFetch(path: string, init?: RequestInit) {
+  return fetch(`${env.NEXT_PUBLIC_APP_URL}${path}`, {
     ...init,
     headers: {
       ...init?.headers,

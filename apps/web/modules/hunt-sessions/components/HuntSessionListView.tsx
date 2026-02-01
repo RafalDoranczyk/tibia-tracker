@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { ConfirmDialog } from "@/components";
-import { PATHS } from "@/constants";
 import { usePagination } from "@/hooks";
+import { PATHS } from "@/paths";
 import { useRequiredCharacterId } from "@/providers/feature/dashboard";
 
 import { HUNT_SESSION_PAGINATION_LIMIT } from "../constants";
 import { useDeleteHuntSession } from "../hooks/useDeleteHuntSession";
-import type { HuntSessionListItem } from "../types";
-import { HuntSessionsTable } from "./HuntSessionsTable";
+import type { HuntSessionListItem } from "../schemas";
+import { SessionsTable } from "./SessionsTable";
 
 type HuntSessionListViewProps = {
   count: number;
@@ -25,12 +25,12 @@ export function HuntSessionListView({ count, huntSessionList }: HuntSessionListV
   const pagination = usePagination({ limit: HUNT_SESSION_PAGINATION_LIMIT });
   const [sessionIdToDelete, setSessionIdToDelete] = useState<number | null>(null);
 
-  const { deleteSession, isPending } = useDeleteHuntSession();
+  const { mutate, loading } = useDeleteHuntSession();
 
   const handleDeleteSession = async () => {
     if (!sessionIdToDelete) return;
 
-    await deleteSession(sessionIdToDelete);
+    await mutate(sessionIdToDelete);
     setSessionIdToDelete(null);
   };
 
@@ -40,7 +40,7 @@ export function HuntSessionListView({ count, huntSessionList }: HuntSessionListV
 
   return (
     <Stack spacing={3}>
-      <HuntSessionsTable
+      <SessionsTable
         huntSessionList={huntSessionList}
         page={pagination.page}
         rowsPerPage={pagination.limitParam}
@@ -68,9 +68,9 @@ export function HuntSessionListView({ count, huntSessionList }: HuntSessionListV
             description="Are you sure you want to delete this hunt session? This action cannot be undone."
           />
           <ConfirmDialog.Actions>
-            <ConfirmDialog.Cancel loading={isPending} />
+            <ConfirmDialog.Cancel loading={loading} />
 
-            <ConfirmDialog.Confirm loading={isPending} onClick={handleDeleteSession}>
+            <ConfirmDialog.Confirm loading={loading} onClick={handleDeleteSession}>
               Delete
             </ConfirmDialog.Confirm>
           </ConfirmDialog.Actions>

@@ -3,7 +3,7 @@
 import { FormProvider } from "react-hook-form";
 
 import { useHuntSessionForm } from "../hooks/useHuntSessionForm";
-import type { HuntSession } from "../types";
+import type { HuntSession } from "../schemas";
 
 export function HuntSessionFormProvider({
   huntSession,

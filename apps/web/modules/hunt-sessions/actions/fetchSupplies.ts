@@ -3,27 +3,26 @@
 import { cache } from "react";
 import { z } from "zod";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { SupplyItemSchema } from "../schemas";
-import type { SupplyItem } from "../types";
+import { type ItemPreview, ItemPreviewSchema } from "../schemas";
 
-const supplyColumns = Object.keys(SupplyItemSchema.shape).join(", ");
+const SELECT = Object.keys(ItemPreviewSchema.shape).join(", ");
 
-async function fetchSuppliesInternal(): Promise<SupplyItem[]> {
+async function fetchSuppliesInternal(): Promise<ItemPreview[]> {
   const { supabase } = await getUserScopedQuery();
 
   const { data, error } = await supabase
     .from("supplies")
-    .select(supplyColumns)
+    .select(SELECT)
     .order("name", { ascending: true });
 
   if (error) {
     throw new Error("Failed to fetch supplies");
   }
 
-  return assertZodParse(z.array(SupplyItemSchema), data);
+  return assertZodParse(z.array(ItemPreviewSchema), data);
 }
 
 export const fetchSupplies = cache(fetchSuppliesInternal);

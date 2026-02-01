@@ -1,23 +1,16 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { BESTIARY_DEFAULT_LIMIT } from "../constants";
 import {
   CharacterBestiarySchema,
+  type FetchCharacterBestiaryParams,
   MonsterSchema,
   MonsterWithCharacterProgressSchema,
 } from "../schemas";
-import type { BestiaryClass, CharacterBestiaryFullResponse } from "../types";
-
-type Props = {
-  characterId: string;
-  bestiaryClass?: BestiaryClass;
-  limit?: number;
-  page?: number;
-  search?: string;
-};
+import type { CharacterBestiaryFullResponse } from "../types";
 
 export async function fetchCharacterBestiaryFull({
   characterId,
@@ -25,7 +18,7 @@ export async function fetchCharacterBestiaryFull({
   limit = BESTIARY_DEFAULT_LIMIT,
   page = 1,
   search,
-}: Props): Promise<CharacterBestiaryFullResponse> {
+}: FetchCharacterBestiaryParams): Promise<CharacterBestiaryFullResponse> {
   const offset = (page - 1) * limit;
   const { supabase } = await getUserScopedQuery();
 

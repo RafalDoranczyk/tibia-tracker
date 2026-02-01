@@ -1,37 +1,51 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Breadcrumbs, Link, Typography } from "@mui/material";
 import LinkNext from "next/link";
+import { notFound } from "next/navigation";
 
-import { PageHeader } from "@/components";
-import { PATHS } from "@/constants";
+import { PageHeader } from "@/layout/page";
 import { fetchHuntPlaces } from "@/modules/hunt-places";
 import {
   fetchDamageElements,
   fetchHuntSession,
   fetchMonstersPreview,
+  fetchPreyBonuses,
   fetchSupplies,
   HuntSessionFormProvider,
   HuntSessionView,
 } from "@/modules/hunt-sessions";
 import { fetchItems } from "@/modules/items";
+import { PATHS } from "@/paths";
 
-import type { CharacterPageProps } from "../../../types";
+import type { CharacterPageProps } from "../../../../types";
 
-type EditHuntSessionPageProps = CharacterPageProps<{ id: string }>;
+type EditHuntSessionPageProps = CharacterPageProps;
 
 export default async function EditHuntSessionPage({ params }: EditHuntSessionPageProps) {
   const { characterId, id } = await params;
   const huntSessionId = Number(id);
 
-  const [itemList, monsterList, huntPlaceList, supplyList, damageElementList, huntSession] =
-    await Promise.all([
-      fetchItems(),
-      fetchMonstersPreview(),
-      fetchHuntPlaces(),
-      fetchSupplies(),
-      fetchDamageElements(),
-      fetchHuntSession(huntSessionId),
-    ]);
+  const [
+    itemList,
+    monsterList,
+    huntPlaceList,
+    supplyList,
+    damageElementList,
+    preyBonusList,
+    huntSession,
+  ] = await Promise.all([
+    fetchItems(),
+    fetchMonstersPreview(),
+    fetchHuntPlaces(),
+    fetchSupplies(),
+    fetchDamageElements(),
+    fetchPreyBonuses(),
+    fetchHuntSession({ id: huntSessionId, character_id: characterId }),
+  ]);
+
+  if (!huntSession) {
+    notFound();
+  }
 
   return (
     <>
@@ -52,14 +66,16 @@ export default async function EditHuntSessionPage({ params }: EditHuntSessionPag
         <Typography color="text.primary">Edit Hunt Session</Typography>
       </Breadcrumbs>
 
-      <PageHeader.Root title="Edit Hunt Session" description="Edit and review your hunt session." />
+      <PageHeader title="Edit Hunt Session" description="Edit and review your hunt session." />
 
       <HuntSessionFormProvider huntSession={huntSession} placeId={huntPlaceList[0].id}>
         <HuntSessionView
+          huntSessionId={huntSession?.id}
           itemList={itemList}
           supplyList={supplyList}
           huntPlaceList={huntPlaceList}
           monsterList={monsterList}
+          preyBonusList={preyBonusList}
           damageElementList={damageElementList}
         />
       </HuntSessionFormProvider>

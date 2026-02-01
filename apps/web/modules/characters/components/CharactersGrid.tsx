@@ -2,7 +2,7 @@ import { Card, Grid } from "@mui/material";
 
 import { TooltipIconButton } from "@/components";
 
-import type { Character } from "../types";
+import type { Character } from "../schemas";
 import { CharacterCard } from "./CharacterCard";
 
 type CharactersGridProps = {

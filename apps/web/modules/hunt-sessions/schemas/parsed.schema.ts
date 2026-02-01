@@ -1,21 +1,30 @@
-import { zodOmitKeys } from "@/utils";
+import { z } from "zod";
 
-import { HuntSessionDbFieldsComputedSchema, HuntSessionDbFieldsSchema } from "./db.schema";
-import { LootedItemCountSchema, MonsterCountSchema } from "./relations.schema";
+import { MonsterSchema } from "@/modules/bestiary";
+import { PositiveInt } from "@/schemas";
 
-export const HuntSessionRawParsedSchema = HuntSessionDbFieldsSchema.omit({
+import { HuntSessionDbBaseFieldsSchema } from "./db.schema";
+
+// This schema is used to parse hunt session from json file that user can upload
+export const HuntSessionLogParsedSchema = HuntSessionDbBaseFieldsSchema.omit({
   id: true,
   character_id: true,
   place_id: true,
   level: true,
   player_count: true,
-
-  // server-managed
-  created_at: true,
-
-  // computed on backend
-  ...zodOmitKeys(HuntSessionDbFieldsComputedSchema),
 }).extend({
-  monsters: MonsterCountSchema.omit({ id: true }).array(),
-  items: LootedItemCountSchema.omit({ id: true }).array(),
+  killed_monsters: z
+    .object({
+      count: PositiveInt,
+      name: MonsterSchema.shape.name,
+    })
+    .array(),
+  looted_items: z
+    .object({
+      count: PositiveInt,
+      name: MonsterSchema.shape.name,
+    })
+    .array(),
 });
+
+export type HuntSessionRawParsed = z.infer<typeof HuntSessionLogParsedSchema>;

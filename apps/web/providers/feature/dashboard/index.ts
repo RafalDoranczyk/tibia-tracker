@@ -1,4 +1,3 @@
-export { useUser } from "../../../modules/user/UserProvider";
 export {
   useActiveCharacter,
   useRequiredCharacterId,

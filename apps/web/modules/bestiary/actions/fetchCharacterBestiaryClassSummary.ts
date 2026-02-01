@@ -3,8 +3,7 @@
 import { assertZodParse, serverFetch } from "@/utils";
 
 import { BestiaryCacheTags } from "../cacheTags";
-import { CharacterBestiaryClassSummarySchema } from "../schemas";
-import type { BestiaryClass } from "../types";
+import { type BestiaryClass, CharacterBestiaryClassSummarySchema } from "../schemas";
 
 export async function fetchCharacterBestiaryClassSummary(
   characterId: string,

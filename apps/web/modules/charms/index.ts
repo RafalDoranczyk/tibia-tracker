@@ -1,14 +1,10 @@
 // ======================
 // Fetchers / server logic
 // ======================
-export { fetchCharacterCharmEconomy } from "./actions/fetchCharacterCharmEconomy";
-export { getCharmsWithProgress } from "./queries/getCharmsWithProgress";
+export { loadCharmsPage } from "./server/loadCharacterCharms";
+
 // ======================
 // UI – public components
 // ======================
+export { CharmsResetButton } from "./components/CharmsResetButton";
 export { CharmsView } from "./components/CharmsView";
-export { ResetCharmsButton } from "./components/ResetCharmsButton";
-
-// ======================
-// Shared
-// ======================

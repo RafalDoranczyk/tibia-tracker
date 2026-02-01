@@ -11,31 +11,24 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import type { Metadata } from "next";
 
-import { PageHeader } from "@/components";
-import { fetchCharacterBestiarySummary } from "@/modules/bestiary";
-import {
-  CharmsView,
-  fetchCharacterCharmEconomy,
-  getCharmsWithProgress,
-  ResetCharmsButton,
-} from "@/modules/charms";
+import { PageHeader } from "@/layout/page";
+import { CharmsResetButton, CharmsView, loadCharmsPage } from "@/modules/charms";
 
-import type { CharacterPageProps } from "../../types";
+import type { CharacterPageProps } from "../../../types";
+
+export const metadata: Metadata = {
+  title: "Charms",
+  description: "Manage your character's charms and track your charm points.",
+};
 
 export default async function Charms({ params }: CharacterPageProps) {
   const { characterId } = await params;
 
-  const [charms, bestiary, charmEconomy] = await Promise.all([
-    getCharmsWithProgress(characterId),
-    fetchCharacterBestiarySummary(characterId),
-    fetchCharacterCharmEconomy(characterId),
-  ]);
+  const { charms, charmEconomy, totalCharmPoints, progress } = await loadCharmsPage(characterId);
 
-  const { unlocked_charm_points: unlocked, total_charm_points: total } = bestiary;
   const { major_available, minor_available, major_unlocked, minor_unlocked } = charmEconomy;
-
-  const progress = total > 0 ? (unlocked / total) * 100 : 0;
 
   const stats = [
     {
@@ -58,19 +51,19 @@ export default async function Charms({ params }: CharacterPageProps) {
     },
     {
       label: "Total",
-      value: total,
+      value: totalCharmPoints,
       color: "text.primary",
       icon: <AllInclusiveIcon />,
     },
   ] as const;
 
   return (
-    <div>
-      <PageHeader.Root
+    <>
+      <PageHeader
         title="Charms"
         description="Your character charms are based on your bestiary progress and can be managed here. Unlock new bestiary to gain more charm points and be able to unlock more charms."
         action={
-          <ResetCharmsButton characterId={characterId} minorCharmsUnlocked={minor_unlocked} />
+          <CharmsResetButton characterId={characterId} minorCharmsUnlocked={minor_unlocked} />
         }
       />
 
@@ -113,6 +106,6 @@ export default async function Charms({ params }: CharacterPageProps) {
         availableMinorPoints={minor_available}
         charms={charms}
       />
-    </div>
+    </>
   );
 }

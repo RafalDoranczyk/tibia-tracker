@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 
 import { fetchCharacters } from "@/modules/characters";
@@ -8,11 +9,18 @@ import {
   Navigation,
 } from "@/modules/navigation";
 import { getUser } from "@/modules/user";
-import { DashboardProviders } from "@/providers/feature/dashboard/DashboardProviders";
+import { DashboardProviders } from "@/providers/feature/dashboard";
 
-type DashboardLayoutProps = PropsWithChildren<{
-  params: Promise<{ characterId?: string }>;
-}>;
+import type { CharacterLayoutProps } from "./types";
+
+export const metadata: Metadata = {
+  title: {
+    template: "%s | Tibia Tracker",
+    default: "Tibia Tracker",
+  },
+};
+
+type DashboardLayoutProps = PropsWithChildren & CharacterLayoutProps;
 
 export default async function DashboardLayout({ children, params }: DashboardLayoutProps) {
   const user = await getUser();

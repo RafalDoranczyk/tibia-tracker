@@ -4,12 +4,8 @@ import {
   LOYALTY_POINT_STEP,
   VOCATION_ONLINE_TRAINING_CONFIG,
 } from "../constants";
-import type {
-  ExerciseDummy,
-  ExerciseWeaponType,
-  LoyaltyPointValues,
-  UseOnlineTrainingState,
-} from "../types";
+import type { UseOnlineTrainingState } from "../hooks/useOnlineTrainingState";
+import type { ExerciseDummy, ExerciseWeaponType, LoyaltyPointValues } from "../types";
 
 // --- HELPERS ---
 function getLoyaltyBonus(loyaltyPoints: LoyaltyPointValues) {
@@ -68,6 +64,7 @@ export function calculateOnlineTraining(params: ExerciseTrainingParams) {
     doubleEvent,
   } = params;
 
+  // @ts-ignore
   const config = VOCATION_ONLINE_TRAINING_CONFIG[vocation]?.[skill];
   if (!config) throw new Error(`Unsupported vocation/skill combination: ${vocation}/${skill}`);
 

@@ -7,10 +7,10 @@ import { useRequiredCharacterId } from "@/providers/feature/dashboard";
 import { useToast } from "@/providers/global";
 
 import { setCharacterCharmLevel } from "../actions/setCharacterCharmLevel";
-import type { CharmLevel, CharmWithProgress } from "../types";
-import { CharmMajorCard } from "./CharmMajorCard";
-import { CharmMinorCard } from "./CharmMinorCard";
-import { SetCharmLevelModal } from "./SetCharmLevelModal";
+import type { CharmLevel, CharmWithProgress } from "../schemas";
+import { MajorCard } from "./MajorCard";
+import { MinorCard } from "./MinorCard";
+import { SetLevelModal } from "./SetLevelModal";
 
 type CharmsViewProps = {
   charms: CharmWithProgress[];
@@ -81,7 +81,7 @@ export function CharmsView({
           <Grid container spacing={2}>
             {majorCharms.map((charm) => (
               <Grid key={charm.id} size={{ xs: 12, sm: 6, md: 4, xxl: 3 }} height={300}>
-                <CharmMajorCard
+                <MajorCard
                   charm={charm}
                   availableMajorPoints={availableMajorPoints}
                   onSelect={() => setSelectedCharm(charm)}
@@ -100,7 +100,7 @@ export function CharmsView({
           <Grid container spacing={2}>
             {minorCharms.map((charm) => (
               <Grid key={charm.id} size={{ xs: 12, sm: 6, md: 4, xxl: 3 }} height={300}>
-                <CharmMinorCard
+                <MinorCard
                   charm={charm}
                   availableMinorPoints={availableMinorPoints}
                   onSelect={() => setSelectedCharm(charm)}
@@ -112,7 +112,7 @@ export function CharmsView({
       </Grid>
 
       {selectedCharm && (
-        <SetCharmLevelModal
+        <SetLevelModal
           charm={selectedCharm}
           availablePoints={availablePoints}
           isPending={isPending}

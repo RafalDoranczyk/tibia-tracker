@@ -3,20 +3,19 @@
 import { cache } from "react";
 import { z } from "zod";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { ItemSchema } from "../schemas";
-import type { Item } from "../types";
+import { type Item, ItemSchema } from "../schemas";
 
-const itemColumns = Object.keys(ItemSchema.shape).join(", ");
+const SELECT = Object.keys(ItemSchema.shape).join(", ");
 
 async function fetchItemsInternal(): Promise<Item[]> {
   const { supabase } = await getUserScopedQuery();
 
   const { data, error } = await supabase
     .from("items")
-    .select(itemColumns)
+    .select(SELECT)
     .order("name", { ascending: true });
 
   if (error) {

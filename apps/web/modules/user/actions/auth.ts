@@ -2,20 +2,25 @@
 
 import { redirect } from "next/navigation";
 
-import { AppError, AppErrorCodes, createSupabase, mapSupabaseErrorToAppError } from "@/core";
+import { AppError, AppErrorCodes } from "@/core/errors";
+import { createSupabase, mapSupabaseErrorToAppError } from "@/core/supabase";
+import { env } from "@/env";
+import { assertZodParse } from "@/utils";
 
-import type { OAuthProvider } from "../types";
+import { OAuthProvider } from "../schemas";
 
 async function loginWithOAuth(provider: OAuthProvider) {
+  const parsedProvider = assertZodParse(OAuthProvider, provider);
+
   const supabase = await createSupabase();
 
-  const redirectTo = process.env.NEXT_PUBLIC_AUTH_CALLBACK_URL;
+  const redirectTo = env.NEXT_PUBLIC_AUTH_CALLBACK_URL;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     options: {
       redirectTo,
     },
-    provider,
+    provider: parsedProvider,
   });
 
   if (error) {

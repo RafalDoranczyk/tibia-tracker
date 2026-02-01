@@ -1,7 +1,8 @@
 import { Card, CardActions, CardContent, CardHeader, Typography } from "@mui/material";
 
 import { TooltipIconButton } from "@/components";
-import type { Character } from "@/modules/characters";
+
+import type { Character } from "../schemas";
 
 type CharacterCardProps = {
   character: Character;

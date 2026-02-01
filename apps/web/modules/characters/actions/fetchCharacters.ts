@@ -2,16 +2,17 @@
 
 import { z } from "zod";
 
-import { getUserScopedQuery } from "@/core";
+import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { CharacterSchema } from "../schemas";
-import type { Character } from "../types";
+import { type Character, CharacterSchema } from "../schemas";
+
+const columns = CharacterSchema.keyof().options.join(", ");
 
 export async function fetchCharacters(): Promise<Character[]> {
   const { supabase } = await getUserScopedQuery();
 
-  const { data, error } = await supabase.from("characters").select("id, name, vocation, world");
+  const { data, error } = await supabase.from("characters").select(columns);
 
   if (error) {
     throw new Error("Fetching characters failed");
