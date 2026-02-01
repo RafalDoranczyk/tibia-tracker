@@ -5,7 +5,7 @@ import { assertZodParse } from "@/utils";
 
 import { FetchHuntPlacesResponseSchema, HuntPlaceSchema } from "../schemas";
 
-const columns = HuntPlaceSchema.keyof().options.join(", ");
+const SELECT = HuntPlaceSchema.keyof().options.join(", ");
 
 /**
  * Fetches available hunt places for the current user.
@@ -16,7 +16,7 @@ export async function fetchHuntPlaces() {
 
   const { data, error } = await supabase
     .from("hunt_places")
-    .select(columns)
+    .select(SELECT)
     .or(`user_id.eq.${user.id},user_id.is.null`);
 
   if (error) {

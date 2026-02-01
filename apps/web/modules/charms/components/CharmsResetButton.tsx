@@ -9,12 +9,12 @@ import { useToast } from "@/providers/global";
 
 import { resetCharacterCharms } from "../actions/resetCharacterCharms";
 
-type ResetCharmsButtonProps = {
+type CharmsResetButtonProps = {
   characterId: string;
   minorCharmsUnlocked: number;
 };
 
-export function ResetCharmsButton({ characterId, minorCharmsUnlocked }: ResetCharmsButtonProps) {
+export function CharmsResetButton({ characterId, minorCharmsUnlocked }: CharmsResetButtonProps) {
   const toast = useToast();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();

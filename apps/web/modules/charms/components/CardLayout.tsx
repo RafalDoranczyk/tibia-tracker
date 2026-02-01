@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { getImageUrl } from "@/core/supabase";
 
-type CharmCardLayoutProps = {
+type CardLayoutProps = {
   name: string;
   description?: string | null;
   imagePath: string;
@@ -12,14 +12,14 @@ type CharmCardLayoutProps = {
   children?: ReactNode;
 };
 
-export function CharmCardLayout({
+export function CardLayout({
   name,
   description,
   imagePath,
   unlocked,
   level,
   children,
-}: CharmCardLayoutProps) {
+}: CardLayoutProps) {
   return (
     <Card
       sx={{

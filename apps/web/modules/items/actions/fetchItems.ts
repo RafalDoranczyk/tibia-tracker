@@ -8,14 +8,14 @@ import { assertZodParse } from "@/utils";
 
 import { type Item, ItemSchema } from "../schemas";
 
-const columns = Object.keys(ItemSchema.shape).join(", ");
+const SELECT = Object.keys(ItemSchema.shape).join(", ");
 
 async function fetchItemsInternal(): Promise<Item[]> {
   const { supabase } = await getUserScopedQuery();
 
   const { data, error } = await supabase
     .from("items")
-    .select(columns)
+    .select(SELECT)
     .order("name", { ascending: true });
 
   if (error) {

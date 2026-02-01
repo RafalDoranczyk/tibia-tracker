@@ -5,10 +5,11 @@ import { EmptyState } from "@/components";
 import type { MonsterWithCharacterProgress } from "../schemas";
 import { MonsterCard } from "./MonsterCard";
 
-type MonsterCardGridProps = {
+type BestiaryCardGridProps = {
   monsters: MonsterWithCharacterProgress[];
 };
-export function MonsterCardGrid({ monsters }: MonsterCardGridProps) {
+
+export function BestiaryCardGrid({ monsters }: BestiaryCardGridProps) {
   return monsters.length ? (
     <Grid container spacing={2} mb={2}>
       {monsters.map((monster) => (

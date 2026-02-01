@@ -1,4 +1,5 @@
-import type { CharacterVocation } from "../characters/schemas";
+import type { CharacterVocation } from "@/modules/characters";
+
 import type {
   EXERCISE_DUMMIES,
   LOYALTY_MARKS,

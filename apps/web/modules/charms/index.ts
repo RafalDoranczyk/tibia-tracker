@@ -6,5 +6,5 @@ export { loadCharmsPage } from "./server/loadCharacterCharms";
 // ======================
 // UI – public components
 // ======================
+export { CharmsResetButton } from "./components/CharmsResetButton";
 export { CharmsView } from "./components/CharmsView";
-export { ResetCharmsButton } from "./components/ResetCharmsButton";

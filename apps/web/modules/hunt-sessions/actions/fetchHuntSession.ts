@@ -10,10 +10,10 @@ import {
   HuntSessionSchema,
 } from "../schemas";
 
-const HuntSessionDbKeys = Object.keys(HuntSessionDbFieldsSchema.shape).join(", ");
+const DB_KEYS = Object.keys(HuntSessionDbFieldsSchema.shape).join(", ");
 
 const SELECT = `
-  ${HuntSessionDbKeys},
+  ${DB_KEYS},
   place:hunt_places!inner(id, name, image_path),
   supplies:hunt_session_supplies(
     id,

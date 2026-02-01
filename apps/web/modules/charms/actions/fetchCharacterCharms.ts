@@ -12,7 +12,7 @@ import {
 
 const characterCharmKeys = CharacterCharmRowSchema.keyof().options.join(",");
 
-const CHARM_SELECT = `
+const SELECT = `
   ${characterCharmKeys},
   charm:charms(*)
 `;
@@ -26,7 +26,7 @@ export async function fetchCharacterCharms(
 
   const { data, error } = await supabase
     .from("character_charms")
-    .select(CHARM_SELECT)
+    .select(SELECT)
     .eq("character_id", parsedCharacterId)
     .order("unlocked_at", { ascending: true });
 

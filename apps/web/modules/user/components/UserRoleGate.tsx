@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import type { UserRole } from "../schemas";
 import { useUser } from "../UserProvider";
 
-export function RoleGate({
+export function UserRoleGate({
   allow,
   children,
   fallback = null,
@@ -30,8 +30,8 @@ export function AdminOnly({
   fallback?: ReactNode;
 }) {
   return (
-    <RoleGate allow={["admin"]} fallback={fallback}>
+    <UserRoleGate allow={["admin"]} fallback={fallback}>
       {children}
-    </RoleGate>
+    </UserRoleGate>
   );
 }

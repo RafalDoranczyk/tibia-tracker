@@ -14,7 +14,7 @@ import {
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/layout/page";
-import { CharmsView, loadCharmsPage, ResetCharmsButton } from "@/modules/charms";
+import { CharmsResetButton, CharmsView, loadCharmsPage } from "@/modules/charms";
 
 import type { CharacterPageProps } from "../../../types";
 
@@ -63,7 +63,7 @@ export default async function Charms({ params }: CharacterPageProps) {
         title="Charms"
         description="Your character charms are based on your bestiary progress and can be managed here. Unlock new bestiary to gain more charm points and be able to unlock more charms."
         action={
-          <ResetCharmsButton characterId={characterId} minorCharmsUnlocked={minor_unlocked} />
+          <CharmsResetButton characterId={characterId} minorCharmsUnlocked={minor_unlocked} />
         }
       />
 

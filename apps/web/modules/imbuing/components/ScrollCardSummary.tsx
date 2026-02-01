@@ -28,12 +28,12 @@ function SummaryRow({
   );
 }
 
-type Props = {
+type ScrollCardSummaryProps = {
   economy: ScrollEconomyResult;
   showTokenStrategies: boolean;
 };
 
-export function ImbuingScrollCardSummary({ economy, showTokenStrategies }: Props) {
+export function ScrollCardSummary({ economy, showTokenStrategies }: ScrollCardSummaryProps) {
   return (
     <Paper sx={{ p: 2, width: "100%", height: "100%" }} variant="outlined">
       {/* ITEMS */}

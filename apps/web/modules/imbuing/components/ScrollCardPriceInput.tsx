@@ -3,16 +3,16 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import type { ImbuingFormValues, ImbuingPriceKey } from "../schemas";
 
-type ImbuingScrollCardPriceInputProps = TextFieldProps & {
+type ScrollCardPriceInputProps = TextFieldProps & {
   inputKey: ImbuingPriceKey;
   label: string;
 };
 
-export function ImbuingScrollCardPriceInput({
+export function ScrollCardPriceInput({
   inputKey,
   label,
   ...textFieldProps
-}: ImbuingScrollCardPriceInputProps) {
+}: ScrollCardPriceInputProps) {
   const { control } = useFormContext<ImbuingFormValues>();
 
   return (

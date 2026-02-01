@@ -12,13 +12,13 @@ import {
 import Image from "next/image";
 
 import type { ScrollItem } from "../types";
-import { ImbuingScrollCardPriceInput } from "./ImbuingScrollCardPriceInput";
+import { ScrollCardPriceInput } from "./ScrollCardPriceInput";
 
-type ImbuingScrollCardItemsProps = {
+type ScrollCardItemsProps = {
   items: ScrollItem[];
 };
 
-export function ImbuingScrollCardItems({ items }: ImbuingScrollCardItemsProps) {
+export function ScrollCardItems({ items }: ScrollCardItemsProps) {
   return (
     <Paper variant="outlined" sx={{ width: "100%", height: "100%" }}>
       <TableContainer sx={{ height: "100%", display: "flex" }}>
@@ -53,7 +53,7 @@ export function ImbuingScrollCardItems({ items }: ImbuingScrollCardItemsProps) {
                   </TableCell>
                   <TableCell align="right">{quantity}</TableCell>
                   <TableCell align="right" width={130}>
-                    <ImbuingScrollCardPriceInput size="small" label="Price (each)" inputKey={key} />
+                    <ScrollCardPriceInput size="small" label="Price (each)" inputKey={key} />
                   </TableCell>
                 </TableRow>
               );

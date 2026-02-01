@@ -5,15 +5,15 @@ import { Button, Stack, Typography } from "@mui/material";
 import { CHARM_MAX_LEVEL } from "../constants";
 import type { CharmWithProgress } from "../schemas";
 import { canAffordNextCharmLevel, getCharmNextLevelCost } from "../utils/getCharmEconomy";
-import { CharmCardLayout } from "./CharmCardLayout";
+import { CardLayout } from "./CardLayout";
 
-type CharmMinorCardProps = {
+type MinorCardProps = {
   charm: CharmWithProgress;
   availableMinorPoints: number;
   onSelect: () => void;
 };
 
-export function CharmMinorCard({ charm, availableMinorPoints, onSelect }: CharmMinorCardProps) {
+export function MinorCard({ charm, availableMinorPoints, onSelect }: MinorCardProps) {
   const { name, description, image_path, progress } = charm;
   const { unlocked, level } = progress;
 
@@ -36,7 +36,7 @@ export function CharmMinorCard({ charm, availableMinorPoints, onSelect }: CharmM
   }
 
   return (
-    <CharmCardLayout
+    <CardLayout
       name={name}
       description={description}
       imagePath={image_path}
@@ -63,6 +63,6 @@ export function CharmMinorCard({ charm, availableMinorPoints, onSelect }: CharmM
           {buttonLabel}
         </Button>
       </Stack>
-    </CharmCardLayout>
+    </CardLayout>
   );
 }

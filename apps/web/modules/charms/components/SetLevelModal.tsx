@@ -11,7 +11,7 @@ import {
   getCharmTotalCostToLevel,
 } from "../utils/getCharmEconomy";
 
-type Props = {
+type SetLevelModalProps = {
   isPending: boolean;
   charm: CharmWithProgress;
   availablePoints: number;
@@ -19,13 +19,13 @@ type Props = {
   onConfirm: (level: number) => void;
 };
 
-export function SetCharmLevelModal({
+export function SetLevelModal({
   onClose,
   charm,
   onConfirm,
   isPending,
   availablePoints,
-}: Props) {
+}: SetLevelModalProps) {
   const currentLevel = charm.progress.level;
   const initialLevel = charm.progress.unlocked ? currentLevel + 1 : 1;
   const [selectedLevel, setSelectedLevel] = useState(initialLevel);

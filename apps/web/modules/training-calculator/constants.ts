@@ -1,4 +1,4 @@
-import type { CharacterVocation } from "../characters/schemas";
+import type { CharacterVocation } from "@/modules/characters";
 
 /**
  * BONUSES

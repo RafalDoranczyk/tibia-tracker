@@ -13,8 +13,8 @@ import { useSaveImbuingPrices } from "../hooks/useSaveImbuingPrices";
 import { mapItemPricesFromDb } from "../mappers/mapItemPricesFromDb";
 import { ImbuingFormSchema, type ImbuingFormValues, type ImbuingItem } from "../schemas";
 import type { Scroll } from "../types";
-import { ImbuingScrollCard } from "./ImbuingScrollCard";
-import { ImbuingScrollCardPriceInput } from "./ImbuingScrollCardPriceInput";
+import { ScrollCard } from "./ScrollCard";
+import { ScrollCardPriceInput } from "./ScrollCardPriceInput";
 
 type ScrollsSectionProps = {
   scrolls: Scroll[];
@@ -41,7 +41,7 @@ function ScrollsSection({ scrolls, title }: ScrollsSectionProps) {
         gap={2}
       >
         {scrolls.map((scroll) => (
-          <ImbuingScrollCard key={scroll.key} scroll={scroll} />
+          <ScrollCard key={scroll.key} scroll={scroll} />
         ))}
       </Box>
     </div>
@@ -77,7 +77,7 @@ export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
       <Stack spacing={3}>
         <Box display="flex" justifyContent="flex-end">
           <Box width={140}>
-            <ImbuingScrollCardPriceInput label="Gold Token Price" inputKey="gold_token" />
+            <ScrollCardPriceInput label="Gold Token Price" inputKey="gold_token" />
           </Box>
         </Box>
 

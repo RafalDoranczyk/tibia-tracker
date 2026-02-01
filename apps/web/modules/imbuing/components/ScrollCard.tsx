@@ -7,17 +7,15 @@ import { EmptyState } from "@/components";
 import { useScrollEconomy } from "../hooks/useScrollEconomy";
 import type { Scroll } from "../types";
 import { canBuyScrollForTokens } from "../utils/canBuyScrollForTokens";
-import { ImbuingScrollCardItems } from "./ImbuingScrollCardItems";
-import { ImbuingScrollCardPriceInput } from "./ImbuingScrollCardPriceInput";
-import { ImbuingScrollCardSummary } from "./ImbuingScrollCardSummary";
+import { ScrollCardItems } from "./ScrollCardItems";
+import { ScrollCardPriceInput } from "./ScrollCardPriceInput";
+import { ScrollCardSummary } from "./ScrollCardSummary";
 
-type ImbuingScrollCardProps = {
+type ScrollCardProps = {
   scroll: Scroll;
 };
 
-export const ImbuingScrollCard = React.memo(function ImbuingScrollCard({
-  scroll,
-}: ImbuingScrollCardProps) {
+export const ScrollCard = React.memo(function ScrollCard({ scroll }: ScrollCardProps) {
   const economy = useScrollEconomy(scroll);
   const showTokenStrategies = canBuyScrollForTokens(scroll.craftMethods);
 
@@ -46,26 +44,19 @@ export const ImbuingScrollCard = React.memo(function ImbuingScrollCard({
           </Stack>
 
           {/* RIGHT */}
-          <ImbuingScrollCardPriceInput
-            label="Selling for"
-            inputKey={scroll.key}
-            sx={{ width: 110 }}
-          />
+          <ScrollCardPriceInput label="Selling for" inputKey={scroll.key} sx={{ width: 110 }} />
         </Stack>
 
         <Divider sx={{ my: 2 }} />
 
         <Grid container spacing={2} alignItems="stretch">
           <Grid size={{ xs: 12, xl: 7 }}>
-            <ImbuingScrollCardItems items={scroll.items} />
+            <ScrollCardItems items={scroll.items} />
           </Grid>
 
           <Grid size={{ xs: 12, xl: 5 }}>
             {economy ? (
-              <ImbuingScrollCardSummary
-                economy={economy}
-                showTokenStrategies={showTokenStrategies}
-              />
+              <ScrollCardSummary economy={economy} showTokenStrategies={showTokenStrategies} />
             ) : (
               <EmptyState
                 size="small"

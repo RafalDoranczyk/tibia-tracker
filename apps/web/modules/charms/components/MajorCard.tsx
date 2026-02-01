@@ -3,15 +3,15 @@ import { Button, Stack, Typography } from "@mui/material";
 import { CHARM_MAX_LEVEL } from "../constants";
 import type { CharmWithProgress } from "../schemas";
 import { canAffordNextCharmLevel, getCharmNextLevelCost } from "../utils/getCharmEconomy";
-import { CharmCardLayout } from "./CharmCardLayout";
+import { CardLayout } from "./CardLayout";
 
-type CharmMajorCardProps = {
+type MajorCardProps = {
   charm: CharmWithProgress;
   availableMajorPoints: number;
   onSelect: () => void;
 };
 
-export function CharmMajorCard({ charm, availableMajorPoints, onSelect }: CharmMajorCardProps) {
+export function MajorCard({ charm, availableMajorPoints, onSelect }: MajorCardProps) {
   const { name, description, image_path, progress } = charm;
   const { unlocked, level } = progress;
 
@@ -35,7 +35,7 @@ export function CharmMajorCard({ charm, availableMajorPoints, onSelect }: CharmM
   }
 
   return (
-    <CharmCardLayout
+    <CardLayout
       name={name}
       description={description}
       imagePath={image_path}
@@ -64,6 +64,6 @@ export function CharmMajorCard({ charm, availableMajorPoints, onSelect }: CharmM
           {buttonLabel}
         </Button>
       </Stack>
-    </CharmCardLayout>
+    </CardLayout>
   );
 }

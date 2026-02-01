@@ -8,10 +8,10 @@ export { loadCharacterBestiary } from "./server/loadCharacterBestiary";
 // ======================
 // UI – public components
 // ======================
+export { BestiaryCardGrid } from "./components/BestiaryCardGrid";
 export { BestiaryFilterBar } from "./components/BestiaryFilterBar";
 export { BestiaryFloatingPanel } from "./components/BestiaryFloatingPanel";
 export { BestiaryPagination } from "./components/BestiaryPagination";
-export { MonsterCardGrid } from "./components/MonsterCardGrid";
 
 // ======================
 // Domain / shared
