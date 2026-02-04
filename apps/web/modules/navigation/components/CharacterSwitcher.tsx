@@ -1,51 +1,41 @@
 "use client";
 
-import Add from "@mui/icons-material/Add";
 import Settings from "@mui/icons-material/Settings";
 import { Box, Button, Menu, MenuItem, Typography } from "@mui/material";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
-import type { Character } from "@/modules/characters";
+import { useActiveCharacter, useActiveCharacterDetails, useCharacters } from "@/modules/characters";
 import { PATHS } from "@/paths";
 
-type CharacterSwitcherProps = {
-  characters: Character[];
-  activeCharacterId?: string;
-  onSelect: (characterId: string) => void;
-};
-
-export function CharacterSwitcher({
-  characters,
-  activeCharacterId,
-  onSelect,
-}: CharacterSwitcherProps) {
+export function CharacterSwitcher() {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const active = characters.find((c) => c.id === activeCharacterId);
-  const noCharacters = characters.length === 0;
+  const { characters } = useCharacters();
+  const { setActiveCharacterId } = useActiveCharacter();
+  const activeCharacter = useActiveCharacterDetails();
 
   const handleOpenMenu = (e: React.MouseEvent<HTMLElement>) => setMenuAnchor(e.currentTarget);
 
   const handleCloseMenu = () => setMenuAnchor(null);
 
-  if (noCharacters) {
+  const handleClick = (charId: string) => {
+    handleCloseMenu();
+
+    if (pathname.includes(PATHS.CHARACTERS)) {
+      router.push(PATHS.CHARACTER(charId).OVERVIEW);
+    } else {
+      setActiveCharacterId(charId);
+    }
+  };
+
+  if (!activeCharacter) {
     return (
-      <Button
-        component={Link}
-        href={PATHS.CHARACTERS}
-        size="small"
-        variant="outlined"
-        sx={{
-          textTransform: "none",
-          fontWeight: 500,
-          borderColor: "divider",
-          minWidth: 160,
-          gap: 0.5,
-        }}
-      >
-        <Add fontSize="small" />
-        Add your first character
+      <Button component={Link} href={PATHS.CHARACTERS} size="small" variant="outlined">
+        Add / Select character
       </Button>
     );
   }
@@ -64,7 +54,11 @@ export function CharacterSwitcher({
           minWidth: 120,
         }}
       >
-        {active ? <Typography color="text.primary">{active.name}</Typography> : "Select character"}
+        {activeCharacter ? (
+          <Typography color="text.primary">{activeCharacter.name}</Typography>
+        ) : (
+          "Select character"
+        )}
       </Button>
 
       <Menu
@@ -89,11 +83,8 @@ export function CharacterSwitcher({
         {characters.map((char) => (
           <MenuItem
             key={char.id}
-            selected={char.id === activeCharacterId}
-            onClick={() => {
-              handleCloseMenu();
-              onSelect(char.id);
-            }}
+            selected={char.id === activeCharacter?.id}
+            onClick={() => handleClick(char.id)}
             sx={{
               display: "flex",
               flexDirection: "column",

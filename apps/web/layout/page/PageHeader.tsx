@@ -38,7 +38,7 @@ export function PageHeader({ title, description, action, subtitle }: PageHeaderP
         </Typography>
 
         {description && (
-          <Typography color="text.secondary" maxWidth={640}>
+          <Typography color="text.secondary" maxWidth={600}>
             {description}
           </Typography>
         )}

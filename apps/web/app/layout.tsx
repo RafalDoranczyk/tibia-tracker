@@ -3,13 +3,13 @@ export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 
-import { appConfig } from "@/config";
-import { AppProviders } from "@/providers/AppProviders";
-import { fonts } from "@/providers/global";
+import { AppProviders, fonts } from "@/providers/global";
 
 export const metadata: Metadata = {
-  title: appConfig.name,
-  description: appConfig.description,
+  title: {
+    template: "%s | Tibia Tracker",
+    default: "Tibia Tracker",
+  },
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

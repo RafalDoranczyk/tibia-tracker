@@ -1,5 +1,4 @@
 import AddIcon from "@mui/icons-material/Add";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 
 import { PATHS } from "@/paths";
 
@@ -10,7 +9,6 @@ export const DESKTOP_APP_NAVIGATION_DRAWER_WIDTH = "240px";
 export const APP_BAR_HEIGHT = "64px";
 
 export const NAVIGATION_IDS = {
-  DASHBOARD: "dashboard",
   CHARACTER: "character",
   CHARMS: "charms",
   BESTIARY: "bestiary",
@@ -24,20 +22,6 @@ export const NAVIGATION_IDS = {
 } as const;
 
 export const NAVIGATION_MODULES: NavigationSection[] = [
-  {
-    title: "Dashboard",
-    elements: [
-      {
-        id: NAVIGATION_IDS.DASHBOARD,
-        text: "Dashboard",
-        to: PATHS.DASHBOARD,
-        icon: {
-          type: "mui",
-          node: <DashboardIcon />,
-        },
-      },
-    ],
-  },
   {
     title: "Character Overview",
     elements: [
@@ -76,7 +60,6 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
         text: "Hunt Sessions",
         to: (c) => c.HUNT_SESSIONS.LIST,
         requiresCharacter: true,
-        matchStrategy: "prefix",
         icon: {
           type: "image",
           src: NAVIGATION_IMAGES.hunt,
@@ -99,7 +82,6 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
         text: "Hunt Places",
         to: (c) => c.HUNT_PLACES,
         requiresCharacter: true,
-        matchStrategy: "prefix",
         icon: {
           type: "image",
           src: NAVIGATION_IMAGES.huntGold,

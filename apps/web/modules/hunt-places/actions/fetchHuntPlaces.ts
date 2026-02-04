@@ -12,12 +12,12 @@ const SELECT = HuntPlaceSchema.keyof().options.join(", ");
  * Includes both user-specific and global entries.
  */
 export async function fetchHuntPlaces() {
-  const { user, supabase } = await getUserScopedQuery();
+  const { userId, supabase } = await getUserScopedQuery();
 
   const { data, error } = await supabase
     .from("hunt_places")
     .select(SELECT)
-    .or(`user_id.eq.${user.id},user_id.is.null`);
+    .or(`user_id.eq.${userId},user_id.is.null`);
 
   if (error) {
     throw new Error("Failed to fetch hunt places");

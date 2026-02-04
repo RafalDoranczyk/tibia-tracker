@@ -54,7 +54,6 @@ export function SetLevelModal({
       <ConfirmDialog.Header
         title={`${isUpgrade ? "Upgrade" : "Unlock"} ${charm.name}`}
         description="Select the level you want to set for this charm."
-        variant="info"
       />
 
       <ConfirmDialog.Content>

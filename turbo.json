@@ -10,6 +10,10 @@
     "NEXT_PUBLIC_ASSET_BASE_URL"
   ],
   "tasks": {
+    "lint": {
+      "inputs": ["$TURBO_DEFAULT$"],
+      "outputs": []
+    },
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "dependsOn": ["^build"],
@@ -19,6 +23,11 @@
       "dependsOn": ["^build"]
     },
     "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
       "dependsOn": ["^build"],
       "cache": false,
       "persistent": true

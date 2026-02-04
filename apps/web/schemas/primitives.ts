@@ -18,9 +18,12 @@ export const UUID = z.string().uuid({
  * Dates
  */
 
-export const ISODate = z.string().datetime({
-  message: ValidationErrors.DATE.INVALID,
-});
+export const ISODate = z.string().date(ValidationErrors.DATE.INVALID);
+
+export const LocalDatetime = z.string().refine((v) => {
+  const d = new Date(v);
+  return !Number.isNaN(d.getTime());
+}, ValidationErrors.DATE.INVALID);
 
 /**
  * Numbers

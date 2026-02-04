@@ -2,19 +2,20 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Divider, Stack, Typography } from "@mui/material";
-import { FormProvider, useForm, useFormContext, useFormState } from "react-hook-form";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 import { FloatingActionButton } from "@/components";
+import { useToast } from "@/providers/global";
 
+import { updateImbuingItemPrices } from "../actions/updateImbuingItemPrices";
 import { baseScrolls } from "../data/scrolls/base";
 import { elementalScrolls } from "../data/scrolls/elemental";
 import { skillScrolls } from "../data/scrolls/skill";
-import { useSaveImbuingPrices } from "../hooks/useSaveImbuingPrices";
 import { mapItemPricesFromDb } from "../mappers/mapItemPricesFromDb";
 import { ImbuingFormSchema, type ImbuingFormValues, type ImbuingItem } from "../schemas";
 import type { Scroll } from "../types";
+import { GoldTokenInput } from "./GoldTokenInput";
 import { ScrollCard } from "./ScrollCard";
-import { ScrollCardPriceInput } from "./ScrollCardPriceInput";
 
 type ScrollsSectionProps = {
   scrolls: Scroll[];
@@ -48,13 +49,12 @@ function ScrollsSection({ scrolls, title }: ScrollsSectionProps) {
   );
 }
 
-function FloatingSaveImbuingButton() {
-  const { onSave, isPending } = useSaveImbuingPrices();
-  const { handleSubmit, control } = useFormContext();
-  const isDirty = useFormState({ control }).isDirty;
+function SaveButton({ onClick }: { onClick: () => void }) {
+  const { formState } = useFormContext();
+  const { isDirty, isSubmitting } = formState;
 
   return (
-    <FloatingActionButton visible={isDirty} onClick={handleSubmit(onSave)} loading={isPending}>
+    <FloatingActionButton onClick={onClick} visible={isDirty} loading={isSubmitting}>
       Save changes
     </FloatingActionButton>
   );
@@ -65,26 +65,40 @@ type ImbuingViewProps = {
 };
 
 export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
+  const toast = useToast();
+
   const defaultValues = mapItemPricesFromDb(imbuingItemPrices);
 
   const form = useForm<ImbuingFormValues>({
     defaultValues,
     resolver: zodResolver(ImbuingFormSchema),
+    mode: "onBlur",
+  });
+
+  const { handleSubmit, reset } = form;
+
+  const onSubmit = handleSubmit(async (values) => {
+    try {
+      await updateImbuingItemPrices(values);
+
+      reset(values);
+      toast.success("Prices saved");
+    } catch {
+      toast.error("Failed to save prices");
+    }
   });
 
   return (
     <FormProvider {...form}>
       <Stack spacing={3}>
         <Box display="flex" justifyContent="flex-end">
-          <Box width={140}>
-            <ScrollCardPriceInput label="Gold Token Price" inputKey="gold_token" />
-          </Box>
+          <GoldTokenInput />
         </Box>
 
         <ScrollsSection title="Basic Scrolls" scrolls={baseScrolls} />
         <ScrollsSection title="Elemental Scrolls" scrolls={elementalScrolls} />
         <ScrollsSection title="Skill Scrolls" scrolls={skillScrolls} />
-        <FloatingSaveImbuingButton />
+        <SaveButton onClick={onSubmit} />
       </Stack>
     </FormProvider>
   );

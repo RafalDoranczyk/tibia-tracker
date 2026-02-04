@@ -27,7 +27,7 @@ export default function Loading() {
             gap={2}
           >
             {[...Array(3)].map((_, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <No reason>
+              // biome-ignore lint/suspicious/noArrayIndexKey: <Skeletons are static>
               <Card key={i} variant="outlined" sx={{ px: 2, py: 1 }}>
                 {/* Header */}
                 <Stack

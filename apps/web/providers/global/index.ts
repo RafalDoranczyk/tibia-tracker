@@ -1,4 +1,3 @@
-export { DateProvider } from "./DateProvider";
-export { QueryParamsProvider } from "./QueryParamsProvider";
-export { fonts, ThemeProvider } from "./ThemeProvider";
-export { ToastProvider, useToast } from "./ToastProvider";
+export { AppProviders } from "./AppProviders";
+export { fonts } from "./ThemeProvider";
+export { useToast } from "./ToastProvider";

@@ -16,7 +16,7 @@ function redirectToError(origin: string): NextResponse {
 
 function getRedirectBase(request: NextRequest, origin: string): string {
   const forwardedHost = request.headers.get("x-forwarded-host");
-  const isDev = env.NODE_ENV === "development";
+  const isDev = env.NODE_ENV === "development" || origin.includes("localhost");
 
   if (isDev) {
     return origin;

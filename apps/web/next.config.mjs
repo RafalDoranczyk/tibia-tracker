@@ -2,9 +2,9 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-eslint: {
-  ignoreDuringBuilds: true,
-},
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -20,11 +20,11 @@ eslint: {
     ],
   },
   transpilePackages: [
-    '@mui/material',
-    '@mui/system', 
-    '@mui/icons-material',
-    '@emotion/react',
-    '@emotion/styled'
+    "@mui/material",
+    "@mui/system",
+    "@mui/icons-material",
+    "@emotion/react",
+    "@emotion/styled",
   ],
   reactStrictMode: true,
 };

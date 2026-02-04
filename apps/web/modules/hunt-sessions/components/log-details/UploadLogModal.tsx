@@ -68,8 +68,8 @@ export function UploadLogModal({
       });
 
       patchFormValues(formValues, (name, value) => setValue(name, value, { shouldDirty: true }));
-
       setUnknownEntities(unknown);
+
       onClose();
     } catch (err) {
       if (err instanceof HuntSessionParseError) {

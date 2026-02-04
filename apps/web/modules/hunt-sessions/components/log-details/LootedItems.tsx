@@ -23,15 +23,6 @@ export function LootedItems({
 
   const looted_items = watch("looted_items");
 
-  const itemsForGrid = useMemo(
-    () =>
-      looted_items.map((i) => ({
-        id: i.itemId,
-        count: i.count,
-      })),
-    [looted_items]
-  );
-
   const lootedItemsMap = useMemo(() => new Map(itemList.map((e) => [e.id, e])), [itemList]);
 
   return (
@@ -51,31 +42,25 @@ export function LootedItems({
         </Button>
       )}
 
-      {itemsForGrid.length === 0 ? (
+      {looted_items.length === 0 ? (
         <EmptyState size="small" variant="economy" title="No items tracked yet" />
       ) : (
-        looted_items.map((item) => {
-          return (
-            <Stack key={item.itemId} spacing={1}>
-              {looted_items.map((e) => {
-                const catalogData = lootedItemsMap.get(e.itemId);
-                const imageUrl = getImageUrl(catalogData?.image_path);
+        <Stack spacing={1}>
+          {looted_items.map(({ itemId, count }) => {
+            const catalogData = lootedItemsMap.get(itemId);
+            const imageUrl = getImageUrl(catalogData?.image_path);
 
-                return (
-                  <Stack key={e.itemId} direction="row" spacing={1} alignItems="center">
-                    <Avatar src={imageUrl}>
-                      {!catalogData?.image_path && catalogData?.name?.[0]}
-                    </Avatar>
-                    <Typography fontWeight="bold" noWrap>
-                      {catalogData?.name ?? `Unknown #${e.itemId}`}
-                    </Typography>
-                    <Typography>×{e.count}</Typography>
-                  </Stack>
-                );
-              })}
-            </Stack>
-          );
-        })
+            return (
+              <Stack key={itemId} direction="row" spacing={1} alignItems="center">
+                <Avatar src={imageUrl}>{!catalogData?.image_path && catalogData?.name?.[0]}</Avatar>
+                <Typography fontWeight="bold" noWrap>
+                  {catalogData?.name ?? `Unknown #${itemId}`}
+                </Typography>
+                <Typography>×{count}</Typography>
+              </Stack>
+            );
+          })}
+        </Stack>
       )}
     </Stack>
   );

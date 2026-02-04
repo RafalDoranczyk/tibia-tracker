@@ -28,3 +28,9 @@ export const AppUserSchema = z
   .strict();
 
 export type AppUser = z.infer<typeof AppUserSchema>;
+
+export const UserSettingSchema = z.object({
+  user_id: UUID,
+  last_active_character_id: UUID.optional().nullable(),
+});
+export type UserSetting = z.infer<typeof UserSettingSchema>;

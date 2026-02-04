@@ -3,26 +3,22 @@
 import { getUserScopedQuery } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { ImbuingPriceKeySchema, UpdateImbuingPricesSchema } from "../schemas";
+import { ImbuingFormSchema } from "../schemas";
 
 export async function updateImbuingItemPrices(prices: unknown): Promise<void> {
-  const parsedPrices = assertZodParse(ImbuingPriceKeySchema, prices);
+  const parsedPrices = assertZodParse(ImbuingFormSchema, prices);
 
-  const { user } = await getUserScopedQuery();
+  const { userId } = await getUserScopedQuery();
 
-  const payload = {
-    items: Object.entries(parsedPrices).map(([key, price]) => ({
-      key,
-      price,
-      user_id: user.id,
-    })),
-  };
-
-  const parsed = assertZodParse(UpdateImbuingPricesSchema, payload);
+  const payload = Object.entries(parsedPrices).map(([key, price]) => ({
+    key,
+    price,
+    user_id: userId,
+  }));
 
   const { supabase } = await getUserScopedQuery();
 
-  const { error } = await supabase.from("imbuing_prices").upsert(parsed.items, {
+  const { error } = await supabase.from("imbuing_prices").upsert(payload, {
     onConflict: "user_id, key",
   });
 

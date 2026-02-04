@@ -6,15 +6,7 @@ import { GOLD_TOKENS_NEEDED_FOR_SCROLL } from "../constants";
 import { ITEM_IMAGES } from "../images";
 import type { ScrollEconomyResult } from "../utils/calculateScrollEconomy";
 
-function SummaryRow({
-  label,
-  value,
-  color,
-}: {
-  label: string;
-  value: number;
-  color?: string;
-}) {
+function SummaryRow({ label, value, color }: { label: string; value: number; color?: string }) {
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center">
       <Typography variant="caption" color="text.secondary">

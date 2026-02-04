@@ -43,7 +43,7 @@ export function TableSkeleton({
             <TableRow>
               {Array.from({ length: columnCount }, (_, i) => (
                 <TableCell
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <Skeletons are static>
                   key={i}
                   sx={{
                     minWidth: i === 0 ? 140 : 90,
@@ -58,10 +58,10 @@ export function TableSkeleton({
           {/* Table Body Skeleton */}
           <TableBody>
             {Array.from({ length: rowNumber }, (_, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+              // biome-ignore lint/suspicious/noArrayIndexKey: <Skeletons are static>
               <TableRow key={i}>
                 {Array.from({ length: columnCount }, (_, i) => (
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <Skeletons are static>
                   <TableCell key={i}>
                     <Skeleton variant="rounded" height={20} sx={{ borderRadius: 1 }} />
                   </TableCell>

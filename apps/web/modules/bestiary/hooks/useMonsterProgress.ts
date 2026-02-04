@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { useRequiredCharacterId } from "@/providers/feature/dashboard";
+import { useRequiredCharacterId } from "@/modules/characters";
 import { useToast } from "@/providers/global";
 
 import { UpdateCharacterBestiary } from "../actions/updateCharacterBestiary";

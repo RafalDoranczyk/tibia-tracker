@@ -64,7 +64,7 @@ export function calculateOnlineTraining(params: ExerciseTrainingParams) {
     doubleEvent,
   } = params;
 
-  // @ts-ignore
+  // @ts-expect-error
   const config = VOCATION_ONLINE_TRAINING_CONFIG[vocation]?.[skill];
   if (!config) throw new Error(`Unsupported vocation/skill combination: ${vocation}/${skill}`);
 

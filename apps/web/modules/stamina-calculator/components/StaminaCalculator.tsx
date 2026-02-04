@@ -38,13 +38,13 @@ function StaminaInput({ control, label, name }: StaminaInputProps) {
 
           if (raw.length > 0) {
             let h = raw.slice(0, 2);
-            if (Number.parseInt(h) > 42) h = "42";
+            if (Number.parseInt(h, 10) > 42) h = "42";
 
             if (raw.length <= 2) {
               formatted = h;
             } else {
               let m = raw.slice(2, 4);
-              if (Number.parseInt(m) > 59) m = "59";
+              if (Number.parseInt(m, 10) > 59) m = "59";
               formatted = `${h}:${m}`;
             }
           }

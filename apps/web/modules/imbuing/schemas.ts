@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { PositiveInt } from "@/schemas";
+import { NonNegativeInt } from "@/schemas";
 
 import { IMBUING_SCROLL_ITEM_KEYS, IMBUING_SCROLL_KEYS } from "./constants";
 
@@ -12,13 +12,9 @@ export type ImbuingPriceKey = z.infer<typeof ImbuingPriceKeySchema>;
 
 export const ImbuingItemSchema = z.object({
   key: ImbuingPriceKeySchema,
-  price: PositiveInt,
+  price: NonNegativeInt,
 });
 export type ImbuingItem = z.infer<typeof ImbuingItemSchema>;
-
-export const UpdateImbuingPricesSchema = z.object({
-  items: z.array(ImbuingItemSchema),
-});
 
 export const ImbuingFormSchema = z.record(ImbuingPriceKeySchema, z.coerce.number().nonnegative());
 export type ImbuingFormValues = z.infer<typeof ImbuingFormSchema>;

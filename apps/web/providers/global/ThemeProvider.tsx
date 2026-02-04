@@ -113,7 +113,6 @@ export const theme = createTheme({
           boxShadow: "none",
           transition: "all 0.2s ease",
           "&:hover": {
-            transform: "translateY(-1px)",
             boxShadow: "0 2px 6px rgba(0,0,0,0.35)",
           },
         },
@@ -146,12 +145,15 @@ export const theme = createTheme({
 
     MuiDrawer: {
       styleOverrides: {
-        paper: {
-          width: 420,
-          background: "linear-gradient(180deg, rgba(30,30,50,0.95), rgba(20,20,30,0.98))",
-          borderLeft: "1px solid rgba(255,255,255,0.08)",
-          backdropFilter: "blur(12px)",
-        },
+        paper: ({ theme }) => ({
+          width: 380,
+          padding: theme.spacing(3),
+
+          backgroundColor: "#0E0D1A",
+          borderLeft: `1px solid ${theme.palette.divider}`,
+
+          backdropFilter: "blur(8px)",
+        }),
       },
     },
 
@@ -167,14 +169,29 @@ export const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: "#171628",
+          backgroundColor: "#1C1B30",
           border: "1px solid #2E2B45",
           borderRadius: 8,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.45)",
-          "&:hover": {
-            transform: "translateY(-2px)",
-            boxShadow: "0 6px 14px rgba(0,0,0,0.6)",
-          },
+          boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
+        },
+      },
+    },
+
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundImage: "none",
+          boxShadow: "0 24px 80px rgba(0,0,0,0.7)",
+          border: "1px solid rgba(255,255,255,0.08)",
+        },
+      },
+    },
+
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "rgba(0,0,0,0.55)",
+          backdropFilter: "blur(6px)",
         },
       },
     },
@@ -187,11 +204,27 @@ export const theme = createTheme({
       },
     },
 
-    MuiTextField: {
+    MuiListItemButton: {
       styleOverrides: {
         root: {
+          borderRadius: 6,
+          marginBottom: 4,
+          "&.Mui-selected": {
+            backgroundColor: "rgba(123,92,245,0.16)",
+            "&:hover": {
+              backgroundColor: "rgba(123,92,245,0.22)",
+            },
+          },
+        },
+      },
+    },
+
+    MuiTextField: {
+      styleOverrides: {
+        root: ({ theme }) => ({
           "& .MuiOutlinedInput-root": {
-            backgroundColor: "#100F1E",
+            backgroundColor: theme.palette.background.default,
+
             "& fieldset": { borderColor: "#2E2B45" },
             "&:hover fieldset": { borderColor: "#7B5CF5" },
             "&.Mui-focused fieldset": { borderColor: "#7B5CF5" },
@@ -199,7 +232,7 @@ export const theme = createTheme({
           "& .MuiInputLabel-root.Mui-focused": {
             color: "#7B5CF5",
           },
-        },
+        }),
       },
     },
   },

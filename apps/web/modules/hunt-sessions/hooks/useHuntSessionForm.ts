@@ -8,7 +8,9 @@ const startDate = new Date().toISOString().slice(0, 10);
 
 const getDefaultValues = ({
   placeId,
-}: { placeId: HuntSessionForm["place_id"] }): HuntSessionForm => ({
+}: {
+  placeId: HuntSessionForm["place_id"];
+}): HuntSessionForm => ({
   damage: 0,
   healing: 0,
   place_id: placeId,

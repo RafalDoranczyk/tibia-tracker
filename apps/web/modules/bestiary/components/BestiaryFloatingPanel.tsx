@@ -1,18 +1,16 @@
 "use client";
 
-import CloseIcon from "@mui/icons-material/Close";
-import {
-  Box,
-  Drawer,
-  Fab,
-  IconButton,
-  LinearProgress,
-  Stack,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import ChecklistIcon from "@mui/icons-material/Checklist";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import PublicIcon from "@mui/icons-material/Public";
+import WhatshotIcon from "@mui/icons-material/Whatshot";
+import { Box, Drawer, LinearProgress, Stack, Typography } from "@mui/material";
 import { useState } from "react";
+
+import { FloatingStatsButton } from "@/components";
 
 import type { CharacterBestiaryClassSummary, CharacterBestiarySummary } from "../schemas";
 
@@ -23,8 +21,6 @@ type BestiaryFloatingPanelProps = {
 
 export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryFloatingPanelProps) {
   const [open, setOpen] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const charmPercent =
     globalSummary.total_charm_points > 0
@@ -33,45 +29,11 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
 
   return (
     <>
-      {/* Floating FAB */}
-      <Fab
-        size="medium"
-        onClick={() => setOpen(true)}
-        sx={{
-          position: "fixed",
-          right: 24,
-          bottom: 40,
-          zIndex: 50,
-          background: "linear-gradient(135deg, #3b82f6, #2563eb)",
-          color: "white",
-          boxShadow: "0 0 15px rgba(0,0,0,0.5)",
-          "&:hover": {
-            transform: "scale(1.05)",
-            boxShadow: "0 0 20px rgba(59,130,246,0.6)",
-          },
-          transition: "all 0.2s ease",
-        }}
-      >
-        📊
-      </Fab>
+      {/* Floating action button */}
+      <FloatingStatsButton onClick={() => setOpen(true)} />
 
-      {/* Drawer panel */}
-      <Drawer
-        anchor="right"
-        open={open}
-        onClose={() => setOpen(false)}
-        slotProps={{
-          paper: {
-            sx: {
-              width: isMobile ? "100%" : 380,
-              background: "rgba(24,24,27,0.95)",
-              backdropFilter: "blur(12px)",
-              color: "white",
-              p: 3,
-            },
-          },
-        }}
-      >
+      {/* Drawer */}
+      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
         {/* Header */}
         <Box
           sx={{
@@ -81,12 +43,10 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
             mb: 2,
           }}
         >
-          <Typography variant="h6" fontWeight="bold">
-            📊 Bestiary Overview
+          <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1}>
+            <AssessmentIcon fontSize="small" />
+            Bestiary Overview
           </Typography>
-          <IconButton onClick={() => setOpen(false)} sx={{ color: "white" }}>
-            <CloseIcon />
-          </IconButton>
         </Box>
 
         {/* Global summary */}
@@ -99,26 +59,41 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
             boxShadow: "0 0 10px rgba(0,0,0,0.3)",
           }}
         >
-          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-            📘 Global Summary
+          <Typography
+            variant="subtitle1"
+            fontWeight="bold"
+            gutterBottom
+            display="flex"
+            alignItems="center"
+            gap={1}
+          >
+            <PublicIcon fontSize="small" />
+            Global Summary
           </Typography>
 
           <Stack spacing={2}>
             {/* Charm Points */}
             <Stack spacing={1}>
               <Stack direction="row" justifyContent="space-between">
-                <Typography variant="body2">Unlocked Charm Points</Typography>
+                <Stack direction="row" alignItems="center" gap={1}>
+                  <AutoAwesomeIcon fontSize="small" />
+                  <Typography variant="body2">Unlocked Charm Points</Typography>
+                </Stack>
+
                 <Typography fontWeight="bold" variant="body2">
                   {globalSummary.unlocked_charm_points} / {globalSummary.total_charm_points}
                 </Typography>
               </Stack>
+
               <LinearProgress
                 variant="determinate"
                 value={charmPercent}
                 sx={{
                   height: 10,
                   borderRadius: 2,
-                  "& .MuiLinearProgress-bar": { backgroundColor: "#60a5fa" },
+                  "& .MuiLinearProgress-bar": {
+                    backgroundColor: "#60a5fa",
+                  },
                 }}
               />
             </Stack>
@@ -126,24 +101,32 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
             {/* Soulpits */}
             <Stack spacing={1}>
               <Stack direction="row" justifyContent="space-between">
-                <Typography variant="body2">Completed Soulpits</Typography>
+                <Stack direction="row" alignItems="center" gap={1}>
+                  <WhatshotIcon fontSize="small" />
+                  <Typography variant="body2">Completed Soulpits</Typography>
+                </Stack>
+
                 <Typography fontWeight="bold" variant="body2">
                   {globalSummary.completed_soulpits}
                 </Typography>
               </Stack>
+
               <LinearProgress
                 variant="determinate"
                 value={(globalSummary.completed_soulpits / 500) * 100}
                 sx={{
                   height: 10,
                   borderRadius: 2,
-                  "& .MuiLinearProgress-bar": { backgroundColor: "#f5b342" },
+                  "& .MuiLinearProgress-bar": {
+                    backgroundColor: "#f5b342",
+                  },
                 }}
               />
             </Stack>
           </Stack>
         </Box>
 
+        {/* Class summary */}
         {!classSummary ? (
           <Box
             sx={{
@@ -154,8 +137,16 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
               boxShadow: "0 0 10px rgba(0,0,0,0.4)",
             }}
           >
-            <Typography variant="body2" color="gray">
-              🔎 Searching across all classes — class summary hidden
+            <Typography
+              variant="body2"
+              color="gray"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap={1}
+            >
+              <ManageSearchIcon fontSize="small" />
+              Searching across all classes — class summary hidden
             </Typography>
           </Box>
         ) : (
@@ -167,19 +158,32 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
               boxShadow: "0 0 10px rgba(0,0,0,0.4)",
             }}
           >
-            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-              🧾 {classSummary.bestiary_class} Progress
+            <Typography
+              variant="subtitle1"
+              fontWeight="bold"
+              gutterBottom
+              display="flex"
+              alignItems="center"
+              gap={1}
+            >
+              <FactCheckIcon fontSize="small" />
+              {classSummary.bestiary_class} Progress
             </Typography>
 
             <Stack spacing={2}>
               {/* Completed entries */}
               <Stack spacing={1}>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="body2">Completed Entries</Typography>
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    <ChecklistIcon fontSize="small" />
+                    <Typography variant="body2">Completed Entries</Typography>
+                  </Stack>
+
                   <Typography fontWeight="bold" variant="body2">
                     {classSummary.completed_monsters} / {classSummary.total_monsters}
                   </Typography>
                 </Stack>
+
                 <LinearProgress
                   variant="determinate"
                   value={
@@ -190,7 +194,9 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
                   sx={{
                     height: 10,
                     borderRadius: 2,
-                    "& .MuiLinearProgress-bar": { backgroundColor: "#4ade80" },
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#4ade80",
+                    },
                   }}
                 />
               </Stack>
@@ -198,11 +204,16 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
               {/* Soulpits */}
               <Stack spacing={1}>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="body2">Unlocked Soulpits</Typography>
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    <WhatshotIcon fontSize="small" />
+                    <Typography variant="body2">Unlocked Soulpits</Typography>
+                  </Stack>
+
                   <Typography fontWeight="bold" variant="body2">
                     {classSummary.completed_soulpits} / {classSummary.total_monsters}
                   </Typography>
                 </Stack>
+
                 <LinearProgress
                   variant="determinate"
                   value={
@@ -213,7 +224,9 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
                   sx={{
                     height: 10,
                     borderRadius: 2,
-                    "& .MuiLinearProgress-bar": { backgroundColor: "#f5b342" },
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#f5b342",
+                    },
                   }}
                 />
               </Stack>
@@ -221,11 +234,16 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
               {/* Charm Points */}
               <Stack spacing={1}>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="body2">Charm Points</Typography>
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    <AutoAwesomeIcon fontSize="small" />
+                    <Typography variant="body2">Charm Points</Typography>
+                  </Stack>
+
                   <Typography fontWeight="bold" variant="body2">
                     {classSummary.unlocked_charm_points} / {classSummary.total_charm_points}
                   </Typography>
                 </Stack>
+
                 <LinearProgress
                   variant="determinate"
                   value={
@@ -236,7 +254,9 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
                   sx={{
                     height: 10,
                     borderRadius: 2,
-                    "& .MuiLinearProgress-bar": { backgroundColor: "#60a5fa" },
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#60a5fa",
+                    },
                   }}
                 />
               </Stack>

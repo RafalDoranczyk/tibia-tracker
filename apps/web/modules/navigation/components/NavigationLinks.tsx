@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { useActiveCharacter } from "@/providers/feature/dashboard";
+import { useActiveCharacter } from "@/modules/characters";
 
 import { NAVIGATION_MODULES } from "../constants";
 import type { NavigationLinkElementProps } from "../types";
@@ -15,28 +15,27 @@ import { resolvePath } from "../utils/resolvePath";
 // -------------------------------------
 // Single Link Element
 // -------------------------------------
-function NavItem({
-  element,
-  depth = 0,
-}: {
-  element: NavigationLinkElementProps;
-  depth?: number;
-}) {
-  const pathname = usePathname();
-  const { activeCharacterId } = useActiveCharacter();
 
-  const { icon, text, to, requiresCharacter, matchStrategy, children } = element;
+type NavItemProps = {
+  element: NavigationLinkElementProps;
+  pathname: string;
+  activeCharacterId: string | null;
+  depth?: number;
+};
+
+function NavItem({ element, pathname, activeCharacterId, depth = 0 }: NavItemProps) {
+  const { icon, text, to, requiresCharacter, children } = element;
 
   const href = resolvePath(to, activeCharacterId);
-  const isSelected = isPathActive(pathname, href, matchStrategy);
-  const disabled = requiresCharacter && !activeCharacterId;
+  const isSelected = href ? isPathActive(pathname, href) : false;
 
+  const disabled = requiresCharacter && !activeCharacterId;
   const isSubItem = depth > 0;
 
   const content = (
     <ListItemButton
       component={Link}
-      href={disabled ? "#" : href}
+      href={href ?? "#"}
       selected={isSelected}
       disabled={disabled}
       sx={{
@@ -73,7 +72,7 @@ function NavItem({
 
       <Typography
         variant="body2"
-        color={isSelected ? "primary.main" : "text.primary"}
+        color={isSelected ? "primary.light" : "text.primary"}
         fontWeight={isSelected ? 600 : 400}
         sx={{
           fontSize: isSubItem ? "0.75rem" : "0.85rem",
@@ -107,7 +106,13 @@ function NavItem({
           }}
         >
           {children.map((child) => (
-            <NavItem key={child.id} element={child} depth={depth + 1} />
+            <NavItem
+              key={child.id}
+              element={child}
+              pathname={pathname}
+              activeCharacterId={activeCharacterId}
+              depth={depth + 1}
+            />
           ))}
         </Box>
       )}
@@ -115,29 +120,39 @@ function NavItem({
   );
 }
 
-// -------------------------------------
-// Main NavigationLinks Component
-// -------------------------------------
 export function NavigationLinks() {
+  const pathname = usePathname();
+  const { activeCharacterId } = useActiveCharacter();
+
   return (
     <>
       {NAVIGATION_MODULES.map(({ elements, title }) => (
         <Box key={title} mt={2}>
+          {/* SECTION TITLE */}
           <Typography
             sx={{
               color: "text.secondary",
-              cursor: "default",
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: 700,
               pl: 2,
+              mb: 0.5,
+              letterSpacing: "0.08em",
               textTransform: "uppercase",
+              cursor: "default",
             }}
           >
             {title}
           </Typography>
+
+          {/* SECTION LINKS */}
           <List component="nav" disablePadding>
             {elements.map((element) => (
-              <NavItem key={element.id} element={element} />
+              <NavItem
+                key={element.id}
+                element={element}
+                pathname={pathname}
+                activeCharacterId={activeCharacterId}
+              />
             ))}
           </List>
         </Box>

@@ -1,7 +1,9 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { createContext, type PropsWithChildren, useContext, useEffect, useState } from "react";
+
+import { usePersistActiveCharacter } from "@/modules/user";
 
 type ActiveCharacterContextType = {
   activeCharacterId: string | null;
@@ -11,26 +13,34 @@ type ActiveCharacterContextType = {
 const ActiveCharacterContext = createContext<ActiveCharacterContextType | null>(null);
 
 type ActiveCharacterProviderProps = PropsWithChildren<{
-  initialCharacterId: string | null;
+  initialActiveCharacterId: string | null;
 }>;
 
 export function ActiveCharacterProvider({
   children,
-  initialCharacterId,
+  initialActiveCharacterId,
 }: ActiveCharacterProviderProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [activeCharacterId, setActiveCharacterId] = useState<string | null>(initialCharacterId);
+  const { characterId } = useParams<{ characterId?: string }>();
+  const persistActiveCharacter = usePersistActiveCharacter();
 
-  // sync when server changes (navigation / redirect)
+  const [activeCharacterId, setActiveCharacterId] = useState<string | null>(
+    initialActiveCharacterId
+  );
+
   useEffect(() => {
-    setActiveCharacterId(initialCharacterId);
-  }, [initialCharacterId]);
+    if (characterId) {
+      setActiveCharacterId(characterId);
+    }
+  }, [characterId]);
 
   const handleSetActive = (id: string | null) => {
+    if (id === activeCharacterId) return;
+
     setActiveCharacterId(id);
-    const updatedPath = pathname.replace(/\/characters\/[^/]+/, `/characters/${id}`);
-    router.push(updatedPath);
+
+    if (id) {
+      persistActiveCharacter(id);
+    }
   };
 
   return (
@@ -51,9 +61,7 @@ export function useActiveCharacter() {
 export function useRequiredCharacterId() {
   const { activeCharacterId } = useActiveCharacter();
   if (!activeCharacterId) {
-    throw new Error(
-      "useRequiredCharacterId() called without an active character. Ensure server redirect/select sets initialCharacterId."
-    );
+    throw new Error("No active character in URL. Ensure route includes /[characterId].");
   }
   return activeCharacterId;
 }

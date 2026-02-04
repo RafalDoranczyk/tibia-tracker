@@ -18,15 +18,17 @@ const mapDamageSources = (
   }));
 };
 
+type MapHuntSessionJSONToFormParams = {
+  json: string;
+  monsterList: MonsterPreview[];
+  itemList: ItemPreview[];
+};
+
 export function mapHuntSessionJSONToForm({
   json,
   monsterList,
   itemList,
-}: {
-  json: string;
-  monsterList: MonsterPreview[];
-  itemList: ItemPreview[];
-}) {
+}: MapHuntSessionJSONToFormParams) {
   const parsed = parseHuntSessionJSON(json);
   const parsedPayload = HuntSessionLogParsedSchema.parse(parsed);
 
