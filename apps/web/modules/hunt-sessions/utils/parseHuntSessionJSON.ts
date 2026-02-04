@@ -135,9 +135,13 @@ export function parseHuntSessionJSON(input: string): HuntSessionRawParsed {
 
     const [, d1, t1, d2, t2] = match;
 
+    const started_at = new Date(`${d1}T${t1}Z`).toISOString();
+    const ended_at = new Date(`${d2}T${t2}Z`).toISOString();
+
     return {
-      started_at: `${d1}T${t1}Z`,
-      ended_at: `${d2}T${t2}Z`,
+      started_at, // ISODatetime
+      ended_at, // ISODatetime
+      date: started_at.slice(0, 10), // ISODate (YYYY-MM-DD)
     };
   };
 
@@ -178,9 +182,10 @@ export function parseHuntSessionJSON(input: string): HuntSessionRawParsed {
     supplies_cost: supplies_cost ?? 0,
     damage: damage ?? 0,
     healing: healing ?? 0,
-    date,
+    started_at: sessionTimes.started_at,
+    ended_at: sessionTimes.ended_at,
+    date: sessionTimes.date,
     duration_seconds: parseDuration(sessionDuration),
-    ...sessionTimes,
     killed_monsters: parseMonsters(normalized),
     looted_items: parseItems(normalized),
   };

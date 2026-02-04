@@ -11,10 +11,10 @@ import { resetCharacterCharms } from "../actions/resetCharacterCharms";
 
 type CharmsResetButtonProps = {
   characterId: string;
-  minorCharmsUnlocked: number;
+  majorCharmsUnlocked: number;
 };
 
-export function CharmsResetButton({ characterId, minorCharmsUnlocked }: CharmsResetButtonProps) {
+export function CharmsResetButton({ characterId, majorCharmsUnlocked }: CharmsResetButtonProps) {
   const toast = useToast();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -34,7 +34,7 @@ export function CharmsResetButton({ characterId, minorCharmsUnlocked }: CharmsRe
   return (
     <>
       <Button
-        disabled={minorCharmsUnlocked === 0}
+        disabled={majorCharmsUnlocked === 0}
         loading={isPending}
         color="error"
         variant="outlined"

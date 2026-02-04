@@ -1,18 +1,33 @@
 import { Button, Stack, Typography } from "@mui/material";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { EmptyState } from "@/components";
 import { PageHeader } from "@/layout/page";
-import { fetchHuntSessionList, HuntSessionListView } from "@/modules/hunt-sessions";
+import {
+  HuntSessionListView,
+  loadHuntSessionList,
+  parseHuntSessionFilters,
+} from "@/modules/hunt-sessions";
 import { PATHS } from "@/paths";
 
 import type { CharacterPageProps } from "../../../types";
 
-export default async function HuntSessions({ params }: CharacterPageProps) {
+export const metadata: Metadata = {
+  title: "Hunt Sessions",
+  description:
+    "Track and review your hunt sessions to analyze XP/h, profit, and efficiency over time.",
+};
+
+export default async function HuntSessions({ params, searchParams }: CharacterPageProps) {
   const { characterId } = await params;
-  const { data: huntSessionList, count } = await fetchHuntSessionList({
-    limit: 10,
+  const search = await searchParams;
+
+  const filters = parseHuntSessionFilters(search);
+
+  const { data: huntSessionList, count } = await loadHuntSessionList({
     character_id: characterId,
+    filters,
   });
 
   return (
@@ -43,6 +58,7 @@ export default async function HuntSessions({ params }: CharacterPageProps) {
 
       {!huntSessionList.length ? (
         <EmptyState
+          variant="hunt"
           size="big"
           action={
             <Button

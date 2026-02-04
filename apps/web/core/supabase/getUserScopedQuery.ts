@@ -1,18 +1,16 @@
-import { getUser } from "@/modules/user";
-
+import { AppError, AppErrorCodes } from "../errors";
 import { createSupabase } from "./config";
 
 export async function getUserScopedQuery() {
-  try {
-    const [user, supabase] = await Promise.all([getUser(), createSupabase()]);
+  const supabase = await createSupabase();
 
-    if (!user) {
-      throw new Error("User not authenticated");
-    }
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    return { user, supabase };
-  } catch (error) {
-    console.error("Failed to initialize user scoped query:", error);
-    throw error;
+  if (!user) {
+    throw new AppError(AppErrorCodes.UNAUTHORIZED, "User not authenticated");
   }
+
+  return { supabase, userId: user.id };
 }

@@ -18,6 +18,7 @@ import type {
 } from "../schemas";
 import type { HuntSessionUnknownEntities } from "../types";
 import { DamageAnalyzer } from "./damage/DamageAnalyzer";
+import { FloatingStatsPanel } from "./FloatingStatsPanel";
 import { LogDetails } from "./log-details/LogDetails";
 import { SummaryStats } from "./SummaryStats";
 import { SuppliesAnalyzer } from "./supplies/SuppliesAnalyzer";
@@ -28,7 +29,16 @@ function TabPanel({
   index,
   children,
 }: React.PropsWithChildren<{ value: number; index: number }>) {
-  return <Box sx={{ display: value === index ? "block" : "none" }}>{children}</Box>;
+  return (
+    <Box
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
+    >
+      {value === index && children}
+    </Box>
+  );
 }
 
 type HuntSessionViewProps = {
@@ -69,9 +79,9 @@ export function HuntSessionView({
           my: 2,
         }}
       >
-        <Tab label="Log Details" />
-        <Tab label="Damage" />
-        <Tab label="Supplies" />
+        <Tab id="tab-0" aria-controls="tabpanel-0" label="Log Details" />
+        <Tab id="tab-1" aria-controls="tabpanel-1" label="Damage" />
+        <Tab id="tab-2" aria-controls="tabpanel-2" label="Supplies" />
       </Tabs>
 
       <Divider sx={{ my: 2 }} />
@@ -95,6 +105,8 @@ export function HuntSessionView({
       <TabPanel value={tab} index={2}>
         <SuppliesAnalyzer supplyList={supplyList} />
       </TabPanel>
+
+      <FloatingStatsPanel />
 
       <FloatingActionButton
         visible={formState.isDirty}

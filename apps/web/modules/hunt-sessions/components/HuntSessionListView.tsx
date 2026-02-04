@@ -6,8 +6,8 @@ import { useState } from "react";
 
 import { ConfirmDialog } from "@/components";
 import { usePagination } from "@/hooks";
+import { useRequiredCharacterId } from "@/modules/characters";
 import { PATHS } from "@/paths";
-import { useRequiredCharacterId } from "@/providers/feature/dashboard";
 
 import { HUNT_SESSION_PAGINATION_LIMIT } from "../constants";
 import { useDeleteHuntSession } from "../hooks/useDeleteHuntSession";

@@ -1,18 +1,13 @@
-export function isPathActive(
-  pathname: string,
-  href: string,
-  strategy: "exact" | "prefix" = "exact"
-) {
-  const cleanPath = pathname.split("?")[0];
+const normalize = (path: string) => {
+  if (!path) return "/";
+  const cleaned = path.split("?")[0].replace(/\/+$/, "");
+  return cleaned.startsWith("/") ? cleaned || "/" : `/${cleaned}`;
+};
 
-  if (strategy === "exact") {
-    return cleanPath === href;
-  }
+export function isPathActive(pathname: string, href: string) {
+  const current = normalize(pathname);
+  const target = normalize(href);
 
-  const pathSegments = cleanPath.split("/").filter(Boolean);
-  const hrefSegments = href.split("/").filter(Boolean);
-
-  if (hrefSegments.length === 0) return cleanPath === href;
-
-  return hrefSegments.every((segment, index) => pathSegments[index] === segment);
+  // prefix: target MUST be parent of current
+  return current === target;
 }

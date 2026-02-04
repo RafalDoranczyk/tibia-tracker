@@ -6,7 +6,7 @@ import type { ContentBlock, ToolResultBlockParam } from "@anthropic-ai/sdk/resou
 import { anthropic, createClaudeConfig } from "./client";
 
 // Generic handler type
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: <Any for now>
 type AIHandler = (params: any) => Promise<any>;
 type AIHandlers = Record<string, AIHandler>;
 

@@ -1,19 +1,14 @@
-import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-import { PageHeader } from "@/layout/page";
+import { loadUser } from "@/modules/user";
+import { PATHS } from "@/paths";
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Overview of your account, characters, and activity.",
-};
+export default async function DashboardPage() {
+  const { settings } = await loadUser();
 
-export default function DashboardPage() {
-  return (
-    <>
-      <PageHeader
-        title="Dashboard"
-        description="Overview of your account, characters, and activity."
-      />
-    </>
-  );
+  if (settings?.last_active_character_id) {
+    redirect(PATHS.CHARACTER(settings.last_active_character_id).OVERVIEW);
+  }
+
+  redirect(PATHS.CHARACTERS); // fallback
 }

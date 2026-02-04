@@ -1,41 +1,33 @@
 import { Box } from "@mui/material";
-import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 
-import { fetchCharacters } from "@/modules/characters";
 import {
   APP_BAR_HEIGHT,
   DESKTOP_APP_NAVIGATION_DRAWER_WIDTH,
   Navigation,
 } from "@/modules/navigation";
-import { getUser } from "@/modules/user";
-import { DashboardProviders } from "@/providers/feature/dashboard";
+import { loadUser } from "@/modules/user";
+import { DashboardProviders } from "@/providers/dashboard/DashboardProviders";
 
 import type { CharacterLayoutProps } from "./types";
 
-export const metadata: Metadata = {
-  title: {
-    template: "%s | Tibia Tracker",
-    default: "Tibia Tracker",
-  },
-};
-
-type DashboardLayoutProps = PropsWithChildren & CharacterLayoutProps;
-
-export default async function DashboardLayout({ children, params }: DashboardLayoutProps) {
-  const user = await getUser();
-  const characters = await fetchCharacters();
+export default async function DashboardLayout({
+  children,
+  params,
+}: PropsWithChildren<CharacterLayoutProps>) {
   const { characterId } = await params;
+  const { user, settings, characters } = await loadUser();
 
-  let initialCharacterId = characterId || null;
-
-  if (!initialCharacterId && characters.length) {
-    initialCharacterId = characters[0].id;
-  }
+  const initialActiveCharacterId = characterId ?? settings?.last_active_character_id ?? null;
 
   return (
-    <DashboardProviders initialUser={user} initialCharacterId={initialCharacterId}>
-      <Navigation characters={characters} />
+    <DashboardProviders
+      initialCharacters={characters}
+      initialSettings={settings}
+      initialUser={user}
+      initialActiveCharacterId={initialActiveCharacterId}
+    >
+      <Navigation />
       <Box ml={{ lg: DESKTOP_APP_NAVIGATION_DRAWER_WIDTH }} mt={APP_BAR_HEIGHT} p={4}>
         {children}
       </Box>

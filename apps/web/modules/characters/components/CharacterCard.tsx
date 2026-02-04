@@ -52,7 +52,7 @@ export function CharacterCard({
       >
         {!isActive && (
           <TooltipIconButton
-            name="Set as active"
+            title="Set as active"
             variant="activate"
             onClick={() => onSelect(character)}
           />

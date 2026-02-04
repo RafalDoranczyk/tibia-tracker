@@ -1,23 +1,19 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Breadcrumbs, Link, Typography } from "@mui/material";
+import type { Metadata } from "next";
 import LinkNext from "next/link";
 import { notFound } from "next/navigation";
 
 import { PageHeader } from "@/layout/page";
-import { fetchHuntPlaces } from "@/modules/hunt-places";
-import {
-  fetchDamageElements,
-  fetchHuntSession,
-  fetchMonstersPreview,
-  fetchPreyBonuses,
-  fetchSupplies,
-  HuntSessionFormProvider,
-  HuntSessionView,
-} from "@/modules/hunt-sessions";
-import { fetchItems } from "@/modules/items";
+import { HuntSessionFormProvider, HuntSessionView, loadHuntSession } from "@/modules/hunt-sessions";
 import { PATHS } from "@/paths";
 
 import type { CharacterPageProps } from "../../../../types";
+
+export const metadata: Metadata = {
+  title: "Hunt Session",
+  description: "Edit and review your hunt session.",
+};
 
 type EditHuntSessionPageProps = CharacterPageProps;
 
@@ -25,7 +21,7 @@ export default async function EditHuntSessionPage({ params }: EditHuntSessionPag
   const { characterId, id } = await params;
   const huntSessionId = Number(id);
 
-  const [
+  const {
     itemList,
     monsterList,
     huntPlaceList,
@@ -33,15 +29,10 @@ export default async function EditHuntSessionPage({ params }: EditHuntSessionPag
     damageElementList,
     preyBonusList,
     huntSession,
-  ] = await Promise.all([
-    fetchItems(),
-    fetchMonstersPreview(),
-    fetchHuntPlaces(),
-    fetchSupplies(),
-    fetchDamageElements(),
-    fetchPreyBonuses(),
-    fetchHuntSession({ id: huntSessionId, character_id: characterId }),
-  ]);
+  } = await loadHuntSession({
+    characterId,
+    huntSessionId,
+  });
 
   if (!huntSession) {
     notFound();

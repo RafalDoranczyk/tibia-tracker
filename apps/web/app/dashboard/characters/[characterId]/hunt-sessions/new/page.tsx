@@ -1,34 +1,26 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Breadcrumbs, Link, Typography } from "@mui/material";
+import type { Metadata } from "next";
 import LinkNext from "next/link";
 
 import { PageHeader } from "@/layout/page";
-import { fetchHuntPlaces } from "@/modules/hunt-places";
-import {
-  fetchDamageElements,
-  fetchMonstersPreview,
-  fetchPreyBonuses,
-  fetchSupplies,
-  HuntSessionFormProvider,
-  HuntSessionView,
-} from "@/modules/hunt-sessions";
-import { fetchItems } from "@/modules/items";
+import { HuntSessionFormProvider, HuntSessionView, loadHuntSession } from "@/modules/hunt-sessions";
 import { PATHS } from "@/paths";
 
 import type { CharacterPageProps } from "../../../../types";
 
+export const metadata: Metadata = {
+  title: "Hunt Session",
+  description: "Create and analyze your hunt session.",
+};
+
 export default async function NewHuntSessionPage({ params }: CharacterPageProps) {
   const { characterId } = await params;
 
-  const [itemList, monsterList, huntPlaceList, supplyList, damageElementList, preyBonusList] =
-    await Promise.all([
-      fetchItems(),
-      fetchMonstersPreview(),
-      fetchHuntPlaces(),
-      fetchSupplies(),
-      fetchDamageElements(),
-      fetchPreyBonuses(),
-    ]);
+  const { itemList, monsterList, huntPlaceList, supplyList, damageElementList, preyBonusList } =
+    await loadHuntSession({
+      characterId,
+    });
 
   return (
     <>

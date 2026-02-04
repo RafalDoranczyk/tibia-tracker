@@ -3,7 +3,7 @@
 import { Container, Divider, Grid, Typography } from "@mui/material";
 import { useMemo, useState, useTransition } from "react";
 
-import { useRequiredCharacterId } from "@/providers/feature/dashboard";
+import { useRequiredCharacterId } from "@/modules/characters";
 import { useToast } from "@/providers/global";
 
 import { setCharacterCharmLevel } from "../actions/setCharacterCharmLevel";

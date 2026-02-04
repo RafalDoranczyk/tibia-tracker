@@ -5,12 +5,10 @@ import { Box, Button, Divider, Grid, Paper, Stack, Typography } from "@mui/mater
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-import { TooltipIconButton } from "@/components";
 import type { HuntPlace } from "@/modules/hunt-places";
 
 import type { HuntSessionForm, ItemPreview, MonsterPreview, PreyBonus } from "../../schemas";
 import type { HuntSessionUnknownEntities } from "../../types";
-import { ComputedValuesDrawer } from "./ComputedValuesDrawer";
 import { HuntSetup } from "./HuntSetup";
 import { KilledMonsters } from "./KilledMonsters";
 import { LootedItems } from "./LootedItems";
@@ -53,7 +51,6 @@ export function LogDetails({
   openUnknownEntitiesModal,
   setUnknownEntities,
 }: LogDetailsProps) {
-  const [computedStatOpen, setComputedStatOpen] = useState(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const { getValues } = useFormContext<HuntSessionForm>();
 
@@ -94,15 +91,6 @@ export function LogDetails({
           >
             Upload Session Log
           </Button>
-
-          {hasSessionData && (
-            <TooltipIconButton
-              color="secondary"
-              onClick={() => setComputedStatOpen(true)}
-              variant="stats"
-              title="Check Uploaded Stats"
-            />
-          )}
         </Stack>
       </Stack>
 
@@ -136,8 +124,6 @@ export function LogDetails({
           </PaperCard>
         </Grid>
       </Grid>
-
-      <ComputedValuesDrawer open={computedStatOpen} setOpen={setComputedStatOpen} />
 
       <UploadLogModal
         monsterList={monsterList}

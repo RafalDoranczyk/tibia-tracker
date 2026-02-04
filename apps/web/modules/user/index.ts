@@ -1,5 +1,19 @@
+// ======================
+// Fetchers / server logic
+// ======================
 export { loginWithGithub, loginWithGoogle, logout } from "./actions/auth";
-export { getUser } from "./actions/getUser";
+// ======================
+// UI – public components
+// ======================
 export { AdminOnly, UserRoleGate } from "./components/UserRoleGate";
-export type { AppUser } from "./schemas/user.schema";
-export { UserProvider } from "./UserProvider";
+// ======================
+// Providers and hooks
+// ======================
+export { usePersistActiveCharacter } from "./hooks/usePersistActiveCharacter";
+export { UserProvider, useUser } from "./providers/UserProvider";
+export { UserSettingsProvider, useUserSettings } from "./providers/UserSettingsProvider";
+// ======================
+// Shared
+// ======================
+export type { AppUser, UserSetting } from "./schemas/user.schema";
+export { loadUser } from "./server/loadUser";

@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 
+import { useUser } from "../providers/UserProvider";
 import type { UserRole } from "../schemas";
-import { useUser } from "../UserProvider";
 
 export function UserRoleGate({
   allow,

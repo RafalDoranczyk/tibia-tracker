@@ -9,6 +9,8 @@ import {
   Stack,
 } from "@mui/material";
 
+import { PageHeaderSkeleton } from "@/layout/page";
+
 function CharmCardSkeleton() {
   return (
     <Card sx={{ height: 300, borderRadius: 3, p: 2 }}>
@@ -27,14 +29,10 @@ export default function CharmsLoading() {
   return (
     <div>
       {/* Header */}
+      <PageHeaderSkeleton />
       <Container maxWidth="xl">
-        <Stack spacing={1} mb={4}>
-          <Skeleton variant="text" width={220} height={40} />
-          <Skeleton variant="text" width={500} />
-        </Stack>
-
         {/* Progress */}
-        <Box mb={2}>
+        <Box my={4}>
           <Skeleton variant="text" width={140} />
           <LinearProgress />
         </Box>

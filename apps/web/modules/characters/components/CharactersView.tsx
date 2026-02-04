@@ -4,9 +4,9 @@ import { Button } from "@mui/material";
 import { useState, useTransition } from "react";
 
 import { ConfirmDialog, EmptyState } from "@/components";
-import { useActiveCharacter } from "@/providers/feature/dashboard";
 
 import { deleteCharacter } from "../actions/deleteCharacter";
+import { useActiveCharacter } from "../providers/ActiveCharacterProvider";
 import type { Character } from "../schemas";
 import { CharacterModal } from "./CharacterModal";
 import { CharactersGrid } from "./CharactersGrid";
@@ -68,6 +68,7 @@ export function CharactersView({ hasCharacters, characters }: CharactersViewProp
     <>
       {!hasCharacters ? (
         <EmptyState
+          variant="character"
           action={
             <Button
               variant="contained"

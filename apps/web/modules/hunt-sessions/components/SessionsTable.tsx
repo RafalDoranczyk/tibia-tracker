@@ -5,6 +5,7 @@ import { formatDate, formatNumberCompact } from "@/utils";
 
 import { HUNT_SESSIONS_TABLE_HEAD_CELLS } from "../constants";
 import type { HuntSessionListItem } from "../schemas";
+import { secondsToMinutes } from "../utils/parseSecondsToMinutes";
 
 function formatSessionRow(session: HuntSessionListItem) {
   return {
@@ -80,7 +81,7 @@ export function SessionsTable({
               >
                 <Table.Cell>{date}</Table.Cell>
                 <Table.Cell>{level}</Table.Cell>
-                <Table.Cell>{duration_seconds}</Table.Cell>
+                <Table.Cell>{secondsToMinutes(duration_seconds)}</Table.Cell>
                 <Table.Cell>{rawXp}</Table.Cell>
                 <Table.Cell>{place.name}</Table.Cell>
                 <Table.Cell>{profit}</Table.Cell>

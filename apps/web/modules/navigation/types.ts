@@ -17,7 +17,6 @@ export type NavigationLinkElementProps = {
   to: string | ((paths: CharacterPaths) => string);
   icon?: NavigationIcon;
   requiresCharacter?: boolean;
-  matchStrategy?: "exact" | "prefix";
   children?: NavigationLinkElementProps[];
 };
 

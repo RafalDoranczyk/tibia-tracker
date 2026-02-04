@@ -1,13 +1,11 @@
 "use server";
 
-import { cache } from "react";
-
 import { AppError, AppErrorCodes } from "@/core/errors";
 import { createSupabase, mapSupabaseErrorToAppError } from "@/core/supabase";
 
 import type { AppUser } from "../schemas";
 
-async function internalGetUser(): Promise<AppUser> {
+export async function fetchUser(): Promise<AppUser> {
   try {
     const supabase = await createSupabase();
 
@@ -35,5 +33,3 @@ async function internalGetUser(): Promise<AppUser> {
     throw new AppError(AppErrorCodes.SERVER_ERROR, "Failed to get user");
   }
 }
-
-export const getUser = cache(internalGetUser);

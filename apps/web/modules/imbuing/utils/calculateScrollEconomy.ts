@@ -18,7 +18,10 @@ function getScrollLaborCost(scrollType: ScrollType) {
 function calculateScrollCostWithTokens({
   scrollType,
   tokenPrice,
-}: { scrollType: ScrollType; tokenPrice: number }) {
+}: {
+  scrollType: ScrollType;
+  tokenPrice: number;
+}) {
   const laborCost = getScrollLaborCost(scrollType);
   const tokensCost = calculateItemsCostUsingTokens(tokenPrice);
 
@@ -28,7 +31,10 @@ function calculateScrollCostWithTokens({
 function calculateScrollCostWithItems({
   scrollType,
   itemsTotalCost,
-}: { scrollType: ScrollType; itemsTotalCost: number }) {
+}: {
+  scrollType: ScrollType;
+  itemsTotalCost: number;
+}) {
   const laborCost = getScrollLaborCost(scrollType);
 
   return laborCost + itemsTotalCost;

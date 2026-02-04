@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { CharacterSchema } from "@/modules/characters";
 import { HuntPlaceSchema } from "@/modules/hunt-places";
-import { ISODate, PositiveInt } from "@/schemas";
+import { ISODate, LocalDatetime, PositiveInt } from "@/schemas";
 
 import {
   HuntSessionDamageElementSchema,
@@ -14,7 +14,6 @@ import {
 
 // Computed fields on the server side
 const HuntSessionDbFieldsComputedSchema = z.object({
-  created_at: ISODate,
   raw_xp_per_hour: PositiveInt,
   profit_per_hour: z.number(),
   healing_per_hour: PositiveInt,
@@ -27,8 +26,8 @@ export const HuntSessionDbBaseFieldsSchema = z.object({
   character_id: CharacterSchema.shape.id,
   place_id: HuntPlaceSchema.shape.id,
   date: ISODate,
-  started_at: ISODate,
-  ended_at: ISODate,
+  started_at: LocalDatetime,
+  ended_at: LocalDatetime,
   level: PositiveInt,
   player_count: PositiveInt,
   duration_seconds: PositiveInt,

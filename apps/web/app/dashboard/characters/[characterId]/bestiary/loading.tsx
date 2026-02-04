@@ -50,7 +50,7 @@ export default function Loading() {
       {/* Monsters grid */}
       <Grid container spacing={2} mb={2}>
         {Array.from({ length: 9 }).map((_, idx) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+          // biome-ignore lint/suspicious/noArrayIndexKey: <Skeletons are static>
           <Grid key={idx} sx={{ display: "flex", justifyContent: "center" }}>
             <MonsterCardSkeleton />
           </Grid>

@@ -9,6 +9,7 @@ type DebouncedSearchFieldURLProps = {
   onChange: (value: string) => void;
   debounceMs?: number;
   placeholder?: string;
+  disabled?: boolean;
 };
 
 export function DebouncedSearchFieldURL({
@@ -16,6 +17,7 @@ export function DebouncedSearchFieldURL({
   onChange,
   debounceMs = 500,
   placeholder,
+  disabled,
 }: DebouncedSearchFieldURLProps) {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -43,5 +45,12 @@ export function DebouncedSearchFieldURL({
     };
   }, []);
 
-  return <SearchFieldURL value={value} onChange={handleChange} placeholder={placeholder} />;
+  return (
+    <SearchFieldURL
+      value={value}
+      onChange={handleChange}
+      placeholder={placeholder}
+      disabled={disabled}
+    />
+  );
 }

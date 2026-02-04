@@ -1,3 +1,5 @@
+"use server";
+
 import { fetchCharacterBestiarySummary } from "@/modules/bestiary";
 
 import { fetchCharacterCharmEconomy } from "../actions/fetchCharacterCharmEconomy";

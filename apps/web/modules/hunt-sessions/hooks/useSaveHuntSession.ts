@@ -1,8 +1,8 @@
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
+import { useRequiredCharacterId } from "@/modules/characters";
 import { PATHS } from "@/paths";
-import { useRequiredCharacterId } from "@/providers/feature/dashboard";
 import { useToast } from "@/providers/global";
 
 import { createHuntSession } from "../actions/createHuntSession";
@@ -11,14 +11,14 @@ import { mapHuntSessionFormToPayload } from "../mappers/mapHuntSessionFormToPayl
 import type { HuntSession, HuntSessionForm } from "../schemas";
 
 export const useSaveHuntSession = () => {
-  const character_id = useRequiredCharacterId();
+  const characterId = useRequiredCharacterId();
   const router = useRouter();
   const toast = useToast();
 
   return useCallback(
     async (data: HuntSessionForm, id?: HuntSession["id"]) => {
       try {
-        const formPayload = { ...mapHuntSessionFormToPayload(data), character_id };
+        const formPayload = { ...mapHuntSessionFormToPayload(data), characterId };
 
         if (id) {
           await updateHuntSession({ ...formPayload, id });
@@ -27,11 +27,11 @@ export const useSaveHuntSession = () => {
         }
 
         toast.success("Hunt session saved");
-        router.push(PATHS.CHARACTER(character_id).HUNT_SESSIONS.LIST);
+        router.push(PATHS.CHARACTER(characterId).HUNT_SESSIONS.LIST);
       } catch {
         toast.error("Hunt session saving error");
       }
     },
-    [character_id, router, toast]
+    [characterId, router, toast]
   );
 };

@@ -1,8 +1,13 @@
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import { Box, Drawer, Grid, Typography } from "@mui/material";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-import type { HuntSessionForm } from "../../schemas";
+import { FloatingStatsButton } from "@/components";
+import { formatDateTime } from "@/utils";
+
+import type { HuntSessionForm } from "../schemas";
+import { secondsToMinutes } from "../utils/parseSecondsToMinutes";
 
 type ComputedStatProps = {
   label: string;
@@ -11,38 +16,11 @@ type ComputedStatProps = {
 
 function ComputedStat({ label, value }: ComputedStatProps) {
   return (
-    <Grid size={{ xs: 4 }}>
-      <Box
-        sx={{
-          p: 1.5,
-          borderRadius: 2,
-          background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <Typography
-          variant="caption"
-          sx={{
-            opacity: 0.6,
-            fontSize: 10,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-          }}
-        >
-          {label}
-        </Typography>
-
-        <Typography
-          sx={{
-            fontFamily: "monospace",
-            fontWeight: 700,
-            fontSize: 15,
-            mt: 0.5,
-          }}
-        >
-          {value}
-        </Typography>
-      </Box>
+    <Grid size={{ xs: 6 }}>
+      <Typography variant="subtitle2">{label}</Typography>
+      <Typography color="textSecondary" variant="caption">
+        {value}
+      </Typography>
     </Grid>
   );
 }
@@ -70,38 +48,32 @@ function Section({ title, children }: SectionProps) {
   );
 }
 
-type Props = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-};
-
-export function ComputedValuesDrawer({ open, setOpen }: Props) {
+export function FloatingStatsPanel() {
+  const [open, setOpen] = useState(false);
   const { getValues } = useFormContext<HuntSessionForm>();
 
   const values = getValues();
 
-  return (
-    <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
-      {/* HEADER */}
-      <Box
-        sx={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1,
-          p: 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          background: "rgba(15,15,25,0.9)",
-          backdropFilter: "blur(8px)",
-        }}
-      >
-        <Typography fontWeight={700}>Session Telemetry</Typography>
-      </Box>
+  const healing = values.healing ?? 0;
 
-      {/* BODY */}
-      <Box sx={{ p: 2 }}>
+  return (
+    <>
+      {healing > 0 && <FloatingStatsButton onClick={() => setOpen(true)} />}
+      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
+        {/* HEADER */}
+
+        <Typography
+          sx={{ mb: 2 }}
+          variant="h6"
+          fontWeight="bold"
+          display="flex"
+          alignItems="center"
+          gap={1}
+        >
+          <AssessmentIcon fontSize="small" />
+          Session Overview
+        </Typography>
+
         {/* CORE */}
         <Typography mb={2} variant="body2">
           These values are computed from the uploaded log data and will be stored in the database.
@@ -109,12 +81,15 @@ export function ComputedValuesDrawer({ open, setOpen }: Props) {
 
         <Section title="Core">
           <Grid container spacing={2}>
-            <ComputedStat label="Started At" value={values.started_at} />
-            <ComputedStat label="Ended At" value={values.ended_at} />
-            <ComputedStat label="Duration (s)" value={values.duration_seconds} />
+            <ComputedStat label="Date" value={values.date} />
+            <ComputedStat label="Started At" value={formatDateTime(values.started_at)} />
+            <ComputedStat label="Ended At" value={formatDateTime(values.ended_at)} />
+            <ComputedStat
+              label="Duration (min)"
+              value={secondsToMinutes(values.duration_seconds)}
+            />
             <ComputedStat label="XP Gain" value={values.xp_gain} />
             <ComputedStat label="Raw XP Gain" value={values.raw_xp_gain} />
-            <ComputedStat label="Date" value={values.date} />
           </Grid>
         </Section>
 
@@ -134,7 +109,7 @@ export function ComputedValuesDrawer({ open, setOpen }: Props) {
             <ComputedStat label="Healing" value={values.healing} />
           </Grid>
         </Section>
-      </Box>
-    </Drawer>
+      </Drawer>
+    </>
   );
 }

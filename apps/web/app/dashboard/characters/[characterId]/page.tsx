@@ -17,11 +17,9 @@ export default async function CharacterPage({ params }: CharacterPageProps) {
   const character = a.find((el) => el.id === characterId);
 
   return (
-    <>
-      <PageHeader
-        title="Your Character"
-        description={`Details for character ${character?.name || ""}`}
-      />
-    </>
+    <PageHeader
+      title="Your Character"
+      description={`Details for character ${character?.name || ""}`}
+    />
   );
 }

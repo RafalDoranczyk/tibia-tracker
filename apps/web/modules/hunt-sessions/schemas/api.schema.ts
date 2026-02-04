@@ -21,6 +21,10 @@ export const FetchHuntSessionPayloadSchema = z.object({
 export const FetchHuntSessionListPayloadSchema = PaginationSchema.extend({
   character_id: CharacterSchema.shape.id,
 });
+export type FetchHuntSessionListPayload = z.infer<typeof FetchHuntSessionListPayloadSchema>;
+
+export const HuntSessionListFiltersSchema = PaginationSchema;
+export type HuntSessionListFilters = z.infer<typeof HuntSessionListFiltersSchema>;
 
 export const FetchHuntSessionListResponseSchema = z.object({
   count: NonNegativeInt,

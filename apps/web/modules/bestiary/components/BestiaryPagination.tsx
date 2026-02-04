@@ -11,7 +11,7 @@ type BestiaryPaginationProps = {
 export function BestiaryPagination({ totalPages }: BestiaryPaginationProps) {
   const { page, updatePage } = usePaginationQueryParams();
 
-  return !totalPages ? null : (
+  return !totalPages || totalPages === 1 ? null : (
     <Pagination
       count={totalPages}
       page={page}

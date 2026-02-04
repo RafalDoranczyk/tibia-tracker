@@ -28,7 +28,5 @@
   "biome.enabled": true,
 
   "eslint.enable": true,
-  "eslint.useFlatConfig": true,
-
-  "prettier.enable": false
+  "eslint.useFlatConfig": true
 }

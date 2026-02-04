@@ -7,7 +7,7 @@ export function getCharmTotalCostToLevel(
   let total = 0;
 
   for (let l = 1; l <= targetLevel; l++) {
-    // @ts-ignore
+    // @ts-expect-error
     total += charm.levels[l].cost;
   }
 
@@ -15,7 +15,7 @@ export function getCharmTotalCostToLevel(
 }
 
 export function getCharmEffectAtLevel(charm: CharmWithProgress, level: CharmLevel) {
-  // @ts-ignore
+  // @ts-expect-error
   return charm.levels[level].effect;
 }
 
