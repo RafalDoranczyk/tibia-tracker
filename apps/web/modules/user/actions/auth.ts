@@ -2,17 +2,17 @@
 
 import { redirect } from "next/navigation";
 
-import { AppError, AppErrorCodes } from "@/core/errors";
-import { createSupabase, mapSupabaseErrorToAppError } from "@/core/supabase";
+import { AppError, AppErrorCode } from "@/core/error";
+import { createServerSupabase, mapSupabaseErrorToAppError } from "@/core/supabase";
 import { env } from "@/env";
 import { assertZodParse } from "@/utils";
 
-import { OAuthProvider } from "../schemas";
+import { OAuthProvider } from "../schemas/user.schema";
 
 async function loginWithOAuth(provider: OAuthProvider) {
   const parsedProvider = assertZodParse(OAuthProvider, provider);
 
-  const supabase = await createSupabase();
+  const supabase = await createServerSupabase();
 
   const redirectTo = env.NEXT_PUBLIC_AUTH_CALLBACK_URL;
 
@@ -28,10 +28,7 @@ async function loginWithOAuth(provider: OAuthProvider) {
   }
 
   if (!data?.url) {
-    throw new AppError(
-      AppErrorCodes.SERVER_ERROR,
-      "Missing redirect URL from Supabase OAuth login"
-    );
+    throw new AppError(AppErrorCode.SERVER_ERROR, "Missing redirect URL from Supabase OAuth login");
   }
 
   redirect(data.url);
@@ -46,7 +43,7 @@ export async function loginWithGoogle() {
 }
 
 export async function logout() {
-  const supabase = await createSupabase();
+  const supabase = await createServerSupabase();
 
   const { error } = await supabase.auth.signOut({ scope: "global" });
 

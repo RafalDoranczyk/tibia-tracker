@@ -6,4 +6,4 @@ export { fetchItems } from "./actions/fetchItems";
 // ======================
 // SHARED
 // ======================
-export { ItemSchema } from "./schemas";
+export { ItemSchema } from "./schemas/item.schema";

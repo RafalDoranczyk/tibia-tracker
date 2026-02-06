@@ -1,7 +1,7 @@
 import type { StaticImageData } from "next/image";
 
 import type { IMBUING_SCROLL_ITEM_KEYS, IMBUING_SCROLL_KEYS } from "./constants";
-import type { ImbuingPriceKey } from "./schemas";
+import type { ImbuingPriceKey } from "./schemas/imbuing.schema";
 
 export type ScrollType = "powerful" | "intricate";
 export type CraftMethod = "items" | "tokens";
@@ -17,13 +17,16 @@ export type Scroll = {
 };
 
 export type ScrollItem = {
-  key: ImbuingPriceKey;
+  key: ImbuingScrollItemKey;
   name: string;
   quantity: number;
   imageUrl: StaticImageData;
 };
 
-export type ImbuingScrollItemKey = (typeof IMBUING_SCROLL_ITEM_KEYS)[number];
-export type ImbuingScrollKey = (typeof IMBUING_SCROLL_KEYS)[number];
+export type ImbuingScrollItemKey = Extract<
+  ImbuingPriceKey,
+  (typeof IMBUING_SCROLL_ITEM_KEYS)[number]
+>;
+export type ImbuingScrollKey = Extract<ImbuingPriceKey, (typeof IMBUING_SCROLL_KEYS)[number]>;
 
 export type ImbuingPrices = Record<ImbuingPriceKey, number>;

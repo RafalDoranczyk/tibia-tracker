@@ -1,18 +1,19 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { createContext, type PropsWithChildren, useContext } from "react";
 
 import type { AppUser } from "@/modules/user";
 
-const AuthContext = createContext<AppUser | null>(null);
+type UserContextType = AppUser | null;
+
+const AuthContext = createContext<UserContextType>(null);
 
 export function UserProvider({
   initialUser,
   children,
-}: {
-  initialUser: AppUser | null;
-  children: React.ReactNode;
-}) {
+}: PropsWithChildren<{
+  initialUser: UserContextType;
+}>) {
   return <AuthContext.Provider value={initialUser}>{children}</AuthContext.Provider>;
 }
 

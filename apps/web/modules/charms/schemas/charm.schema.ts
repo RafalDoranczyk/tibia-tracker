@@ -1,8 +1,6 @@
 import { z } from "zod";
 
-import { NonEmptyString, UUID } from "@/schemas";
-
-import { CHARM_MAX_LEVEL } from "../constants";
+import { NonEmptyString, PositiveInt, UUID } from "@/schemas";
 
 /* =========================================================
  * Core charm model
@@ -11,43 +9,18 @@ import { CHARM_MAX_LEVEL } from "../constants";
 export const CharmTypeSchema = z.enum(["major", "minor"]);
 export type CharmType = z.infer<typeof CharmTypeSchema>;
 
-export const CharmLevelSchema = z.number().int().min(1).max(CHARM_MAX_LEVEL);
-export const CharmLevelOrZeroSchema = z.number().int().min(0).max(CHARM_MAX_LEVEL);
-
-export const CharmLevelDataSchema = z.object({
-  cost: z.number().int().positive(),
-  effect: NonEmptyString,
-});
-
-export const CharmLevelsSchema = z.object({
-  1: CharmLevelDataSchema,
-  2: CharmLevelDataSchema,
-  3: CharmLevelDataSchema,
-});
-export type CharmLevel = z.infer<typeof CharmLevelSchema>;
-
 export const CharmSchema = z.object({
+  // Charm ID is a UUID in supabase db
   id: UUID,
   name: NonEmptyString,
   type: CharmTypeSchema,
   description: NonEmptyString,
-  levels: CharmLevelsSchema,
+  cost_lvl1: PositiveInt,
+  effect_lvl1: NonEmptyString,
+  cost_lvl2: PositiveInt,
+  effect_lvl2: NonEmptyString,
+  cost_lvl3: PositiveInt,
+  effect_lvl3: NonEmptyString,
   image_path: NonEmptyString,
 });
 export type Charm = z.infer<typeof CharmSchema>;
-
-/* =========================================================
- * Progress
- * ======================================================= */
-
-export const CharmProgressSchema = z.object({
-  unlocked: z.boolean(),
-  level: CharmLevelOrZeroSchema,
-  unlocked_at: z.string().nullable(),
-});
-export type CharmProgress = z.infer<typeof CharmProgressSchema>;
-
-export const CharmWithProgressSchema = CharmSchema.extend({
-  progress: CharmProgressSchema,
-});
-export type CharmWithProgress = z.infer<typeof CharmWithProgressSchema>;

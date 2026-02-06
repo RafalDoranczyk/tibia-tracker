@@ -1,22 +1,21 @@
 "use server";
 
-import { z } from "zod";
-
-import { getUserScopedQuery } from "@/core/supabase";
+import { AppErrorCode, wrapAndLogError } from "@/core/error";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { type Character, CharacterSchema } from "../schemas";
 
-const columns = CharacterSchema.keyof().options.join(", ");
+const SELECT = CharacterSchema.keyof().options.join(", ");
 
 export async function fetchCharacters(): Promise<Character[]> {
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
-  const { data, error } = await supabase.from("characters").select(columns);
+  const { data, error } = await supabase.from("characters").select(SELECT);
 
   if (error) {
-    throw new Error("Fetching characters failed");
+    throw wrapAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch characters");
   }
 
-  return assertZodParse(z.array(CharacterSchema), data);
+  return assertZodParse(CharacterSchema.array(), data);
 }

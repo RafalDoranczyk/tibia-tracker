@@ -1,11 +1,11 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core/supabase";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { deleteSessionRows } from "../db/deleteSessionRows";
+import { replaceSessionMonstersWithPreyAndCharm } from "../db/insertMonsterRows";
 import { insertSessionRows } from "../db/insertSessionRows";
-import { replaceSessionMonstersWithPrey } from "../db/replaceSessionMonstersWithPrey";
 import {
   type HuntSessionDbFields,
   HuntSessionDbFieldsSchema,
@@ -15,7 +15,7 @@ import {
 export async function updateHuntSession(payload: unknown): Promise<HuntSessionDbFields> {
   const parsed = assertZodParse(UpdateHuntSessionPayloadSchema, payload);
 
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
   const {
     id,
@@ -39,7 +39,7 @@ export async function updateHuntSession(payload: unknown): Promise<HuntSessionDb
   }
 
   // replace monsters + prey
-  await replaceSessionMonstersWithPrey(id, killed_monsters);
+  await replaceSessionMonstersWithPreyAndCharm(id, killed_monsters);
 
   // replace looted items (DELETE + INSERT)
   await deleteSessionRows("hunt_session_looted_items", id);

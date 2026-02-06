@@ -1,5 +1,6 @@
 "use server";
 
+import { AppErrorCode, wrapAndLogError } from "@/core/error";
 import { assertZodParse, serverFetch } from "@/utils";
 
 import { BestiaryCacheTags } from "../cacheTags";
@@ -11,7 +12,7 @@ export async function fetchCharacterBestiarySummary(characterId: string) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch bestiary summary");
+    throw wrapAndLogError(null, AppErrorCode.SERVER_ERROR, "Failed to fetch bestiary summary");
   }
 
   const json = await res.json();

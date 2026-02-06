@@ -1,20 +1,52 @@
-import { getUserScopedQuery } from "@/core/supabase";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 
 import type { HuntSessionKilledMonsterInput } from "../schemas";
 
 type InsertedMonster = {
   id: number;
-  session_id: number;
-  count: number;
   monster_id: number;
 };
 
-async function insertMonsterRows(
+type BonusTable = "hunt_session_prey_bonuses" | "hunt_session_charm_bonuses";
+
+async function insertBonuses<T extends keyof HuntSessionKilledMonsterInput>(
+  table: BonusTable,
+  bonusKey: T,
+  bonusColumn: string,
+  monsters: HuntSessionKilledMonsterInput[],
+  monsterIdToSessionMonsterId: Map<number, number>,
+  supabase: Awaited<ReturnType<typeof requireAuthenticatedSupabase>>["supabase"]
+) {
+  const rows = monsters
+    .filter((m) => m[bonusKey])
+    .map((m) => {
+      const sessionMonsterId = monsterIdToSessionMonsterId.get(m.monster_id);
+      if (!sessionMonsterId) return null;
+
+      return {
+        hunt_session_monster_id: sessionMonsterId,
+        [bonusColumn]: m[bonusKey],
+      };
+    })
+    .filter(
+      (row): row is { hunt_session_monster_id: number } & Record<string, number> => row !== null
+    );
+
+  if (!rows.length) return;
+
+  const { error } = await supabase.from(table).insert(rows);
+  if (error) throw error;
+}
+
+export async function insertSessionMonstersWithPreyAndCharm(
   session_id: number,
   monsters: HuntSessionKilledMonsterInput[]
-): Promise<InsertedMonster[]> {
-  const { supabase } = await getUserScopedQuery();
+) {
+  const { supabase } = await requireAuthenticatedSupabase();
 
+  /**
+   * 1️⃣ Insert killed monsters
+   */
   const { data: insertedMonsters, error } = await supabase
     .from("hunt_session_killed_monsters")
     .insert(
@@ -24,45 +56,53 @@ async function insertMonsterRows(
         count: m.count,
       }))
     )
-    .select("id, session_id, count, monster_id");
+    .select("id, monster_id");
 
-  if (error) {
+  if (error || !insertedMonsters) {
     throw new Error("Failed to insert killed monsters");
   }
 
-  return insertedMonsters ?? [];
+  /**
+   * 2️⃣ Build monster_id → hunt_session_monster_id map
+   */
+  const monsterIdToSessionMonsterId = new Map<number, number>(
+    insertedMonsters.map((im: InsertedMonster) => [im.monster_id, im.id])
+  );
+
+  /**
+   * 3️⃣ Insert prey bonuses
+   */
+  await insertBonuses(
+    "hunt_session_prey_bonuses",
+    "prey_bonus_id",
+    "prey_id",
+    monsters,
+    monsterIdToSessionMonsterId,
+    supabase
+  );
+
+  /**
+   * 4️⃣ Insert charm bonuses
+   */
+  await insertBonuses(
+    "hunt_session_charm_bonuses",
+    "charm_bonus_id",
+    "charm_id",
+    monsters,
+    monsterIdToSessionMonsterId,
+    supabase
+  );
 }
 
-async function insertPreyBonuses(
-  insertedMonsters: InsertedMonster[],
-  monsters: HuntSessionKilledMonsterInput[]
-) {
-  const { supabase } = await getUserScopedQuery();
-
-  const preyRows = monsters
-    .filter((m) => m.prey_bonus_id)
-    .map((m) => {
-      const inserted = insertedMonsters.find((im) => im.monster_id === m.monster_id);
-
-      if (!inserted) return null;
-
-      return {
-        hunt_session_monster_id: inserted.id,
-        prey_id: m.prey_bonus_id,
-      };
-    })
-    .filter((row): row is NonNullable<typeof row> => row !== null);
-
-  if (!preyRows.length) return;
-
-  const { error } = await supabase.from("hunt_session_prey_bonuses").insert(preyRows);
-  if (error) throw error;
-}
-
-export async function insertSessionMonstersWithPrey(
+export async function replaceSessionMonstersWithPreyAndCharm(
   session_id: number,
   monsters: HuntSessionKilledMonsterInput[]
 ) {
-  const inserted = await insertMonsterRows(session_id, monsters);
-  await insertPreyBonuses(inserted, monsters);
+  const { supabase } = await requireAuthenticatedSupabase();
+
+  // delete monsters (cascade deletes prey and charm)
+  await supabase.from("hunt_session_killed_monsters").delete().eq("session_id", session_id);
+
+  // insert again with prey and charm
+  await insertSessionMonstersWithPreyAndCharm(session_id, monsters);
 }

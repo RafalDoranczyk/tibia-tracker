@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 
 export default async function CharacterPage({ params }: CharacterPageProps) {
   const { characterId } = await params;
-  const a = await fetchCharacters();
+  const characters = await fetchCharacters();
 
-  const character = a.find((el) => el.id === characterId);
+  const character = characters.find((el) => el.id === characterId);
 
   return (
     <PageHeader

@@ -1,11 +1,15 @@
 import { z } from "zod";
 
-import { HuntSessionDbBaseFieldsSchema } from "./db.schema";
+import { CharmSchema } from "@/modules/charms";
+
+import { PreyBonusSchema } from "./catalog.schema";
+import { HuntSessionDbBaseFieldsSchema, HuntSessionStatFormSchema } from "./db.schema";
 
 const KilledMonsterSchema = z.object({
   monsterId: z.number(),
   count: z.number(),
-  preyBonusId: z.number().nullable().optional(),
+  preyBonusId: PreyBonusSchema.shape.id.nullable().optional(),
+  charmBonusId: CharmSchema.shape.id.nullable().optional(),
 });
 
 const LootedItemsFormSchema = z.object({
@@ -38,6 +42,7 @@ export const HuntSessionFormSchema = HuntSessionDbBaseFieldsSchema.omit({
   damage_elements: DamageElementFormSchema.array(),
   damage_sources: DamageSourceFormSchema.array(),
   supplies: SupplyCountFormSchema.array(),
+  stats: HuntSessionStatFormSchema.array(),
 });
 
 export type HuntSessionForm = z.infer<typeof HuntSessionFormSchema>;

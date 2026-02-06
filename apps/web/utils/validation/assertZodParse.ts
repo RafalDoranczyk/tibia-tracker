@@ -1,6 +1,6 @@
 import type { z, ZodError, ZodTypeAny } from "zod";
 
-import { AppError, AppErrorCodes } from "@/core/errors";
+import { AppError, AppErrorCode } from "@/core/error";
 import { env } from "@/env";
 
 function mapZodErrorToAppError(error: ZodError): AppError {
@@ -33,7 +33,7 @@ function mapZodErrorToAppError(error: ZodError): AppError {
       ? `Validation failed:\n${formattedErrors.join("\n")}`
       : "Invalid data format";
 
-  return new AppError(AppErrorCodes.VALIDATION_ERROR, message, error.flatten());
+  return new AppError(AppErrorCode.VALIDATION_ERROR, message, { details: error.flatten() });
 }
 
 /**

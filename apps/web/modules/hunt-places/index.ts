@@ -6,4 +6,4 @@ export { fetchHuntPlaces } from "./actions/fetchHuntPlaces";
 // ======================
 // Shared
 // ======================
-export { type HuntPlace, HuntPlaceSchema } from "./schemas";
+export { type HuntPlace, HuntPlaceSchema } from "./schemas/hunt-place.schema";

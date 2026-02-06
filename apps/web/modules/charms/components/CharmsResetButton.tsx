@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import { useState, useTransition } from "react";
 
 import { ConfirmDialog } from "@/components";
-import { useToast } from "@/providers/global";
+import { useToast } from "@/providers/app";
 
 import { resetCharacterCharms } from "../actions/resetCharacterCharms";
 

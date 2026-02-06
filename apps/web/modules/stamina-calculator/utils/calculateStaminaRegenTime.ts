@@ -1,5 +1,6 @@
 import { FULL_STAMINA_MINUTES, ORANGE_STAMINA_MINUTES } from "../constants";
 
+// Calculates the time in seconds to regen stamina from current to target
 export function calculateStaminaRegenTime(current: number, target = FULL_STAMINA_MINUTES * 60) {
   let time = 0;
   let stamina = current;

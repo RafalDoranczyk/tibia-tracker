@@ -11,6 +11,8 @@ import {
 
 import { PageHeaderSkeleton } from "@/layout/page";
 
+const CHARM_BLOCKS_COUNT = 3;
+
 function CharmCardSkeleton() {
   return (
     <Card sx={{ height: 300, borderRadius: 3, p: 2 }}>
@@ -39,7 +41,7 @@ export default function CharmsLoading() {
 
         {/* Stats */}
         <Stack direction="row" spacing={2} mb={2}>
-          {Array.from({ length: 4 }).map((_, i) => (
+          {Array.from({ length: CHARM_BLOCKS_COUNT }).map((_, i) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: <Skeletons are static>
             <Card key={i} sx={{ flex: 1, borderRadius: 3 }}>
               <CardContent>

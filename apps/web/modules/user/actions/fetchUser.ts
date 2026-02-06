@@ -1,35 +1,39 @@
 "use server";
 
-import { AppError, AppErrorCodes } from "@/core/errors";
-import { createSupabase, mapSupabaseErrorToAppError } from "@/core/supabase";
+import { AppErrorCode, wrapAndLogError } from "@/core/error";
+import { createServerSupabase } from "@/core/supabase";
 
-import type { AppUser } from "../schemas";
+import type { AppUser } from "../schemas/user.schema";
 
 export async function fetchUser(): Promise<AppUser> {
-  try {
-    const supabase = await createSupabase();
+  const supabase = await createServerSupabase();
 
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
 
-    if (error) throw mapSupabaseErrorToAppError(error);
-    if (!user) throw new AppError(AppErrorCodes.UNAUTHORIZED, "User not authenticated");
-
-    const { data: roleData } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    return {
-      id: user.id,
-      email: user.email,
-      role: roleData?.role ?? "user",
-    };
-  } catch (error) {
-    if (error instanceof AppError) throw error;
-    throw new AppError(AppErrorCodes.SERVER_ERROR, "Failed to get user");
+  if (error) {
+    throw wrapAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch user");
   }
+
+  if (!user) {
+    throw wrapAndLogError(null, AppErrorCode.UNAUTHORIZED, "User not authenticated");
+  }
+
+  const { data: roleData, error: roleError } = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (roleError) {
+    throw wrapAndLogError(roleError, AppErrorCode.SERVER_ERROR, "Failed to fetch user role");
+  }
+
+  return {
+    id: user.id,
+    email: user.email,
+    role: roleData?.role ?? "user",
+  };
 }

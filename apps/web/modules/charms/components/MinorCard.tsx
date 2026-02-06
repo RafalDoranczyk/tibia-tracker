@@ -3,12 +3,12 @@
 import { Button, Stack, Typography } from "@mui/material";
 
 import { CHARM_MAX_LEVEL } from "../constants";
-import type { CharmWithProgress } from "../schemas";
+import type { CharacterCharmWithProgress } from "../schemas";
 import { canAffordNextCharmLevel, getCharmNextLevelCost } from "../utils/getCharmEconomy";
 import { CardLayout } from "./CardLayout";
 
 type MinorCardProps = {
-  charm: CharmWithProgress;
+  charm: CharacterCharmWithProgress;
   availableMinorPoints: number;
   onSelect: () => void;
 };
@@ -30,7 +30,7 @@ export function MinorCard({ charm, availableMinorPoints, onSelect }: MinorCardPr
       const missing = Math.max(0, nextCost - availableMinorPoints);
       buttonLabel = `Need ${missing} pts`;
     } else {
-      buttonLabel = unlocked ? "Change Level" : "Unlock";
+      buttonLabel = unlocked ? "Upgrade" : "Unlock";
       buttonDisabled = false;
     }
   }

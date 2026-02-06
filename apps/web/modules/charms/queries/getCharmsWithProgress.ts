@@ -2,14 +2,20 @@
 
 import { fetchCharacterCharms } from "../actions/fetchCharacterCharms";
 import { fetchCharms } from "../actions/fetchCharms";
-import { mapCharmsWithProgress } from "../mappers/mapCharmsWithProgress";
-import type { CharmWithProgress } from "../schemas";
+import { mapCharmToAppCharm } from "../mappers/mapCharmToAppCharm";
+import { mapCharmWithProgress } from "../mappers/mapCharmWithProgress";
+import type { CharacterCharmWithProgress } from "../schemas";
 
-export async function getCharmsWithProgress(characterId: string): Promise<CharmWithProgress[]> {
+export async function getCharmsWithProgress(
+  characterId: string
+): Promise<CharacterCharmWithProgress[]> {
   const [charms, characterCharms] = await Promise.all([
     fetchCharms(),
     fetchCharacterCharms(characterId),
   ]);
 
-  return mapCharmsWithProgress(charms, characterCharms);
+  const appCharms = charms.map(mapCharmToAppCharm);
+  const appCharmsWithProgress = mapCharmWithProgress(appCharms, characterCharms);
+
+  return appCharmsWithProgress;
 }

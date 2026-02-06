@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core/supabase";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import {
@@ -31,6 +31,15 @@ killed_monsters:hunt_session_killed_monsters(
     id,
     name,
     image_path
+  ),
+  charm_bonus:hunt_session_charm_bonuses(
+    id,
+    charm:charms(
+      id,
+      name,
+      image_path,
+      type
+    )
   ),
   prey_bonus:hunt_session_prey_bonuses(
     id,
@@ -74,15 +83,19 @@ killed_monsters:hunt_session_killed_monsters(
 export async function fetchHuntSession(payload: unknown): Promise<HuntSession | null> {
   const { id, character_id } = assertZodParse(FetchHuntSessionPayloadSchema, payload);
 
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("hunt_sessions")
     .select(SELECT)
     .eq("id", id)
     .eq("character_id", character_id)
     .maybeSingle();
 
+  if (error) {
+    console.log(error);
+    throw new Error("Failed to fetch hunt session");
+  }
   if (!data) {
     return null;
   }

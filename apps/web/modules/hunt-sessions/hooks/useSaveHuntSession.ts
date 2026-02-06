@@ -3,7 +3,7 @@ import { useCallback } from "react";
 
 import { useRequiredCharacterId } from "@/modules/characters";
 import { PATHS } from "@/paths";
-import { useToast } from "@/providers/global";
+import { useToast } from "@/providers/app";
 
 import { createHuntSession } from "../actions/createHuntSession";
 import { updateHuntSession } from "../actions/updateHuntSession";
@@ -16,10 +16,11 @@ export const useSaveHuntSession = () => {
   const toast = useToast();
 
   return useCallback(
-    async (data: HuntSessionForm, id?: HuntSession["id"]) => {
+    async (formData: HuntSessionForm, id?: HuntSession["id"]) => {
       try {
-        const formPayload = { ...mapHuntSessionFormToPayload(data), characterId };
+        const formPayload = mapHuntSessionFormToPayload({ formData, characterId });
 
+        console.log(formPayload);
         if (id) {
           await updateHuntSession({ ...formPayload, id });
         } else {

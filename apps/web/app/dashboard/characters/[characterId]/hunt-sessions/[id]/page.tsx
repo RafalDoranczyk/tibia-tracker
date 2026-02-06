@@ -29,6 +29,7 @@ export default async function EditHuntSessionPage({ params }: EditHuntSessionPag
     damageElementList,
     preyBonusList,
     huntSession,
+    characterCharmList,
   } = await loadHuntSession({
     characterId,
     huntSessionId,
@@ -63,6 +64,7 @@ export default async function EditHuntSessionPage({ params }: EditHuntSessionPag
         <HuntSessionView
           huntSessionId={huntSession?.id}
           itemList={itemList}
+          characterCharmList={characterCharmList}
           supplyList={supplyList}
           huntPlaceList={huntPlaceList}
           monsterList={monsterList}

@@ -2,7 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
-import { getUserScopedQuery } from "@/core/supabase";
+import { AppErrorCode, wrapAndLogError } from "@/core/error";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { PATHS } from "@/paths";
 import { assertZodParse } from "@/utils";
 
@@ -13,7 +14,7 @@ export async function updateCharacter(payload: unknown): Promise<Character> {
 
   const { id, ...data } = parsed;
 
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
   const { data: updated, error } = await supabase
     .from("characters")
@@ -23,11 +24,10 @@ export async function updateCharacter(payload: unknown): Promise<Character> {
     .single();
 
   if (error) {
-    throw new Error("Failed to update character");
+    throw wrapAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to update character");
   }
 
-  assertZodParse(UpdateCharacterSchema, updated);
   revalidatePath(PATHS.CHARACTERS);
 
-  return updated;
+  return assertZodParse(UpdateCharacterSchema, updated);
 }

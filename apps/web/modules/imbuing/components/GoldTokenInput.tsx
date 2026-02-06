@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-import type { ImbuingFormValues } from "../schemas";
+import type { ImbuingFormValues } from "../schemas/imbuing.schema";
 
 const INPUT_KEY = "gold_token" as const;
 const DEBOUNCE_MS = 700;

@@ -5,15 +5,17 @@ import { createContext, type PropsWithChildren, useContext, useEffect, useState 
 
 import { usePersistActiveCharacter } from "@/modules/user";
 
+type ContextCharacterId = string | null;
+
 type ActiveCharacterContextType = {
-  activeCharacterId: string | null;
-  setActiveCharacterId: (id: string | null) => void;
+  activeCharacterId: ContextCharacterId;
+  setActiveCharacterId: (id: ContextCharacterId) => void;
 };
 
 const ActiveCharacterContext = createContext<ActiveCharacterContextType | null>(null);
 
 type ActiveCharacterProviderProps = PropsWithChildren<{
-  initialActiveCharacterId: string | null;
+  initialActiveCharacterId: ContextCharacterId;
 }>;
 
 export function ActiveCharacterProvider({
@@ -23,9 +25,8 @@ export function ActiveCharacterProvider({
   const { characterId } = useParams<{ characterId?: string }>();
   const persistActiveCharacter = usePersistActiveCharacter();
 
-  const [activeCharacterId, setActiveCharacterId] = useState<string | null>(
-    initialActiveCharacterId
-  );
+  const [activeCharacterId, setActiveCharacterId] =
+    useState<ContextCharacterId>(initialActiveCharacterId);
 
   useEffect(() => {
     if (characterId) {
@@ -33,7 +34,7 @@ export function ActiveCharacterProvider({
     }
   }, [characterId]);
 
-  const handleSetActive = (id: string | null) => {
+  const handleSetActive = (id: ContextCharacterId) => {
     if (id === activeCharacterId) return;
 
     setActiveCharacterId(id);

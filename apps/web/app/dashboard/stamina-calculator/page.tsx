@@ -15,7 +15,6 @@ export default function StaminaCalculatorPage() {
         title="Stamina Calculator"
         description="Find out the time required to regenerate your stamina."
       />
-
       <StaminaCalculator />
     </>
   );

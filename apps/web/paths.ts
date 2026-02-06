@@ -1,20 +1,8 @@
 const DASHBOARD_PATH = "/dashboard";
 
-export type CharacterPaths = {
-  OVERVIEW: string;
-  BESTIARY: string;
-  HUNT_PLACES: string;
-  CHARMS: string;
-  HUNT_SESSIONS: {
-    LIST: string;
-    NEW: string;
-    EDIT: (sessionId: number) => string;
-  };
-};
-
 // Specific paths for a character
-const character = (characterId: string): CharacterPaths => {
-  const base = `${DASHBOARD_PATH}/characters/${characterId}`;
+export const character = (characterId: string) => {
+  const base = `${DASHBOARD_PATH}/characters/${characterId}` as const;
 
   return {
     OVERVIEW: base,
@@ -28,6 +16,8 @@ const character = (characterId: string): CharacterPaths => {
     },
   };
 };
+
+export type CharacterPaths = ReturnType<typeof character>;
 
 export const PATHS = {
   CHARACTER: character,

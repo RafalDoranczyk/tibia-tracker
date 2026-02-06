@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { CharacterSchema } from "@/modules/characters";
+import { CharacterIDSchema } from "@/modules/characters";
 import { HuntPlaceSchema } from "@/modules/hunt-places";
 import { ISODate, LocalDatetime, PositiveInt } from "@/schemas";
 
@@ -12,7 +12,7 @@ import {
   HuntSessionSupplySchema,
 } from "./relations.schema";
 
-// Computed fields on the server side
+// Computed fields on the server side impossible to set on insert
 const HuntSessionDbFieldsComputedSchema = z.object({
   raw_xp_per_hour: PositiveInt,
   profit_per_hour: z.number(),
@@ -23,7 +23,7 @@ const HuntSessionDbFieldsComputedSchema = z.object({
 
 export const HuntSessionDbBaseFieldsSchema = z.object({
   id: z.number(),
-  character_id: CharacterSchema.shape.id,
+  character_id: CharacterIDSchema,
   place_id: HuntPlaceSchema.shape.id,
   date: ISODate,
   started_at: LocalDatetime,
@@ -45,6 +45,12 @@ export const HuntSessionDbFieldsSchema = HuntSessionDbBaseFieldsSchema.merge(
 );
 export type HuntSessionDbFields = z.infer<typeof HuntSessionDbFieldsSchema>;
 
+export const HuntSessionStatFormSchema = z.object({
+  statDefinitionId: z.string().uuid(),
+  damageElementId: z.number().nullable().optional(),
+  value: z.number(),
+});
+
 /* Full session with relations for single view */
 export const HuntSessionSchema = HuntSessionDbFieldsSchema.extend({
   place: HuntPlaceSchema,
@@ -53,6 +59,7 @@ export const HuntSessionSchema = HuntSessionDbFieldsSchema.extend({
   looted_items: HuntSessionLootedItemSchema.array(),
   damage_elements: HuntSessionDamageElementSchema.array(),
   damage_sources: HuntSessionDamageSourceSchema.array(),
+  stats: HuntSessionStatFormSchema.array(),
 });
 export type HuntSession = z.infer<typeof HuntSessionSchema>;
 

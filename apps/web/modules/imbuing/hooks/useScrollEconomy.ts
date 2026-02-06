@@ -1,32 +1,42 @@
 import { useFormContext, useWatch } from "react-hook-form";
 
-import type { ImbuingFormValues } from "../schemas";
-import type { Scroll } from "../types";
+import type { ImbuingFormValues, ImbuingPriceKey } from "../schemas/imbuing.schema";
+import type { ImbuingPrices, Scroll } from "../types";
 import { calculateScrollEconomy } from "../utils/calculateScrollEconomy";
 
-function hasAllRequiredPrices(scroll: Scroll, prices: Record<string, number>): boolean {
-  return (
-    prices.gold_token > 0 &&
-    prices[scroll.key] > 0 &&
-    scroll.items.every((item) => prices[item.key] > 0)
-  );
+type PriceMap = Partial<Record<ImbuingPriceKey, number>>;
+
+function hasAllRequiredPrices(scroll: Scroll, prices: PriceMap): prices is ImbuingPrices {
+  const tokenPrice = prices.gold_token;
+  if (tokenPrice === undefined || tokenPrice <= 0) {
+    return false;
+  }
+
+  const scrollPrice = prices[scroll.key];
+  if (scrollPrice === undefined || scrollPrice <= 0) {
+    return false;
+  }
+
+  return scroll.items.every((item) => {
+    const itemPrice = prices[item.key];
+    return itemPrice !== undefined && itemPrice > 0;
+  });
 }
 
 export function useScrollEconomy(scroll: Scroll) {
   const { control } = useFormContext<ImbuingFormValues>();
 
+  const keys: ImbuingPriceKey[] = ["gold_token", scroll.key, ...scroll.items.map((i) => i.key)];
+
   const watchedValues = useWatch({
     control,
-    name: ["gold_token", scroll.key, ...scroll.items.map((i) => i.key)],
+    name: keys,
   }) as number[];
 
-  const prices: Record<string, number> = {
-    gold_token: watchedValues[0],
-    [scroll.key]: watchedValues[1],
-  };
+  const prices: PriceMap = {};
 
-  scroll.items.forEach((item, index) => {
-    prices[item.key] = watchedValues[index + 2];
+  keys.forEach((key, index) => {
+    prices[key] = watchedValues[index];
   });
 
   if (!hasAllRequiredPrices(scroll, prices)) {

@@ -26,24 +26,24 @@ import {
 
 type Props = {
   description?: string;
-  reset?: () => void;
   title: string;
   showDetails?: boolean;
   errorCode?: string;
   digest?: string;
   technicalDetails?: Record<string, unknown>;
   suggestions?: string[];
+  reset?: () => void;
 };
 
 export function ErrorPage({
   description,
-  reset,
   title,
   showDetails = false,
   errorCode,
   digest,
   technicalDetails,
   suggestions,
+  reset,
 }: Props) {
   const handleReportBug = () => {
     console.log({ title, description, errorCode, digest, technicalDetails });
@@ -127,8 +127,8 @@ export function ErrorPage({
 
                     {technicalDetails &&
                       Object.entries(technicalDetails).map(([k, v]) => (
-                        <Typography key={k} variant="caption">
-                          {k}: {typeof v === "object" ? JSON.stringify(v) : String(v)}
+                        <Typography key={k} variant="caption" sx={{ wordBreak: "break-all" }}>
+                          {k}: {typeof v === "object" ? JSON.stringify(v, null, 2) : String(v)}
                         </Typography>
                       ))}
                   </Stack>

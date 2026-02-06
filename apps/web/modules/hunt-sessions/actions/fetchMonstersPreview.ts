@@ -3,7 +3,7 @@
 import { cache } from "react";
 import { z } from "zod";
 
-import { getUserScopedQuery } from "@/core/supabase";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { type MonsterPreview, MonsterPreviewSchema } from "../schemas";
@@ -11,7 +11,7 @@ import { type MonsterPreview, MonsterPreviewSchema } from "../schemas";
 const SELECT = Object.keys(MonsterPreviewSchema.shape).join(", ");
 
 async function fetchMonstersInternal(): Promise<MonsterPreview[]> {
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
   const { data, error } = await supabase
     .from("monsters")

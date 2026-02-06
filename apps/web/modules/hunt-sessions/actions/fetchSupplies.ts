@@ -3,7 +3,7 @@
 import { cache } from "react";
 import { z } from "zod";
 
-import { getUserScopedQuery } from "@/core/supabase";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import { type ItemPreview, ItemPreviewSchema } from "../schemas";
@@ -11,7 +11,7 @@ import { type ItemPreview, ItemPreviewSchema } from "../schemas";
 const SELECT = Object.keys(ItemPreviewSchema.shape).join(", ");
 
 async function fetchSuppliesInternal(): Promise<ItemPreview[]> {
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
   const { data, error } = await supabase
     .from("supplies")

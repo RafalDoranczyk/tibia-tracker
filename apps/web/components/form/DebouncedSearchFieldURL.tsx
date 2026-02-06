@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
-import { SearchFieldURL } from "@/components";
+import { SearchFieldURL } from "./SearchFieldURL";
 
 type DebouncedSearchFieldURLProps = {
   value?: string;
