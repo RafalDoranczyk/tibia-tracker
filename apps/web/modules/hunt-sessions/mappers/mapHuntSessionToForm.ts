@@ -4,13 +4,18 @@ export function mapHuntSessionToForm(huntSession: HuntSession): HuntSessionForm 
   return {
     ...huntSession,
     place_id: huntSession.place.id,
-
+    stats: huntSession.stats.map((s) => ({
+      statDefinitionId: s.statDefinitionId,
+      damageElementId: s.damageElementId,
+      value: s.value,
+    })),
     killed_monsters:
       huntSession.killed_monsters.map((m) => ({
         name: m.monster.name,
         monsterId: m.monster.id,
         count: m.count,
         preyBonusId: m.prey_bonus?.[0]?.prey.id ?? null,
+        charmBonusId: m.charm_bonus?.[0]?.charm.id ?? null,
       })) ?? [],
 
     looted_items:

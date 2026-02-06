@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core/supabase";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
 import {
@@ -27,7 +27,7 @@ export async function fetchHuntSessionList(
 
   const offset = page && limit ? (page - 1) * limit : undefined;
 
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
   let query = supabase
     .from("hunt_sessions")

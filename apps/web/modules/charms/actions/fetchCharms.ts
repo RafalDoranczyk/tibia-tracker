@@ -1,23 +1,22 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core/supabase";
+import { AppErrorCode, wrapAndLogError } from "@/core/error";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { mapCharmRowToCharm } from "../mappers/mapCharmRowToCharm";
-import { type Charm, CharmRowSchema } from "../schemas";
+import { type Charm, CharmSchema } from "../schemas";
 
-const SELECT = CharmRowSchema.keyof().options.join(",");
+const SELECT = CharmSchema.keyof().options.join(",");
 
+// Fetches all charms available in the system, regardless of character progress.
 export async function fetchCharms(): Promise<Charm[]> {
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
   const { data, error } = await supabase.from("charms").select(SELECT);
 
   if (error) {
-    throw new Error("Failed to fetch charms");
+    throw wrapAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch charms");
   }
 
-  const rows = assertZodParse(CharmRowSchema.array(), data);
-
-  return rows.map(mapCharmRowToCharm);
+  return assertZodParse(CharmSchema.array(), data);
 }

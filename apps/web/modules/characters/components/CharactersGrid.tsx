@@ -25,7 +25,7 @@ export function CharactersGrid({
   return (
     <Grid spacing={2} container>
       {characters.map((character) => (
-        <Grid size={{ xs: 12, lg: 4 }} key={character.id}>
+        <Grid size={{ xs: 12, lg: 3, xl: 2 }} key={character.id}>
           <CharacterCard
             character={character}
             onEdit={onEdit}
@@ -36,7 +36,7 @@ export function CharactersGrid({
         </Grid>
       ))}
 
-      <Grid size={{ xs: 12, lg: 4 }}>
+      <Grid size={{ xs: 12, lg: 3, xl: 2 }}>
         <Card
           variant="outlined"
           sx={{

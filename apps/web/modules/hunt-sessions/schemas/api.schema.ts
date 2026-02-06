@@ -2,7 +2,8 @@ import { z } from "zod";
 
 import { PaginationSchema } from "@/lib/pagination";
 import { MonsterSchema } from "@/modules/bestiary";
-import { CharacterSchema } from "@/modules/characters";
+import { CharacterIDSchema } from "@/modules/characters";
+import { CharmSchema } from "@/modules/charms";
 import { ItemSchema } from "@/modules/items";
 import { NonNegativeInt, PositiveInt } from "@/schemas";
 
@@ -15,11 +16,11 @@ import {
 
 export const FetchHuntSessionPayloadSchema = z.object({
   id: HuntSessionSchema.shape.id,
-  character_id: CharacterSchema.shape.id,
+  character_id: CharacterIDSchema,
 });
 
 export const FetchHuntSessionListPayloadSchema = PaginationSchema.extend({
-  character_id: CharacterSchema.shape.id,
+  character_id: CharacterIDSchema,
 });
 export type FetchHuntSessionListPayload = z.infer<typeof FetchHuntSessionListPayloadSchema>;
 
@@ -36,8 +37,15 @@ const HuntSessionKilledMonsterInputSchema = z.object({
   monster_id: MonsterSchema.shape.id,
   count: PositiveInt,
   prey_bonus_id: PreyBonusSchema.shape.id.nullable().optional(),
+  charm_bonus_id: CharmSchema.shape.id.nullable().optional(),
 });
 export type HuntSessionKilledMonsterInput = z.input<typeof HuntSessionKilledMonsterInputSchema>;
+
+const HuntSessionStatInputSchema = z.object({
+  stat_definition_id: z.string().uuid(),
+  damage_element_id: DamageElementSchema.shape.id.nullable().optional(),
+  value: z.number(),
+});
 
 export const CreateHuntSessionPayloadSchema = HuntSessionDbBaseFieldsSchema.omit({
   id: true,
@@ -51,22 +59,23 @@ export const CreateHuntSessionPayloadSchema = HuntSessionDbBaseFieldsSchema.omit
   ),
   supplies: z.array(
     z.object({
-      supply_id: ItemSchema.shape.id,
+      item_id: ItemSchema.shape.id,
       count: PositiveInt,
     })
   ),
   damage_elements: z.array(
     z.object({
       damage_element_id: DamageElementSchema.shape.id,
-      percent: PositiveInt,
+      percent: z.number().positive(),
     })
   ),
   damage_sources: z.array(
     z.object({
-      damage_source_id: DamageSourceSchema.shape.id,
-      percent: PositiveInt,
+      monster_id: DamageSourceSchema.shape.id,
+      percent: z.number().positive(),
     })
   ),
+  stats: HuntSessionStatInputSchema.array(),
 });
 export type CreateHuntSessionPayload = z.input<typeof CreateHuntSessionPayloadSchema>;
 

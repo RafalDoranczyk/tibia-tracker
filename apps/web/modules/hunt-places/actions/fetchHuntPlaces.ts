@@ -1,9 +1,10 @@
 "use server";
 
-import { getUserScopedQuery } from "@/core/supabase";
+import { AppErrorCode, wrapAndLogError } from "@/core/error";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { assertZodParse } from "@/utils";
 
-import { FetchHuntPlacesResponseSchema, HuntPlaceSchema } from "../schemas";
+import { FetchHuntPlacesResponseSchema, HuntPlaceSchema } from "../schemas/hunt-place.schema";
 
 const SELECT = HuntPlaceSchema.keyof().options.join(", ");
 
@@ -12,7 +13,7 @@ const SELECT = HuntPlaceSchema.keyof().options.join(", ");
  * Includes both user-specific and global entries.
  */
 export async function fetchHuntPlaces() {
-  const { userId, supabase } = await getUserScopedQuery();
+  const { userId, supabase } = await requireAuthenticatedSupabase();
 
   const { data, error } = await supabase
     .from("hunt_places")
@@ -20,8 +21,8 @@ export async function fetchHuntPlaces() {
     .or(`user_id.eq.${userId},user_id.is.null`);
 
   if (error) {
-    throw new Error("Failed to fetch hunt places");
+    throw wrapAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch hunt places");
   }
 
-  return assertZodParse(FetchHuntPlacesResponseSchema, data ?? []);
+  return assertZodParse(FetchHuntPlacesResponseSchema, data);
 }

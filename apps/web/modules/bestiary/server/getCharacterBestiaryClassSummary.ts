@@ -1,4 +1,5 @@
-import { getUserScopedQuery } from "@/core/supabase";
+import { AppErrorCode, wrapAndLogError } from "@/core/error";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 
 import { BestiaryCacheTags } from "../cacheTags";
 import { type BestiaryClass, CharacterBestiaryClassSummarySchema } from "../schemas";
@@ -7,7 +8,7 @@ export async function getCharacterBestiaryClassSummary(
   characterId: string,
   bestiaryClass: BestiaryClass
 ) {
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
   const { data, error } = await supabase
     .from("character_bestiary_class_summary")
@@ -17,7 +18,11 @@ export async function getCharacterBestiaryClassSummary(
     .maybeSingle();
 
   if (error) {
-    throw new Error(error.message);
+    throw wrapAndLogError(
+      error,
+      AppErrorCode.SERVER_ERROR,
+      "Failed to fetch character bestiary class summary"
+    );
   }
 
   const parsed = data

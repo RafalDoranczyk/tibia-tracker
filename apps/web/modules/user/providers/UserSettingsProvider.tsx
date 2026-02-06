@@ -1,22 +1,21 @@
 "use client";
 
-import { createContext, type ReactNode, useContext, useState } from "react";
+import { createContext, type PropsWithChildren, useContext, useState } from "react";
 
-import type { UserSetting } from "../schemas";
+import type { UserSetting } from "../schemas/user.schema";
+
+type UserSettingsState = UserSetting | null;
 
 const UserSettingsContext = createContext<{
-  settings: UserSetting | null;
-  setSettings: (settings: UserSetting) => void;
+  settings: UserSettingsState;
+  setSettings: React.Dispatch<React.SetStateAction<UserSettingsState>>;
 } | null>(null);
 
 export function UserSettingsProvider({
   initialSettings,
   children,
-}: {
-  initialSettings: UserSetting | null;
-  children: ReactNode;
-}) {
-  const [settings, setSettings] = useState(initialSettings);
+}: PropsWithChildren<{ initialSettings: UserSettingsState }>) {
+  const [settings, setSettings] = useState<UserSettingsState>(initialSettings);
 
   return (
     <UserSettingsContext.Provider value={{ settings, setSettings }}>

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { PaginationSchema } from "@/lib/pagination";
-import { CharacterSchema } from "@/modules/characters";
+import { CharacterIDSchema } from "@/modules/characters";
 import { NonNegativeInt } from "@/schemas";
 
 import { BestiaryClassSchema } from "./bestiaryFilters.schema";
@@ -12,7 +12,7 @@ import { MonsterSchema } from "./monster.schema";
  */
 export const CharacterBestiarySchema = z.object({
   id: NonNegativeInt,
-  character_id: CharacterSchema.shape.id,
+  character_id: CharacterIDSchema,
   monster_id: MonsterSchema.shape.id,
   kills: NonNegativeInt,
   stage: NonNegativeInt,
@@ -34,7 +34,7 @@ export type CharacterBestiaryEntry = z.infer<typeof CharacterBestiaryEntrySchema
  * Mutation payload
  */
 export const UpdateCharacterBestiaryEntrySchema = z.object({
-  characterId: CharacterSchema.shape.id,
+  characterId: CharacterIDSchema,
   monsterId: MonsterSchema.shape.id,
   updates: z.object({
     kills: NonNegativeInt.optional(),
@@ -50,7 +50,7 @@ export type UpdateCharacterBestiaryEntry = z.infer<typeof UpdateCharacterBestiar
  */
 export const FetchCharacterBestiaryParamsSchema = z
   .object({
-    characterId: CharacterSchema.shape.id,
+    characterId: CharacterIDSchema,
     bestiaryClass: BestiaryClassSchema.optional(),
   })
   .merge(

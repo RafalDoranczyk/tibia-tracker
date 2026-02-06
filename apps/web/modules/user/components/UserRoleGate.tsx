@@ -3,8 +3,9 @@
 import type { ReactNode } from "react";
 
 import { useUser } from "../providers/UserProvider";
-import type { UserRole } from "../schemas";
+import type { UserRole } from "../schemas/user.schema";
 
+// Component that conditionally renders its children based on the user's role.
 export function UserRoleGate({
   allow,
   children,
@@ -22,6 +23,7 @@ export function UserRoleGate({
   return <>{children}</>;
 }
 
+// Convenience component for admin-only access.
 export function AdminOnly({
   children,
   fallback = null,

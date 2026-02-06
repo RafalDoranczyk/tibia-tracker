@@ -24,7 +24,7 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Ch
 
   const filters = parseBestiaryFilters(search);
 
-  const { monsters, totalPages, summary, classSummary } = await loadCharacterBestiary({
+  const { monstersWithProgress, totalPages, summary, classSummary } = await loadCharacterBestiary({
     characterId,
     filters,
   });
@@ -37,7 +37,7 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Ch
       />
       <Grid container spacing={4} direction="column">
         <BestiaryFilterBar />
-        <BestiaryCardGrid monsters={monsters} />
+        <BestiaryCardGrid monstersWithProgress={monstersWithProgress} />
         <BestiaryPagination totalPages={totalPages} />
         <BestiaryFloatingPanel globalSummary={summary} classSummary={classSummary} />
       </Grid>

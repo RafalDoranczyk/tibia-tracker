@@ -2,35 +2,31 @@
 
 import { revalidatePath } from "next/cache";
 
-import { getUserScopedQuery } from "@/core/supabase";
+import { AppErrorCode, wrapAndLogError } from "@/core/error";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { PATHS } from "@/paths";
 import { assertZodParse } from "@/utils";
 
-import { CHARM_MAX_LEVEL } from "../constants";
 import { CharacterCharmUpsertPayloadSchema } from "../schemas";
 
-export async function setCharacterCharmLevel(payload: unknown) {
-  const { characterId, charmId, level } = assertZodParse(
+export async function setCharacterCharmLevel(payload: unknown): Promise<void> {
+  const { character_id, charm_id, level } = assertZodParse(
     CharacterCharmUpsertPayloadSchema,
     payload
   );
 
-  if (level < 1 || level > CHARM_MAX_LEVEL) {
-    throw new Error("Invalid charm level");
-  }
-
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
   // Call RPC (DB does ALL economy validation)
   const { error } = await supabase.rpc("unlock_charm", {
-    p_character_id: characterId,
-    p_charm_id: charmId,
+    p_character_id: character_id,
+    p_charm_id: charm_id,
     p_level: level,
   });
 
   if (error) {
-    throw new Error(error.message);
+    throw wrapAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to set character charm level");
   }
 
-  revalidatePath(PATHS.CHARACTER(characterId).CHARMS);
+  revalidatePath(PATHS.CHARACTER(character_id).CHARMS);
 }

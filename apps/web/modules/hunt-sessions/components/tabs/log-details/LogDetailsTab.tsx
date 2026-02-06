@@ -1,0 +1,128 @@
+"use client";
+
+import InvertColorsRounded from "@mui/icons-material/InventoryTwoTone";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { useState } from "react";
+import { useFormContext } from "react-hook-form";
+
+import type { CharacterCharmDetailed } from "@/modules/charms";
+import type { HuntPlace } from "@/modules/hunt-places";
+
+import type { HuntSessionForm, ItemPreview, MonsterPreview, PreyBonus } from "../../../schemas";
+import type { HuntSessionUnknownEntities } from "../../../types";
+import { SectionHeader } from "../SectionHeader";
+import { SectionPaperCard } from "../SectionPaperCard";
+import { HuntSetup } from "./HuntSetup";
+import { KilledMonsters } from "./KilledMonsters";
+import { LootedItems } from "./LootedItems";
+import { UploadLogModal } from "./UploadLogModal";
+
+const SPACING = 2 as const;
+
+type LogDetailsTabProps = {
+  preyBonusList: PreyBonus[];
+  huntPlaceList: HuntPlace[];
+  monsterList: MonsterPreview[];
+  itemList: ItemPreview[];
+  characterCharmList: CharacterCharmDetailed[];
+  unknownEntities: HuntSessionUnknownEntities;
+  openUnknownEntitiesModal: () => void;
+  setUnknownEntities: (entities: HuntSessionUnknownEntities) => void;
+};
+
+export function LogDetailsTab({
+  preyBonusList,
+  huntPlaceList,
+  monsterList,
+  itemList,
+  unknownEntities,
+  characterCharmList,
+  openUnknownEntitiesModal,
+  setUnknownEntities,
+}: LogDetailsTabProps) {
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const { getValues } = useFormContext<HuntSessionForm>();
+
+  const isAnyMonsterUnknown = (unknownEntities?.monsters?.length ?? 0) > 0;
+  const isAnyItemUnknown = (unknownEntities?.items?.length ?? 0) > 0;
+
+  // Get computed values that user can't edit tto determine if there is log data
+  const hasSessionData = !!getValues("healing");
+
+  return (
+    <Stack spacing={SPACING}>
+      <SectionHeader
+        title="Log Data"
+        icon={
+          <InvertColorsRounded color={hasSessionData ? "primary" : "secondary"} fontSize="small" />
+        }
+      >
+        <Box sx={{ flexGrow: 1 }} />
+
+        <Stack spacing={SPACING} direction="row" alignItems="center">
+          {!hasSessionData && (
+            <>
+              <Typography variant="caption" color="textSecondary" textAlign="center">
+                Auto-fill from session log
+              </Typography>
+              <Button
+                onClick={() => setUploadModalOpen(true)}
+                variant="contained"
+                color="secondary"
+                sx={{
+                  "@keyframes uploadPulse": {
+                    "0%": { boxShadow: "0 0 0 0 rgba(230,194,106,0.5)" },
+                    "70%": { boxShadow: "0 0 0 16px rgba(230,194,106,0)" },
+                    "100%": { boxShadow: "0 0 0 0 rgba(230,194,106,0)" },
+                  },
+
+                  animation: "uploadPulse 1.2s ease-out infinite",
+                }}
+              >
+                Upload Session Log
+              </Button>
+            </>
+          )}
+        </Stack>
+      </SectionHeader>
+
+      <Grid container spacing={SPACING}>
+        <Grid size={{ xs: 12, xl: 2.5 }}>
+          <SectionPaperCard>
+            <HuntSetup huntPlaceList={huntPlaceList} />
+          </SectionPaperCard>
+        </Grid>
+
+        <Grid size={{ xs: 12, xl: 4.75 }}>
+          <SectionPaperCard>
+            <KilledMonsters
+              characterCharmList={characterCharmList}
+              preyBonusList={preyBonusList}
+              monsterList={monsterList}
+              isAnyMonsterUnknown={isAnyMonsterUnknown}
+              openUnknownEntitiesModal={openUnknownEntitiesModal}
+            />
+          </SectionPaperCard>
+        </Grid>
+
+        <Grid size={{ xs: 12, xl: 4.75 }}>
+          <SectionPaperCard>
+            <LootedItems
+              itemList={itemList}
+              isAnyItemUnknown={isAnyItemUnknown}
+              openUnknownEntitiesModal={openUnknownEntitiesModal}
+            />
+          </SectionPaperCard>
+        </Grid>
+      </Grid>
+
+      <UploadLogModal
+        monsterList={monsterList}
+        itemList={itemList}
+        setUnknownEntities={setUnknownEntities}
+        open={uploadModalOpen}
+        onClose={() => setUploadModalOpen(false)}
+      />
+    </Stack>
+  );
+}

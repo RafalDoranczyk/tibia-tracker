@@ -5,14 +5,16 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 import { FloatingActionButton } from "@/components";
-import { useToast } from "@/providers/global";
+import { useToast } from "@/providers/app";
 
 import { updateImbuingItemPrices } from "../actions/updateImbuingItemPrices";
-import { baseScrolls } from "../data/scrolls/base";
-import { elementalScrolls } from "../data/scrolls/elemental";
-import { skillScrolls } from "../data/scrolls/skill";
-import { mapItemPricesFromDb } from "../mappers/mapItemPricesFromDb";
-import { ImbuingFormSchema, type ImbuingFormValues, type ImbuingItem } from "../schemas";
+import { baseScrolls, elementalScrolls, skillScrolls } from "../data";
+import { mapImbuingPricesToForm } from "../mappers/mapImbuingPricesToForm";
+import {
+  ImbuingFormSchema,
+  type ImbuingFormValues,
+  type ImbuingItem,
+} from "../schemas/imbuing.schema";
 import type { Scroll } from "../types";
 import { GoldTokenInput } from "./GoldTokenInput";
 import { ScrollCard } from "./ScrollCard";
@@ -67,7 +69,7 @@ type ImbuingViewProps = {
 export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
   const toast = useToast();
 
-  const defaultValues = mapItemPricesFromDb(imbuingItemPrices);
+  const defaultValues = mapImbuingPricesToForm(imbuingItemPrices);
 
   const form = useForm<ImbuingFormValues>({
     defaultValues,

@@ -2,10 +2,9 @@
 
 import { useEffect } from "react";
 
-import { AppError, AppErrorCodes } from "@/core/errors";
+import { AppErrorCode, isAppError } from "@/core/error";
 import { env } from "@/env";
 import { ErrorPage } from "@/layout/page/ErrorPage";
-import { useToast } from "@/providers/global";
 
 export default function GlobalError({
   error,
@@ -14,27 +13,22 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const toast = useToast();
-
   const isDev = env.NODE_ENV === "development";
 
   useEffect(() => {
-    // Only show toast for unexpected errors
-    if (!(error instanceof AppError)) {
-      toast.error("Something went wrong");
-    }
+    if (!isDev) return;
 
-    // Log error for debugging (only in development)
-    if (isDev) {
-      console.error("Global Error:", {
-        message: error.message,
-        stack: error.stack,
-        digest: error.digest,
-        isAppError: error instanceof AppError,
-        code: error instanceof AppError ? error.code : undefined,
-      });
+    if (isAppError(error)) {
+      console.group("🔥 AppError");
+      console.error("Message:", error.message);
+      console.error("Code:", error.code);
+      console.error("Cause:", error.cause);
+      console.error("Details:", error.details);
+      console.groupEnd();
+    } else {
+      console.error("🔥 Unknown error:", error);
     }
-  }, [error, toast, isDev]);
+  }, [error, isDev]);
 
   const errorDetails = getErrorDetails(error);
 
@@ -46,27 +40,42 @@ export default function GlobalError({
       suggestions={errorDetails.suggestions}
       reset={reset}
       showDetails={isDev}
-      errorCode={error instanceof AppError ? error.code : undefined}
-      digest={error instanceof AppError ? undefined : error.digest}
+      errorCode={isAppError(error) ? error.code : undefined}
+      digest={isAppError(error) ? undefined : error.digest}
     />
   );
 }
 
-function getErrorDetails(error: Error & { digest?: string }) {
-  if (error instanceof AppError) {
+function serializeCause(cause: unknown) {
+  if (!cause) return undefined;
+
+  if (cause instanceof Error) {
     return {
-      title: getTitleForErrorCode(error.code as AppErrorCodes),
+      name: cause.name,
+      message: cause.message,
+      stack: cause.stack,
+    };
+  }
+
+  return cause;
+}
+
+function getErrorDetails(error: Error & { digest?: string }) {
+  if (isAppError(error)) {
+    return {
+      title: getTitleForErrorCode(error.code as AppErrorCode),
       description: error.message,
       technicalDetails: {
         errorCode: error.code,
         timestamp: new Date().toISOString(),
-        details: error.details,
+
+        cause: process.env.NODE_ENV === "development" ? serializeCause(error.cause) : undefined,
       },
-      suggestions: getSuggestionsForErrorCode(error.code as AppErrorCodes),
+      suggestions: getSuggestionsForErrorCode(error.code as AppErrorCode),
     };
   }
 
-  // Fallback for unexpected errors
+  // fallback
   return {
     title: "Something Went Wrong",
     description: "An unexpected error occurred while processing your request.",
@@ -80,57 +89,57 @@ function getErrorDetails(error: Error & { digest?: string }) {
   };
 }
 
-function getTitleForErrorCode(code: AppErrorCodes): string {
-  const errorTitles: Record<AppErrorCodes, string> = {
-    [AppErrorCodes.NOT_FOUND]: "Not Found",
-    [AppErrorCodes.UNAUTHORIZED]: "Access Denied",
-    [AppErrorCodes.PERMISSION_DENIED]: "Permission Denied",
-    [AppErrorCodes.SERVER_ERROR]: "Server Error",
-    [AppErrorCodes.VALIDATION_ERROR]: "Validation Error",
-    [AppErrorCodes.INVALID_PAYLOAD]: "Invalid Data",
-    [AppErrorCodes.INVALID_QUERY_PARAMS]: "Invalid Request",
-    [AppErrorCodes.FOREIGN_KEY_VIOLATION]: "Data Conflict",
-    [AppErrorCodes.UNIQUE_VIOLATION]: "Duplicate Entry",
+function getTitleForErrorCode(code: AppErrorCode): string {
+  const errorTitles: Record<AppErrorCode, string> = {
+    [AppErrorCode.NOT_FOUND]: "Not Found",
+    [AppErrorCode.UNAUTHORIZED]: "Access Denied",
+    [AppErrorCode.PERMISSION_DENIED]: "Permission Denied",
+    [AppErrorCode.SERVER_ERROR]: "Server Error",
+    [AppErrorCode.VALIDATION_ERROR]: "Validation Error",
+    [AppErrorCode.INVALID_PAYLOAD]: "Invalid Data",
+    [AppErrorCode.INVALID_QUERY_PARAMS]: "Invalid Request",
+    [AppErrorCode.FOREIGN_KEY_VIOLATION]: "Data Conflict",
+    [AppErrorCode.UNIQUE_VIOLATION]: "Duplicate Entry",
   };
 
   return errorTitles[code] || "Error";
 }
 
-function getSuggestionsForErrorCode(code: AppErrorCodes): string[] {
-  const suggestions: Record<AppErrorCodes, string[]> = {
-    [AppErrorCodes.NOT_FOUND]: [
+function getSuggestionsForErrorCode(code: AppErrorCode): string[] {
+  const suggestions: Record<AppErrorCode, string[]> = {
+    [AppErrorCode.NOT_FOUND]: [
       "Check the URL for typos",
       "Navigate back to the previous page",
       "Contact support if you believe this resource should exist",
     ],
-    [AppErrorCodes.UNAUTHORIZED]: ["Sign in to your account", "Check if your session has expired"],
-    [AppErrorCodes.PERMISSION_DENIED]: [
+    [AppErrorCode.UNAUTHORIZED]: ["Sign in to your account", "Check if your session has expired"],
+    [AppErrorCode.PERMISSION_DENIED]: [
       "You may not have permission to access this resource",
       "Contact your administrator for access",
     ],
-    [AppErrorCodes.SERVER_ERROR]: [
+    [AppErrorCode.SERVER_ERROR]: [
       "Try refreshing the page",
       "Wait a few minutes and try again",
       "Contact support if the problem persists",
     ],
-    [AppErrorCodes.VALIDATION_ERROR]: [
+    [AppErrorCode.VALIDATION_ERROR]: [
       "Check your input data for errors",
       "Ensure all required fields are filled correctly",
     ],
-    [AppErrorCodes.INVALID_PAYLOAD]: [
+    [AppErrorCode.INVALID_PAYLOAD]: [
       "Check your input data",
       "Ensure all fields are in the correct format",
     ],
-    [AppErrorCodes.INVALID_QUERY_PARAMS]: [
+    [AppErrorCode.INVALID_QUERY_PARAMS]: [
       "Check the URL parameters",
       "Try using the navigation menu instead",
     ],
-    [AppErrorCodes.FOREIGN_KEY_VIOLATION]: [
+    [AppErrorCode.FOREIGN_KEY_VIOLATION]: [
       "The referenced item may no longer exist",
       "Try refreshing the page",
       "Contact support if this continues",
     ],
-    [AppErrorCodes.UNIQUE_VIOLATION]: [
+    [AppErrorCode.UNIQUE_VIOLATION]: [
       "This entry already exists",
       "Try using different values",
       "Check for duplicates",

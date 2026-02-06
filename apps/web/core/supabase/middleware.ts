@@ -2,8 +2,8 @@ import type { NextRequest } from "next/server";
 
 import { createSupabaseMiddleware } from "@/lib/supabase";
 
-import { supabaseConfig } from "./config";
+import { SUPABASE_CONFIG } from "./config";
 
-export function createMiddlewareClient(request: NextRequest) {
-  return createSupabaseMiddleware(request, supabaseConfig.url, supabaseConfig.key);
+export function createSupabaseMiddlewareClient(request: NextRequest) {
+  return createSupabaseMiddleware(request, SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
 }

@@ -1,7 +1,7 @@
-import { Box, Card, CardContent, CardMedia, Chip, Typography } from "@mui/material";
+import { alpha, Box, Card, CardContent, CardMedia, Chip, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 
-import { getImageUrl } from "@/core/supabase";
+import { getPublicAssetUrl } from "@/core/supabase";
 
 type CardLayoutProps = {
   name: string;
@@ -30,8 +30,9 @@ export function CardLayout({
         position: "relative",
         overflow: "hidden",
         transition: "0.2s ease",
-        bgcolor: unlocked ? "background.paper" : "rgba(0,0,0,0.3)",
-        boxShadow: unlocked ? "0 0 10px rgba(0,255,120,0.25)" : 2,
+        bgcolor: unlocked ? "background.paper" : "background.default",
+        boxShadow: (t) =>
+          unlocked ? `0 0 10px ${alpha(t.palette.primary.light, 0.2)}` : t.shadows[2],
         opacity: unlocked ? 1 : 0.8,
       }}
     >
@@ -39,13 +40,16 @@ export function CardLayout({
       <Box sx={{ display: "flex", justifyContent: "center", pt: 2 }}>
         <CardMedia
           component="img"
-          image={getImageUrl(imagePath)}
+          image={getPublicAssetUrl(imagePath)}
           alt={name}
           sx={{
             width: 32,
             height: 32,
             objectFit: "contain",
-            filter: unlocked ? "drop-shadow(0 0 6px rgba(0,255,120,0.6))" : "grayscale(1)",
+            filter: (t) =>
+              unlocked
+                ? `drop-shadow(0 0 6px ${alpha(t.palette.primary.light, 0.6)})`
+                : "grayscale(1)",
           }}
         />
       </Box>

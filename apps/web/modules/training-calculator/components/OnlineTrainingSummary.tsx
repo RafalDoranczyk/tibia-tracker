@@ -4,7 +4,7 @@ import PaidIcon from "@mui/icons-material/Paid";
 import { Card, Checkbox, Chip, Divider, FormControlLabel, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
 
-import { SKILL_WEAPON_TYPES } from "../constants";
+import { SKILL_WEAPON_TYPES, TIBIA_TC_PRICE } from "../constants";
 import type { UseOnlineTrainingState } from "../hooks/useOnlineTrainingState";
 import type { ExerciseWeaponType } from "../types";
 import { calculateOnlineTraining } from "../utils/calculateOnlineTraining";
@@ -13,8 +13,6 @@ import { calculateTrainingCost } from "../utils/calculateTrainingCost";
 type OnlineTrainingSummaryProps = {
   weaponsState: UseOnlineTrainingState;
 };
-
-const TIBIA_TC_PRICE = 42000;
 
 export function OnlineTrainingSummary({ weaponsState }: OnlineTrainingSummaryProps) {
   const { character, exerciseDummy, setExerciseDummy, doubleEvent, setDoubleEvent } = weaponsState;

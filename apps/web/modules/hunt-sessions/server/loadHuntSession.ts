@@ -1,5 +1,6 @@
 "use server";
 
+import { fetchCharacterCharms } from "@/modules/charms/actions/fetchCharacterCharms";
 import { fetchHuntPlaces } from "@/modules/hunt-places";
 import { fetchItems } from "@/modules/items";
 
@@ -21,6 +22,7 @@ export async function loadHuntSession({ characterId, huntSessionId }: LoadHuntSe
     supplyList,
     damageElementList,
     preyBonusList,
+    characterCharmList,
     huntSession,
   ] = await Promise.all([
     fetchItems(),
@@ -29,6 +31,7 @@ export async function loadHuntSession({ characterId, huntSessionId }: LoadHuntSe
     fetchSupplies(),
     fetchDamageElements(),
     fetchPreyBonuses(),
+    fetchCharacterCharms(characterId),
     huntSessionId ? fetchHuntSession({ id: huntSessionId, character_id: characterId }) : null,
   ]);
 
@@ -39,6 +42,7 @@ export async function loadHuntSession({ characterId, huntSessionId }: LoadHuntSe
     supplyList,
     damageElementList,
     preyBonusList,
+    characterCharmList,
     huntSession,
   };
 }

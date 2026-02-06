@@ -3,7 +3,7 @@
 import {
   createContext,
   type Dispatch,
-  type ReactNode,
+  type PropsWithChildren,
   type SetStateAction,
   useContext,
   useState,
@@ -21,10 +21,7 @@ const CharactersContext = createContext<CharactersContextValue | null>(null);
 export function CharactersProvider({
   initialCharacters,
   children,
-}: {
-  initialCharacters: Character[];
-  children: ReactNode;
-}) {
+}: PropsWithChildren<{ initialCharacters: Character[] }>) {
   const [characters, setCharacters] = useState(initialCharacters);
 
   return (

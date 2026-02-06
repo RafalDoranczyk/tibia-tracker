@@ -9,16 +9,10 @@ import {
 import { loadUser } from "@/modules/user";
 import { DashboardProviders } from "@/providers/dashboard/DashboardProviders";
 
-import type { CharacterLayoutProps } from "./types";
-
-export default async function DashboardLayout({
-  children,
-  params,
-}: PropsWithChildren<CharacterLayoutProps>) {
-  const { characterId } = await params;
+export default async function DashboardLayout({ children }: PropsWithChildren) {
   const { user, settings, characters } = await loadUser();
 
-  const initialActiveCharacterId = characterId ?? settings?.last_active_character_id ?? null;
+  const initialActiveCharacterId = settings?.last_active_character_id ?? null;
 
   return (
     <DashboardProviders

@@ -17,10 +17,17 @@ export const metadata: Metadata = {
 export default async function NewHuntSessionPage({ params }: CharacterPageProps) {
   const { characterId } = await params;
 
-  const { itemList, monsterList, huntPlaceList, supplyList, damageElementList, preyBonusList } =
-    await loadHuntSession({
-      characterId,
-    });
+  const {
+    itemList,
+    monsterList,
+    huntPlaceList,
+    supplyList,
+    damageElementList,
+    preyBonusList,
+    characterCharmList,
+  } = await loadHuntSession({
+    characterId,
+  });
 
   return (
     <>
@@ -49,6 +56,7 @@ export default async function NewHuntSessionPage({ params }: CharacterPageProps)
 
       <HuntSessionFormProvider placeId={huntPlaceList[0].id}>
         <HuntSessionView
+          characterCharmList={characterCharmList}
           itemList={itemList}
           supplyList={supplyList}
           huntPlaceList={huntPlaceList}

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { loadUser } from "@/modules/user";
 import { PATHS } from "@/paths";
 
+// There is no dashboard content itself, just redirect to last active character or characters list
 export default async function DashboardPage() {
   const { settings } = await loadUser();
 

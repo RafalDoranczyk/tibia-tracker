@@ -9,7 +9,7 @@ export default function DashboardLoading() {
       sx={{ minHeight: "60vh", color: "white" }}
     >
       <CircularProgress color="inherit" />
-      <Typography variant="h6">Dashboard data loading...</Typography>
+      <Typography variant="h6">Loading…</Typography>
     </Stack>
   );
 }

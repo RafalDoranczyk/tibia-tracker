@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { useToast } from "@/providers/global";
+import { useToast } from "@/providers/app";
 
 import { deleteHuntSession } from "../actions/deleteHuntSession";
 

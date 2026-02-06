@@ -2,7 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
-import { getUserScopedQuery } from "@/core/supabase";
+import { AppErrorCode, wrapAndLogError } from "@/core/error";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { PATHS } from "@/paths";
 import { assertZodParse } from "@/utils";
 
@@ -11,7 +12,7 @@ import { type Character, CharacterSchema, CreateCharacterSchema } from "../schem
 export async function createCharacter(payload: unknown): Promise<Character> {
   const parsed = assertZodParse(CreateCharacterSchema, payload);
 
-  const { supabase } = await getUserScopedQuery();
+  const { supabase } = await requireAuthenticatedSupabase();
 
   const { data, error } = await supabase
     .from("characters")
@@ -20,11 +21,10 @@ export async function createCharacter(payload: unknown): Promise<Character> {
     .single();
 
   if (error) {
-    throw new Error("Failed to create character");
+    throw wrapAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to create character");
   }
 
-  assertZodParse(CharacterSchema, data);
   revalidatePath(PATHS.CHARACTERS);
 
-  return data;
+  return assertZodParse(CharacterSchema, data);
 }

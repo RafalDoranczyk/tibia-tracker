@@ -1,4 +1,5 @@
-export { getImageUrl } from "./assets";
-export { createSupabase, mapSupabaseErrorToAppError } from "./config";
-export { getUserScopedQuery } from "./getUserScopedQuery";
-export { createMiddlewareClient } from "./middleware";
+export { getPublicAssetUrl } from "../assets/getPublicAssetUrl";
+export { createServerSupabase } from "./createServerSupabase";
+export { mapSupabaseErrorToAppError } from "./mapSupabaseErrorToAppError";
+export { createSupabaseMiddlewareClient } from "./middleware";
+export { requireAuthenticatedSupabase } from "./requireAuthenticatedSupabase";

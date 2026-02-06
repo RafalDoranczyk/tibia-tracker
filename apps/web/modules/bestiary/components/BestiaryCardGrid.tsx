@@ -6,13 +6,13 @@ import type { MonsterWithCharacterProgress } from "../schemas";
 import { MonsterCard } from "./MonsterCard";
 
 type BestiaryCardGridProps = {
-  monsters: MonsterWithCharacterProgress[];
+  monstersWithProgress: MonsterWithCharacterProgress[];
 };
 
-export function BestiaryCardGrid({ monsters }: BestiaryCardGridProps) {
-  return monsters.length ? (
+export function BestiaryCardGrid({ monstersWithProgress }: BestiaryCardGridProps) {
+  return monstersWithProgress.length ? (
     <Grid container spacing={2} mb={2}>
-      {monsters.map((monster) => (
+      {monstersWithProgress.map((monster) => (
         <Grid key={monster.id} sx={{ display: "flex", justifyContent: "center" }}>
           <MonsterCard monster={monster} />
         </Grid>

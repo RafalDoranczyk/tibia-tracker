@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { MonsterSchema } from "@/modules/bestiary";
+import { CharmSchema } from "@/modules/charms";
 import { ItemSchema } from "@/modules/items";
 import { PositiveInt } from "@/schemas";
 
@@ -38,11 +39,23 @@ const MonsterPreyBonusSchema = z.object({
   prey: PreyBonusSchema,
 });
 
+const MonsterCharmBonusSchema = z.object({
+  // It is stored as a number in DB
+  id: PositiveInt,
+  charm: CharmSchema.pick({
+    id: true,
+    name: true,
+    image_path: true,
+    type: true,
+  }),
+});
+
 export const HuntSessionKilledMonsterSchema = z.object({
   id: PositiveInt,
   count: PositiveInt,
   monster: MonsterPreviewSchema,
   prey_bonus: MonsterPreyBonusSchema.array().optional(),
+  charm_bonus: MonsterCharmBonusSchema.array().optional(),
 });
 
 /** Looted item relation */
@@ -62,13 +75,13 @@ export const HuntSessionSupplySchema = z.object({
 /** Damage element relation */
 export const HuntSessionDamageElementSchema = z.object({
   id: PositiveInt,
-  percent: PositiveInt,
+  percent: z.number().positive(),
   damage_element: DamageElementSchema,
 });
 
 /** Damage source relation */
 export const HuntSessionDamageSourceSchema = z.object({
   id: PositiveInt,
-  percent: PositiveInt,
+  percent: z.number().positive(),
   damage_source: DamageSourceSchema,
 });

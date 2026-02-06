@@ -1,15 +1,14 @@
 "use client";
 
 import { Box, Grid, Tab, Tabs } from "@mui/material";
-import { useState } from "react";
+import { type PropsWithChildren, useState } from "react";
 
 import { OnlineTrainingView } from "./OnlineTrainingView";
 
-interface TabPanelProps {
-  children?: React.ReactNode;
+type TabPanelProps = PropsWithChildren<{
   index: number;
   value: number;
-}
+}>;
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;

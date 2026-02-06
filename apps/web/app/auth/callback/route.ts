@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { createSupabase } from "@/core/supabase";
+import { createServerSupabase } from "@/core/supabase";
 import { env } from "@/env";
 import { PATHS } from "@/paths";
 
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   }
 
   try {
-    const supabase = await createSupabase();
+    const supabase = await createServerSupabase();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { FloatingActionButton } from "@/components";
+import type { CharacterCharmDetailed } from "@/modules/charms";
 import type { HuntPlace } from "@/modules/hunt-places";
 
 import { useSaveHuntSession } from "../hooks/useSaveHuntSession";
@@ -17,11 +18,12 @@ import type {
   PreyBonus,
 } from "../schemas";
 import type { HuntSessionUnknownEntities } from "../types";
-import { DamageAnalyzer } from "./damage/DamageAnalyzer";
 import { FloatingStatsPanel } from "./FloatingStatsPanel";
-import { LogDetails } from "./log-details/LogDetails";
 import { SummaryStats } from "./SummaryStats";
-import { SuppliesAnalyzer } from "./supplies/SuppliesAnalyzer";
+// import { CombatStatsTab } from "./tabs/combat-stats/CombatStatsTab";
+import { DamageTab } from "./tabs/damage/DamageTab";
+import { LogDetailsTab } from "./tabs/log-details/LogDetailsTab";
+import { SuppliesTab } from "./tabs/supplies/SuppliesTab";
 import { UnknownEntitiesModal } from "./UnknownEntitiesModal";
 
 function TabPanel({
@@ -48,6 +50,7 @@ type HuntSessionViewProps = {
   supplyList: ItemPreview[];
   damageElementList: DamageElement[];
   preyBonusList: PreyBonus[];
+  characterCharmList: CharacterCharmDetailed[];
   huntSessionId?: HuntSession["id"];
 };
 
@@ -58,6 +61,7 @@ export function HuntSessionView({
   supplyList,
   damageElementList,
   preyBonusList,
+  characterCharmList,
   huntSessionId,
 }: HuntSessionViewProps) {
   const [unknownEntitiesModalOpen, setUnknownEntitiesModalOpen] = useState(false);
@@ -67,6 +71,7 @@ export function HuntSessionView({
   const { handleSubmit, formState } = useFormContext<HuntSessionForm>();
   const saveHuntSession = useSaveHuntSession();
   const onSubmit = handleSubmit((data) => saveHuntSession(data, huntSessionId));
+  console.log(formState.errors);
 
   return (
     <Container maxWidth="xl">
@@ -82,12 +87,14 @@ export function HuntSessionView({
         <Tab id="tab-0" aria-controls="tabpanel-0" label="Log Details" />
         <Tab id="tab-1" aria-controls="tabpanel-1" label="Damage" />
         <Tab id="tab-2" aria-controls="tabpanel-2" label="Supplies" />
+        <Tab id="tab-3" aria-controls="tabpanel-3" label="Combat Stats" />
       </Tabs>
 
       <Divider sx={{ my: 2 }} />
 
       <TabPanel value={tab} index={0}>
-        <LogDetails
+        <LogDetailsTab
+          characterCharmList={characterCharmList}
           preyBonusList={preyBonusList}
           huntPlaceList={huntPlaceList}
           itemList={itemList}
@@ -99,11 +106,15 @@ export function HuntSessionView({
       </TabPanel>
 
       <TabPanel value={tab} index={1}>
-        <DamageAnalyzer monsterList={monsterList} damageElementList={damageElementList} />
+        <DamageTab monsterList={monsterList} damageElementList={damageElementList} />
       </TabPanel>
 
       <TabPanel value={tab} index={2}>
-        <SuppliesAnalyzer supplyList={supplyList} />
+        <SuppliesTab supplyList={supplyList} />
+      </TabPanel>
+
+      <TabPanel value={tab} index={3}>
+        {/* <CombatStatsTab damageElementList={damageElementList} /> */}
       </TabPanel>
 
       <FloatingStatsPanel />

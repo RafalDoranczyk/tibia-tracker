@@ -1,5 +1,8 @@
 import type { CharacterVocation } from "@/modules/characters";
 
+// COSTS ONLY FOR NOW
+export const TIBIA_TC_PRICE = 42000;
+
 /**
  * BONUSES
  */

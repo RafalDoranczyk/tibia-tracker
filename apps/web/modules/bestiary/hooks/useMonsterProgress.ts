@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { useRequiredCharacterId } from "@/modules/characters";
-import { useToast } from "@/providers/global";
+import { useToast } from "@/providers/app";
 
 import { UpdateCharacterBestiary } from "../actions/updateCharacterBestiary";
 import { BESTIARY_FULL_STAGE } from "../constants";

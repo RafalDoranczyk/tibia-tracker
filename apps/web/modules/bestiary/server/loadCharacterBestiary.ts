@@ -11,6 +11,7 @@ export async function loadCharacterBestiary({
   characterId: string;
   filters: BestiaryFilters;
 }) {
+  // If there's a search query, we ignore the class filter to ensure relevant results are returned
   const shouldIgnoreClassFilter = !!filters.search?.trim();
 
   const bestiaryClass = shouldIgnoreClassFilter
@@ -28,7 +29,9 @@ export async function loadCharacterBestiary({
   ]);
 
   return {
-    ...bestiaryFull,
+    monstersWithProgress: bestiaryFull.monstersWithProgress,
+    totalCount: bestiaryFull.totalCount,
+    totalPages: bestiaryFull.totalPages,
     summary,
     classSummary,
   };

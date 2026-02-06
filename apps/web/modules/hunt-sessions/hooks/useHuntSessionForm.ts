@@ -30,6 +30,7 @@ const getDefaultValues = ({
   damage_elements: [],
   damage_sources: [],
   looted_items: [],
+  stats: [],
 });
 
 export function useHuntSessionForm({

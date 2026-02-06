@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { ConfirmDialog } from "@/components";
 
 import { CHARM_MAX_LEVEL } from "../constants";
-import type { CharmWithProgress } from "../schemas";
+import type { CharacterCharmWithProgress } from "../schemas";
 import {
   canAffordCharmLevel,
   getCharmEffectAtLevel,
@@ -13,7 +13,7 @@ import {
 
 type SetLevelModalProps = {
   isPending: boolean;
-  charm: CharmWithProgress;
+  charm: CharacterCharmWithProgress;
   availablePoints: number;
   onClose: () => void;
   onConfirm: (level: number) => void;
@@ -27,7 +27,8 @@ export function SetLevelModal({
   availablePoints,
 }: SetLevelModalProps) {
   const currentLevel = charm.progress.level;
-  const initialLevel = charm.progress.unlocked ? currentLevel + 1 : 1;
+  const initialLevel = charm.progress.unlocked ? Math.min(currentLevel + 1, CHARM_MAX_LEVEL) : 1;
+
   const [selectedLevel, setSelectedLevel] = useState(initialLevel);
 
   const levels = useMemo(
@@ -59,7 +60,8 @@ export function SetLevelModal({
       <ConfirmDialog.Content>
         <Stack spacing={1.5}>
           {levels.map(({ level, cost, effect, unlocked, current, affordable }) => {
-            const disabled = current || !affordable;
+            const isDowngrade = charm.progress.unlocked && level <= currentLevel;
+            const disabled = isDowngrade || !affordable;
             const selected = level === selectedLevel;
 
             return (
