@@ -84,7 +84,7 @@ function EmptyStatePanelSkeleton({ titleWidth = 160 }: { titleWidth?: number }) 
 
 export default function HuntSessionPageLoading() {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       {/* Breadcrumbs */}
       <Stack direction="row" spacing={1} mb={1}>
         <Skeleton width={90} height={24} />

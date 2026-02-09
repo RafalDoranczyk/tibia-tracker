@@ -1,26 +1,30 @@
 "use client";
 
-import AutoAwesomeMosaicOutlined from "@mui/icons-material/AutoAwesomeMosaicOutlined";
-import Circle from "@mui/icons-material/Circle";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
+import OpenInBrowser from "@mui/icons-material/OpenInBrowser";
+import StarIcon from "@mui/icons-material/Star";
 import {
   Box,
+  Button,
   Card,
-  Collapse,
+  CardActions,
+  CardContent,
+  CardHeader,
   Divider,
   IconButton,
   LinearProgress,
+  Popover,
   Stack,
   TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
+import Rating from "@mui/material/Rating";
 import Image from "next/image";
 import { useState } from "react";
 
 import { useMonsterProgress } from "../hooks/useMonsterProgress";
 import type { MonsterWithCharacterProgress } from "../schemas";
+import { MonsterPortraitFrame } from "./MonsterPortraitFrame";
 
 function MonsterCardOverlay() {
   return (
@@ -42,12 +46,9 @@ function MonsterCardOverlay() {
           top: 0,
           left: 0,
           width: "100%",
-          height: 3,
-          borderRadius: "3px 3px 0 0",
-          background: "rgba(255,255,255,0.1)",
-          "& .MuiLinearProgress-bar": {
-            backgroundColor: "#f5b342",
-          },
+          height: 8,
+          borderRadius: 1,
+          backgroundColor: "rgba(255,255,255,0.06)",
         }}
       />
       <Typography variant="body2" fontWeight="bold">
@@ -57,253 +58,258 @@ function MonsterCardOverlay() {
   );
 }
 
+const AVATAR_CLASSNAME = "monster-avatar";
+
 type MonsterCardProps = {
   monster: MonsterWithCharacterProgress;
+  onOpenDetails: () => void;
 };
 
-export function MonsterCard({ monster: initialMonster }: MonsterCardProps) {
-  const {
-    monster,
-    isLoading,
-    isBestiaryCompleted,
-    isEditingKills,
-    editedKills,
-    setEditedKills,
-    startEditingKills,
-    saveKills,
-    toggleSoulpit,
-    toggleFullBestiary,
-  } = useMonsterProgress(initialMonster);
+export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: MonsterCardProps) {
+  const { monster, isLoading, isBestiaryCompleted, toggleSoulpit, toggleFullBestiary, saveKills } =
+    useMonsterProgress(monsterToUpdate);
 
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const resistances = monster.elemental_resistances;
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [value, setValue] = useState(monster.kills);
+
+  const handleSaveKills = () => {
+    setAnchorEl(null);
+    saveKills(value);
+  };
 
   return (
     <Card
       sx={{
+        pointerEvents: isLoading ? "none" : "auto",
+        width: "100%",
         position: "relative",
-        backgroundColor: "#1c1c1c",
-        borderRadius: 3,
-        color: "white",
-        p: 2,
-        width: 280,
-        boxShadow: "0 0 20px rgba(0,0,0,0.4)",
-        opacity: isBestiaryCompleted ? 1 : 0.5,
+        opacity: isBestiaryCompleted ? 1 : 0.55,
+        transition: "transform 200ms ease",
+        willChange: "transform",
+
+        [`.${AVATAR_CLASSNAME}`]: {
+          transition: "transform 200ms ease",
+          transformOrigin: "center",
+          willChange: "transform",
+        },
+
+        "&:hover": {
+          transform: "translateY(-4px) scale(1.008)",
+        },
+
+        [`&:hover .${AVATAR_CLASSNAME}`]: {
+          transform: "scale(1.3) rotate(-5deg)",
+        },
       }}
     >
       {isLoading && <MonsterCardOverlay />}
 
-      <Box
-        sx={{
-          position: "absolute",
-          top: 4,
-          right: 4,
-          display: "flex",
-          gap: 0.5,
-        }}
-      >
-        <Tooltip title="Toggle Soulpit">
-          <IconButton
-            onClick={toggleSoulpit}
-            size="small"
-            sx={{ color: monster.has_soul ? "#f5b342" : "#666" }}
-            disabled={isLoading}
+      <LinearProgress
+        variant="determinate"
+        value={(monster.kills / monster.bestiary_kills.stage3) * 100}
+        sx={(t) => ({
+          height: 8,
+          borderRadius: 1,
+          backgroundColor: "rgba(255,255,255,0.06)",
+
+          "& .MuiLinearProgress-bar": {
+            backgroundColor: isBestiaryCompleted
+              ? t.palette.secondary.main
+              : t.palette.primary.main,
+            opacity: isBestiaryCompleted ? 1 : 0.3,
+          },
+        })}
+      />
+
+      <CardHeader
+        avatar={
+          <Box className={AVATAR_CLASSNAME} p={0.2}>
+            <Image src={monster.image_path} alt={monster.name} width={52} height={52} />
+          </Box>
+        }
+        action={
+          <Tooltip
+            tabIndex={0}
+            title={isBestiaryCompleted ? "Set as not completed" : "Set as completed"}
           >
-            <AutoAwesomeMosaicOutlined fontSize="small" />
-          </IconButton>
-        </Tooltip>
-
-        <Tooltip
-          title={isBestiaryCompleted ? "Unmark as fully unlocked" : "Mark as fully unlocked"}
-        >
-          <span>
-            <IconButton
+            <Box
               onClick={toggleFullBestiary}
-              size="small"
-              sx={{ color: isBestiaryCompleted ? "lime" : "#666" }}
-              disabled={isLoading}
+              sx={(t) => ({
+                px: 0.9,
+                py: 0.1,
+                borderRadius: 1,
+                fontSize: 10,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                cursor: "pointer",
+                transition: "all 150ms ease",
+
+                backgroundColor: isBestiaryCompleted
+                  ? `${t.palette.secondary.main}18`
+                  : t.palette.action.hover,
+
+                color: isBestiaryCompleted ? t.palette.secondary.main : t.palette.primary.light,
+
+                borderColor: isBestiaryCompleted
+                  ? t.palette.secondary.main
+                  : t.palette.primary.dark,
+
+                border: "1px solid",
+
+                "&:hover": {
+                  backgroundColor: isBestiaryCompleted
+                    ? `${t.palette.secondary.main}33`
+                    : t.palette.action.selected,
+                },
+              })}
             >
-              <Circle fontSize="small" />
-            </IconButton>
-          </span>
-        </Tooltip>
-      </Box>
-
-      {/* Soulpit ribbon */}
-      {monster.has_soul && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: 16,
-            left: -40,
-            transform: "rotate(-35deg)",
-            px: 5,
-            py: 0.3,
-            background: "linear-gradient(90deg, #f5b342, #d9a400)",
-            color: "#000",
-            fontSize: 12,
-            fontWeight: "bold",
-            textTransform: "uppercase",
-            boxShadow: "0 0 6px rgba(255,215,0,0.4)",
-            "&::before, &::after": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              width: 0,
-              height: 0,
-              borderTop: "12px solid transparent",
-              borderBottom: "12px solid transparent",
-            },
-            "&::before": {
-              left: -12,
-              borderRight: "12px solid #f5b342",
-            },
-            "&::after": {
-              right: -12,
-              borderLeft: "12px solid #d9a400",
-            },
-          }}
-        >
-          Soulpit
-        </Box>
-      )}
-
-      {/* Header */}
-      <Stack direction="row" gap={1} alignItems="center">
-        <Image
-          src={monster.image_path}
-          alt={monster.name}
-          width={64}
-          height={64}
-          className="rounded-md bg-neutral-900 p-1"
-        />
-        <Stack>
-          <Typography variant="h6" fontWeight="bold">
+              {isBestiaryCompleted ? "Unlocked" : "Locked"}
+            </Box>
+          </Tooltip>
+        }
+        title={
+          <Typography variant="caption" display="block" fontWeight="bold">
             {monster.name}
           </Typography>
-          <Typography variant="body2" color="gray">
+        }
+        subheader={
+          <Typography color="textSecondary" variant="caption">
             {monster.bestiary_class}
           </Typography>
-        </Stack>
-      </Stack>
+        }
+      />
 
-      <Divider sx={{ my: 1.5, borderColor: "rgba(255,255,255,0.1)" }} />
-
-      {/* Stats */}
-      <Stack spacing={0.5}>
-        <Typography variant="body2">❤️ HP: {monster.hp}</Typography>
-        <Typography variant="body2">⭐ XP: {monster.exp}</Typography>
-        <Typography variant="body2">💎 Charm Points: {monster.charm_points}</Typography>
-        <Typography variant="body2">⚔️ Difficulty: {monster.bestiary_difficulty}</Typography>
-      </Stack>
-
-      <Divider sx={{ my: 1.5, borderColor: "rgba(255,255,255,0.1)" }} />
-
-      {/* Details toggle */}
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ cursor: "pointer" }}
-        onClick={() => setIsDetailsOpen((p) => !p)}
-      >
-        <Typography variant="subtitle2" color="gray">
-          Details
-        </Typography>
-        {isDetailsOpen ? <ExpandLess /> : <ExpandMore />}
-      </Stack>
-
-      <Collapse in={isDetailsOpen} timeout="auto" unmountOnExit>
-        <Box sx={{ mt: 1 }}>
-          <Typography variant="subtitle2" color="gray" gutterBottom>
-            Resistances
-          </Typography>
-
-          <Stack spacing={0.7}>
-            {Object.entries(resistances).map(([type, value]) => (
-              <Stack key={type}>
-                <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="body2">{type}</Typography>
-                  <Typography variant="body2">{value}%</Typography>
-                </Stack>
-                <LinearProgress
-                  variant="determinate"
-                  value={Math.min(value, 130)}
-                  sx={{
-                    height: 6,
-                    borderRadius: 1,
-                    backgroundColor: "#333",
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor:
-                        type === "fire"
-                          ? "#ff6b35"
-                          : type === "ice"
-                            ? "#63b3ed"
-                            : type === "energy"
-                              ? "#a855f7"
-                              : type === "earth"
-                                ? "#84cc16"
-                                : "#ccc",
-                    },
-                  }}
-                />
-              </Stack>
-            ))}
-          </Stack>
-        </Box>
-      </Collapse>
-
-      <Divider sx={{ my: 1.5, borderColor: "rgba(255,255,255,0.1)" }} />
-
-      {/* Kills */}
-      <Box sx={{ mt: 1 }}>
-        {isEditingKills ? (
-          <TextField
-            size="small"
-            type="number"
-            value={editedKills}
-            autoFocus
-            onChange={(e) => setEditedKills(Number(e.target.value))}
-            onBlur={saveKills}
-            slotProps={{
-              htmlInput: {
-                min: 0,
-                max: monster.bestiary_kills.stage3,
-                style: { color: "white", textAlign: "center", fontSize: 14 },
-              },
-            }}
-            sx={{
-              width: 100,
-              "& .MuiOutlinedInput-root": {
-                color: "white",
-                backgroundColor: "#111",
-                "& fieldset": { borderColor: "#444" },
-                "&:hover fieldset": { borderColor: "#777" },
-              },
-            }}
-          />
-        ) : (
-          <Typography
-            variant="body2"
-            onClick={startEditingKills}
-            sx={{ cursor: "pointer", "&:hover": { textDecoration: "underline" } }}
-          >
-            📊 Kills: {monster.kills} / {monster.bestiary_kills.stage3}
-          </Typography>
-        )}
-
-        <LinearProgress
-          variant="determinate"
-          value={(monster.kills / monster.bestiary_kills.stage3) * 100}
+      <CardContent>
+        <Box
+          onClick={(e) => setAnchorEl(e.currentTarget)}
           sx={{
-            height: 8,
-            mt: 0.5,
+            px: 1,
+            py: 0.3,
             borderRadius: 1,
-            backgroundColor: "#333",
-            "& .MuiLinearProgress-bar": { backgroundColor: "#ff4081" },
+            fontSize: 11,
+            color: "text.secondary",
+            bgcolor: (t) => t.palette.background.paper,
+            cursor: "pointer",
+
+            "&:hover": {
+              backgroundColor: (t) => t.palette.action.hover,
+            },
           }}
-        />
-      </Box>
+        >
+          {monster.kills}/{monster.bestiary_kills.stage3}
+        </Box>
+
+        {/* Save kills popover */}
+        <Popover
+          open={Boolean(anchorEl)}
+          anchorEl={anchorEl}
+          onClose={() => setAnchorEl(null)}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Stack spacing={1} sx={{ p: 1.5, width: 160 }}>
+            <TextField
+              size="small"
+              type="number"
+              value={value}
+              onChange={(e) => setValue(Number(e.target.value))}
+              slotProps={{
+                htmlInput: {
+                  min: 0,
+                  max: monster.bestiary_kills.stage3,
+                },
+              }}
+            />
+
+            <Stack direction="row" spacing={1} justifyContent="flex-end">
+              <Button size="small" onClick={() => setAnchorEl(null)}>
+                Cancel
+              </Button>
+              <Button size="small" variant="contained" onClick={handleSaveKills}>
+                Save
+              </Button>
+            </Stack>
+          </Stack>
+        </Popover>
+
+        <Divider sx={{ my: 1.5, borderColor: "rgba(255,255,255,0.1)" }} />
+        {/* Basic Stats */}
+        <Stack spacing={0.5} color="textSecondary">
+          <Typography variant="body2">❤️ HP: {monster.hp}</Typography>
+          <Typography variant="body2">⭐ XP: {monster.exp}</Typography>
+          <Typography variant="body2">💎 Charm Points: {monster.charm_points}</Typography>
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <Typography variant="body2" sx={{ minWidth: 70, pl: 0.8 }}>
+              Difficulty
+            </Typography>
+
+            <Rating
+              value={monster.bestiary_difficulty}
+              max={5}
+              readOnly
+              size="small"
+              icon={<StarIcon fontSize="inherit" />}
+              emptyIcon={<StarIcon fontSize="inherit" />}
+              sx={(t) => ({
+                "& .MuiRating-iconFilled": {
+                  color: t.palette.secondary.main,
+                },
+                "& .MuiRating-iconEmpty": {
+                  color: t.palette.text.disabled,
+                },
+              })}
+            />
+          </Stack>
+        </Stack>
+
+        <Divider sx={{ my: 1.5, borderColor: "rgba(255,255,255,0.1)" }} />
+      </CardContent>
+
+      <CardActions sx={{ gap: 1, justifyContent: "space-between" }}>
+        {/* Soulpit */}
+        <Tooltip title={monster.has_soul ? "Soul Unlocked" : "Unlock Soulpit"} placement="top">
+          <Box
+            onClick={toggleSoulpit}
+            sx={{
+              cursor: "pointer",
+              transition: "all 150ms ease",
+
+              opacity: monster.has_soul ? 1 : 0.4,
+              filter: monster.has_soul ? "none" : "grayscale(1)",
+              transform: monster.has_soul ? "scale(1)" : "scale(0.95)",
+
+              "&:hover": monster.has_soul
+                ? {
+                    transform: "scale(1.05)",
+                  }
+                : undefined,
+            }}
+          >
+            <MonsterPortraitFrame src={monster.image_path} alt={monster.name} size={32} />
+          </Box>
+        </Tooltip>
+
+        <Tooltip title="Details">
+          <IconButton
+            size="small"
+            onClick={onOpenDetails}
+            sx={(t) => ({
+              ml: "auto",
+              color: t.palette.text.secondary,
+              borderRadius: 1,
+              transition: "all 150ms ease",
+
+              backgroundColor: "rgba(255,255,255,0.04)",
+
+              "&:hover": {
+                color: t.palette.primary.light,
+                backgroundColor: "rgba(255,255,255,0.08)",
+              },
+            })}
+          >
+            <OpenInBrowser fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </CardActions>
     </Card>
   );
 }

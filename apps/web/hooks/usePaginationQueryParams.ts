@@ -69,7 +69,7 @@ export function usePaginationQueryParams<TData extends FiltersType>(
       setJson({
         ...json,
         ...newValue,
-        page: DEFAULT_PAGINATION.page, // zawsze resetujemy paginację
+        page: DEFAULT_PAGINATION.page,
       });
     },
     [json, setJson]

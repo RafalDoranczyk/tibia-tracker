@@ -1,10 +1,8 @@
 import { z } from "zod";
 
-import { PaginationSchema } from "@/lib/pagination";
 import { CharacterIDSchema } from "@/modules/characters";
-import { NonNegativeInt } from "@/schemas";
+import { LocalDatetime, NonNegativeInt } from "@/schemas";
 
-import { BestiaryClassSchema } from "./bestiaryFilters.schema";
 import { MonsterSchema } from "./monster.schema";
 
 /**
@@ -17,6 +15,7 @@ export const CharacterBestiarySchema = z.object({
   kills: NonNegativeInt,
   stage: NonNegativeInt,
   has_soul: z.boolean(),
+  created_at: LocalDatetime,
 });
 
 export type CharacterBestiary = z.infer<typeof CharacterBestiarySchema>;
@@ -42,23 +41,3 @@ export const UpdateCharacterBestiaryEntrySchema = z.object({
     has_soul: z.boolean().optional(),
   }),
 });
-
-export type UpdateCharacterBestiaryEntry = z.infer<typeof UpdateCharacterBestiaryEntrySchema>;
-
-/**
- * Fetch params (query input)
- */
-export const FetchCharacterBestiaryParamsSchema = z
-  .object({
-    characterId: CharacterIDSchema,
-    bestiaryClass: BestiaryClassSchema.optional(),
-  })
-  .merge(
-    PaginationSchema.pick({
-      page: true,
-      limit: true,
-      search: true,
-    })
-  );
-
-export type FetchCharacterBestiaryParams = z.infer<typeof FetchCharacterBestiaryParamsSchema>;

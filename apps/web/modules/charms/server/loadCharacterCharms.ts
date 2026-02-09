@@ -3,10 +3,10 @@
 import { fetchCharacterBestiarySummary } from "@/modules/bestiary";
 
 import { fetchCharacterCharmEconomy } from "../actions/fetchCharacterCharmEconomy";
-import { getCharmsWithProgress } from "../queries/getCharmsWithProgress";
+import { getCharmsWithProgress } from "./queries/getCharmsWithProgress";
 
 export async function loadCharmsPage(characterId: string) {
-  const [charms, bestiarySummary, charmEconomy] = await Promise.all([
+  const [charms, { data: bestiarySummary }, charmEconomy] = await Promise.all([
     getCharmsWithProgress(characterId),
     fetchCharacterBestiarySummary(characterId),
     fetchCharacterCharmEconomy(characterId),

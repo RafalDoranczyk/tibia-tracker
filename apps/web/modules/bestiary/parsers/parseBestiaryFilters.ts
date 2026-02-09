@@ -7,24 +7,24 @@ const FILTER_TOKEN = "filters";
 type SearchParams = Record<string, string | string[] | undefined>;
 
 export function parseBestiaryFilters(searchParams?: SearchParams) {
-  const base = BestiaryFiltersSchema.parse({});
+  const base = {};
 
-  if (!searchParams) return base;
+  if (!searchParams) {
+    return BestiaryFiltersSchema.parse(base);
+  }
 
   const raw = searchParams[FILTER_TOKEN];
-
   if (!raw || typeof raw !== "string") {
-    return base;
+    return BestiaryFiltersSchema.parse(base);
   }
 
   const parsed = parseJsonQuery(raw);
+  if (!parsed) {
+    return BestiaryFiltersSchema.parse(base);
+  }
 
-  if (!parsed) return base;
-
-  const result = BestiaryFiltersSchema.safeParse({
+  return BestiaryFiltersSchema.parse({
     ...base,
     ...parsed,
   });
-
-  return result.success ? result.data : base;
 }

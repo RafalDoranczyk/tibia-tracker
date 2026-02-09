@@ -93,7 +93,6 @@ export async function fetchHuntSession(payload: unknown): Promise<HuntSession | 
     .maybeSingle();
 
   if (error) {
-    console.log(error);
     throw new Error("Failed to fetch hunt session");
   }
   if (!data) {

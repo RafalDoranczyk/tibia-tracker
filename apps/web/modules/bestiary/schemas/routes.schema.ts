@@ -2,13 +2,13 @@ import { z } from "zod";
 
 import { CharacterIDSchema } from "@/modules/characters";
 
-import { BestiaryClassSchema } from "./bestiaryFilters.schema";
+import { BestiaryClassSchema } from "./monster.schema";
 
-export const CharacterBestiaryClassQuerySchema = z.object({
+export const CharacterBestiaryClassRequestSchema = z.object({
   characterId: CharacterIDSchema,
   bestiaryClass: BestiaryClassSchema,
 });
 
-export const CharacterBestiarySummaryQuerySchema = z.object({
+export const CharacterBestiarySummaryRequestSchema = z.object({
   characterId: CharacterIDSchema,
 });

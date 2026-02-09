@@ -2,15 +2,15 @@ import { NextResponse } from "next/server";
 
 import { handleApiError } from "@/core/api";
 import {
-  CharacterBestiaryClassQuerySchema,
-  getCharacterBestiaryClassSummary,
+  CharacterBestiaryClassRequestSchema,
+  fetchCharacterBestiaryClassSummary,
 } from "@/modules/bestiary";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const parsed = CharacterBestiaryClassQuerySchema.safeParse({
+    const parsed = CharacterBestiaryClassRequestSchema.safeParse({
       characterId: searchParams.get("characterId"),
       bestiaryClass: searchParams.get("bestiaryClass"),
     });
@@ -19,7 +19,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Invalid parameters" }, { status: 400 });
     }
 
-    const { data, cacheTag } = await getCharacterBestiaryClassSummary(
+    const { data, cacheTag } = await fetchCharacterBestiaryClassSummary(
       parsed.data.characterId,
       parsed.data.bestiaryClass
     );

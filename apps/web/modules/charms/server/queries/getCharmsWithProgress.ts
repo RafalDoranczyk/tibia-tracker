@@ -1,10 +1,10 @@
 "use server";
 
-import { fetchCharacterCharms } from "../actions/fetchCharacterCharms";
-import { fetchCharms } from "../actions/fetchCharms";
-import { mapCharmToAppCharm } from "../mappers/mapCharmToAppCharm";
-import { mapCharmWithProgress } from "../mappers/mapCharmWithProgress";
-import type { CharacterCharmWithProgress } from "../schemas";
+import { fetchCharacterCharms } from "../../actions/fetchCharacterCharms";
+import { fetchCharms } from "../../actions/fetchCharms";
+import { mapCharmToAppCharm } from "../../mappers/mapCharmToAppCharm";
+import { mapCharmWithProgress } from "../../mappers/mapCharmWithProgress";
+import type { CharacterCharmWithProgress } from "../../schemas";
 
 export async function getCharmsWithProgress(
   characterId: string
