@@ -1,3 +1,5 @@
+import type { BestiaryDifficulty, BestiaryStage, BestiaryStageFilter } from "./schemas";
+
 export const BESTIARY_CLASSES = [
   "Amphibic",
   "Aquatic",
@@ -22,10 +24,26 @@ export const BESTIARY_CLASSES = [
   "Vermin",
 ] as const;
 
-export const DEFAULT_BESTIARY_CLASS = BESTIARY_CLASSES[0];
+export const BESTIARY_DIFFICULTY: Record<BestiaryDifficulty, string> = {
+  1: "Trivial",
+  2: "Easy",
+  3: "Medium",
+  4: "Hard",
+  5: "Challenging",
+};
 
-export const BESTIARY_DEFAULT_LIMIT = 15;
-export const BESTIARY_EMPTY_STAGE = 0;
-export const BESTIARY_STAGE_1 = 1;
-export const BESTIARY_STAGE_2 = 2;
-export const BESTIARY_FULL_STAGE = 3;
+export const BESTIARY_DIFFICULTIES = Object.keys(BESTIARY_DIFFICULTY).map(
+  Number
+) as BestiaryDifficulty[];
+
+export const BESTIARY_STAGE_FILTER_LABEL: Record<BestiaryStageFilter, string> = {
+  all: "All",
+  not_completed: "Not Completed",
+  completed: "Completed",
+};
+
+export const BESTIARY_STAGE = {
+  STARTED: 1,
+  IN_PROGRESS: 2,
+  COMPLETED: 3,
+} as const satisfies Record<string, BestiaryStage>;

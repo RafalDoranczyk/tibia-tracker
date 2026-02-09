@@ -71,7 +71,6 @@ export function HuntSessionView({
   const { handleSubmit, formState } = useFormContext<HuntSessionForm>();
   const saveHuntSession = useSaveHuntSession();
   const onSubmit = handleSubmit((data) => saveHuntSession(data, huntSessionId));
-  console.log(formState.errors);
 
   return (
     <Container maxWidth="xl">

@@ -1,5 +1,7 @@
 import { Box, Grid, Skeleton, Stack } from "@mui/material";
 
+import { PageHeaderSkeleton } from "@/layout/page";
+
 function MonsterCardSkeleton() {
   return (
     <Box
@@ -7,8 +9,9 @@ function MonsterCardSkeleton() {
         width: 280,
         p: 2,
         borderRadius: 3,
-        backgroundColor: "#1c1c1c",
-        boxShadow: "0 0 20px rgba(0,0,0,0.4)",
+        border: "1px solid",
+        borderColor: "divider",
+        backgroundColor: "background.paper",
       }}
     >
       {/* Header */}
@@ -35,22 +38,50 @@ function MonsterCardSkeleton() {
   );
 }
 
+function FiltersSkeleton() {
+  return (
+    <Box
+      sx={{
+        p: 2,
+        borderRadius: 2,
+        border: "1px solid",
+        borderColor: "divider",
+        backgroundColor: "background.paper",
+      }}
+    >
+      {/* Header */}
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+        <Skeleton variant="text" width={80} height={24} />
+        <Skeleton variant="rounded" width={90} height={30} />
+      </Stack>
+
+      {/* Filters */}
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        alignItems={{ xs: "stretch", sm: "center" }}
+      >
+        <Skeleton variant="rounded" height={40} sx={{ minWidth: 200 }} />
+        <Skeleton variant="rounded" height={40} sx={{ minWidth: 180 }} />
+        <Skeleton variant="rounded" height={40} sx={{ minWidth: 180 }} />
+        <Skeleton variant="rounded" height={40} sx={{ minWidth: 220 }} />
+      </Stack>
+    </Box>
+  );
+}
+
 export default function Loading() {
   return (
     <Grid container spacing={5} direction="column">
+      <PageHeaderSkeleton />
+
       {/* Filters skeleton */}
-      <Grid>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-          <Skeleton variant="rounded" width={160} height={40} />
-          <Skeleton variant="rounded" width={260} height={40} />
-          <Skeleton variant="rounded" width={80} height={40} />
-        </Stack>
-      </Grid>
+      <FiltersSkeleton />
 
       {/* Monsters grid */}
       <Grid container spacing={2} mb={2}>
         {Array.from({ length: 9 }).map((_, idx) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: <Skeletons are static>
+          // biome-ignore lint/suspicious/noArrayIndexKey: skeletons are static
           <Grid key={idx} sx={{ display: "flex", justifyContent: "center" }}>
             <MonsterCardSkeleton />
           </Grid>

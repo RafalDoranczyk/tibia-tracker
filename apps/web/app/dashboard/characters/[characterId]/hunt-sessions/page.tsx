@@ -69,7 +69,8 @@ export default async function HuntSessions({ params, searchParams }: CharacterPa
               Add Hunt Session
             </Button>
           }
-          title="No hunt sessions"
+          subtitle="Start tracking your hunts to analyze your performance and optimize your gameplay!"
+          title="You haven't logged any hunt sessions yet. "
         />
       ) : (
         <HuntSessionListView huntSessionList={huntSessionList} count={count} />

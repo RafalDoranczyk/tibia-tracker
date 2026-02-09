@@ -1,8 +1,17 @@
-import { BESTIARY_FULL_STAGE, BESTIARY_STAGE_1, BESTIARY_STAGE_2 } from "../constants";
-import type { Monster } from "../schemas";
+import { BESTIARY_STAGE } from "../constants";
+import { type BestiaryStage, BestiaryStageSchema, type Monster } from "../schemas";
 
-export const getBestiaryStage = (kills: number, thresholds: Monster["bestiary_kills"]): number => {
-  if (kills >= thresholds.stage3) return BESTIARY_FULL_STAGE;
-  if (kills >= thresholds.stage2) return BESTIARY_STAGE_2;
-  return BESTIARY_STAGE_1;
-};
+export function getBestiaryStage(
+  kills: number,
+  thresholds: Monster["bestiary_kills"]
+): BestiaryStage {
+  if (kills >= thresholds.stage3) {
+    return BestiaryStageSchema.parse(BESTIARY_STAGE.COMPLETED);
+  }
+
+  if (kills >= thresholds.stage2) {
+    return BestiaryStageSchema.parse(BESTIARY_STAGE.IN_PROGRESS);
+  }
+
+  return BestiaryStageSchema.parse(BESTIARY_STAGE.STARTED);
+}

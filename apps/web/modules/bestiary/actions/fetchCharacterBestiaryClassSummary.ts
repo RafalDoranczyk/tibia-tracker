@@ -1,35 +1,51 @@
 "use server";
 
-import { AppErrorCode, wrapAndLogError } from "@/core/error";
-import { assertZodParse, serverFetch } from "@/utils";
+import { AppErrorCode, wrapAndLogError } from "@/core/error/";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
+import { assertZodParse } from "@/utils";
 
 import { BestiaryCacheTags } from "../cacheTags";
-import { type BestiaryClass, CharacterBestiaryClassSummarySchema } from "../schemas";
+import {
+  type BestiaryClass,
+  BestiaryClassSchema,
+  CharacterBestiaryClassSummarySchema,
+} from "../schemas";
+import { bestiaryClassSummaryQuery } from "../server/queries/bestiaryClassSummary.query";
 
 export async function fetchCharacterBestiaryClassSummary(
   characterId: string,
   bestiaryClass: BestiaryClass
 ) {
-  const res = await serverFetch(
-    `/api/bestiary/class-summary?characterId=${characterId}&bestiaryClass=${encodeURIComponent(
-      bestiaryClass
-    )}`,
-    {
-      next: {
-        tags: [BestiaryCacheTags.classSummary(characterId, bestiaryClass)],
-      },
-    }
+  const parsedBestiaryClass = assertZodParse(BestiaryClassSchema, bestiaryClass);
+
+  const { supabase } = await requireAuthenticatedSupabase();
+
+  const { data, error } = await bestiaryClassSummaryQuery(
+    supabase,
+    characterId,
+    parsedBestiaryClass
   );
 
-  if (!res.ok) {
+  if (error) {
     throw wrapAndLogError(
-      null,
+      error,
       AppErrorCode.SERVER_ERROR,
-      "Failed to fetch bestiary class summary"
+      "Failed to fetch character bestiary class summary"
     );
   }
 
-  const json = await res.json();
+  const safeData = data ?? {
+    character_id: characterId,
+    bestiary_class: parsedBestiaryClass,
+    total_monsters: 0,
+    completed_monsters: 0,
+    completed_soulpits: 0,
+    total_charm_points: 0,
+    unlocked_charm_points: 0,
+  };
 
-  return assertZodParse(CharacterBestiaryClassSummarySchema, json);
+  return {
+    data: CharacterBestiaryClassSummarySchema.parse(safeData),
+    cacheTag: BestiaryCacheTags.classSummary(characterId, parsedBestiaryClass),
+  };
 }

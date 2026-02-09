@@ -70,7 +70,7 @@ export function EmptyState({
         aria-label={title}
         {...boxProps}
       >
-        <Stack alignItems="center" spacing={2} maxWidth={360} textAlign="center">
+        <Stack alignItems="center" spacing={1.5} maxWidth={360} textAlign="center">
           <Box
             sx={{
               opacity: 0.85,

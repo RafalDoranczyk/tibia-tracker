@@ -2,13 +2,18 @@ import { z } from "zod";
 
 import { PaginationSchema } from "@/lib/pagination";
 
-import { BESTIARY_CLASSES } from "../constants";
+import { BestiaryClassSchema, BestiaryDifficultySchema } from "./monster.schema";
 
-export const BestiaryClassSchema = z.enum(BESTIARY_CLASSES);
+export const BestiaryStageFilterSchema = z.enum(["all", "not_completed", "completed"]);
+export type BestiaryStageFilter = z.infer<typeof BestiaryStageFilterSchema>;
 
-export type BestiaryClass = z.infer<typeof BestiaryClassSchema>;
+export const BESTIARY_STAGE_FILTER_VALUES = BestiaryStageFilterSchema.options;
 
 export const BestiaryFiltersSchema = PaginationSchema.extend({
-  bestiary_class: BestiaryClassSchema.optional(),
+  bestiaryClass: BestiaryClassSchema.optional(),
+  bestiaryDifficulty: BestiaryDifficultySchema.optional(),
+  stage: BestiaryStageFilterSchema.optional(),
+  limit: z.number().min(1).max(100).default(15),
 });
+
 export type BestiaryFilters = z.infer<typeof BestiaryFiltersSchema>;

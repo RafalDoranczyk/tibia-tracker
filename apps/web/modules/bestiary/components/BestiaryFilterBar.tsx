@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Box,
   Button,
   FormControl,
   InputLabel,
@@ -8,86 +9,72 @@ import {
   MenuItem,
   Select,
   Stack,
+  Typography,
 } from "@mui/material";
-import { useRef, useTransition } from "react";
 
 import { DebouncedSearchFieldURL } from "@/components";
-import { usePaginationQueryParams } from "@/hooks";
 
-import { BESTIARY_CLASSES, DEFAULT_BESTIARY_CLASS } from "../constants";
-import type { BestiaryClass, BestiaryFilters } from "../schemas";
+import {
+  BESTIARY_CLASSES,
+  BESTIARY_DIFFICULTIES,
+  BESTIARY_DIFFICULTY,
+  BESTIARY_STAGE_FILTER_LABEL,
+} from "../constants";
+import { useBestiaryFilters } from "../hooks/useBestiaryFilters";
+import { BESTIARY_STAGE_FILTER_VALUES } from "../schemas";
 
-const DEBOUNCE_MS = 500;
+const DEBOUNCE_MS = 1000;
 
 export function BestiaryFilterBar() {
-  const { filters, updateFilter } = usePaginationQueryParams<BestiaryFilters>();
-  const lastBestiaryClassRef = useRef<BestiaryClass | undefined>(filters.bestiary_class);
-
-  const [isPending, startTransition] = useTransition();
-
-  const handleClassChange = (value: BestiaryClass) => {
-    startTransition(() => {
-      lastBestiaryClassRef.current = value;
-
-      updateFilter({
-        bestiary_class: value,
-        search: undefined,
-        page: 1,
-      });
-    });
-  };
-
-  const handleSearchChange = (val: string) => {
-    startTransition(() => {
-      updateFilter({
-        search: val || undefined,
-        page: 1,
-      });
-    });
-  };
-
-  const handleClearFilters = () => {
-    startTransition(() => {
-      lastBestiaryClassRef.current = DEFAULT_BESTIARY_CLASS;
-
-      updateFilter({
-        bestiary_class: undefined,
-        search: undefined,
-        page: 1,
-      });
-    });
-  };
-
-  const isClearDisabled = !filters.search && filters.bestiary_class === undefined;
-
-  const isSearching = Boolean(filters.search);
-  const selectedClass = filters.bestiary_class ?? DEFAULT_BESTIARY_CLASS;
+  const { filters, isPending, isClearDisabled, actions } = useBestiaryFilters();
 
   return (
-    <>
+    <Box
+      sx={{
+        p: 2,
+        borderRadius: 2,
+        border: "1px solid",
+        borderColor: "divider",
+        backgroundColor: "background.paper",
+      }}
+    >
       {isPending && <LinearProgress />}
+
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+        <Typography variant="subtitle1" fontWeight={600}>
+          Filters
+        </Typography>
+
+        <Button
+          onClick={actions.clear}
+          disabled={isClearDisabled || isPending}
+          size="small"
+          color="inherit"
+        >
+          🧹 Clear filters
+        </Button>
+      </Stack>
 
       <Stack
         direction={{ xs: "column", sm: "row" }}
         spacing={2}
         alignItems={{ xs: "stretch", sm: "center" }}
       >
-        <FormControl size="small" sx={{ minWidth: 200 }} disabled={isPending || isSearching}>
-          <InputLabel id="bestiary-class-label">
-            {isSearching ? "Searching across all classes" : "Bestiary Class"}
-          </InputLabel>
+        {/* CLASS */}
+        <FormControl size="small" sx={{ minWidth: 200 }} disabled={isPending}>
+          <InputLabel id="bestiary-class-label">Class</InputLabel>
 
           <Select
             labelId="bestiary-class-label"
-            label="Bestiary Class"
-            value={selectedClass}
-            onChange={(e) => handleClassChange(e.target.value as BestiaryClass)}
+            label="Class"
+            value={filters.bestiaryClass}
+            onChange={(e) => actions.setClass(e.target.value)}
             MenuProps={{
-              PaperProps: {
-                sx: { maxHeight: 300 },
-              },
+              PaperProps: { sx: { maxHeight: 300 } },
             }}
           >
+            <MenuItem value="all">All classes</MenuItem>
+
             {BESTIARY_CLASSES.map((el) => (
               <MenuItem key={el} value={el}>
                 {el}
@@ -96,23 +83,54 @@ export function BestiaryFilterBar() {
           </Select>
         </FormControl>
 
+        {/* DIFFICULTY */}
+        <FormControl size="small" sx={{ minWidth: 180 }} disabled={isPending}>
+          <InputLabel id="bestiary-difficulty-label">Difficulty</InputLabel>
+
+          <Select
+            labelId="bestiary-difficulty-label"
+            label="Difficulty"
+            value={filters.bestiaryDifficulty}
+            onChange={(e) => actions.setDifficulty(e.target.value)}
+          >
+            <MenuItem value="all">All difficulties</MenuItem>
+
+            {BESTIARY_DIFFICULTIES.map((el) => (
+              <MenuItem key={el} value={el}>
+                {BESTIARY_DIFFICULTY[el]}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* STAGE */}
+        <FormControl size="small" sx={{ minWidth: 180 }} disabled={isPending}>
+          <InputLabel id="bestiary-stage-label">Progress</InputLabel>
+
+          <Select
+            labelId="bestiary-stage-label"
+            label="Progress"
+            value={filters.stage}
+            onChange={(e) => actions.setStageFilter(e.target.value)}
+            renderValue={(value) => BESTIARY_STAGE_FILTER_LABEL[value]}
+          >
+            {BESTIARY_STAGE_FILTER_VALUES.map((el) => (
+              <MenuItem key={el} value={el}>
+                {BESTIARY_STAGE_FILTER_LABEL[el]}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* SEARCH */}
         <DebouncedSearchFieldURL
           value={filters.search || ""}
-          onChange={handleSearchChange}
+          onChange={actions.setSearch}
           debounceMs={DEBOUNCE_MS}
           placeholder="Search monster..."
           disabled={isPending}
         />
-
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={handleClearFilters}
-          disabled={isClearDisabled || isPending}
-        >
-          🧹 Reset default
-        </Button>
       </Stack>
-    </>
+    </Box>
   );
 }

@@ -1,21 +1,34 @@
 "use server";
 
 import { AppErrorCode, wrapAndLogError } from "@/core/error";
-import { assertZodParse, serverFetch } from "@/utils";
+import { requireAuthenticatedSupabase } from "@/core/supabase";
 
 import { BestiaryCacheTags } from "../cacheTags";
 import { CharacterBestiarySummarySchema } from "../schemas";
+import { getCharacterBestiarySummaryQuery } from "../server/queries/bestiarySummary.query";
 
 export async function fetchCharacterBestiarySummary(characterId: string) {
-  const res = await serverFetch(`/api/bestiary/summary?characterId=${characterId}`, {
-    next: { tags: [BestiaryCacheTags.summary(characterId)] },
-  });
+  const { supabase } = await requireAuthenticatedSupabase();
 
-  if (!res.ok) {
-    throw wrapAndLogError(null, AppErrorCode.SERVER_ERROR, "Failed to fetch bestiary summary");
+  const { data, error } = await getCharacterBestiarySummaryQuery(supabase, characterId);
+
+  if (error) {
+    throw wrapAndLogError(
+      error,
+      AppErrorCode.SERVER_ERROR,
+      "Failed to fetch character bestiary summary"
+    );
   }
 
-  const json = await res.json();
+  const safeData = data ?? {
+    character_id: characterId,
+    unlocked_charm_points: 0,
+    total_charm_points: 0,
+    completed_soulpits: 0,
+  };
 
-  return assertZodParse(CharacterBestiarySummarySchema, json);
+  return {
+    data: CharacterBestiarySummarySchema.parse(safeData),
+    cacheTag: BestiaryCacheTags.summary(characterId),
+  };
 }

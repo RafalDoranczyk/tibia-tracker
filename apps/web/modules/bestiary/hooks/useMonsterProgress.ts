@@ -5,88 +5,58 @@ import { useState } from "react";
 import { useRequiredCharacterId } from "@/modules/characters";
 import { useToast } from "@/providers/app";
 
-import { UpdateCharacterBestiary } from "../actions/updateCharacterBestiary";
-import { BESTIARY_FULL_STAGE } from "../constants";
+import { updateCharacterBestiaryAction } from "../actions/updateCharacterBestiary";
+import { BESTIARY_STAGE } from "../constants";
 import type { MonsterWithCharacterProgress } from "../schemas";
 import { getBestiaryStage } from "../utils/getBestiaryStage";
 
-export function useMonsterProgress(initialMonster: MonsterWithCharacterProgress) {
+export function useMonsterProgress(monsterToUpdate: MonsterWithCharacterProgress) {
   const toast = useToast();
   const characterId = useRequiredCharacterId();
 
-  const [monster, setMonster] = useState(initialMonster);
+  const [monster, setMonster] = useState(monsterToUpdate);
   const [isLoading, setIsLoading] = useState(false);
-  const [isEditingKills, setIsEditingKills] = useState(false);
-  const [editedKills, setEditedKills] = useState(monster.kills);
 
-  const isBestiaryCompleted = monster.stage === BESTIARY_FULL_STAGE;
+  const isBestiaryCompleted = monster.stage === BESTIARY_STAGE.COMPLETED;
 
-  const optimisticUpdate = async (updates: Partial<MonsterWithCharacterProgress>) => {
+  const runUpdate = async (
+    updates: Partial<MonsterWithCharacterProgress>,
+    successMessage?: string
+  ) => {
+    setIsLoading(true);
     const prev = monster;
     setMonster((m) => ({ ...m, ...updates }));
 
     try {
-      await UpdateCharacterBestiary({
+      await updateCharacterBestiaryAction({
         characterId,
         monsterId: monster.id,
         updates,
       });
+      successMessage && toast.success(successMessage);
     } catch {
       setMonster(prev);
-    }
-  };
-
-  const toggleSoulpit = async () => {
-    setIsLoading(true);
-    try {
-      await optimisticUpdate({ has_soul: !monster.has_soul });
-      toast.success(`Soulpit for ${monster.name} saved`);
+      toast.error(`Failed to update ${monster.name}. Please try again.`);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const startEditingKills = () => {
-    setEditedKills(monster.kills);
-    setIsEditingKills(true);
+  const toggleSoulpit = () => {
+    return runUpdate({ has_soul: !monster.has_soul }, `Soulpit for ${monster.name} saved`);
   };
 
-  const toggleFullBestiary = async () => {
-    setIsLoading(true);
-    const newKills = monster.stage === BESTIARY_FULL_STAGE ? 0 : monster.bestiary_kills.stage3;
+  const toggleFullBestiary = () => {
+    const newKills = monster.stage === BESTIARY_STAGE.COMPLETED ? 0 : monster.bestiary_kills.stage3;
     const newStage = getBestiaryStage(newKills, monster.bestiary_kills);
 
-    try {
-      await optimisticUpdate({
-        kills: newKills,
-        stage: newStage,
-      });
-      toast.success(`Bestiary for ${monster.name} saved`);
-    } finally {
-      setIsLoading(false);
-    }
+    return runUpdate({ kills: newKills, stage: newStage }, `Bestiary for ${monster.name} saved`);
   };
 
-  const saveKills = async () => {
-    const { stage1, stage2, stage3 } = monster.bestiary_kills;
+  const saveKills = (kills: number) => {
+    const newStage = getBestiaryStage(kills, monster.bestiary_kills);
 
-    const maxKills = stage3;
-    const newKills = Math.max(0, Math.min(editedKills, maxKills));
-
-    const newStage = getBestiaryStage(newKills, {
-      stage1,
-      stage2,
-      stage3,
-    });
-
-    setIsEditingKills(false);
-
-    await optimisticUpdate({
-      kills: newKills,
-      stage: newStage,
-    });
-
-    toast.success(`Kills for ${monster.name} saved`);
+    return runUpdate({ kills, stage: newStage }, `Kills for ${monster.name} saved`);
   };
 
   return {
@@ -94,15 +64,9 @@ export function useMonsterProgress(initialMonster: MonsterWithCharacterProgress)
     isLoading,
     isBestiaryCompleted,
 
-    // kills editing
-    isEditingKills,
-    editedKills,
-    setEditedKills,
-    startEditingKills,
-    saveKills,
-
-    // actions
+    // domain actions
     toggleSoulpit,
     toggleFullBestiary,
+    saveKills,
   };
 }

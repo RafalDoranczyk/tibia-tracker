@@ -3,7 +3,7 @@ import { z } from "zod";
 import { CharacterIDSchema } from "@/modules/characters";
 import { NonNegativeInt } from "@/schemas";
 
-import { BestiaryClassSchema } from "./bestiaryFilters.schema";
+import { BestiaryClassSchema } from "./monster.schema";
 
 /**
  * Global bestiary summary for a character

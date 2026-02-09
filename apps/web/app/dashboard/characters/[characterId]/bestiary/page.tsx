@@ -3,10 +3,10 @@ import type { Metadata } from "next";
 
 import { PageHeader } from "@/layout/page";
 import {
-  BestiaryCardGrid,
   BestiaryFilterBar,
   BestiaryFloatingPanel,
   BestiaryPagination,
+  BestiaryView,
   loadCharacterBestiary,
   parseBestiaryFilters,
 } from "@/modules/bestiary";
@@ -37,7 +37,7 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Ch
       />
       <Grid container spacing={4} direction="column">
         <BestiaryFilterBar />
-        <BestiaryCardGrid monstersWithProgress={monstersWithProgress} />
+        <BestiaryView monstersWithProgress={monstersWithProgress} />
         <BestiaryPagination totalPages={totalPages} />
         <BestiaryFloatingPanel globalSummary={summary} classSummary={classSummary} />
       </Grid>
