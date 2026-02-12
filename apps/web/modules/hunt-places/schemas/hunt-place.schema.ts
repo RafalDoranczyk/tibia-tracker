@@ -1,13 +1,12 @@
 import { z } from "zod";
 
-import { NonEmptyString } from "@/schemas";
+import type { Tables } from "@/core/supabase";
+import { NonEmptyString } from "@/lib/zod";
 
 export const HuntPlaceSchema = z.object({
-  // Hunt place ID is a number in supabase db
   id: z.number(),
   name: NonEmptyString,
-  image_path: z.string().url().nullable().optional(),
-});
-export type HuntPlace = z.infer<typeof HuntPlaceSchema>;
+  image_path: z.string().url().nullable(),
+}) satisfies z.ZodType<Omit<Tables<"hunt_places">, "user_id">>;
 
-export const FetchHuntPlacesResponseSchema = z.array(HuntPlaceSchema);
+export type HuntPlace = z.infer<typeof HuntPlaceSchema>;

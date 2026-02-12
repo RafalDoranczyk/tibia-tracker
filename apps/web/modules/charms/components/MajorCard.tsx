@@ -1,7 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 
-import { CHARM_MAX_LEVEL } from "../constants";
-import type { CharacterCharmWithProgress } from "../schemas";
+import { type CharacterCharmWithProgress, CHARM_LEVELS } from "../schemas";
 import { canAffordNextCharmLevel, getCharmNextLevelCost } from "../utils/getCharmEconomy";
 import { CardLayout } from "./CardLayout";
 
@@ -15,7 +14,7 @@ export function MajorCard({ charm, availableMajorPoints, onSelect }: MajorCardPr
   const { name, description, image_path, progress } = charm;
   const { unlocked, level } = progress;
 
-  const isMaxLevel = unlocked && level >= CHARM_MAX_LEVEL;
+  const isMaxLevel = unlocked && level >= CHARM_LEVELS[CHARM_LEVELS.length - 1];
 
   const nextCost = getCharmNextLevelCost(charm);
   const canAfford = canAffordNextCharmLevel(charm, availableMajorPoints);

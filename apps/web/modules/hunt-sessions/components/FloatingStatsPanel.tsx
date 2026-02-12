@@ -7,7 +7,7 @@ import { FloatingStatsButton } from "@/components";
 import { formatDateTime } from "@/utils";
 
 import type { HuntSessionForm } from "../schemas";
-import { secondsToMinutes } from "../utils/parseSecondsToMinutes";
+import { parseSecondsToMinutes } from "../utils/parseSecondsToMinutes";
 
 type ComputedStatProps = {
   label: string;
@@ -86,7 +86,7 @@ export function FloatingStatsPanel() {
             <ComputedStat label="Ended At" value={formatDateTime(values.ended_at)} />
             <ComputedStat
               label="Duration (min)"
-              value={secondsToMinutes(values.duration_seconds)}
+              value={parseSecondsToMinutes(values.duration_seconds)}
             />
             <ComputedStat label="XP Gain" value={values.xp_gain} />
             <ComputedStat label="Raw XP Gain" value={values.raw_xp_gain} />

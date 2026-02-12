@@ -1,12 +1,11 @@
 import { useFormContext, useWatch } from "react-hook-form";
 
-import type { ImbuingFormValues, ImbuingPriceKey } from "../schemas/imbuing.schema";
-import type { ImbuingPrices, Scroll } from "../types";
+import type { ImbuingFormValues, ImbuingPriceKey, ImbuingPrices, ImbuingScroll } from "../schemas";
 import { calculateScrollEconomy } from "../utils/calculateScrollEconomy";
 
 type PriceMap = Partial<Record<ImbuingPriceKey, number>>;
 
-function hasAllRequiredPrices(scroll: Scroll, prices: PriceMap): prices is ImbuingPrices {
+function hasAllRequiredPrices(scroll: ImbuingScroll, prices: PriceMap): prices is ImbuingPrices {
   const tokenPrice = prices.gold_token;
   if (tokenPrice === undefined || tokenPrice <= 0) {
     return false;
@@ -23,7 +22,7 @@ function hasAllRequiredPrices(scroll: Scroll, prices: PriceMap): prices is Imbui
   });
 }
 
-export function useScrollEconomy(scroll: Scroll) {
+export function useScrollEconomy(scroll: ImbuingScroll) {
   const { control } = useFormContext<ImbuingFormValues>();
 
   const keys: ImbuingPriceKey[] = ["gold_token", scroll.key, ...scroll.items.map((i) => i.key)];

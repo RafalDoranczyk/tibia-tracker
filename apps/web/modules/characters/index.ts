@@ -1,7 +1,7 @@
 // ======================
 // Fetchers / server logic
 // ======================
-export { fetchCharacters } from "./actions/fetchCharacters";
+export { loadCharacters } from "./loaders/loadCharacters";
 
 // ======================
 // UI – public components
@@ -22,7 +22,7 @@ export { CharactersProvider, useCharacters } from "./providers/CharactersProvide
 // ======================
 // Shared
 // ======================
-export { CHARACTER_VOCATION } from "./constants";
+
 export {
   type Character,
   CharacterIDSchema,

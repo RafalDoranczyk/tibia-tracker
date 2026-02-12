@@ -10,21 +10,21 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const parsed = CharacterBestiaryClassRequestSchema.safeParse({
+    const { data, success } = CharacterBestiaryClassRequestSchema.safeParse({
       characterId: searchParams.get("characterId"),
       bestiaryClass: searchParams.get("bestiaryClass"),
     });
 
-    if (!parsed.success) {
+    if (!success) {
       return NextResponse.json({ error: "Invalid parameters" }, { status: 400 });
     }
 
-    const { data, cacheTag } = await fetchCharacterBestiaryClassSummary(
-      parsed.data.characterId,
-      parsed.data.bestiaryClass
-    );
+    const { data: summaryData, cacheTag } = await fetchCharacterBestiaryClassSummary({
+      characterId: data.characterId,
+      bestiaryClass: data.bestiaryClass,
+    });
 
-    return NextResponse.json(data, {
+    return NextResponse.json(summaryData, {
       headers: {
         "x-nextjs-cache-tags": cacheTag,
       },

@@ -3,8 +3,7 @@ import { useMemo, useState } from "react";
 
 import { ConfirmDialog } from "@/components";
 
-import { CHARM_MAX_LEVEL } from "../constants";
-import type { CharacterCharmWithProgress } from "../schemas";
+import { type CharacterCharmWithProgress, CHARM_LEVELS, type CharmLevel } from "../schemas";
 import {
   canAffordCharmLevel,
   getCharmEffectAtLevel,
@@ -16,7 +15,7 @@ type SetLevelModalProps = {
   charm: CharacterCharmWithProgress;
   availablePoints: number;
   onClose: () => void;
-  onConfirm: (level: number) => void;
+  onConfirm: (level: CharmLevel) => void;
 };
 
 export function SetLevelModal({
@@ -27,14 +26,18 @@ export function SetLevelModal({
   availablePoints,
 }: SetLevelModalProps) {
   const currentLevel = charm.progress.level;
-  const initialLevel = charm.progress.unlocked ? Math.min(currentLevel + 1, CHARM_MAX_LEVEL) : 1;
+  const initialLevel = (
+    charm.progress.unlocked
+      ? Math.min(currentLevel + 1, CHARM_LEVELS[CHARM_LEVELS.length - 1])
+      : CHARM_LEVELS[0]
+  ) as CharmLevel;
 
-  const [selectedLevel, setSelectedLevel] = useState(initialLevel);
+  const [selectedLevel, setSelectedLevel] = useState<CharmLevel>(initialLevel);
 
   const levels = useMemo(
     () =>
-      Array.from({ length: CHARM_MAX_LEVEL }, (_, i) => {
-        const level = i + 1;
+      Array.from({ length: CHARM_LEVELS.length }, (_, i) => {
+        const level = CHARM_LEVELS[i];
         const cost = getCharmTotalCostToLevel(charm, level);
         return {
           level,

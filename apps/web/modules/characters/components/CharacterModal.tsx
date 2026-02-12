@@ -13,10 +13,10 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 
-import { createCharacter } from "../actions/createCharacter";
-import { updateCharacter } from "../actions/updateCharacter";
-import { CHARACTER_VOCATION } from "../constants";
-import { type Character, type CreateCharacterPayload, CreateCharacterSchema } from "../schemas";
+import { createCharacter } from "../actions/create-character.action";
+import { updateCharacter } from "../actions/update-character.action";
+import { CHARACTER_VOCATION_LABELS } from "../constants";
+import { type Character, type CharacterForm, CharacterFormSchema } from "../schemas";
 
 type CharacterModalProps = {
   open: boolean;
@@ -34,11 +34,11 @@ export function CharacterModal({ open, onClose, character, onSuccess }: Characte
     formState: { errors, isSubmitting },
     reset,
     control,
-  } = useForm<CreateCharacterPayload>({
-    resolver: zodResolver(CreateCharacterSchema),
+  } = useForm<CharacterForm>({
+    resolver: zodResolver(CharacterFormSchema),
     values: {
       name: character?.name || "",
-      vocation: character?.vocation || CHARACTER_VOCATION[0],
+      vocation: character?.vocation || "knight",
       world: character?.world || "",
     },
   });
@@ -80,9 +80,9 @@ export function CharacterModal({ open, onClose, character, onSuccess }: Characte
                   error={!!errors.vocation}
                   helperText={errors.vocation?.message}
                 >
-                  {CHARACTER_VOCATION.map((vocation) => (
+                  {Object.entries(CHARACTER_VOCATION_LABELS).map(([vocation, label]) => (
                     <MenuItem key={vocation} value={vocation}>
-                      {vocation}
+                      {label}
                     </MenuItem>
                   ))}
                 </TextField>

@@ -6,8 +6,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { PATHS } from "@/core/paths";
 import { useActiveCharacter, useActiveCharacterDetails, useCharacters } from "@/modules/characters";
-import { PATHS } from "@/paths";
 
 export function CharacterSwitcher() {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
@@ -17,6 +17,14 @@ export function CharacterSwitcher() {
   const { characters } = useCharacters();
   const { setActiveCharacterId } = useActiveCharacter();
   const activeCharacter = useActiveCharacterDetails();
+
+  if (!activeCharacter) {
+    return (
+      <Button component={Link} href={PATHS.CHARACTERS} size="small" variant="outlined">
+        Add / Select character
+      </Button>
+    );
+  }
 
   const handleOpenMenu = (e: React.MouseEvent<HTMLElement>) => setMenuAnchor(e.currentTarget);
 
@@ -31,14 +39,6 @@ export function CharacterSwitcher() {
       setActiveCharacterId(charId);
     }
   };
-
-  if (!activeCharacter) {
-    return (
-      <Button component={Link} href={PATHS.CHARACTERS} size="small" variant="outlined">
-        Add / Select character
-      </Button>
-    );
-  }
 
   return (
     <Box>

@@ -7,7 +7,7 @@ import { useState, useTransition } from "react";
 import { ConfirmDialog } from "@/components";
 import { useToast } from "@/providers/app";
 
-import { resetCharacterCharms } from "../actions/resetCharacterCharms";
+import { resetCharacterCharms } from "../actions/reset-character-charms.action";
 
 type CharmsResetButtonProps = {
   characterId: string;

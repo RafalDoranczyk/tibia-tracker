@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 
 import { ConfirmDialog, EmptyState } from "@/components";
 
-import { deleteCharacter } from "../actions/deleteCharacter";
+import { deleteCharacter } from "../actions/delete-character.action";
 import { useActiveCharacter } from "../providers/ActiveCharacterProvider";
 import type { Character } from "../schemas";
 import { CharacterModal } from "./CharacterModal";
@@ -53,7 +53,7 @@ export function CharactersView({ hasCharacters, characters }: CharactersViewProp
     if (!characterToDelete) return;
 
     startTransition(async () => {
-      await deleteCharacter({ id: characterToDelete.id });
+      await deleteCharacter(characterToDelete.id);
 
       // if deleted active character → reset
       if (activeCharacterId === characterToDelete.id) {

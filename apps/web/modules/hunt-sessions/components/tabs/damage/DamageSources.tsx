@@ -16,8 +16,8 @@ import type { HuntSessionForm, MonsterPreview } from "../../../schemas";
 import { SectionHeader } from "../SectionHeader";
 import { SectionPaperCard } from "../SectionPaperCard";
 
-type DamageSourceField = FieldArrayWithId<HuntSessionForm, "damage_sources"> & {
-  damageSourceId: number;
+type DamageSourceField = FieldArrayWithId<HuntSessionForm, "monster_damage_sources"> & {
+  monsterId: number;
 };
 
 type DamageSourceRowProps = {
@@ -29,7 +29,7 @@ type DamageSourceRowProps = {
 };
 
 function DamageSourceRow({ i, field, control, disabled, sourceMap }: DamageSourceRowProps) {
-  const source = sourceMap[field.damageSourceId];
+  const source = sourceMap[field.monsterId];
 
   return (
     <Stack
@@ -51,7 +51,7 @@ function DamageSourceRow({ i, field, control, disabled, sourceMap }: DamageSourc
           variant="rounded"
         />
         <Typography variant="body2" fontWeight={500}>
-          {source?.name ?? `Unknown source #${field.damageSourceId}`}
+          {source?.name ?? `Unknown source #${field.monsterId}`}
         </Typography>
       </Stack>
 
@@ -60,7 +60,7 @@ function DamageSourceRow({ i, field, control, disabled, sourceMap }: DamageSourc
         disabled={disabled}
         size="small"
         control={control}
-        name={`damage_sources.${i}.percent`}
+        name={`monster_damage_sources.${i}.percent`}
         type="number"
         sx={{ width: 90 }}
       />
@@ -77,7 +77,7 @@ export function DamageSources({ monsterList }: DamageSourcesProps) {
 
   const { fields } = useFieldArray({
     control,
-    name: "damage_sources",
+    name: "monster_damage_sources",
   });
 
   const sourceMap = useMemo(

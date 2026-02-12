@@ -11,11 +11,11 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 
-import type { ScrollItem } from "../types";
+import type { ImbuingScrollItem } from "../schemas";
 import { ScrollCardPriceInput } from "./ScrollCardPriceInput";
 
 type ScrollCardItemsProps = {
-  items: ScrollItem[];
+  items: ImbuingScrollItem[];
 };
 
 export function ScrollCardItems({ items }: ScrollCardItemsProps) {

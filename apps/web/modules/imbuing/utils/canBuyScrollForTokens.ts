@@ -1,5 +1,5 @@
-import type { CraftMethod } from "../types";
+import type { ImbuingCraftMethod } from "../schemas";
 
-export function canBuyScrollForTokens(craftMethods: CraftMethod[]) {
+export function canBuyScrollForTokens(craftMethods: ImbuingCraftMethod[]) {
   return craftMethods.includes("tokens");
 }

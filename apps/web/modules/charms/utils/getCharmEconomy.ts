@@ -7,7 +7,7 @@ export function getCharmTotalCostToLevel(
   let total = 0;
 
   for (let l = 1; l <= targetLevel; l++) {
-    total += charm.levels[l].cost;
+    total += charm.levels[1].cost;
   }
 
   return total;

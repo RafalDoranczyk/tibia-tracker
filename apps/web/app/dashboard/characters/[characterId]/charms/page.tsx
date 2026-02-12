@@ -2,7 +2,14 @@ import { Box } from "@mui/material";
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/layout/page";
-import { CharmsCards, CharmsResetButton, CharmStats, loadCharmsPage } from "@/modules/charms";
+import { loadCharacterBestiarySummary } from "@/modules/bestiary";
+import {
+  CharmsCards,
+  CharmsResetButton,
+  CharmStats,
+  fetchCharacterCharmEconomy,
+  fetchCharmsWithProgress,
+} from "@/modules/charms";
 
 import type { CharacterPageProps } from "../../../types";
 
@@ -13,9 +20,16 @@ export const metadata: Metadata = {
 
 export default async function Charms({ params }: CharacterPageProps) {
   const { characterId } = await params;
-  const { charms, charmEconomy, totalCharmPoints, progress } = await loadCharmsPage(characterId);
 
+  const [charms, { data: bestiarySummary }, charmEconomy] = await Promise.all([
+    fetchCharmsWithProgress(characterId),
+    loadCharacterBestiarySummary(characterId),
+    fetchCharacterCharmEconomy(characterId),
+  ]);
+
+  const { unlocked_charm_points, total_charm_points } = bestiarySummary;
   const { major_available, minor_available, major_unlocked } = charmEconomy;
+  const progress = total_charm_points > 0 ? (unlocked_charm_points / total_charm_points) * 100 : 0;
 
   return (
     <>
@@ -32,7 +46,7 @@ export default async function Charms({ params }: CharacterPageProps) {
 
       <CharmStats
         charmEconomy={charmEconomy}
-        totalCharmPoints={totalCharmPoints}
+        totalCharmPoints={total_charm_points}
         progress={progress}
       />
 

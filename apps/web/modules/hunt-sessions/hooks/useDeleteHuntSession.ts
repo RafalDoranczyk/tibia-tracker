@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 
 import { useToast } from "@/providers/app";
 
-import { deleteHuntSession } from "../actions/deleteHuntSession";
+import { deleteHuntSession } from "../actions";
 
 export function useDeleteHuntSession() {
   const toast = useToast();

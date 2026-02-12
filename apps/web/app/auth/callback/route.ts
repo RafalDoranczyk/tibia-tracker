@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+import { isDevEnv } from "@/core/env";
+import { PATHS } from "@/core/paths";
 import { createServerSupabase } from "@/core/supabase";
-import { env } from "@/env";
-import { PATHS } from "@/paths";
 
 // Helper functions
 function isValidRedirectPath(path: string): boolean {
@@ -16,7 +16,7 @@ function redirectToError(origin: string): NextResponse {
 
 function getRedirectBase(request: NextRequest, origin: string): string {
   const forwardedHost = request.headers.get("x-forwarded-host");
-  const isDev = env.NODE_ENV === "development" || origin.includes("localhost");
+  const isDev = isDevEnv() || origin.includes("localhost");
 
   if (isDev) {
     return origin;

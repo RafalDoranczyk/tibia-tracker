@@ -20,9 +20,9 @@ const CHARM_COLOR_MAP: Record<CharmType, ChipProps["color"]> = {
 } as const;
 
 type CharmChipEditorProps = {
-  value?: string | null; // charmBonusId
+  value?: number | null; // charmBonusId
   characterCharmList: CharacterCharmDetailed[];
-  onChange: (charmBonusId: string | null) => void;
+  onChange: (charmBonusId: number | null) => void;
 };
 
 export function CharmChipEditor({ characterCharmList, value, onChange }: CharmChipEditorProps) {
@@ -47,9 +47,9 @@ export function CharmChipEditor({ characterCharmList, value, onChange }: CharmCh
       </Tooltip>
 
       <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={() => setAnchorEl(null)}>
-        {characterCharmList.map(({ id, charm_id, charm }) => (
+        {characterCharmList.map(({ charm_id, charm }) => (
           <MenuItem
-            key={id}
+            key={charm_id}
             dense
             onClick={() => {
               onChange(charm_id);

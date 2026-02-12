@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { Tool } from "@anthropic-ai/sdk/resources/index";
 import type { MessageCreateParamsNonStreaming } from "@anthropic-ai/sdk/resources/messages";
 
-import { env } from "@/env";
+import { env } from "@/core/env";
 
 export const anthropic = new Anthropic({
   apiKey: env.ANTHROPIC_API_KEY,

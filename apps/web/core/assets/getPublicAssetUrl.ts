@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from "@/core/env";
 
 export function getPublicAssetUrl(path?: string) {
   if (!path) return "/placeholder.png";

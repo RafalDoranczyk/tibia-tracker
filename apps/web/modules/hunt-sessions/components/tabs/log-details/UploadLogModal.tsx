@@ -11,9 +11,10 @@ import {
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
+import type { ItemPreview } from "@/modules/items";
+
 import { mapHuntSessionJSONToForm } from "../../../mappers/mapHuntSessionJSONToForm";
-import type { HuntSessionForm, ItemPreview, MonsterPreview } from "../../../schemas";
-import type { HuntSessionUnknownEntities } from "../../../types";
+import type { HuntSessionForm, HuntSessionUnknownEntities, MonsterPreview } from "../../../schemas";
 import { HuntSessionParseError } from "../../../utils/parseHuntSessionJSON";
 
 function patchFormValues<T extends Record<string, unknown>>(

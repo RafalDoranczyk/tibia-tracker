@@ -19,7 +19,6 @@ export function MonsterPortraitFrame({ src, alt, size = 72 }: MonsterPortraitFra
         borderRadius: 1,
         overflow: "hidden",
 
-        // 🔵 ten „lepszy” niebieski
         background: "radial-gradient(circle at top, #3b82f6, #1e3a8a 70%)",
 
         clipPath:
@@ -43,7 +42,6 @@ export function MonsterPortraitFrame({ src, alt, size = 72 }: MonsterPortraitFra
         },
       }}
     >
-      {/* subtle magic highlight */}
       <Box
         sx={{
           position: "absolute",

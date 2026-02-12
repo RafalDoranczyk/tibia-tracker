@@ -1,11 +1,12 @@
 import { Box } from "@mui/material";
 
 import { Table, type TableOrder, TooltipIconButton } from "@/components";
-import { formatDate, formatNumberCompact } from "@/utils";
+import { formatDate } from "@/lib/dayjs";
+import { formatNumberCompact } from "@/utils";
 
 import { HUNT_SESSIONS_TABLE_HEAD_CELLS } from "../constants";
 import type { HuntSessionListItem } from "../schemas";
-import { secondsToMinutes } from "../utils/parseSecondsToMinutes";
+import { parseSecondsToMinutes } from "../utils/parseSecondsToMinutes";
 
 function formatSessionRow(session: HuntSessionListItem) {
   return {
@@ -81,7 +82,7 @@ export function SessionsTable({
               >
                 <Table.Cell>{date}</Table.Cell>
                 <Table.Cell>{level}</Table.Cell>
-                <Table.Cell>{secondsToMinutes(duration_seconds)}</Table.Cell>
+                <Table.Cell>{parseSecondsToMinutes(duration_seconds)}</Table.Cell>
                 <Table.Cell>{rawXp}</Table.Cell>
                 <Table.Cell>{place.name}</Table.Cell>
                 <Table.Cell>{profit}</Table.Cell>

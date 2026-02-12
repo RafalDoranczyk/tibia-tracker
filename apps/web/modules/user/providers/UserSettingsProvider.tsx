@@ -2,7 +2,7 @@
 
 import { createContext, type PropsWithChildren, useContext, useState } from "react";
 
-import type { UserSetting } from "../schemas/user.schema";
+import type { UserSetting } from "../schemas/db/user.schema";
 
 type UserSettingsState = UserSetting | null;
 

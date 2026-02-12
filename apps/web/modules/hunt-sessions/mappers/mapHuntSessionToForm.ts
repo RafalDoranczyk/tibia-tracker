@@ -4,11 +4,6 @@ export function mapHuntSessionToForm(huntSession: HuntSession): HuntSessionForm 
   return {
     ...huntSession,
     place_id: huntSession.place.id,
-    stats: huntSession.stats.map((s) => ({
-      statDefinitionId: s.statDefinitionId,
-      damageElementId: s.damageElementId,
-      value: s.value,
-    })),
     killed_monsters:
       huntSession.killed_monsters.map((m) => ({
         name: m.monster.name,
@@ -27,8 +22,8 @@ export function mapHuntSessionToForm(huntSession: HuntSession): HuntSessionForm 
 
     supplies:
       huntSession.supplies?.map((s) => ({
-        name: s.supply.name,
-        supplyId: s.supply.id,
+        name: s.item.name,
+        supplyId: s.item.id,
         count: s.count,
       })) ?? [],
 
@@ -39,9 +34,9 @@ export function mapHuntSessionToForm(huntSession: HuntSession): HuntSessionForm 
         name: de.damage_element.name,
       })) ?? [],
 
-    damage_sources:
-      huntSession.damage_sources?.map((ds) => ({
-        damageSourceId: ds.damage_source.id,
+    monster_damage_sources:
+      huntSession.monster_damage_sources?.map((ds) => ({
+        monsterId: ds.damage_source.id,
         percent: ds.percent,
         damage_source: {
           name: ds.damage_source.name,
