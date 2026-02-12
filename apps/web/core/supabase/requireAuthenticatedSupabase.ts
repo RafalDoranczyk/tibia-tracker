@@ -1,7 +1,13 @@
 import { AppError, AppErrorCode } from "../error";
 import { createServerSupabase } from "./createServerSupabase";
+import type { TypedSupabaseClient } from "./types";
 
-export async function requireAuthenticatedSupabase() {
+type AuthenticatedSupabaseResult = {
+  supabase: TypedSupabaseClient;
+  userId: string;
+};
+
+export async function requireAuthenticatedSupabase(): Promise<AuthenticatedSupabaseResult> {
   const supabase = await createServerSupabase();
 
   const {

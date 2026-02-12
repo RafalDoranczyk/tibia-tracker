@@ -6,6 +6,7 @@ import {
   type PropsWithChildren,
   type SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -23,6 +24,10 @@ export function CharactersProvider({
   children,
 }: PropsWithChildren<{ initialCharacters: Character[] }>) {
   const [characters, setCharacters] = useState(initialCharacters);
+
+  useEffect(() => {
+    setCharacters(initialCharacters);
+  }, [initialCharacters]);
 
   return (
     <CharactersContext.Provider value={{ characters, setCharacters }}>

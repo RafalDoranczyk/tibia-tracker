@@ -1,16 +1,18 @@
 // ======================
 // Data entry points
 // ======================
-export { fetchCharacterBestiary } from "./actions/fetchCharacterBestiary";
-export { fetchCharacterBestiaryClassSummary } from "./actions/fetchCharacterBestiaryClassSummary";
-export { fetchCharacterBestiarySummary } from "./actions/fetchCharacterBestiarySummary";
-export { updateCharacterBestiaryAction } from "./actions/updateCharacterBestiary";
-export { loadCharacterBestiary } from "./server/loadCharacterBestiary";
+export {
+  fetchCharacterBestiaryClassSummary,
+  fetchCharacterBestiarySummary,
+  fetchMonstersWithProgress,
+  updateCharacterBestiary,
+} from "./actions";
+export { loadCharacterBestiarySummary } from "./loaders/loadCharacterBestiarySummary";
 
 // ======================
 // UI – public components
 // ======================
-export { BestiaryFilterBar } from "./components/BestiaryFilterBar";
+export { BestiaryFiltersPanel } from "./components/BestiaryFiltersPanel";
 export { BestiaryFloatingPanel } from "./components/BestiaryFloatingPanel";
 export { BestiaryPagination } from "./components/BestiaryPagination";
 export { BestiaryView } from "./components/BestiaryView";
@@ -18,7 +20,7 @@ export { BestiaryView } from "./components/BestiaryView";
 // ======================
 // Domain / shared
 // ======================
-export { parseBestiaryFilters } from "./parsers/parseBestiaryFilters";
+export { parseBestiaryFiltersFromSearchParams } from "./parsers/parseBestiaryFiltersFromSearchParams";
 export {
   CharacterBestiaryClassRequestSchema,
   CharacterBestiarySummaryRequestSchema,

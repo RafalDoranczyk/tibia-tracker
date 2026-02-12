@@ -1,7 +1,11 @@
 // ======================
 // Fetchers / server logic
 // ======================
-export { loadCharmsPage } from "./server/loadCharacterCharms";
+export {
+  fetchCharacterCharmEconomy,
+  fetchCharacterCharms,
+  fetchCharmsWithProgress,
+} from "./actions";
 
 // ======================
 // UI – public components

@@ -1,2 +1,2 @@
-export * from "./character.api.schema";
-export * from "./character.schema";
+export * from "./db/character.schema";
+export * from "./input/character-input.schema";

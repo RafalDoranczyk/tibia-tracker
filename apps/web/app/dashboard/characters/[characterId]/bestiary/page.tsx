@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 
 import { PageHeader } from "@/layout/page";
 import {
-  BestiaryFilterBar,
+  BestiaryFiltersPanel,
   BestiaryFloatingPanel,
   BestiaryPagination,
   BestiaryView,
-  loadCharacterBestiary,
-  parseBestiaryFilters,
+  fetchCharacterBestiaryClassSummary,
+  fetchMonstersWithProgress,
+  loadCharacterBestiarySummary,
+  parseBestiaryFiltersFromSearchParams,
 } from "@/modules/bestiary";
 
 import type { CharacterPageProps } from "../../../types";
@@ -19,15 +21,22 @@ export const metadata: Metadata = {
 };
 
 export default async function CharacterBestiaryPage({ params, searchParams }: CharacterPageProps) {
-  const { characterId } = await params;
-  const search = await searchParams;
+  const [{ characterId }, search] = await Promise.all([params, searchParams]);
 
-  const filters = parseBestiaryFilters(search);
+  const filters = parseBestiaryFiltersFromSearchParams(search);
 
-  const { monstersWithProgress, totalPages, summary, classSummary } = await loadCharacterBestiary({
-    characterId,
-    filters,
-  });
+  const classSummaryPromise = filters.bestiaryClass
+    ? fetchCharacterBestiaryClassSummary({ characterId, bestiaryClass: filters.bestiaryClass })
+    : null;
+
+  const [bestiary, summary, classSummary] = await Promise.all([
+    fetchMonstersWithProgress({
+      characterId,
+      filters,
+    }),
+    loadCharacterBestiarySummary(characterId),
+    classSummaryPromise,
+  ]);
 
   return (
     <>
@@ -36,10 +45,13 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Ch
         description="Explore the collection of monsters encountered by your character."
       />
       <Grid container spacing={4} direction="column">
-        <BestiaryFilterBar />
-        <BestiaryView monstersWithProgress={monstersWithProgress} />
-        <BestiaryPagination totalPages={totalPages} />
-        <BestiaryFloatingPanel globalSummary={summary} classSummary={classSummary} />
+        <BestiaryFiltersPanel />
+        <BestiaryView monstersWithProgress={bestiary.monstersWithProgress} />
+        <BestiaryPagination totalPages={bestiary.totalPages} />
+        <BestiaryFloatingPanel
+          globalSummary={summary.data}
+          classSummary={classSummary?.data ?? null}
+        />
       </Grid>
     </>
   );

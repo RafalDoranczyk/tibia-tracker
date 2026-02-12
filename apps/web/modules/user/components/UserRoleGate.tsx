@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 
 import { useUser } from "../providers/UserProvider";
-import type { UserRole } from "../schemas/user.schema";
+import type { UserRole } from "../schemas";
 
 // Component that conditionally renders its children based on the user's role.
 export function UserRoleGate({

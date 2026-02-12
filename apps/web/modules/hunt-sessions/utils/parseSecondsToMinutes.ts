@@ -1,4 +1,4 @@
-export function secondsToMinutes(seconds: number): string {
+export function parseSecondsToMinutes(seconds: number): string {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
 

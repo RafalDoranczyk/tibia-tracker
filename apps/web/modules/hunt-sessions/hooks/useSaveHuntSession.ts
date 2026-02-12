@@ -1,12 +1,11 @@
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
+import { PATHS } from "@/core/paths";
 import { useRequiredCharacterId } from "@/modules/characters";
-import { PATHS } from "@/paths";
 import { useToast } from "@/providers/app";
 
-import { createHuntSession } from "../actions/createHuntSession";
-import { updateHuntSession } from "../actions/updateHuntSession";
+import { createHuntSession, updateHuntSession } from "../actions";
 import { mapHuntSessionFormToPayload } from "../mappers/mapHuntSessionFormToPayload";
 import type { HuntSession, HuntSessionForm } from "../schemas";
 
@@ -20,6 +19,7 @@ export const useSaveHuntSession = () => {
       try {
         const formPayload = mapHuntSessionFormToPayload({ formData, characterId });
 
+        console.log(formPayload);
         if (id) {
           await updateHuntSession({ ...formPayload, id });
         } else {

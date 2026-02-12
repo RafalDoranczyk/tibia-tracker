@@ -3,13 +3,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { EmptyState } from "@/components";
+import { PATHS } from "@/core/paths";
 import { PageHeader } from "@/layout/page";
 import {
+  fetchHuntSessionList,
   HuntSessionListView,
-  loadHuntSessionList,
-  parseHuntSessionFilters,
+  parseHuntSessionFiltersFromSearchParams,
 } from "@/modules/hunt-sessions";
-import { PATHS } from "@/paths";
 
 import type { CharacterPageProps } from "../../../types";
 
@@ -23,9 +23,9 @@ export default async function HuntSessions({ params, searchParams }: CharacterPa
   const { characterId } = await params;
   const search = await searchParams;
 
-  const filters = parseHuntSessionFilters(search);
+  const filters = parseHuntSessionFiltersFromSearchParams(search);
 
-  const { data: huntSessionList, count } = await loadHuntSessionList({
+  const { data: huntSessionList, count } = await fetchHuntSessionList({
     character_id: characterId,
     filters,
   });

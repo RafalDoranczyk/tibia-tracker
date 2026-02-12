@@ -29,24 +29,27 @@ export function ActiveCharacterProvider({
     useState<ContextCharacterId>(initialActiveCharacterId);
 
   useEffect(() => {
-    if (characterId) {
+    if (characterId && characterId !== activeCharacterId) {
       setActiveCharacterId(characterId);
     }
-  }, [characterId]);
+  }, [characterId, activeCharacterId]);
 
-  const handleSetActive = (id: ContextCharacterId) => {
+  const handleSetActive = async (id: ContextCharacterId) => {
     if (id === activeCharacterId) return;
-
+    console.log(id);
     setActiveCharacterId(id);
 
     if (id) {
-      persistActiveCharacter(id);
+      await persistActiveCharacter(id);
     }
   };
 
   return (
     <ActiveCharacterContext.Provider
-      value={{ activeCharacterId, setActiveCharacterId: handleSetActive }}
+      value={{
+        activeCharacterId,
+        setActiveCharacterId: handleSetActive,
+      }}
     >
       {children}
     </ActiveCharacterContext.Provider>
@@ -55,14 +58,18 @@ export function ActiveCharacterProvider({
 
 export function useActiveCharacter() {
   const ctx = useContext(ActiveCharacterContext);
-  if (!ctx) throw new Error("useActiveCharacter must be used within ActiveCharacterProvider");
+  if (!ctx) {
+    throw new Error("useActiveCharacter must be used within ActiveCharacterProvider");
+  }
   return ctx;
 }
 
-export function useRequiredCharacterId() {
+export function useRequiredCharacterId(): string {
   const { activeCharacterId } = useActiveCharacter();
+
   if (!activeCharacterId) {
-    throw new Error("No active character in URL. Ensure route includes /[characterId].");
+    throw new Error("Active character is not set.");
   }
+
   return activeCharacterId;
 }

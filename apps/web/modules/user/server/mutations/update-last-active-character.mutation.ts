@@ -1,0 +1,12 @@
+import type { TypedSupabaseClient } from "@/core/supabase";
+
+export function updateLastActiveCharacter(
+  supabase: TypedSupabaseClient,
+  userId: string,
+  characterId: string
+) {
+  return supabase
+    .from("user_settings")
+    .update({ last_active_character_id: characterId })
+    .eq("user_id", userId);
+}

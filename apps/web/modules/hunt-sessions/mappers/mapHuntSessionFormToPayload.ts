@@ -9,11 +9,6 @@ export const mapHuntSessionFormToPayload = ({
   characterId,
 }: Props): CreateHuntSessionPayload => ({
   ...formData,
-  stats: formData.stats.map((s) => ({
-    stat_definition_id: s.statDefinitionId,
-    damage_element_id: s.damageElementId,
-    value: s.value,
-  })),
   character_id: characterId,
   killed_monsters: formData.killed_monsters.map((km) => ({
     monster_id: km.monsterId,
@@ -29,8 +24,8 @@ export const mapHuntSessionFormToPayload = ({
     damage_element_id: de.damageElementId,
     percent: de.percent,
   })),
-  damage_sources: formData.damage_sources.map((ds) => ({
-    monster_id: ds.damageSourceId,
+  monster_damage_sources: formData.monster_damage_sources.map((ds) => ({
+    monster_id: ds.monsterId,
     percent: ds.percent,
   })),
   supplies: formData.supplies.map((s) => ({

@@ -1,0 +1,17 @@
+import type { TypedSupabaseClient } from "@/core/supabase";
+
+import type { Charm, CharmLevel } from "../../schemas";
+
+export function setCharacterCharmLevel(
+  supabase: TypedSupabaseClient,
+  p_character_id: string,
+  p_charm_id: Charm["id"],
+  p_level: CharmLevel
+) {
+  // Call RPC (DB does ALL economy validation)
+  return supabase.rpc("set_character_charm", {
+    p_character_id,
+    p_charm_id,
+    p_level,
+  });
+}

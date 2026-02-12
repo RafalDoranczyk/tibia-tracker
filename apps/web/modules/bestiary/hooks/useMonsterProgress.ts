@@ -5,10 +5,13 @@ import { useState } from "react";
 import { useRequiredCharacterId } from "@/modules/characters";
 import { useToast } from "@/providers/app";
 
-import { updateCharacterBestiaryAction } from "../actions/updateCharacterBestiary";
-import { BESTIARY_STAGE } from "../constants";
-import type { MonsterWithCharacterProgress } from "../schemas";
-import { getBestiaryStage } from "../utils/getBestiaryStage";
+import { updateCharacterBestiary } from "../actions";
+import {
+  BESTIARY_STAGE,
+  type MonsterWithCharacterProgress,
+  type UpdateCharacterBestiaryPayload,
+} from "../schemas";
+import { calculateBestiaryStage } from "../utils/calculateBestiaryStage";
 
 export function useMonsterProgress(monsterToUpdate: MonsterWithCharacterProgress) {
   const toast = useToast();
@@ -17,26 +20,31 @@ export function useMonsterProgress(monsterToUpdate: MonsterWithCharacterProgress
   const [monster, setMonster] = useState(monsterToUpdate);
   const [isLoading, setIsLoading] = useState(false);
 
-  const isBestiaryCompleted = monster.stage === BESTIARY_STAGE.COMPLETED;
+  const isBestiaryCompleted = monster.stage === 3;
 
   const runUpdate = async (
-    updates: Partial<MonsterWithCharacterProgress>,
+    updates: Partial<UpdateCharacterBestiaryPayload>,
     successMessage?: string
   ) => {
     setIsLoading(true);
     const prev = monster;
+
+    // Optimistic UI update
     setMonster((m) => ({ ...m, ...updates }));
 
     try {
-      await updateCharacterBestiaryAction({
-        characterId,
-        monsterId: monster.id,
-        updates,
+      await updateCharacterBestiary({
+        character_id: characterId,
+        monster_id: monster.id,
+        kills: updates.kills ?? monster.kills,
+        stage: updates.stage ?? monster.stage,
+        has_soul: updates.has_soul ?? monster.has_soul,
       });
-      successMessage && toast.success(successMessage);
+
+      if (successMessage) toast.success(successMessage);
     } catch {
-      setMonster(prev);
-      toast.error(`Failed to update ${monster.name}. Please try again.`);
+      setMonster(prev); // Rollback w przypadku błędu
+      toast.error(`Failed to update ${monster.name}.`);
     } finally {
       setIsLoading(false);
     }
@@ -48,13 +56,13 @@ export function useMonsterProgress(monsterToUpdate: MonsterWithCharacterProgress
 
   const toggleFullBestiary = () => {
     const newKills = monster.stage === BESTIARY_STAGE.COMPLETED ? 0 : monster.bestiary_kills.stage3;
-    const newStage = getBestiaryStage(newKills, monster.bestiary_kills);
+    const newStage = calculateBestiaryStage(newKills, monster.bestiary_kills);
 
     return runUpdate({ kills: newKills, stage: newStage }, `Bestiary for ${monster.name} saved`);
   };
 
   const saveKills = (kills: number) => {
-    const newStage = getBestiaryStage(kills, monster.bestiary_kills);
+    const newStage = calculateBestiaryStage(kills, monster.bestiary_kills);
 
     return runUpdate({ kills, stage: newStage }, `Kills for ${monster.name} saved`);
   };

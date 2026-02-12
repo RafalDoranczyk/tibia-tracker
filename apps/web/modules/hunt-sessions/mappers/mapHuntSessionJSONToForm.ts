@@ -1,20 +1,42 @@
-import {
-  type HuntSessionForm,
-  HuntSessionLogParsedSchema,
-  type ItemPreview,
-  type MonsterPreview,
-} from "../schemas";
+import type { ItemPreview } from "@/modules/items";
+
+import { type HuntSessionForm, HuntSessionLogParsedSchema, type MonsterPreview } from "../schemas";
 import { parseHuntSessionJSON } from "../utils/parseHuntSessionJSON";
-import { mapParsedEntitiesToCatalog } from "./mapParsedSessionToCatalog";
+
+function mapParsedEntitiesToCatalog<
+  TParsed extends { name: string; count: number },
+  TCatalog extends { id: number; name: string },
+>(parsed: TParsed[], catalog: TCatalog[]) {
+  const catalogMap = new Map(catalog.map((c) => [c.name.toLowerCase(), c]));
+
+  const mapped = [];
+  const unknown = [];
+
+  for (const p of parsed) {
+    const match = catalogMap.get(p.name.toLowerCase());
+
+    if (!match) {
+      unknown.push(p.name);
+      continue;
+    }
+
+    mapped.push({
+      id: match.id,
+      count: p.count,
+    });
+  }
+
+  return { mapped, unknown };
+}
 
 const mapDamageSources = (
   monsters: HuntSessionForm["killed_monsters"]
-): HuntSessionForm["damage_sources"] => {
+): HuntSessionForm["monster_damage_sources"] => {
   const percent = Math.round((monsters.length ? 100 / monsters.length : 0) * 10) / 10;
 
   return monsters.map((m) => ({
     percent,
-    damageSourceId: m.monsterId,
+    monsterId: m.monsterId,
   }));
 };
 
@@ -51,7 +73,7 @@ export function mapHuntSessionJSONToForm({
     ...rest,
     killed_monsters: monstersForm,
     looted_items: itemsForm,
-    damage_sources: mapDamageSources(monstersForm),
+    monster_damage_sources: mapDamageSources(monstersForm),
   };
 
   return {

@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { ConfirmDialog } from "@/components";
+import { PATHS } from "@/core/paths";
 import { usePagination } from "@/hooks";
 import { useRequiredCharacterId } from "@/modules/characters";
-import { PATHS } from "@/paths";
 
 import { HUNT_SESSION_PAGINATION_LIMIT } from "../constants";
 import { useDeleteHuntSession } from "../hooks/useDeleteHuntSession";

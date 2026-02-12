@@ -1,7 +1,7 @@
 // ======================
 // Fetchers / server logic
 // ======================
-export { fetchHuntPlaces } from "./actions/fetchHuntPlaces";
+export { loadHuntPlaces } from "./loaders/loadHuntPlaces";
 
 // ======================
 // Shared

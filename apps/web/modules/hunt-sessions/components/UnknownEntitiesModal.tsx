@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import type { HuntSessionUnknownEntities } from "../types";
+import type { HuntSessionUnknownEntities } from "../schemas";
 
 function UnknownChips({ title, items }: { title: string; items: string[] }) {
   if (!items.length) return null;

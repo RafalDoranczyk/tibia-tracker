@@ -5,7 +5,6 @@ export default [
   {
     ignores: [
       "node_modules/**",
-      ".next/**",
       "dist/**",
       "build/**",
       "coverage/**",
@@ -15,6 +14,7 @@ export default [
       "apps/*/node_modules/**",
       "packages/*/node_modules/**",
       ".turbo/**",
+      "apps/*/.next/**",
     ],
   },
   {

@@ -12,8 +12,8 @@ import { PreyChipEditor } from "./PreyChipEditor";
 
 function getAvailableCharms(
   allCharms: CharacterCharmDetailed[],
-  monsters: { charmBonusId?: string | null }[],
-  currentCharmId?: string | null
+  monsters: { charmBonusId?: number | null }[],
+  currentCharmId?: number | null
 ) {
   const selectedCharmIds = new Set(monsters.map((m) => m.charmBonusId).filter(Boolean));
 

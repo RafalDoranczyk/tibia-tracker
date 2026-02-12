@@ -1,9 +1,9 @@
-import { env } from "@/env";
+import { isDevEnv } from "@/core/env";
 
 import { AppError } from "./AppError";
 
 export function logServerError(error: unknown) {
-  if (env.NODE_ENV !== "development") return;
+  if (!isDevEnv()) return;
 
   if (error instanceof AppError) {
     console.group("🔥 Server AppError");

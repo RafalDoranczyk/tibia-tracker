@@ -7,20 +7,20 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { FloatingActionButton } from "@/components";
 import { useToast } from "@/providers/app";
 
-import { updateImbuingItemPrices } from "../actions/updateImbuingItemPrices";
-import { baseScrolls, elementalScrolls, skillScrolls } from "../data";
+import { updateImbuingItemPrices } from "../actions";
+import { baseScrolls, elementalScrolls, skillScrolls } from "../constants";
 import { mapImbuingPricesToForm } from "../mappers/mapImbuingPricesToForm";
 import {
   ImbuingFormSchema,
   type ImbuingFormValues,
   type ImbuingItem,
-} from "../schemas/imbuing.schema";
-import type { Scroll } from "../types";
+  type ImbuingScroll,
+} from "../schemas";
 import { GoldTokenInput } from "./GoldTokenInput";
 import { ScrollCard } from "./ScrollCard";
 
 type ScrollsSectionProps = {
-  scrolls: Scroll[];
+  scrolls: ImbuingScroll[];
   title: string;
 };
 
@@ -51,33 +51,10 @@ function ScrollsSection({ scrolls, title }: ScrollsSectionProps) {
   );
 }
 
-function SaveButton({ onClick }: { onClick: () => void }) {
-  const { formState } = useFormContext();
-  const { isDirty, isSubmitting } = formState;
-
-  return (
-    <FloatingActionButton onClick={onClick} visible={isDirty} loading={isSubmitting}>
-      Save changes
-    </FloatingActionButton>
-  );
-}
-
-type ImbuingViewProps = {
-  imbuingItemPrices: ImbuingItem[];
-};
-
-export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
+function SaveButton() {
   const toast = useToast();
-
-  const defaultValues = mapImbuingPricesToForm(imbuingItemPrices);
-
-  const form = useForm<ImbuingFormValues>({
-    defaultValues,
-    resolver: zodResolver(ImbuingFormSchema),
-    mode: "onBlur",
-  });
-
-  const { handleSubmit, reset } = form;
+  const { formState, handleSubmit, reset } = useFormContext();
+  const { isDirty, isSubmitting } = formState;
 
   const onSubmit = handleSubmit(async (values) => {
     try {
@@ -91,6 +68,26 @@ export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
   });
 
   return (
+    <FloatingActionButton onClick={onSubmit} visible={isDirty} loading={isSubmitting}>
+      Save changes
+    </FloatingActionButton>
+  );
+}
+
+type ImbuingViewProps = {
+  imbuingItemPrices: ImbuingItem[];
+};
+
+export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
+  const defaultValues = mapImbuingPricesToForm(imbuingItemPrices);
+
+  const form = useForm<ImbuingFormValues>({
+    defaultValues,
+    resolver: zodResolver(ImbuingFormSchema),
+    mode: "onBlur",
+  });
+
+  return (
     <FormProvider {...form}>
       <Stack spacing={3}>
         <Box display="flex" justifyContent="flex-end">
@@ -100,7 +97,7 @@ export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
         <ScrollsSection title="Basic Scrolls" scrolls={baseScrolls} />
         <ScrollsSection title="Elemental Scrolls" scrolls={elementalScrolls} />
         <ScrollsSection title="Skill Scrolls" scrolls={skillScrolls} />
-        <SaveButton onClick={onSubmit} />
+        <SaveButton />
       </Stack>
     </FormProvider>
   );

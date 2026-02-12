@@ -1,7 +1,9 @@
 // ======================
 // Fetchers / server logic
 // ======================
-export { loginWithGithub, loginWithGoogle, logout } from "./actions/auth";
+export { logoutUser, startOAuthLogin } from "./actions";
+export { loadUser } from "./loaders/loadUser";
+export { loadUserSettings } from "./loaders/loadUserSettings";
 
 // ======================
 // UI – public components
@@ -18,5 +20,4 @@ export { UserSettingsProvider, useUserSettings } from "./providers/UserSettingsP
 // ======================
 // Shared
 // ======================
-export type { AppUser, UserSetting } from "./schemas/user.schema";
-export { loadUser } from "./server/loadUser";
+export { type AppUser, AppUserSchema, UserIDSchema, type UserSetting } from "./schemas";

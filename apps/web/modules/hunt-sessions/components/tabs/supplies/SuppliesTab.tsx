@@ -5,8 +5,9 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { Autocomplete, EmptyState } from "@/components";
 import { getPublicAssetUrl } from "@/core/supabase";
+import type { ItemPreview } from "@/modules/items";
 
-import type { HuntSessionForm, ItemPreview } from "../../../schemas";
+import type { HuntSessionForm } from "../../../schemas";
 import { SectionHeader } from "../SectionHeader";
 import { SectionPaperCard } from "../SectionPaperCard";
 import { SupplyList } from "./SupplyList";

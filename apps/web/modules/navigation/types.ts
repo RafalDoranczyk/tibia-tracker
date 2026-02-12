@@ -1,7 +1,7 @@
 import type { StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 
-import type { CharacterPaths } from "@/paths";
+import type { CharacterPaths } from "@/core/paths";
 
 import type { NAVIGATION_IDS } from "./constants";
 

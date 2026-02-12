@@ -3,8 +3,9 @@ import type { Control, FieldArrayWithId } from "react-hook-form";
 
 import { ControlledTextField, TooltipIconButton } from "@/components";
 import { getPublicAssetUrl } from "@/core/supabase";
+import type { ItemPreview } from "@/modules/items";
 
-import type { HuntSessionForm, ItemPreview } from "../../../schemas";
+import type { HuntSessionForm } from "../../../schemas";
 
 type SupplyField = FieldArrayWithId<HuntSessionForm, "supplies"> & {
   supplyId: number;

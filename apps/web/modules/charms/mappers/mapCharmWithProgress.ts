@@ -14,7 +14,7 @@ export function mapCharmWithProgress(
         ...charm,
         progress: {
           unlocked: Boolean(row),
-          level: row?.level ?? 0,
+          level: (row?.level ?? 0) as CharacterCharm["level"],
         },
       };
     })

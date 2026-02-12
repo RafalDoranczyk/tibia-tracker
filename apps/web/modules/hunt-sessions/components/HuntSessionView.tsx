@@ -7,20 +7,19 @@ import { useFormContext } from "react-hook-form";
 import { FloatingActionButton } from "@/components";
 import type { CharacterCharmDetailed } from "@/modules/charms";
 import type { HuntPlace } from "@/modules/hunt-places";
+import type { ItemPreview } from "@/modules/items";
 
 import { useSaveHuntSession } from "../hooks/useSaveHuntSession";
 import type {
   DamageElement,
   HuntSession,
   HuntSessionForm,
-  ItemPreview,
+  HuntSessionUnknownEntities,
   MonsterPreview,
   PreyBonus,
 } from "../schemas";
-import type { HuntSessionUnknownEntities } from "../types";
 import { FloatingStatsPanel } from "./FloatingStatsPanel";
 import { SummaryStats } from "./SummaryStats";
-// import { CombatStatsTab } from "./tabs/combat-stats/CombatStatsTab";
 import { DamageTab } from "./tabs/damage/DamageTab";
 import { LogDetailsTab } from "./tabs/log-details/LogDetailsTab";
 import { SuppliesTab } from "./tabs/supplies/SuppliesTab";

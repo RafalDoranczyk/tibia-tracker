@@ -5,8 +5,9 @@ import { useFormContext } from "react-hook-form";
 
 import { EmptyState } from "@/components";
 import { getPublicAssetUrl } from "@/core/supabase";
+import type { ItemPreview } from "@/modules/items";
 
-import type { HuntSessionForm, ItemPreview } from "../../../schemas";
+import type { HuntSessionForm } from "../../../schemas";
 
 type LootedItemsProps = {
   itemList: ItemPreview[];

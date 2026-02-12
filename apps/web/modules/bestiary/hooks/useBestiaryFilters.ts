@@ -9,79 +9,50 @@ import type {
   BestiaryStageFilter,
 } from "../schemas";
 
-const ALL = "all" as const;
-type All = typeof ALL;
+type BestiaryStageFilterOption = BestiaryStageFilter | "all";
+type BestiaryClassOption = BestiaryClass | "all";
+type BestiaryDifficultyOption = BestiaryDifficulty | "all";
 
-type UIFilters = {
-  bestiaryClass: BestiaryClass | All;
-  bestiaryDifficulty: BestiaryDifficulty | All;
-  stage: BestiaryStageFilter | All;
-  search?: string;
-  limit: number;
-};
+const ALL = "all" as const;
 
 export function useBestiaryFilters() {
   const { filters, updateFilter } = usePaginationQueryParams<BestiaryFilters>();
   const [isPending, startTransition] = useTransition();
 
-  // =========================
-  // UI VALUES (no undefined)
-  // =========================
-  const uiFilters: UIFilters = {
-    bestiaryClass: filters.bestiaryClass ?? ALL,
-    bestiaryDifficulty: filters.bestiaryDifficulty ?? ALL,
-    stage: filters.stage ?? ALL,
-    search: filters.search,
-    limit: filters.limit,
+  const uiFilters = {
+    bestiaryClass: (filters.bestiaryClass ?? ALL) as BestiaryClassOption,
+    bestiaryDifficulty: (filters.bestiaryDifficulty ?? ALL) as BestiaryDifficultyOption,
+    stage: (filters.stage ?? ALL) as BestiaryStageFilterOption,
+    search: filters.search ?? "",
+    limit: filters.limit ?? 15,
+    page: filters.page ?? 1,
   };
 
   // =========================
   // UI ACTIONS
   // =========================
-  const setClass = (value: BestiaryClass | All) => {
+
+  const patchFilters = (newFilters: Partial<BestiaryFilters>) => {
     startTransition(() => {
       updateFilter({
-        bestiaryClass: value === ALL ? undefined : value,
+        ...newFilters,
         page: 1,
       });
     });
   };
 
-  const setDifficulty = (value: BestiaryDifficulty | All) => {
-    startTransition(() => {
-      updateFilter({
-        bestiaryDifficulty: value === ALL ? undefined : value,
-        page: 1,
-      });
-    });
-  };
+  const setClass = (value: BestiaryClassOption) =>
+    patchFilters({ bestiaryClass: value === ALL ? undefined : value });
 
-  const setStageFilter = (value: BestiaryStageFilter | All) => {
-    startTransition(() => {
-      updateFilter({
-        stage: value === ALL ? undefined : value,
-        page: 1,
-      });
-    });
-  };
+  const setDifficulty = (value: BestiaryDifficultyOption) =>
+    patchFilters({ bestiaryDifficulty: value === ALL ? undefined : value });
 
-  const setSearch = (value: string) => {
-    startTransition(() => {
-      updateFilter({
-        search: value || undefined,
-        page: 1,
-      });
-    });
-  };
+  const setStageFilter = (value: BestiaryStageFilterOption) =>
+    patchFilters({ stage: value === ALL ? undefined : value });
 
-  const setLimit = (limit: number) => {
-    startTransition(() => {
-      updateFilter({
-        limit,
-        page: 1,
-      });
-    });
-  };
+  const setSearch = (value: string) => patchFilters({ search: value || undefined });
+
+  const setLimit = (limit: number) => patchFilters({ limit });
 
   const clear = () => {
     startTransition(() => {
@@ -102,7 +73,7 @@ export function useBestiaryFilters() {
     filters.stage === undefined;
 
   return {
-    filters: uiFilters, // UI-safe
+    filters: uiFilters,
     isPending,
     isClearDisabled,
     actions: {

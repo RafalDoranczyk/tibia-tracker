@@ -5,14 +5,14 @@ import React from "react";
 import { EmptyState } from "@/components";
 
 import { useScrollEconomy } from "../hooks/useScrollEconomy";
-import type { Scroll } from "../types";
+import type { ImbuingScroll } from "../schemas";
 import { canBuyScrollForTokens } from "../utils/canBuyScrollForTokens";
 import { ScrollCardItems } from "./ScrollCardItems";
 import { ScrollCardPriceInput } from "./ScrollCardPriceInput";
 import { ScrollCardSummary } from "./ScrollCardSummary";
 
 type ScrollCardProps = {
-  scroll: Scroll;
+  scroll: ImbuingScroll;
 };
 
 export const ScrollCard = React.memo(function ScrollCard({ scroll }: ScrollCardProps) {

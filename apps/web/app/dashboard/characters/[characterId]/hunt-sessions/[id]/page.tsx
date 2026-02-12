@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import LinkNext from "next/link";
 import { notFound } from "next/navigation";
 
+import { PATHS } from "@/core/paths";
 import { PageHeader } from "@/layout/page";
 import { HuntSessionFormProvider, HuntSessionView, loadHuntSession } from "@/modules/hunt-sessions";
-import { PATHS } from "@/paths";
 
 import type { CharacterPageProps } from "../../../../types";
 

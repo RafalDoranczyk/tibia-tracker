@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import * as R from "remeda";
 import { useQueryParam } from "use-query-params";
 
-import { PaginationSchema } from "@/lib/pagination";
+import { PaginationSchema } from "@/lib/zod";
 
 export function isEmpty<T extends object>(obj: T) {
   return R.values(obj).length === 0;

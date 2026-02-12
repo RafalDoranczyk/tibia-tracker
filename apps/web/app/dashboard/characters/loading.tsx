@@ -17,7 +17,7 @@ export default function CharactersLoading() {
       <Grid container spacing={2}>
         {Array.from({ length: 3 }).map((_, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: <Skeletons are static>
-          <Grid size={{ xs: 12, lg: 4 }} key={index}>
+          <Grid size={{ xs: 12, lg: 3 }} key={index}>
             <Skeleton variant="rectangular" height={180} sx={{ borderRadius: 2 }} />
           </Grid>
         ))}

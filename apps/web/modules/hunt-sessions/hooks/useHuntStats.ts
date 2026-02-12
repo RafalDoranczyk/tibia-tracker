@@ -1,6 +1,6 @@
 import { useFormContext, useWatch } from "react-hook-form";
 
-import { formatNumberCompact } from "@/utils/formatting/formatNumberCompact";
+import { formatNumberCompact } from "@/utils";
 
 import type { HuntSessionForm, MonsterPreview, PreyBonus } from "../schemas";
 

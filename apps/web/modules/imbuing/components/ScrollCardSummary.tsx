@@ -2,7 +2,7 @@ import ShoppingBasket from "@mui/icons-material/ShoppingBasket";
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 
-import { GOLD_TOKENS_NEEDED_FOR_SCROLL } from "../constants";
+import { IMBUING_CONFIG } from "../constants";
 import { ITEM_IMAGES } from "../images";
 import type { ScrollEconomyResult } from "../utils/calculateScrollEconomy";
 
@@ -51,7 +51,7 @@ export function ScrollCardSummary({ economy, showTokenStrategies }: ScrollCardSu
         <>
           <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
             <Typography variant="subtitle2" fontWeight={700}>
-              Using tokens ({GOLD_TOKENS_NEEDED_FOR_SCROLL}x)
+              Using tokens ({IMBUING_CONFIG.mechanics.gold_tokens_needed}x)
             </Typography>
             <Image src={ITEM_IMAGES.gold_token} alt="gold token" width={16} height={16} />
           </Stack>

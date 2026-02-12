@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 
-import { PATHS } from "@/paths";
+import { PATHS } from "@/core/paths";
 
 import { NAVIGATION_IMAGES } from "./images";
 import type { NavigationSection } from "./types";

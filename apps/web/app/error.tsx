@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-
+import { isDevEnv } from "@/core/env";
 import { AppErrorCode, isAppError } from "@/core/error";
-import { env } from "@/env";
-import { ErrorPage } from "@/layout/page/ErrorPage";
+import { ErrorPage } from "@/layout/page";
 
 export default function GlobalError({
   error,
@@ -13,23 +11,6 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const isDev = env.NODE_ENV === "development";
-
-  useEffect(() => {
-    if (!isDev) return;
-
-    if (isAppError(error)) {
-      console.group("🔥 AppError");
-      console.error("Message:", error.message);
-      console.error("Code:", error.code);
-      console.error("Cause:", error.cause);
-      console.error("Details:", error.details);
-      console.groupEnd();
-    } else {
-      console.error("🔥 Unknown error:", error);
-    }
-  }, [error, isDev]);
-
   const errorDetails = getErrorDetails(error);
 
   return (
@@ -39,7 +20,7 @@ export default function GlobalError({
       technicalDetails={errorDetails.technicalDetails}
       suggestions={errorDetails.suggestions}
       reset={reset}
-      showDetails={isDev}
+      showDetails={isDevEnv()}
       errorCode={isAppError(error) ? error.code : undefined}
       digest={isAppError(error) ? undefined : error.digest}
     />
@@ -68,8 +49,7 @@ function getErrorDetails(error: Error & { digest?: string }) {
       technicalDetails: {
         errorCode: error.code,
         timestamp: new Date().toISOString(),
-
-        cause: process.env.NODE_ENV === "development" ? serializeCause(error.cause) : undefined,
+        cause: isDevEnv() ? serializeCause(error.cause) : undefined,
       },
       suggestions: getSuggestionsForErrorCode(error.code as AppErrorCode),
     };

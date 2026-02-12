@@ -6,7 +6,7 @@ import { useMemo, useState, useTransition } from "react";
 import { useRequiredCharacterId } from "@/modules/characters";
 import { useToast } from "@/providers/app";
 
-import { setCharacterCharmLevel } from "../actions/setCharacterCharmLevel";
+import { setCharacterCharmLevel } from "../actions";
 import type { CharacterCharmWithProgress, CharmLevel } from "../schemas";
 import { MajorCard } from "./MajorCard";
 import { MinorCard } from "./MinorCard";

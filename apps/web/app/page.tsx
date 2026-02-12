@@ -1,10 +1,12 @@
+"use client";
+
 import Gamepad from "@mui/icons-material/Gamepad";
 import GitHub from "@mui/icons-material/GitHub";
 import Google from "@mui/icons-material/Google";
 import { Box, Button, Container, Divider, Paper, Stack, Typography } from "@mui/material";
 
 import { appConfig } from "@/config";
-import { loginWithGithub, loginWithGoogle } from "@/modules/user";
+import { startOAuthLogin } from "@/modules/user";
 
 export default function Home() {
   return (
@@ -38,7 +40,7 @@ export default function Home() {
             {/* Auth */}
             <Stack spacing={2} width="100%">
               <Button
-                onClick={loginWithGoogle}
+                onClick={() => startOAuthLogin("google")}
                 size="large"
                 variant="contained"
                 startIcon={<Google />}
@@ -50,7 +52,7 @@ export default function Home() {
               <Divider>OR</Divider>
 
               <Button
-                onClick={loginWithGithub}
+                onClick={() => startOAuthLogin("github")}
                 size="large"
                 variant="outlined"
                 startIcon={<GitHub />}
