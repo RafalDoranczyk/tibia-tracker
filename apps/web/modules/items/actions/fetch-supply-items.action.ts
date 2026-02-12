@@ -4,7 +4,7 @@ import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { assertZodParse } from "@/lib/zod";
 
-import { type ItemPreview, ItemPreviewSchema } from "../schemas/db/item.schema";
+import { type ItemPreview, ItemPreviewSchema } from "../schemas";
 import { getSupplies } from "../server";
 
 export async function fetchSupplies(): Promise<ItemPreview[]> {

@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 
 import { ConfirmDialog, EmptyState } from "@/components";
 
-import { deleteCharacter } from "../actions/delete-character.action";
+import { deleteCharacter } from "../actions";
 import { useActiveCharacter } from "../providers/ActiveCharacterProvider";
 import type { Character } from "../schemas";
 import { CharacterModal } from "./CharacterModal";

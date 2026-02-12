@@ -1,6 +1,6 @@
 "use client";
 
-import { updateLastActiveCharacter } from "../actions/update-last-active-character.action";
+import { updateLastActiveCharacter } from "../actions";
 
 export function usePersistActiveCharacter() {
   return (characterId: string) => updateLastActiveCharacter(characterId);

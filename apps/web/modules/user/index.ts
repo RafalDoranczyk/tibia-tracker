@@ -1,8 +1,7 @@
 // ======================
 // Fetchers / server logic
 // ======================
-export { logoutUser } from "./actions/logout.action";
-export { startOAuthLogin } from "./actions/start-oauth-login.action";
+export { logoutUser, startOAuthLogin } from "./actions";
 export { loadUser } from "./loaders/loadUser";
 export { loadUserSettings } from "./loaders/loadUserSettings";
 

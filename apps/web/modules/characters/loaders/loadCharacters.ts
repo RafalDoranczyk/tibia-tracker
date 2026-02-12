@@ -1,5 +1,5 @@
 import { cache } from "react";
 
-import { fetchCharacters } from "../actions/fetch-characters.action";
+import { fetchCharacters } from "../actions";
 
 export const loadCharacters = cache(fetchCharacters);

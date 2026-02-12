@@ -1,7 +1,7 @@
 // ======================
 // Fetchers / server logic
 // ======================
-export { fetchImbuingItemPrices } from "./actions/fetch-imbuing-item-prices.action";
+export { fetchImbuingItemPrices } from "./actions";
 
 // ======================
 // UI – public components

@@ -4,7 +4,7 @@ import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase";
 import { assertZodParse } from "@/lib/zod";
 
-import { type Item, ItemSchema } from "../schemas/db/item.schema";
+import { type Item, ItemSchema } from "../schemas";
 import { getItemList } from "../server";
 
 export async function fetchItems(): Promise<Item[]> {

@@ -13,8 +13,7 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 
-import { createCharacter } from "../actions/create-character.action";
-import { updateCharacter } from "../actions/update-character.action";
+import { createCharacter, updateCharacter } from "../actions";
 import { CHARACTER_VOCATION_LABELS } from "../constants";
 import { type Character, type CharacterForm, CharacterFormSchema } from "../schemas";
 

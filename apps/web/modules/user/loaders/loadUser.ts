@@ -1,5 +1,5 @@
 import { cache } from "react";
 
-import { fetchUser } from "../actions/fetch-user.action";
+import { fetchUser } from "../actions";
 
 export const loadUser = cache(fetchUser);

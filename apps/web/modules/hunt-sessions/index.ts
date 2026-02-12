@@ -1,7 +1,7 @@
 // ======================
 // Fetchers / server logic
 // ======================
-export { fetchHuntSessionList } from "./actions/fetch-hunt-session-list.action";
+export { fetchHuntSessionList } from "./actions";
 export { loadHuntSession } from "./loaders/loadHuntSession";
 
 // ======================

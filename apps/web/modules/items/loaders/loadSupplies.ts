@@ -1,5 +1,5 @@
 import { cache } from "react";
 
-import { fetchSupplies } from "../actions/fetch-supply-items.action";
+import { fetchSupplies } from "../actions";
 
 export const loadSupplies = cache(fetchSupplies);

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Enums, Tables } from "@/core/supabase/database.types";
+import type { Enums, Tables } from "@/core/supabase";
 import { NonEmptyString, NonNegativeInt, PositiveInt } from "@/lib/zod";
 
 export const BestiaryClassSchema = z.enum([

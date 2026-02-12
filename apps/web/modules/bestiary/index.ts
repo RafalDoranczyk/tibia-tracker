@@ -1,10 +1,12 @@
 // ======================
 // Data entry points
 // ======================
-export { fetchCharacterBestiaryClassSummary } from "./actions/fetch-character-bestiary-class-summary.action";
-export { fetchCharacterBestiarySummary } from "./actions/fetch-character-bestiary-summary.action";
-export { fetchMonstersWithProgress } from "./actions/fetch-monsters-with-progress";
-export { updateCharacterBestiary } from "./actions/update-character-bestiary.action";
+export {
+  fetchCharacterBestiaryClassSummary,
+  fetchCharacterBestiarySummary,
+  fetchMonstersWithProgress,
+  updateCharacterBestiary,
+} from "./actions";
 export { loadCharacterBestiarySummary } from "./loaders/loadCharacterBestiarySummary";
 
 // ======================

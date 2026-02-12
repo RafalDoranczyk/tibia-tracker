@@ -1,9 +1,11 @@
 // ======================
 // Fetchers / server logic
 // ======================
-export { fetchCharacterCharmEconomy } from "./actions/fetch-character-charm-economy.action";
-export { fetchCharacterCharms } from "./actions/fetch-character-charms.action";
-export { fetchCharmsWithProgress } from "./actions/fetch-character-charms-with-progress.action";
+export {
+  fetchCharacterCharmEconomy,
+  fetchCharacterCharms,
+  fetchCharmsWithProgress,
+} from "./actions";
 
 // ======================
 // UI – public components
