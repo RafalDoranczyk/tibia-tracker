@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Enums } from "@/core/supabase";
+import type { Enums } from "@/core/supabase/types";
 
 import { BestiaryClassSchema, BestiaryDifficultySchema } from "../db/monster.schema";
 

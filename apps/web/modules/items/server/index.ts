@@ -1,2 +1,4 @@
-export { getItemList } from "./queries/get-item-list.query";
-export { getSupplies } from "./queries/get-supply-list.query";
+import "server-only";
+
+export { getItemList } from "./loaders/get-item-list";
+export { getSupplyList } from "./loaders/get-supply-list";

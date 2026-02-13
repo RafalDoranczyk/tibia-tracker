@@ -1,8 +1,10 @@
+import "server-only";
+
 // QUERIES
-export { getBestiaryClassSummary } from "./queries/get-bestiary-class-summary.query";
-export { getBestiarySummary } from "./queries/get-bestiary-summary.query";
-export { getMonsterList } from "./queries/get-monster-list.query";
-export { getMonstersWithProgress } from "./queries/get-monsters-with-progress.query";
+export { fetchCharacterBestiaryClassSummary } from "./loaders/fetchCharacterBestiaryClassSummary";
+export { fetchCharacterBestiarySummary } from "./loaders/fetchCharacterBestiarySummary";
+export { fetchMonsterList } from "./loaders/fetchMonsterList";
+export { fetchMonstersWithProgress } from "./loaders/fetchMonstersWithProgress";
 
 // MUTATIONS
 export { upsertCharacterBestiary } from "./mutations/upsert-character-bestiary.mutation";

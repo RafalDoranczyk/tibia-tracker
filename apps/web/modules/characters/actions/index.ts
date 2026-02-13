@@ -1,4 +1,3 @@
-export { createCharacter } from "./create-character.action";
-export { deleteCharacter } from "./delete-character.action";
-export { fetchCharacters } from "./fetch-characters.action";
-export { updateCharacter } from "./update-character.action";
+export { createCharacter } from "./createCharacter";
+export { deleteCharacter } from "./deleteCharacter";
+export { updateCharacter } from "./updateCharacter";

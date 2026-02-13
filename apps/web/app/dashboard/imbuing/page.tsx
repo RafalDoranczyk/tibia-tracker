@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/layout/page";
-import { fetchImbuingItemPrices, ImbuingView } from "@/modules/imbuing";
+import { ImbuingView } from "@/modules/imbuing";
+import { fetchImbuingItemPrices } from "@/modules/imbuing/server";
 
 export const metadata: Metadata = {
   title: "Imbuing Prices",

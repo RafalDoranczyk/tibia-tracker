@@ -1,4 +1,4 @@
-import type { TypedSupabaseClient } from "@/core/supabase";
+import type { TypedSupabaseClient } from "@/core/supabase/types";
 
 // Fetches all charms available in the system, regardless of character progress.
 export function getCharms(supabase: TypedSupabaseClient) {

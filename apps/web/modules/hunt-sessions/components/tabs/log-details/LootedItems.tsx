@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { EmptyState } from "@/components";
-import { getPublicAssetUrl } from "@/core/supabase";
+import { getPublicAssetUrl } from "@/core/assets";
 import type { ItemPreview } from "@/modules/items";
 
 import type { HuntSessionForm } from "../../../schemas";

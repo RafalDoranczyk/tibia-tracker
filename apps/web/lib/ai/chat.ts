@@ -1,5 +1,3 @@
-"use server";
-
 import type { Tool } from "@anthropic-ai/sdk/resources/index";
 import type { ContentBlock, ToolResultBlockParam } from "@anthropic-ai/sdk/resources/messages";
 

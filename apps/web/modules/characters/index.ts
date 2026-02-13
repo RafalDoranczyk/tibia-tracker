@@ -1,9 +1,4 @@
 // ======================
-// Fetchers / server logic
-// ======================
-export { loadCharacters } from "./loaders/loadCharacters";
-
-// ======================
 // UI – public components
 // ======================
 export { CharactersView } from "./components/CharactersView";

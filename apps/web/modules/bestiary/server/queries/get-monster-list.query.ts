@@ -1,4 +1,4 @@
-import type { TypedSupabaseClient } from "@/core/supabase";
+import type { TypedSupabaseClient } from "@/core/supabase/types";
 
 export function getMonsterList(supabase: TypedSupabaseClient) {
   // we want to get all, we can cache it anyway

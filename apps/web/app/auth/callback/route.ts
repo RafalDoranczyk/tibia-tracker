@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { isDevEnv } from "@/core/env";
 import { PATHS } from "@/core/paths";
-import { createServerSupabase } from "@/core/supabase";
+import { createServerSupabase } from "@/core/supabase/auth/server";
 
 // Helper functions
 function isValidRedirectPath(path: string): boolean {

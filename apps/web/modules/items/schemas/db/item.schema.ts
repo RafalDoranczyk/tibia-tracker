@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Tables } from "@/core/supabase";
+import type { Tables } from "@/core/supabase/types";
 import { NonEmptyString } from "@/lib/zod";
 
 export const ItemSchema = z.object({

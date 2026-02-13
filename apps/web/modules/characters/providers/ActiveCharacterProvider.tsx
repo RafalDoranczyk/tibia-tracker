@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { createContext, type PropsWithChildren, useContext, useEffect, useState } from "react";
 
-import { usePersistActiveCharacter } from "@/modules/user";
+import { updateLastActiveCharacter } from "@/modules/user/actions/updateLastActiveCharacter";
 
 type ContextCharacterId = string | null;
 
@@ -23,7 +23,7 @@ export function ActiveCharacterProvider({
   initialActiveCharacterId,
 }: ActiveCharacterProviderProps) {
   const { characterId } = useParams<{ characterId?: string }>();
-  const persistActiveCharacter = usePersistActiveCharacter();
+  const updateLastActive = updateLastActiveCharacter;
 
   const [activeCharacterId, setActiveCharacterId] =
     useState<ContextCharacterId>(initialActiveCharacterId);
@@ -40,7 +40,7 @@ export function ActiveCharacterProvider({
     setActiveCharacterId(id);
 
     if (id) {
-      await persistActiveCharacter(id);
+      await updateLastActive(id);
     }
   };
 

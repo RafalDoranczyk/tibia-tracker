@@ -1,4 +1,4 @@
-import type { TypedSupabaseClient } from "@/core/supabase";
+import type { TypedSupabaseClient } from "@/core/supabase/types";
 
 export function getBestiarySummary(supabase: TypedSupabaseClient, characterId: string) {
   return supabase

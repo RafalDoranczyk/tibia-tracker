@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Enums } from "@/core/supabase";
+import type { Enums } from "@/core/supabase/types";
 
 export const IMBUING_SCROLL_ITEM_KEYS = [
   "gold_token",

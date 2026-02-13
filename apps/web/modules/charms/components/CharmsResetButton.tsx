@@ -20,17 +20,16 @@ export function CharmsResetButton({ characterId, majorCharmsUnlocked }: CharmsRe
   const [isPending, startTransition] = useTransition();
 
   const handleReset = () => {
-    try {
-      startTransition(async () => {
+    startTransition(async () => {
+      try {
         await resetCharacterCharms(characterId);
         setOpen(false);
         toast.success("All charms have been reset.");
-      });
-    } catch {
-      toast.error("Failed to reset charms.");
-    }
+      } catch {
+        toast.error("Failed to reset charms.");
+      }
+    });
   };
-
   return (
     <>
       <Button

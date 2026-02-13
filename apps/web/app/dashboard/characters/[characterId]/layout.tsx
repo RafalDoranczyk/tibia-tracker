@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { PropsWithChildren } from "react";
 
-import { loadCharacters } from "@/modules/characters";
+import { fetchCharacters } from "@/modules/characters/server";
 
 import type { CharacterLayoutProps } from "../../types";
 
@@ -10,7 +10,7 @@ export default async function CharacterLayout({
   children,
 }: PropsWithChildren<CharacterLayoutProps>) {
   const { characterId } = await params;
-  const characters = await loadCharacters();
+  const characters = await fetchCharacters();
 
   const exists = characters.some(({ id }) => id === characterId);
 

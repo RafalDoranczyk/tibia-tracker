@@ -1,7 +1,7 @@
 "use server";
 
 import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { requireAuthenticatedSupabase } from "@/core/supabase";
+import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
 
 import { FetchHuntSessionPayloadSchema, type HuntSession, HuntSessionSchema } from "../schemas";

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Tables } from "@/core/supabase";
+import type { Tables } from "@/core/supabase/types";
 import { NonEmptyString, PositiveInt } from "@/lib/zod";
 
 export const DamageElementSchema = z.object({

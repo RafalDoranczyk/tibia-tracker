@@ -1,16 +1,4 @@
 // ======================
-// Data entry points
-// ======================
-export {
-  fetchCharacterBestiaryClassSummary,
-  fetchCharacterBestiarySummary,
-  fetchMonstersWithProgress,
-  updateCharacterBestiary,
-} from "./actions";
-export { loadCharacterBestiarySummary } from "./loaders/loadCharacterBestiarySummary";
-export { loadMonsterList } from "./loaders/loadMonsterList";
-
-// ======================
 // UI – public components
 // ======================
 export { BestiaryFiltersPanel } from "./components/BestiaryFiltersPanel";

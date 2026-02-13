@@ -1,11 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { createSupabaseMiddlewareClient } from "./core/supabase";
+import { createSupabaseMiddleware } from "./core/supabase/auth/middleware";
 
 const PUBLIC_ROUTES = ["/", "/auth", "/auth/callback"];
 
 export async function middleware(request: NextRequest) {
-  const { supabase, response } = createSupabaseMiddlewareClient(request);
+  const { supabase, response } = createSupabaseMiddleware(request);
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
   const {

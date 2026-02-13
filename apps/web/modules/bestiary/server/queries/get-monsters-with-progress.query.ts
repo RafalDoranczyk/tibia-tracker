@@ -1,4 +1,4 @@
-import type { TypedSupabaseClient } from "@/core/supabase";
+import type { TypedSupabaseClient } from "@/core/supabase/types";
 
 import type { FetchCharacterBestiaryPayload } from "../../schemas";
 

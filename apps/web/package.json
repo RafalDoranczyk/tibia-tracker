@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
-    "db:types": "supabase gen types typescript --project-id saoouvvhunyuohwqmbwy > core/supabase/database.types.ts"
+    "db:types": "supabase gen types typescript --project-id saoouvvhunyuohwqmbwy > core/supabase/types/database.types.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.54.0",
@@ -46,6 +46,7 @@
     "@types/react-dom": "19.1.5",
     "@types/react-window": "1.8.8",
     "eslint-config-next": "16.1.6",
+    "server-only": "^0.0.1",
     "supabase": "^2.76.7",
     "typescript": "5.9.3"
   }

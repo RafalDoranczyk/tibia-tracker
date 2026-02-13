@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Tables } from "@/core/supabase";
+import type { Tables } from "@/core/supabase/types";
 import { LocalDatetime, NonNegativeInt } from "@/lib/zod";
 import { CharacterIDSchema } from "@/modules/characters";
 

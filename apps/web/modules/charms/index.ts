@@ -1,13 +1,4 @@
 // ======================
-// Fetchers / server logic
-// ======================
-export {
-  fetchCharacterCharmEconomy,
-  fetchCharacterCharms,
-  fetchCharmsWithProgress,
-} from "./actions";
-
-// ======================
 // UI – public components
 // ======================
 export { CharmsCards } from "./components/CharmsCards";

@@ -1,4 +1,4 @@
-import type { TypedSupabaseClient } from "@/core/supabase";
+import type { TypedSupabaseClient } from "@/core/supabase/types";
 
 export function getDamageElements(supabase: TypedSupabaseClient) {
   return supabase
