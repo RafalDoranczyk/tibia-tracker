@@ -1,5 +1,3 @@
-"use client";
-
 import { Grid } from "@mui/material";
 
 import type { DamageElement, MonsterPreview } from "../../../schemas";

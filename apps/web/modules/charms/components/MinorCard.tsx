@@ -1,5 +1,3 @@
-"use client";
-
 import { Button, Stack, Typography } from "@mui/material";
 
 import { type CharacterCharmWithProgress, CHARM_LEVELS } from "../schemas";

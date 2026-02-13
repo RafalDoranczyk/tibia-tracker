@@ -36,7 +36,7 @@ export function ActiveCharacterProvider({
 
   const handleSetActive = async (id: ContextCharacterId) => {
     if (id === activeCharacterId) return;
-    console.log(id);
+
     setActiveCharacterId(id);
 
     if (id) {
