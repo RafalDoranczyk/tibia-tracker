@@ -8,6 +8,7 @@ export {
   updateCharacterBestiary,
 } from "./actions";
 export { loadCharacterBestiarySummary } from "./loaders/loadCharacterBestiarySummary";
+export { loadMonsterList } from "./loaders/loadMonsterList";
 
 // ======================
 // UI – public components
@@ -24,5 +25,6 @@ export { parseBestiaryFiltersFromSearchParams } from "./parsers/parseBestiaryFil
 export {
   CharacterBestiaryClassRequestSchema,
   CharacterBestiarySummaryRequestSchema,
+  type Monster,
   MonsterSchema,
 } from "./schemas";

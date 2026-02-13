@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
@@ -23,7 +25,6 @@ export function usePagination({ limit }: UsePaginationProps) {
     () => new URLSearchParams(searchParams.toString()),
     [searchParams]
   );
-
   // ✅ Generic method to update any URL params while preserving others
   const onParamsChange = useCallback(
     (params: { param: string; value: number | string }[]) => {

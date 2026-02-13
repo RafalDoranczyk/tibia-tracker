@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { DateProvider } from "./DateProvider";
 import { QueryParamsProvider } from "./QueryParamsProvider";
 import { ThemeProvider } from "./ThemeProvider";
@@ -7,9 +9,11 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <DateProvider>
-        <QueryParamsProvider>
-          <ToastProvider>{children}</ToastProvider>
-        </QueryParamsProvider>
+        <Suspense fallback={null}>
+          <QueryParamsProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </QueryParamsProvider>
+        </Suspense>
       </DateProvider>
     </ThemeProvider>
   );
