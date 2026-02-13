@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 
 import { TooltipIconButton } from "@/components";
-import { logoutUser } from "@/modules/user/actions/logoutUser";
+import { logoutUser } from "@/modules/user/actions/logout-user";
 
 import { CharacterSwitcher } from "./CharacterSwitcher";
 

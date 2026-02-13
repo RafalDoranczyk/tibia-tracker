@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { PageHeader } from "@/layout/page";
 import { ImbuingView } from "@/modules/imbuing";
-import { fetchImbuingItemPrices } from "@/modules/imbuing/server";
+import { getImbuingItemPrices } from "@/modules/imbuing/server";
 
 export const metadata: Metadata = {
   title: "Imbuing Prices",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ImbuingPage() {
-  const imbuingItemPrices = await fetchImbuingItemPrices();
+  const imbuingItemPrices = await getImbuingItemPrices();
 
   return (
     <>

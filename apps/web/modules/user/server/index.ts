@@ -1,5 +1,5 @@
 import "server-only";
 
-export { fetchUser } from "./loaders/fetchUser";
-export { fetchUserSettings } from "./loaders/fetchUserSettings";
-export { updateLastActiveCharacter } from "./mutations/update-last-active-character.mutation";
+export { getUser } from "./loaders/get-user";
+export { getUserSettings } from "./loaders/get-user-settings";
+export { dbUpdateLastActiveCharacter } from "./mutations/user-settings";

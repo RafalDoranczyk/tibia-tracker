@@ -7,7 +7,7 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { FloatingActionButton } from "@/components";
 import { useToast } from "@/providers/app";
 
-import { updateImbuingItemPrices } from "../actions";
+import { updateImbuingItemPrices } from "../actions/update-imbuing-item-prices";
 import { baseScrolls, elementalScrolls, skillScrolls } from "../constants";
 import { mapImbuingPricesToForm } from "../mappers/mapImbuingPricesToForm";
 import { ImbuingFormSchema, type ImbuingFormValues, type ImbuingItem } from "../schemas";

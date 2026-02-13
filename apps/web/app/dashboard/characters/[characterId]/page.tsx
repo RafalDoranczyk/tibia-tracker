@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/layout/page";
-import { fetchCharacters } from "@/modules/characters/server";
+import { getCharacterList } from "@/modules/characters/server";
 
 import type { CharacterPageProps } from "../../types";
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function CharacterPage({ params }: CharacterPageProps) {
   const { characterId } = await params;
-  const characters = await fetchCharacters();
+  const characters = await getCharacterList();
 
   const character = characters.find((el) => el.id === characterId);
 

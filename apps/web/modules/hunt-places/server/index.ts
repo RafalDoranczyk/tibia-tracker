@@ -1,3 +1,3 @@
 import "server-only";
 
-export { fetchHuntPlaces } from "./loaders/fetchHuntPlaces";
+export { getHuntPlaceList } from "./loaders/get-hunt-place-list";

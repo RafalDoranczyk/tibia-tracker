@@ -1,1 +1,0 @@
-export { updateCharacterBestiary } from "./updateCharacterBestiary";

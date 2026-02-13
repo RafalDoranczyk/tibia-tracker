@@ -10,9 +10,9 @@ import {
   parseBestiaryFiltersFromSearchParams,
 } from "@/modules/bestiary";
 import {
-  fetchCharacterBestiaryClassSummary,
-  fetchCharacterBestiarySummary,
-  fetchMonstersWithProgress,
+  getCharacterBestiaryClassSummary,
+  getCharacterBestiarySummary,
+  getMonsterListWithProgress,
 } from "@/modules/bestiary/server";
 
 import type { CharacterPageProps } from "../../../types";
@@ -28,15 +28,15 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Ch
   const filters = parseBestiaryFiltersFromSearchParams(search);
 
   const classSummaryPromise = filters.bestiaryClass
-    ? fetchCharacterBestiaryClassSummary({ characterId, bestiaryClass: filters.bestiaryClass })
+    ? getCharacterBestiaryClassSummary({ characterId, bestiaryClass: filters.bestiaryClass })
     : null;
 
   const [bestiary, summary, classSummary] = await Promise.all([
-    fetchMonstersWithProgress({
+    getMonsterListWithProgress({
       characterId,
       filters,
     }),
-    fetchCharacterBestiarySummary(characterId),
+    getCharacterBestiarySummary(characterId),
     classSummaryPromise,
   ]);
 

@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { createContext, type PropsWithChildren, useContext, useEffect, useState } from "react";
 
-import { updateLastActiveCharacter } from "@/modules/user/actions/updateLastActiveCharacter";
+import { updateLastActiveCharacter } from "@/modules/user/actions/update-last-active-character";
 
 type ContextCharacterId = string | null;
 

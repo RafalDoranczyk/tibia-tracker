@@ -5,7 +5,8 @@ import { PATHS } from "@/core/paths";
 import { useRequiredCharacterId } from "@/modules/characters";
 import { useToast } from "@/providers/app";
 
-import { createHuntSession, updateHuntSession } from "../actions";
+import { createHuntSession } from "../actions/create-hunt-session";
+import { updateHuntSession } from "../actions/update-hunt-session";
 import { mapHuntSessionFormToPayload } from "../mappers/mapHuntSessionFormToPayload";
 import type { HuntSession, HuntSessionForm } from "../schemas";
 

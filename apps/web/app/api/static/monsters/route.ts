@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { handleApiError } from "@/core/api";
 import type { Monster } from "@/modules/bestiary";
-import { fetchMonsterList } from "@/modules/bestiary/server";
+import { getMonsterList } from "@/modules/bestiary/server";
 
 let cache: Monster[] | null = null;
 let lastFetch = 0;
@@ -16,7 +16,7 @@ export async function GET() {
       return NextResponse.json({ data: cache }, { headers });
     }
 
-    const data = await fetchMonsterList();
+    const data = await getMonsterList();
 
     cache = data;
     lastFetch = Date.now();

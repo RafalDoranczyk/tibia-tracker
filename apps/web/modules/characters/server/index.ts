@@ -1,9 +1,7 @@
 import "server-only";
 
 // Mutations
-export { deleteCharacter } from "./mutations/delete-character.mutation";
-export { insertCharacter } from "./mutations/insert-character.mutation";
-export { updateCharacter } from "./mutations/update-character.mutation";
+export { dbDeleteCharacter, dbInsertCharacter, dbUpdateCharacter } from "./mutations/characters";
 
 // Loaders
-export { fetchCharacters } from "./loaders/fetchCharacters";
+export { getCharacterList } from "./loaders/get-character-list";
