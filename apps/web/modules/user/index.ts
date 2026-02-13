@@ -8,8 +8,8 @@ export { loadUserSettings } from "./loaders/loadUserSettings";
 // ======================
 // UI – public components
 // ======================
+export { AuthButtons } from "./components/AuthButtons";
 export { AdminOnly, UserRoleGate } from "./components/UserRoleGate";
-
 // ======================
 // Providers and hooks
 // ======================

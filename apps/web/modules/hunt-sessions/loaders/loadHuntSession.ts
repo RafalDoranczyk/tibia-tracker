@@ -1,12 +1,12 @@
 "use server";
 
+import { loadMonsterList } from "@/modules/bestiary";
 import { fetchCharacterCharms } from "@/modules/charms";
 import { loadHuntPlaces } from "@/modules/hunt-places";
 import { loadItems, loadSupplies } from "@/modules/items";
 
 import { fetchHuntSession } from "../actions";
 import { loadDamageElements } from "./loadDamageElements";
-import { loadMonstersPreview } from "./loadMonstersPreview";
 import { loadPreyBonuses } from "./loadPreyBonuses";
 
 type LoadHuntSessionProps = {
@@ -30,7 +30,7 @@ export async function loadHuntSession({ characterId, huntSessionId }: LoadHuntSe
     huntSession,
   ] = await Promise.all([
     loadItems(),
-    loadMonstersPreview(),
+    loadMonsterList(),
     loadHuntPlaces(),
     loadSupplies(),
     loadDamageElements(),

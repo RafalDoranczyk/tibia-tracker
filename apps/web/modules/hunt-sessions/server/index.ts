@@ -7,5 +7,4 @@ export { updateHuntSession } from "./mutations/update-hunt-session.mutation";
 export { getDamageElements } from "./queries/get-damage-elements.query";
 export { getHuntSession } from "./queries/get-hunt-session.query";
 export { getHuntSessionList } from "./queries/get-hunt-session-list.query";
-export { getMonsterListPreview } from "./queries/get-monster-list-preview.query";
 export { getPreyBonuses } from "./queries/get-prey-bonuses.query";
