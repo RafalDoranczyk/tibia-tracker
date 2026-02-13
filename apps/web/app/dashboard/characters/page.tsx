@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/layout/page";
-import { CharactersView, loadCharacters } from "@/modules/characters";
+import { CharactersView } from "@/modules/characters";
+import { getCharacterList } from "@/modules/characters/server";
 
 export const metadata: Metadata = {
   title: "Your Characters",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CharactersPage() {
-  const characters = await loadCharacters();
+  const characters = await getCharacterList();
 
   return (
     <>

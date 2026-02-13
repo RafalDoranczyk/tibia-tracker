@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Enums, Tables } from "@/core/supabase";
+import type { Enums, Tables } from "@/core/supabase/types";
 import { UUID } from "@/lib/zod";
 
 export const UserIDSchema = UUID;

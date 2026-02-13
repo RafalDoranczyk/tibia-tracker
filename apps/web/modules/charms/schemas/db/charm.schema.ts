@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Enums, Tables } from "@/core/supabase";
+import type { Enums, Tables } from "@/core/supabase/types";
 import { NonEmptyString, NonNegativeInt, PositiveInt } from "@/lib/zod";
 import { CharacterIDSchema } from "@/modules/characters";
 

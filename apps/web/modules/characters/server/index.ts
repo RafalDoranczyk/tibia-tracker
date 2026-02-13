@@ -1,7 +1,7 @@
-// Mutations
-export { deleteCharacter } from "./mutations/delete-character.mutation";
-export { insertCharacter } from "./mutations/insert-character.mutation";
-export { updateCharacter } from "./mutations/update-character.mutation";
+import "server-only";
 
-// Queries
-export { getCharacters } from "./queries/get-characters.query";
+// Mutations
+export { dbDeleteCharacter, dbInsertCharacter, dbUpdateCharacter } from "./mutations/characters";
+
+// Loaders
+export { getCharacterList } from "./loaders/get-character-list";

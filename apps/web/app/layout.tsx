@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 
-import { fonts } from "@/lib/mui";
+import { fonts } from "@/core/mui";
 import { AppProviders } from "@/providers/app";
 
 export const metadata: Metadata = {

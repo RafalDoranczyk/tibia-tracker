@@ -7,11 +7,13 @@ import {
   BestiaryFloatingPanel,
   BestiaryPagination,
   BestiaryView,
-  fetchCharacterBestiaryClassSummary,
-  fetchMonstersWithProgress,
-  loadCharacterBestiarySummary,
   parseBestiaryFiltersFromSearchParams,
 } from "@/modules/bestiary";
+import {
+  getCharacterBestiaryClassSummary,
+  getCharacterBestiarySummary,
+  getMonsterListWithProgress,
+} from "@/modules/bestiary/server";
 
 import type { CharacterPageProps } from "../../../types";
 
@@ -26,15 +28,15 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Ch
   const filters = parseBestiaryFiltersFromSearchParams(search);
 
   const classSummaryPromise = filters.bestiaryClass
-    ? fetchCharacterBestiaryClassSummary({ characterId, bestiaryClass: filters.bestiaryClass })
+    ? getCharacterBestiaryClassSummary({ characterId, bestiaryClass: filters.bestiaryClass })
     : null;
 
   const [bestiary, summary, classSummary] = await Promise.all([
-    fetchMonstersWithProgress({
+    getMonsterListWithProgress({
       characterId,
       filters,
     }),
-    loadCharacterBestiarySummary(characterId),
+    getCharacterBestiarySummary(characterId),
     classSummaryPromise,
   ]);
 
@@ -48,10 +50,7 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Ch
         <BestiaryFiltersPanel />
         <BestiaryView monstersWithProgress={bestiary.monstersWithProgress} />
         <BestiaryPagination totalPages={bestiary.totalPages} />
-        <BestiaryFloatingPanel
-          globalSummary={summary.data}
-          classSummary={classSummary?.data ?? null}
-        />
+        <BestiaryFloatingPanel globalSummary={summary} classSummary={classSummary} />
       </Grid>
     </>
   );

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRequiredCharacterId } from "@/modules/characters";
 import { useToast } from "@/providers/app";
 
-import { updateCharacterBestiary } from "../actions";
+import { updateCharacterBestiary } from "../actions/updateCharacterBestiary";
 import {
   BESTIARY_STAGE,
   type MonsterWithCharacterProgress,

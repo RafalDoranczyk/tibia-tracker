@@ -1,2 +1,4 @@
-export { upsertImbuingItemPrices } from "./mutations/upsert-imbuing-item-prices.mutation";
-export { getImbuingItemPrices } from "./queries/get-imbuing-item-prices.query";
+import "server-only";
+
+export { getImbuingItemPrices } from "./loaders/get-imbuing-item-prices";
+export { dbUpsertImbuingItemPrices } from "./mutations/imbuing-prices";

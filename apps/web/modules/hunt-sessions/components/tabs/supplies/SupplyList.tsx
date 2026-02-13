@@ -2,7 +2,7 @@ import { Avatar, Grid, Stack, Typography } from "@mui/material";
 import type { Control, FieldArrayWithId } from "react-hook-form";
 
 import { ControlledTextField, TooltipIconButton } from "@/components";
-import { getPublicAssetUrl } from "@/core/supabase";
+import { getPublicAssetUrl } from "@/core/assets";
 import type { ItemPreview } from "@/modules/items";
 
 import type { HuntSessionForm } from "../../../schemas";

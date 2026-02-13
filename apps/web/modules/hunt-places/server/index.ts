@@ -1,1 +1,3 @@
-export { getHuntPlaces } from "./queries/get-hunt-places.query";
+import "server-only";
+
+export { getHuntPlaceList } from "./loaders/get-hunt-place-list";

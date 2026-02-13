@@ -1,7 +1,7 @@
 import { alpha, Box, Card, CardContent, CardMedia, Chip, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 
-import { getPublicAssetUrl } from "@/core/supabase";
+import { getPublicAssetUrl } from "@/core/assets";
 
 type CardLayoutProps = {
   name: string;

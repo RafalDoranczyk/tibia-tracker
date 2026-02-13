@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { Tables } from "@/core/supabase";
+import type { Tables } from "@/core/supabase/types";
 import { ISODate, LocalDatetime, PositiveInt } from "@/lib/zod";
 import { CharacterIDSchema } from "@/modules/characters";
 import { HuntPlaceSchema } from "@/modules/hunt-places";
@@ -21,6 +21,7 @@ const HuntSessionDbFieldsComputedSchema = z.object({
   healing_per_hour: PositiveInt,
   damage_per_hour: PositiveInt,
   xp_per_hour: PositiveInt,
+  updated_at: z.string().nullable(),
 });
 
 // 2. Base fields that are stored in the DB and can be set on insert/update

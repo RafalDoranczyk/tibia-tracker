@@ -2,14 +2,11 @@ import { Box } from "@mui/material";
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/layout/page";
-import { loadCharacterBestiarySummary } from "@/modules/bestiary";
-import {
-  CharmsCards,
-  CharmsResetButton,
-  CharmStats,
-  fetchCharacterCharmEconomy,
-  fetchCharmsWithProgress,
-} from "@/modules/charms";
+import { getCharacterBestiarySummary } from "@/modules/bestiary/server";
+import { CharmsCards } from "@/modules/charms/components/CharmsCards";
+import { CharmsResetButton } from "@/modules/charms/components/CharmsResetButton";
+import { CharmStats } from "@/modules/charms/components/CharmStats";
+import { getCharacterCharmsEconomy, getCharacterCharmsWithProgress } from "@/modules/charms/server";
 
 import type { CharacterPageProps } from "../../../types";
 
@@ -21,10 +18,10 @@ export const metadata: Metadata = {
 export default async function Charms({ params }: CharacterPageProps) {
   const { characterId } = await params;
 
-  const [charms, { data: bestiarySummary }, charmEconomy] = await Promise.all([
-    fetchCharmsWithProgress(characterId),
-    loadCharacterBestiarySummary(characterId),
-    fetchCharacterCharmEconomy(characterId),
+  const [charms, bestiarySummary, charmEconomy] = await Promise.all([
+    getCharacterCharmsWithProgress(characterId),
+    getCharacterBestiarySummary(characterId),
+    getCharacterCharmsEconomy(characterId),
   ]);
 
   const { unlocked_charm_points, total_charm_points } = bestiarySummary;

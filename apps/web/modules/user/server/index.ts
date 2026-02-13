@@ -1,7 +1,5 @@
-// Mutations
-export { updateLastActiveCharacter } from "./mutations/update-last-active-character.mutation";
+import "server-only";
 
-// Queries
-export { getAuthUser } from "./queries/get-auth-user.query";
-export { getUserRole } from "./queries/get-user-role.query";
-export { getUserSettings } from "./queries/get-user-settings.query";
+export { getUser } from "./loaders/get-user";
+export { getUserSettings } from "./loaders/get-user-settings";
+export { dbUpdateLastActiveCharacter } from "./mutations/user-settings";

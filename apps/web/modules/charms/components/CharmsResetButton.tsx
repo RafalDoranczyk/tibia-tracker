@@ -7,7 +7,7 @@ import { useState, useTransition } from "react";
 import { ConfirmDialog } from "@/components";
 import { useToast } from "@/providers/app";
 
-import { resetCharacterCharms } from "../actions";
+import { resetCharacterCharms } from "../actions/reset-character-charms";
 
 type CharmsResetButtonProps = {
   characterId: string;
@@ -20,17 +20,16 @@ export function CharmsResetButton({ characterId, majorCharmsUnlocked }: CharmsRe
   const [isPending, startTransition] = useTransition();
 
   const handleReset = () => {
-    try {
-      startTransition(async () => {
+    startTransition(async () => {
+      try {
         await resetCharacterCharms(characterId);
         setOpen(false);
         toast.success("All charms have been reset.");
-      });
-    } catch {
-      toast.error("Failed to reset charms.");
-    }
+      } catch {
+        toast.error("Failed to reset charms.");
+      }
+    });
   };
-
   return (
     <>
       <Button

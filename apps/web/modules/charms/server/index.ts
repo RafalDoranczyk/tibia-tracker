@@ -1,8 +1,10 @@
-// Mutations
-export { resetCharacterCharms } from "./mutations/reset-character-charms.mutation";
-export { setCharacterCharmLevel } from "./mutations/set-character-charm-level.mutation";
+import "server-only";
 
-// Queries
-export { getCharacterCharmEconomy } from "./queries/get-character-charm-economy.query";
-export { getCharacterCharms } from "./queries/get-character-charms.query";
-export { getCharms } from "./queries/get-charms.query";
+// Mutations
+
+export { dbResetCharacterCharms, dbSetCharacterCharmLevel } from "./mutations/character-charms";
+
+// Loaders
+export { getCharacterCharmList } from "./loaders/get-character-charm-list";
+export { getCharacterCharmsEconomy } from "./loaders/get-character-charms-economy";
+export { getCharacterCharmsWithProgress } from "./loaders/get-character-charms-with-progress";

@@ -6,10 +6,10 @@ import { EmptyState } from "@/components";
 import { PATHS } from "@/core/paths";
 import { PageHeader } from "@/layout/page";
 import {
-  fetchHuntSessionList,
   HuntSessionListView,
   parseHuntSessionFiltersFromSearchParams,
 } from "@/modules/hunt-sessions";
+import { getHuntSessionList } from "@/modules/hunt-sessions/server";
 
 import type { CharacterPageProps } from "../../../types";
 
@@ -25,7 +25,7 @@ export default async function HuntSessions({ params, searchParams }: CharacterPa
 
   const filters = parseHuntSessionFiltersFromSearchParams(search);
 
-  const { data: huntSessionList, count } = await fetchHuntSessionList({
+  const { data: huntSessionList, count } = await getHuntSessionList({
     character_id: characterId,
     filters,
   });

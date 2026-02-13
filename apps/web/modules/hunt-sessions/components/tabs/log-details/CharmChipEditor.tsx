@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-import { getPublicAssetUrl } from "@/core/supabase";
+import { getPublicAssetUrl } from "@/core/assets";
 import type { CharacterCharmDetailed, CharmType } from "@/modules/charms";
 
 const CHARM_COLOR_MAP: Record<CharmType, ChipProps["color"]> = {
