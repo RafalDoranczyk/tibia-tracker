@@ -1,5 +1,3 @@
-"use client";
-
 import InsightsIcon from "@mui/icons-material/Insights";
 import { Fab } from "@mui/material";
 

@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Button, Slide } from "@mui/material";
 import type { ReactNode } from "react";
 
