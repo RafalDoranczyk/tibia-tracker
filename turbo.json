@@ -13,15 +13,16 @@
   "tasks": {
     "lint": {
       "inputs": ["$TURBO_DEFAULT$"],
-      "outputs": []
+      "cache": true
     },
     "build": {
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "dependsOn": ["^build"],
-      "outputs": ["build/**", ".vercel/**", "dist/**", ".next/**", "!.next/cache/**"]
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "build/**"]
     },
     "typecheck": {
-      "dependsOn": ["^build"]
+      "outputs": [],
+      "cache": true
     },
     "dev": {
       "dependsOn": ["^build"],

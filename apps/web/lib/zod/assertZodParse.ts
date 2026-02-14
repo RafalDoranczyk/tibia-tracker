@@ -1,4 +1,4 @@
-import type { z, ZodError, ZodType } from "zod";
+import type { ZodError, ZodType, z } from "zod";
 
 import { isDevEnv } from "@/core/env";
 import { AppError, AppErrorCode } from "@/core/error";

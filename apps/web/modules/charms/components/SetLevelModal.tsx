@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import { ConfirmDialog } from "@/components";
 
-import { type CharacterCharmWithProgress, CHARM_LEVELS, type CharmLevel } from "../schemas";
+import { CHARM_LEVELS, type CharacterCharmWithProgress, type CharmLevel } from "../schemas";
 import {
   canAffordCharmLevel,
   getCharmEffectAtLevel,

@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
 
-import { type CharacterCharmWithProgress, CHARM_LEVELS } from "../schemas";
+import { CHARM_LEVELS, type CharacterCharmWithProgress } from "../schemas";
 import { canAffordNextCharmLevel, getCharmNextLevelCost } from "../utils/getCharmEconomy";
 import { CardLayout } from "./CardLayout";
 

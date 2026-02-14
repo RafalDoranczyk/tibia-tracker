@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { SUPABASE_CONFIG } from "../config";
 
-export function createSupabaseMiddleware(request: NextRequest) {
+export function createSupabaseProxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {

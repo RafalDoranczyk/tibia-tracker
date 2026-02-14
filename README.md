@@ -7,7 +7,7 @@ Monorepo (Turborepo) with Next.js app using Supabase.
 - Supabase
 - MUI
 - Turborepo
-- Biome + ESLint
+- Biome
 - Lefthook
 
 ## Structure

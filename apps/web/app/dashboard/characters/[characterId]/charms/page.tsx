@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 
 import { PageHeader } from "@/layout/page/PageHeader";
 import { getCharacterBestiarySummary } from "@/modules/bestiary/server";
+import { CharmStats } from "@/modules/charms/components/CharmStats";
 import { CharmsCards } from "@/modules/charms/components/CharmsCards";
 import { CharmsResetButton } from "@/modules/charms/components/CharmsResetButton";
-import { CharmStats } from "@/modules/charms/components/CharmStats";
 import { getCharacterCharmsEconomy, getCharacterCharmsWithProgress } from "@/modules/charms/server";
 
 import type { CharacterPageProps } from "../../../types";

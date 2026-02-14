@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete as MaterialAutocomplete, CircularProgress, TextField } from "@mui/material";
+import { CircularProgress, Autocomplete as MaterialAutocomplete, TextField } from "@mui/material";
 import { useState } from "react";
 
 type AutocompleteOptionBase = {

@@ -35,7 +35,7 @@
     "remeda": "2.32.0",
     "sharp": "0.33.5",
     "use-query-params": "2.2.2",
-    "vitest": "4.0.16",
+    "vitest": "4.0.18",
     "zod": "4.3.6"
   },
   "devDependencies": {
@@ -43,7 +43,6 @@
     "@types/node": "25.2.3",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "eslint-config-next": "16.1.6",
     "server-only": "0.0.1",
     "supabase": "2.76.8",
     "typescript": "5.9.3"
