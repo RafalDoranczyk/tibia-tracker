@@ -4,16 +4,11 @@ import SuccessIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import { Box, Snackbar as MuiSnackbar, SnackbarContent } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
-export type ToastContextType = {
-  error: (message: string) => void;
-  success: (message: string) => void;
-};
+import type { ToastContextType, ToastType } from "@/lib/toast";
 
 export const ToastContext = createContext<ToastContextType | undefined>(undefined);
-
-type ToastType = "error" | "success";
 
 export function ToastProvider({ children }: React.PropsWithChildren) {
   const theme = useTheme();
@@ -62,6 +57,7 @@ export function ToastProvider({ children }: React.PropsWithChildren) {
             </Box>
           }
           sx={{
+            maxWidth: 400,
             backgroundColor: isSuccess ? theme.palette.success.dark : theme.palette.error.dark,
             color: theme.palette.common.white,
             borderRadius: 2,
@@ -84,12 +80,4 @@ export function ToastProvider({ children }: React.PropsWithChildren) {
       </MuiSnackbar>
     </ToastContext.Provider>
   );
-}
-
-export function useToast() {
-  const context = useContext(ToastContext);
-  if (!context) {
-    throw new Error("useToast must be used within a ToastProvider");
-  }
-  return context;
 }

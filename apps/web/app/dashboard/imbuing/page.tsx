@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { PageHeader } from "@/layout/page";
+import { PageHeader } from "@/layout/page/PageHeader";
 import { ImbuingView } from "@/modules/imbuing";
 import { getImbuingItemPrices } from "@/modules/imbuing/server";
 

@@ -12,5 +12,4 @@ export { UserProvider, useUser } from "./providers/UserProvider";
 // ======================
 // Shared
 // ======================
-
 export { type AppUser, AppUserSchema, UserIDSchema, type UserSetting } from "./schemas";

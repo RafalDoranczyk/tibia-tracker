@@ -7,5 +7,4 @@ export { dbUpdateHuntSession } from "./mutations/update-hunt-session";
 
 // Loaders
 export { getHuntSessionList } from "./loaders/get-hunt-sesion-list";
-export { getHuntSession } from "./loaders/get-hunt-session";
 export { loadHuntSession } from "./loaders/load-hunt-session";

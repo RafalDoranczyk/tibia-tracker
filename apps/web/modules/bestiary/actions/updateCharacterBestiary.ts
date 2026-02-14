@@ -6,7 +6,7 @@ import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
 
-import { BestiaryCacheTags } from "../cache/bestiary.tags";
+import { BestiaryCache } from "../cache/bestiary-cache";
 import { UpdateCharacterBestiaryPayloadSchema } from "../schemas";
 import { dbUpsertCharacterBestiary } from "../server";
 
@@ -22,7 +22,7 @@ export async function updateCharacterBestiary(payload: unknown): Promise<void> {
 
   const { character_id, monster_id } = parsed;
 
-  revalidateTag(BestiaryCacheTags.summary(character_id));
+  revalidateTag(BestiaryCache.tags.summary(character_id), "default");
 
   const { data: monster } = await supabase
     .from("monsters")
@@ -31,6 +31,6 @@ export async function updateCharacterBestiary(payload: unknown): Promise<void> {
     .maybeSingle();
 
   if (monster?.bestiary_class) {
-    revalidateTag(BestiaryCacheTags.classSummary(character_id, monster.bestiary_class));
+    revalidateTag(BestiaryCache.tags.classSummary(character_id, monster.bestiary_class), "default");
   }
 }

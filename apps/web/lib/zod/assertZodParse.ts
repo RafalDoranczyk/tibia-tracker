@@ -1,28 +1,32 @@
-import type { z, ZodError, ZodTypeAny } from "zod";
+import type { z, ZodError, ZodType } from "zod";
 
 import { isDevEnv } from "@/core/env";
 import { AppError, AppErrorCode } from "@/core/error";
 
 function mapZodErrorToAppError(error: ZodError): AppError {
-  const formattedErrors = error.errors.map((err) => {
-    const path = err.path.length > 0 ? err.path.join(".") : "root";
+  // 2. Zmiana: error.errors -> error.issues
+  const formattedErrors = error.issues.map((issue) => {
+    const path = issue.path.length > 0 ? issue.path.join(".") : "root";
 
-    // Enhanced error message with more details from the original error
-    let message = `• ${path}: ${err.message}`;
+    // Enhanced error message
+    let message = `• ${path}: ${issue.message}`;
 
-    // Add received value info if available
-    if ("received" in err && err.received !== undefined) {
-      message += ` (received: ${JSON.stringify(err.received)})`;
+    // 3. Bezpieczne sprawdzanie pól 'received' i 'expected' bez importowania typu ZodIssue
+    // W Zodzie te pola istnieją tylko w specyficznych typach błędów, więc używamy operatora 'in'
+    if ("received" in issue && issue.received !== undefined) {
+      try {
+        message += ` (received: ${JSON.stringify(issue.received)})`;
+      } catch {
+        message += " (received: [Complex Value])";
+      }
     }
 
-    // Add expected type info if available
-    if ("expected" in err && err.expected !== undefined) {
-      message += ` (expected: ${err.expected})`;
+    if ("expected" in issue && issue.expected !== undefined) {
+      message += ` (expected: ${issue.expected})`;
     }
 
-    // Add error code for additional context
-    if (err.code) {
-      message += ` [${err.code}]`;
+    if (issue.code) {
+      message += ` [${issue.code}]`;
     }
 
     return message;
@@ -33,7 +37,9 @@ function mapZodErrorToAppError(error: ZodError): AppError {
       ? `Validation failed:\n${formattedErrors.join("\n")}`
       : "Invalid data format";
 
-  return new AppError(AppErrorCode.VALIDATION_ERROR, message, { details: error.flatten() });
+  return new AppError(AppErrorCode.VALIDATION_ERROR, message, {
+    details: error.flatten(),
+  });
 }
 
 /**
@@ -45,22 +51,19 @@ function mapZodErrorToAppError(error: ZodError): AppError {
  * @returns The validated and parsed data as type T.
  * @throws AppError if validation fails (with code VALIDATION_ERROR).
  */
-
-export function assertZodParse<T extends ZodTypeAny>(schema: T, data: unknown): z.output<T> {
+// 4. Zmiana: ZodTypeAny -> ZodType
+export function assertZodParse<T extends ZodType>(schema: T, data: unknown): z.output<T> {
   const result = schema.safeParse(data);
 
   if (!result.success) {
-    // Log detailed error information for debugging purposes
-
     if (!isDevEnv()) {
       console.error("Zod validation failed:", {
         inputData: data,
-        errors: result.error.errors,
         formatted: result.error.format(),
-        flattened: result.error.flatten(),
       });
     } else {
-      console.error("Zod validation failed:", { errors: result.error.errors });
+      // 5. Zmiana: result.error.errors -> result.error.issues
+      console.error("Zod validation failed:", result.error.issues);
     }
 
     throw mapZodErrorToAppError(result.error);

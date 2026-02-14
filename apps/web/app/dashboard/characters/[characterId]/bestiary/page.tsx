@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import type { Metadata } from "next";
 
-import { PageHeader } from "@/layout/page";
+import { PageHeader } from "@/layout/page/PageHeader";
 import {
   BestiaryFiltersPanel,
   BestiaryFloatingPanel,

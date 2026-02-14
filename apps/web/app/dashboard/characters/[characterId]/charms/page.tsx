@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import type { Metadata } from "next";
 
-import { PageHeader } from "@/layout/page";
+import { PageHeader } from "@/layout/page/PageHeader";
 import { getCharacterBestiarySummary } from "@/modules/bestiary/server";
 import { CharmsCards } from "@/modules/charms/components/CharmsCards";
 import { CharmsResetButton } from "@/modules/charms/components/CharmsResetButton";

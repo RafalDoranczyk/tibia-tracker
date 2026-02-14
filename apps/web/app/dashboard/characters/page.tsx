@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { PageHeader } from "@/layout/page";
+import { PageHeader } from "@/layout/page/PageHeader";
 import { CharactersView } from "@/modules/characters";
 import { getCharacterList } from "@/modules/characters/server";
 

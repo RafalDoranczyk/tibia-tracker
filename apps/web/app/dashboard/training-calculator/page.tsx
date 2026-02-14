@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { PageHeader } from "@/layout/page";
+import { PageHeader } from "@/layout/page/PageHeader";
 import { CharacterTrainingView } from "@/modules/training-calculator";
 
 export const metadata: Metadata = {

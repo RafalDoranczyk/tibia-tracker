@@ -2,8 +2,8 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 import { PATHS } from "@/core/paths";
+import { useToast } from "@/hooks";
 import { useRequiredCharacterId } from "@/modules/characters";
-import { useToast } from "@/providers/app";
 
 import { createHuntSession } from "../actions/create-hunt-session";
 import { updateHuntSession } from "../actions/update-hunt-session";

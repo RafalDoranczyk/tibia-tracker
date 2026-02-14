@@ -7,6 +7,7 @@ export const env = createEnv({
    */
   server: {
     ANTHROPIC_API_KEY: z.string().min(1),
+    SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   },
 
   /**
@@ -33,6 +34,7 @@ export const env = createEnv({
   runtimeEnv: {
     // server
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
 
     // client
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,

@@ -5,7 +5,7 @@ import { Box, Stack } from "@mui/material";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 import { FloatingActionButton } from "@/components";
-import { useToast } from "@/providers/app";
+import { useToast } from "@/hooks";
 
 import { updateImbuingItemPrices } from "../actions/update-imbuing-item-prices";
 import { baseScrolls, elementalScrolls, skillScrolls } from "../constants";

@@ -18,7 +18,10 @@ export function DashboardProviders({
   return (
     <UserProvider initialUser={initialUser}>
       <CharactersProvider initialCharacters={initialCharacters}>
-        <ActiveCharacterProvider initialActiveCharacterId={initialActiveCharacterId}>
+        <ActiveCharacterProvider
+          initialCharacters={initialCharacters}
+          initialActiveCharacterId={initialActiveCharacterId}
+        >
           {children}
         </ActiveCharacterProvider>
       </CharactersProvider>

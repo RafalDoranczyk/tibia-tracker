@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
+import { useToast } from "@/hooks";
 import { useRequiredCharacterId } from "@/modules/characters";
-import { useToast } from "@/providers/app";
 
 import { updateCharacterBestiary } from "../actions/updateCharacterBestiary";
 import {
@@ -20,7 +20,7 @@ export function useMonsterProgress(monsterToUpdate: MonsterWithCharacterProgress
   const [monster, setMonster] = useState(monsterToUpdate);
   const [isLoading, setIsLoading] = useState(false);
 
-  const isBestiaryCompleted = monster.stage === 3;
+  const isBestiaryCompleted = monster.stage === BESTIARY_STAGE.COMPLETED;
 
   const runUpdate = async (
     updates: Partial<UpdateCharacterBestiaryPayload>,

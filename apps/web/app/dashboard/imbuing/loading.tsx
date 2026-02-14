@@ -1,6 +1,6 @@
 import { Box, Card, Grid, Paper, Skeleton, Stack } from "@mui/material";
 
-import { PageHeaderSkeleton } from "@/layout/page";
+import { PageHeaderSkeleton } from "@/layout/page/PageHeader";
 
 export default function Loading() {
   return (

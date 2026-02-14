@@ -6,7 +6,6 @@ export { CharactersView } from "./components/CharactersView";
 // ======================
 // Providers and hooks
 // ======================
-export { useActiveCharacterDetails } from "./hooks/useActiveCharacterDetails";
 export {
   ActiveCharacterProvider,
   useActiveCharacter,

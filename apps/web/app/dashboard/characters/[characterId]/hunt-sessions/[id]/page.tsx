@@ -5,7 +5,7 @@ import LinkNext from "next/link";
 import { notFound } from "next/navigation";
 
 import { PATHS } from "@/core/paths";
-import { PageHeader } from "@/layout/page";
+import { PageHeader } from "@/layout/page/PageHeader";
 import { HuntSessionFormProvider, HuntSessionView } from "@/modules/hunt-sessions";
 import { loadHuntSession } from "@/modules/hunt-sessions/server";
 

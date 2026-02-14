@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { EmptyState } from "@/components";
 import { PATHS } from "@/core/paths";
-import { PageHeader } from "@/layout/page";
+import { PageHeader } from "@/layout/page/PageHeader";
 import {
   HuntSessionListView,
   parseHuntSessionFiltersFromSearchParams,

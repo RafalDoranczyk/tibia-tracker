@@ -122,7 +122,7 @@ function NavItem({ element, pathname, activeCharacterId, depth = 0 }: NavItemPro
 
 export function NavigationLinks() {
   const pathname = usePathname();
-  const { activeCharacterId } = useActiveCharacter();
+  const { activeCharacter } = useActiveCharacter();
 
   return (
     <>
@@ -151,7 +151,7 @@ export function NavigationLinks() {
                 key={element.id}
                 element={element}
                 pathname={pathname}
-                activeCharacterId={activeCharacterId}
+                activeCharacterId={activeCharacter?.id ?? null}
               />
             ))}
           </List>

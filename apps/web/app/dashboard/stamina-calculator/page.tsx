@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { PageHeader } from "@/layout/page";
+import { PageHeader } from "@/layout/page/PageHeader";
 import { StaminaCalculator } from "@/modules/stamina-calculator";
 
 export const metadata: Metadata = {

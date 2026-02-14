@@ -17,7 +17,7 @@ type CharactersViewProps = {
 };
 
 export function CharactersView({ hasCharacters, characters }: CharactersViewProps) {
-  const { activeCharacterId, setActiveCharacterId } = useActiveCharacter();
+  const { activeCharacter, setActiveCharacterId } = useActiveCharacter();
 
   // -----------------------------
   // UI State
@@ -56,7 +56,7 @@ export function CharactersView({ hasCharacters, characters }: CharactersViewProp
       await deleteCharacter(characterToDelete.id);
 
       // if deleted active character → reset
-      if (activeCharacterId === characterToDelete.id) {
+      if (activeCharacter?.id === characterToDelete.id) {
         setActiveCharacterId(null);
       }
 
@@ -89,7 +89,7 @@ export function CharactersView({ hasCharacters, characters }: CharactersViewProp
           characters={characters}
           onDelete={onDelete}
           onSelect={onSelect}
-          activeCharacterId={activeCharacterId}
+          activeCharacterId={activeCharacter?.id ?? null}
         />
       )}
 

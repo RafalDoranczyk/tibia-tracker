@@ -12,7 +12,7 @@ import type { TypedSupabaseClient } from "../types";
 export async function createServerSupabase(): Promise<TypedSupabaseClient> {
   const cookieStore = await cookies();
 
-  return createServerClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key, {
+  return createServerClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll(cookiesToSet) {

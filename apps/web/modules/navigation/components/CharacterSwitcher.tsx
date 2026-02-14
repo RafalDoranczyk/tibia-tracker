@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { PATHS } from "@/core/paths";
-import { useActiveCharacter, useActiveCharacterDetails, useCharacters } from "@/modules/characters";
+import { useActiveCharacter, useCharacters } from "@/modules/characters";
 
 export function CharacterSwitcher() {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
@@ -15,8 +15,7 @@ export function CharacterSwitcher() {
   const pathname = usePathname();
 
   const { characters } = useCharacters();
-  const { setActiveCharacterId } = useActiveCharacter();
-  const activeCharacter = useActiveCharacterDetails();
+  const { setActiveCharacterId, activeCharacter } = useActiveCharacter();
 
   if (!activeCharacter) {
     return (

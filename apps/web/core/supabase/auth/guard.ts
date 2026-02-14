@@ -1,10 +1,13 @@
+import type { User } from "@supabase/supabase-js";
+import { cache } from "react";
+
 import { AppError, AppErrorCode } from "../../error";
 import type { TypedSupabaseClient } from "../types";
 import { createServerSupabase } from "./server";
 
 type AuthenticatedSupabaseResult = {
   supabase: TypedSupabaseClient;
-  userId: string;
+  user: User;
 };
 
 /**
@@ -12,16 +15,18 @@ type AuthenticatedSupabaseResult = {
  * Use for: Protecting routes and loaders.
  * Context: Ensures the user is logged in before proceeding to data fetching or actions.
  */
-export async function requireAuthenticatedSupabase(): Promise<AuthenticatedSupabaseResult> {
-  const supabase = await createServerSupabase();
+export const requireAuthenticatedSupabase = cache(
+  async (): Promise<AuthenticatedSupabaseResult> => {
+    const supabase = await createServerSupabase();
+    console.log("🔥 GUARD EXECUTED");
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    if (!user) {
+      throw new AppError(AppErrorCode.UNAUTHORIZED, "User not authenticated");
+    }
 
-  if (!user) {
-    throw new AppError(AppErrorCode.UNAUTHORIZED, "User not authenticated");
+    return { supabase, user };
   }
-
-  return { supabase, userId: user.id };
-}
+);
