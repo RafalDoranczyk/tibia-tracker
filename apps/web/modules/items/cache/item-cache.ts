@@ -1,10 +1,4 @@
 export const ItemCache = {
-  keys: {
-    supplies: "supply-list-all",
-    items: "items-list-all",
-  },
-  tags: {
-    all: "items-all",
-    supplies: "supplies",
-  },
+  supplies: "supply-list-all",
+  items: "items-list-all",
 } as const;

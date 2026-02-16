@@ -1,4 +1,4 @@
-import { unstable_cache } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
@@ -9,23 +9,21 @@ import { type Monster, MonsterSchema } from "@/modules/bestiary";
 import { HuntSessionCache } from "../../cache/hunt-session-cache";
 import { dbGetMonsterList } from "../queries/monsters";
 
-const getCachedMonsters = unstable_cache(
-  async () => {
-    const supabase = createStaticSupabaseClient();
-    const { data, error } = await dbGetMonsterList(supabase);
+async function getCachedMonsters() {
+  "use cache";
+  cacheLife("max");
+  cacheTag(HuntSessionCache.monsters);
 
-    if (error) throw error;
-    return data;
-  },
-  [HuntSessionCache.keys.monsters],
+  const supabase = createStaticSupabaseClient();
 
-  // Revalidate once a week
-  { revalidate: 604800, tags: [HuntSessionCache.tags.monsters] }
-);
+  const { data, error } = await dbGetMonsterList(supabase);
+
+  if (error) throw error;
+  return data;
+}
 
 export async function getMonsterList(): Promise<Monster[]> {
   await requireAuthenticatedSupabase();
-  console.log("fefe");
 
   try {
     const data = await getCachedMonsters();

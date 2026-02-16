@@ -1,18 +1,33 @@
+import { cacheLife, cacheTag } from "next/cache";
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
+import { createStaticSupabaseClient } from "@/core/supabase/clients/static";
 import { assertZodParse } from "@/lib/zod";
-
+import { CharmCache } from "../../cache/charms-cache";
 import { type Charm, CharmSchema } from "../../schemas";
 import { dbGetCharms } from "../queries/charms";
 
-// Fetches all charms available in the system, regardless of character progress.
-export async function getCharmList(): Promise<Charm[]> {
-  const { supabase } = await requireAuthenticatedSupabase();
+async function getCachedCharmList() {
+  "use cache";
+  cacheLife("max");
+  cacheTag(CharmCache.list);
+
+  const supabase = createStaticSupabaseClient();
 
   const { data, error } = await dbGetCharms(supabase);
 
-  if (error) {
+  if (error) throw error;
+  return data;
+}
+
+// Fetches all charms available in the system, regardless of character progress.
+export async function getCharmList(): Promise<Charm[]> {
+  await requireAuthenticatedSupabase();
+
+  try {
+    const data = await getCachedCharmList();
+    return assertZodParse(CharmSchema.array(), data);
+  } catch (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch charms");
   }
-  return assertZodParse(CharmSchema.array(), data);
 }

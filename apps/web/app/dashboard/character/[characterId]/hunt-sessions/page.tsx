@@ -1,8 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { EmptyState } from "@/components";
+import { EmptyState, NextLink } from "@/components";
 import { PATHS } from "@/core/paths";
 import { PageHeader } from "@/layout/page/PageHeader";
 import {
@@ -47,7 +46,7 @@ export default async function HuntSessions({ params, searchParams }: CharacterPa
 
             <Button
               variant="contained"
-              component={Link}
+              component={NextLink}
               href={PATHS.CHARACTER(characterId).HUNT_SESSIONS.NEW}
             >
               Add Hunt Session
@@ -63,7 +62,7 @@ export default async function HuntSessions({ params, searchParams }: CharacterPa
           action={
             <Button
               variant="contained"
-              component={Link}
+              component={NextLink}
               href={PATHS.CHARACTER(characterId).HUNT_SESSIONS.NEW}
             >
               Add Hunt Session

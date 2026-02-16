@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import type { Tables } from "@/core/supabase/types";
-import { ISODate, LocalDatetime, PositiveInt } from "@/lib/zod";
+import { LocalDatetime, NonEmptyString, PositiveInt } from "@/lib/zod";
 import { CharacterIDSchema } from "@/modules/characters";
 import { HuntPlaceSchema } from "@/modules/hunt-places";
 
@@ -29,7 +29,7 @@ export const HuntSessionDbBaseFieldsSchema = z.object({
   id: PositiveInt,
   character_id: CharacterIDSchema,
   place_id: HuntPlaceSchema.shape.id,
-  date: ISODate,
+  date: NonEmptyString,
   started_at: LocalDatetime,
   ended_at: LocalDatetime,
   level: PositiveInt,

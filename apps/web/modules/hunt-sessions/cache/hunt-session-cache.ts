@@ -1,8 +1,3 @@
 export const HuntSessionCache = {
-  keys: {
-    monsters: "monsters-list-all",
-  },
-  tags: {
-    monsters: "bestiary-monsters",
-  },
+  monsters: "monster-list" as const,
 } as const;

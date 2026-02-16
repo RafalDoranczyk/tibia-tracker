@@ -1,11 +1,3 @@
-import type { CharacterVocation } from "../schemas";
-
-export const CHARACTER_VOCATION_LABELS: Record<CharacterVocation, string> = {
-  knight: "Knight",
-  paladin: "Paladin",
-  sorcerer: "Sorcerer",
-  druid: "Druid",
-  monk: "Monk",
-};
-
-export const MAX_CHARACTERS_PER_USER = 3;
+export const MAX_CHARACTERS_PER_USER = 4;
+export const MIN_CHARACTER_NAME_LENGTH = 3;
+export const CHARACTER_CACHE_DURATION_MINUTES = 10;

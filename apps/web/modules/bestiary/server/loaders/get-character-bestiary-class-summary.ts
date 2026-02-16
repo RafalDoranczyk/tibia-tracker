@@ -1,50 +1,53 @@
-import { unstable_cache } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { createAdminClient } from "@/core/supabase/clients/admin";
 import { assertZodParse } from "@/lib/zod";
-
+import { requireCharacterOwnership } from "@/modules/characters/server";
 import { BestiaryCache } from "../../cache/bestiary-cache";
 import {
-  CharacterBestiaryClassRequestSchema,
   type CharacterBestiaryClassSummary,
   CharacterBestiaryClassSummarySchema,
+  type FetchCharacterBestiaryClassSummaryPayload,
+  FetchCharacterBestiaryClassSummaryPayloadSchema,
 } from "../../schemas";
 import { dbGetBestiaryClassSummary } from "../queries/character-bestiary-class-summary";
+
+async function getCachedBestiaryClassSummary({
+  characterId,
+  bestiaryClass,
+}: FetchCharacterBestiaryClassSummaryPayload) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(BestiaryCache.classSummary(characterId, bestiaryClass));
+
+  const supabase = createAdminClient();
+
+  const { data, error } = await dbGetBestiaryClassSummary(supabase, {
+    characterId,
+    bestiaryClass,
+  });
+
+  if (error) throw error;
+  return data;
+}
 
 export async function getCharacterBestiaryClassSummary(
   payload: unknown
 ): Promise<CharacterBestiaryClassSummary> {
   const { characterId, bestiaryClass } = assertZodParse(
-    CharacterBestiaryClassRequestSchema,
+    FetchCharacterBestiaryClassSummaryPayloadSchema,
     payload
   );
 
-  await requireAuthenticatedSupabase();
+  // We have to check ownership before using admin client to access potentially sensitive data
+  await requireCharacterOwnership(characterId);
 
   try {
-    const getCachedData = unstable_cache(
-      async () => {
-        const supabase = createAdminClient();
-
-        const { data, error } = await dbGetBestiaryClassSummary(supabase, {
-          characterId,
-          bestiaryClass,
-        });
-
-        if (error) throw error;
-
-        return data;
-      },
-      [BestiaryCache.keys.classSummary, characterId, bestiaryClass],
-      {
-        tags: [BestiaryCache.tags.classSummary(characterId, bestiaryClass)],
-        revalidate: 86400, // 24h
-      }
-    );
-
-    const data = await getCachedData();
+    const data = await getCachedBestiaryClassSummary({
+      characterId,
+      bestiaryClass,
+    });
 
     const safeData = data ?? {
       character_id: characterId,

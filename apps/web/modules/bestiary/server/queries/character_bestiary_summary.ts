@@ -1,7 +1,6 @@
 import type { TypedSupabaseClient } from "@/core/supabase/types";
 
 export function dbGetBestiarySummary(supabase: TypedSupabaseClient, characterId: string) {
-  console.log("db");
   return supabase
     .from("character_bestiary_summary")
     .select(`

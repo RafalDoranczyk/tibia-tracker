@@ -25,7 +25,7 @@ type NavItemProps = {
 
 function NavItem({ element, pathname, activeCharacterId, depth = 0 }: NavItemProps) {
   const { icon, text, to, requiresCharacter, children } = element;
-
+  console.log(`Renderuję: ${element.text}`); // <-- LOG
   const href = resolvePath(to, activeCharacterId);
   const isSelected = href ? isPathActive(pathname, href) : false;
 
@@ -34,12 +34,12 @@ function NavItem({ element, pathname, activeCharacterId, depth = 0 }: NavItemPro
 
   const content = (
     <ListItemButton
-      component={Link}
-      href={href ?? "#"}
+      component={disabled ? "div" : Link}
+      href={disabled ? undefined : (href ?? "#")}
       selected={isSelected}
       disabled={disabled}
       sx={{
-        pl: isSubItem ? 1.5 : 2,
+        pl: isSubItem ? 0 : 2,
         pr: 1,
         borderRadius: 1,
         mx: 1,
@@ -54,15 +54,14 @@ function NavItem({ element, pathname, activeCharacterId, depth = 0 }: NavItemPro
     >
       {icon && (
         <ListItemIcon sx={{ minWidth: 30 }}>
-          {" "}
           {icon.type === "mui" ? (
-            <Box sx={{ fontSize: isSubItem ? 16 : 20, display: "flex" }}>{icon.node}</Box>
+            <Box sx={{ fontSize: isSubItem ? 12 : 20, display: "flex" }}>{icon.node}</Box>
           ) : (
             <Image
               src={icon.src}
               alt={text}
-              width={isSubItem ? 14 : 18}
-              height={isSubItem ? 14 : 18}
+              width={isSubItem ? 12 : 18}
+              height={isSubItem ? 12 : 18}
             />
           )}
         </ListItemIcon>
@@ -75,7 +74,7 @@ function NavItem({ element, pathname, activeCharacterId, depth = 0 }: NavItemPro
         color={isSelected ? "primary.light" : "text.primary"}
         fontWeight={isSelected ? 600 : 400}
         sx={{
-          fontSize: isSubItem ? "0.75rem" : "0.85rem",
+          fontSize: isSubItem ? "0.72rem" : "0.85rem",
           lineHeight: 1.2,
         }}
       >
@@ -97,7 +96,7 @@ function NavItem({ element, pathname, activeCharacterId, depth = 0 }: NavItemPro
       {children && (
         <Box
           sx={{
-            ml: 2.5,
+            ml: 5,
             borderLeft: "1px solid",
             borderColor: "divider",
             my: 0.25,

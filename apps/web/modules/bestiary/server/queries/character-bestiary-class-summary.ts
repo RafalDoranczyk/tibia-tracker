@@ -1,10 +1,9 @@
 import type { TypedSupabaseClient } from "@/core/supabase/types";
-
-import type { CharacterBestiaryClassRequest } from "../../schemas";
+import type { FetchCharacterBestiaryClassSummaryPayload } from "../../schemas";
 
 export function dbGetBestiaryClassSummary(
   supabase: TypedSupabaseClient,
-  payload: CharacterBestiaryClassRequest
+  payload: FetchCharacterBestiaryClassSummaryPayload
 ) {
   return supabase
     .from("character_bestiary_class_summary")

@@ -1,11 +1,11 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
-
+import { updateCharacterCharmTags } from "@/modules/charms/server";
 import { BestiaryCache } from "../cache/bestiary-cache";
 import { UpdateCharacterBestiaryPayloadSchema } from "../schemas";
 import { dbUpsertCharacterBestiary } from "../server";
@@ -20,17 +20,12 @@ export async function updateCharacterBestiary(payload: unknown): Promise<void> {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to update character bestiary");
   }
 
-  const { character_id, monster_id } = parsed;
+  const { character_id, bestiary_class } = parsed;
 
-  revalidateTag(BestiaryCache.tags.summary(character_id), "default");
+  updateTag(BestiaryCache.summary(character_id));
+  updateCharacterCharmTags(character_id);
 
-  const { data: monster } = await supabase
-    .from("monsters")
-    .select("bestiary_class")
-    .eq("id", monster_id)
-    .maybeSingle();
-
-  if (monster?.bestiary_class) {
-    revalidateTag(BestiaryCache.tags.classSummary(character_id, monster.bestiary_class), "default");
+  if (bestiary_class) {
+    updateTag(BestiaryCache.classSummary(character_id, bestiary_class));
   }
 }

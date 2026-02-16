@@ -1,127 +1,70 @@
 "use client";
 
-import { Button } from "@mui/material";
 import { useState, useTransition } from "react";
 
-import { ConfirmDialog, EmptyState } from "@/components";
-
+import { useToast } from "@/hooks";
 import { deleteCharacter } from "../actions/delete-character";
+
 import { useActiveCharacter } from "../providers/ActiveCharacterProvider";
-import type { Character } from "../schemas";
-import { CharacterModal } from "./CharacterModal";
-import { CharactersGrid } from "./CharactersGrid";
+import type { AppCharacter } from "../schemas";
+import { CardGrid } from "./CardGrid";
+import { SettingsDialog } from "./SettingsDialog";
 
 type CharactersViewProps = {
-  characters: Character[];
-  hasCharacters: boolean;
+  characters: AppCharacter[];
 };
 
-export function CharactersView({ hasCharacters, characters }: CharactersViewProps) {
+export function CharactersView({ characters }: CharactersViewProps) {
+  const toast = useToast();
   const { activeCharacter, setActiveCharacterId } = useActiveCharacter();
-
-  // -----------------------------
-  // UI State
-  // -----------------------------
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [characterToEdit, setCharacterToEdit] = useState<Character | null>(null);
-  const [characterToDelete, setCharacterToDelete] = useState<Character | null>(null);
   const [isPending, startTransition] = useTransition();
+
+  // UI State
+
+  const [settingsChar, setSettingsChar] = useState<AppCharacter | null>(null);
 
   // -----------------------------
   // Handlers
   // -----------------------------
-  const onSelect = (character: Character) => {
-    setActiveCharacterId(character.id);
+
+  const onSelect = async (character: AppCharacter) => {
+    await setActiveCharacterId(character.id);
+    toast.success(`Active character set to ${character.name}`);
   };
 
-  // open confirm dialog
-  const onDelete = (character: Character) => {
-    setCharacterToDelete(character);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setCharacterToEdit(null);
-  };
-
-  const onEdit = (character: Character) => {
-    setIsModalOpen(true);
-    setCharacterToEdit(character);
-  };
-
-  const handleConfirmDelete = () => {
-    if (!characterToDelete) return;
-
+  const handleDelete = (id: string) => {
     startTransition(async () => {
-      await deleteCharacter(characterToDelete.id);
+      try {
+        await deleteCharacter(id);
 
-      // if deleted active character → reset
-      if (activeCharacter?.id === characterToDelete.id) {
-        setActiveCharacterId(null);
+        if (activeCharacter?.id === id) {
+          setActiveCharacterId(null);
+        }
+
+        toast.success("Character removed successfully");
+        setSettingsChar(null);
+      } catch {
+        toast.error("Failed to remove character");
       }
-
-      setCharacterToDelete(null);
     });
   };
 
   return (
     <>
-      {!hasCharacters ? (
-        <EmptyState
-          variant="character"
-          action={
-            <Button
-              variant="contained"
-              onClick={() => {
-                setIsModalOpen(true);
-              }}
-            >
-              Create character
-            </Button>
-          }
-          title="No characters yet"
-          subtitle="Start by creating your first character to unlock character-specific features."
-        />
-      ) : (
-        <CharactersGrid
-          onCreate={() => setIsModalOpen(true)}
-          onEdit={onEdit}
-          characters={characters}
-          onDelete={onDelete}
-          onSelect={onSelect}
-          activeCharacterId={activeCharacter?.id ?? null}
-        />
-      )}
-
-      <CharacterModal
-        open={isModalOpen}
-        character={characterToEdit ?? undefined}
-        onClose={handleCloseModal}
-        onSuccess={() => {
-          handleCloseModal();
-        }}
+      <CardGrid
+        characters={characters}
+        activeCharacterId={activeCharacter?.id ?? null}
+        onSelect={onSelect}
+        onSettings={setSettingsChar}
       />
 
-      <ConfirmDialog.Root
-        open={Boolean(characterToDelete)}
-        onOpenChange={(open) => !open && setCharacterToDelete(null)}
-      >
-        <ConfirmDialog.Header
-          title="Delete character"
-          description={
-            characterToDelete
-              ? `Are you sure you want to delete ${characterToDelete.name}? This action cannot be undone.`
-              : ""
-          }
-        />
-
-        <ConfirmDialog.Actions>
-          <ConfirmDialog.Cancel loading={isPending} />
-          <ConfirmDialog.Confirm loading={isPending} color="error" onClick={handleConfirmDelete}>
-            Delete
-          </ConfirmDialog.Confirm>
-        </ConfirmDialog.Actions>
-      </ConfirmDialog.Root>
+      <SettingsDialog
+        character={settingsChar}
+        open={!!settingsChar}
+        isPending={isPending}
+        onClose={() => setSettingsChar(null)}
+        onDelete={handleDelete}
+      />
     </>
   );
 }

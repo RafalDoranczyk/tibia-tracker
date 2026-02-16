@@ -20,7 +20,6 @@ export const useSaveHuntSession = () => {
       try {
         const formPayload = mapHuntSessionFormToPayload({ formData, characterId });
 
-        console.log(formPayload);
         if (id) {
           await updateHuntSession({ ...formPayload, id });
         } else {

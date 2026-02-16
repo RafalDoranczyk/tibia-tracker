@@ -7,7 +7,7 @@ export function getCharmTotalCostToLevel(
   let total = 0;
 
   for (let l = 1; l <= targetLevel; l++) {
-    total += charm.levels[1].cost;
+    total += charm.levels[l as CharmLevel].cost;
   }
 
   return total;
@@ -17,22 +17,13 @@ export function getCharmEffectAtLevel(charm: CharacterCharmWithProgress, level: 
   return charm.levels[level].effect;
 }
 
-export function canAffordCharmLevel(
-  charm: CharacterCharmWithProgress,
-  targetLevel: CharmLevel,
-  availablePoints: number
-) {
-  const totalCost = getCharmTotalCostToLevel(charm, targetLevel);
-  return availablePoints >= totalCost;
-}
-
-// Step-Based for cards
 export function getCharmNextLevelCost(charm: CharacterCharmWithProgress): number | null {
-  const nextLevel = charm.progress.unlocked ? charm.progress.level + 1 : 1;
+  const currentLevel = charm.progress.level || 0;
+  const nextLevel = currentLevel + 1;
 
-  if (nextLevel < 1 || nextLevel > 3) return null;
+  if (nextLevel > 3) return null;
 
-  return charm.levels[nextLevel as 1 | 2 | 3].cost;
+  return charm.levels[nextLevel as CharmLevel].cost;
 }
 
 export function canAffordNextCharmLevel(

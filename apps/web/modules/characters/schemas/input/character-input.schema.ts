@@ -1,15 +1,15 @@
 import type { z } from "zod";
 
-import { CharacterIDSchema, CharacterSchema } from "../db/character.schema";
+import { CharacterSchema } from "../db/character.schema";
 
 export const CreateCharacterSchema = CharacterSchema.omit({
   id: true,
+  synchronized_at: true,
 });
 export type CreateCharacterPayload = z.infer<typeof CreateCharacterSchema>;
 
-export const UpdateCharacterSchema = CharacterSchema.partial().extend({
-  id: CharacterIDSchema,
+//  For editing by user - only a subset of fields
+export const UpdateCharacterSchema = CharacterSchema.omit({
+  synchronized_at: true,
 });
-
-export const CharacterFormSchema = CreateCharacterSchema;
-export type CharacterForm = z.infer<typeof CharacterFormSchema>;
+export type UpdateCharacterPayload = z.infer<typeof UpdateCharacterSchema>;

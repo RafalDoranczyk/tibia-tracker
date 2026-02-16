@@ -1,14 +1,13 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { Breadcrumbs, Link, Typography } from "@mui/material";
+import { Breadcrumbs, Button, Typography } from "@mui/material";
 import type { Metadata } from "next";
-import LinkNext from "next/link";
-import { notFound } from "next/navigation";
 
+import { notFound } from "next/navigation";
+import { NextLink } from "@/components";
 import { PATHS } from "@/core/paths";
 import { PageHeader } from "@/layout/page/PageHeader";
 import { HuntSessionFormProvider, HuntSessionView } from "@/modules/hunt-sessions";
 import { loadHuntSession } from "@/modules/hunt-sessions/server";
-
 import type { CharacterPageProps } from "../../../../types";
 
 export const metadata: Metadata = {
@@ -47,14 +46,13 @@ export default async function EditHuntSessionPage({ params }: EditHuntSessionPag
         aria-label="breadcrumb"
         sx={{ mb: 2, color: "text.secondary" }}
       >
-        <Link
-          component={LinkNext}
-          underline="hover"
+        <Button
+          component={NextLink}
           color="inherit"
           href={PATHS.CHARACTER(characterId).HUNT_SESSIONS.LIST}
         >
           Hunt Sessions
-        </Link>
+        </Button>
 
         <Typography color="text.primary">Edit Hunt Session</Typography>
       </Breadcrumbs>

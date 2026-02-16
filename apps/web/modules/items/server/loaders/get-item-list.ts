@@ -1,4 +1,4 @@
-import { unstable_cache } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
@@ -9,20 +9,17 @@ import { ItemCache } from "../../cache/item-cache";
 import { type Item, ItemSchema } from "../../schemas";
 import { dbGetItemList } from "../queries/item-list";
 
-const getCachedItemList = unstable_cache(
-  async () => {
-    const supabase = createStaticSupabaseClient();
-    const { data, error } = await dbGetItemList(supabase);
-    if (error) throw error;
-    return data;
-  },
-  [ItemCache.keys.items],
-  {
-    // Revalidate once a week
-    revalidate: 604800,
-    tags: [ItemCache.tags.all],
-  }
-);
+async function getCachedItemList() {
+  "use cache";
+  cacheLife("max");
+  cacheTag(ItemCache.items);
+  const supabase = createStaticSupabaseClient();
+
+  const { data, error } = await dbGetItemList(supabase);
+
+  if (error) throw error;
+  return data;
+}
 
 export async function getItemList(): Promise<Item[]> {
   await requireAuthenticatedSupabase();

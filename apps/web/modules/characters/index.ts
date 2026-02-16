@@ -1,8 +1,9 @@
 // ======================
 // UI – public components
 // ======================
-export { CharactersView } from "./components/CharactersView";
 
+export { CharactersSyncAllButton } from "./components/CharactersSyncAllButton";
+export { CharactersView } from "./components/CharactersView";
 // ======================
 // Providers and hooks
 // ======================
@@ -18,6 +19,7 @@ export { CharactersProvider, useCharacters } from "./providers/CharactersProvide
 // ======================
 
 export {
+  type AppCharacter,
   type Character,
   CharacterIDSchema,
   type CharacterVocation,

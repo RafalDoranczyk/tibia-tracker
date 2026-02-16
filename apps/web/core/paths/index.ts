@@ -1,8 +1,9 @@
-const DASHBOARD_PATH = "/dashboard";
+const DASHBOARD_ROOT = "/dashboard";
+const CHARACTER_BASE = `${DASHBOARD_ROOT}/character`;
+const CALCULATORS_ROOT = `${DASHBOARD_ROOT}/calculators`;
 
-// Specific paths for a character
-export const character = (characterId: string) => {
-  const base = `${DASHBOARD_PATH}/characters/${characterId}` as const;
+export const characterPaths = (characterId: string) => {
+  const base = `${CHARACTER_BASE}/${characterId}`;
 
   return {
     OVERVIEW: base,
@@ -12,19 +13,20 @@ export const character = (characterId: string) => {
     HUNT_SESSIONS: {
       LIST: `${base}/hunt-sessions`,
       NEW: `${base}/hunt-sessions/new`,
-      EDIT: (sessionId: number) => `${base}/hunt-sessions/${sessionId}`,
+      EDIT: (sessionId: number | string) => `${base}/hunt-sessions/${sessionId}`,
     },
-  };
+  } as const;
 };
 
-export type CharacterPaths = ReturnType<typeof character>;
+export type CharacterPaths = ReturnType<typeof characterPaths>;
 
 export const PATHS = {
-  CHARACTER: character,
-  DASHBOARD: `${DASHBOARD_PATH}`,
-  SETTINGS: `${DASHBOARD_PATH}/settings`,
-  CHARACTERS: `${DASHBOARD_PATH}/characters`,
-  IMBUING: `${DASHBOARD_PATH}/imbuing`,
-  STAMINA_CALCULATOR: `${DASHBOARD_PATH}/stamina-calculator`,
-  TRAINING_CALCULATOR: `${DASHBOARD_PATH}/training-calculator`,
+  DASHBOARD: DASHBOARD_ROOT,
+  CHARACTER: characterPaths,
+  CHARACTERS: `${DASHBOARD_ROOT}/characters`,
+  CALCULATORS: {
+    IMBUING: `${CALCULATORS_ROOT}/imbuing`,
+    STAMINA: `${CALCULATORS_ROOT}/stamina`,
+    TRAINING: `${CALCULATORS_ROOT}/training`,
+  },
 } as const;

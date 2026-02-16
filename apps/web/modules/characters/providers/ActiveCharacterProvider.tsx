@@ -9,10 +9,8 @@ import {
   useMemo,
   useState,
 } from "react";
-
 import { useToast } from "@/hooks";
 import { updateLastActiveCharacter } from "@/modules/user/actions/update-last-active-character";
-
 import type { Character } from "../schemas";
 
 type ContextCharacterId = string | null;
@@ -35,6 +33,7 @@ export function ActiveCharacterProvider({
   initialCharacters,
 }: ActiveCharacterProviderProps) {
   const toast = useToast();
+
   const { characterId } = useParams<{ characterId?: string }>();
 
   const [activeCharacterId, setActiveCharacterId] =
@@ -52,19 +51,13 @@ export function ActiveCharacterProvider({
   }, [activeCharacterId, initialCharacters]);
 
   const handleSetActive = async (id: ContextCharacterId) => {
-    if (id === activeCharacterId) return;
+    if (!id || id === activeCharacterId) return;
 
-    setActiveCharacterId(id);
-
-    if (id) {
-      try {
-        await updateLastActiveCharacter(id);
-        toast.success(
-          "You switched active character. All character-related features will now use this character."
-        );
-      } catch {
-        toast.error("Failed to sync active character to DB.");
-      }
+    try {
+      setActiveCharacterId(id);
+      await updateLastActiveCharacter(id);
+    } catch {
+      toast.error("Failed to switch character");
     }
   };
 

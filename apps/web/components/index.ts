@@ -2,12 +2,13 @@ export { ConfirmDialog } from "./ConfirmDialog";
 export { EmptyState } from "./EmptyState/EmptyState";
 export { FloatingActionButton } from "./FloatingActionButton";
 export { FloatingStatsButton } from "./FloatingStatsButton";
-// Form
+
 export { Autocomplete } from "./form/Autocomplete";
 export { ControlledSelect } from "./form/ControlledSelect";
 export { ControlledTextField } from "./form/ControlledTextField";
 export { DebouncedSearchFieldURL } from "./form/DebouncedSearchFieldURL";
-// Table
+export { NextLink } from "./NextLink";
+
 export { Table, type TableHeadCell, type TableOrder } from "./Table/Table";
 export { TableSkeleton } from "./Table/TableSkeleton";
 export { TooltipIconButton } from "./TooltipIconButton";

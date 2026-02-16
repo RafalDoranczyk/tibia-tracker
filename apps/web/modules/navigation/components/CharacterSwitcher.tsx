@@ -3,16 +3,14 @@
 import Settings from "@mui/icons-material/Settings";
 import { Box, Button, Menu, MenuItem, Typography } from "@mui/material";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-
 import { PATHS } from "@/core/paths";
 import { useActiveCharacter, useCharacters } from "@/modules/characters";
 
 export function CharacterSwitcher() {
-  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const router = useRouter();
-  const pathname = usePathname();
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
 
   const { characters } = useCharacters();
   const { setActiveCharacterId, activeCharacter } = useActiveCharacter();
@@ -31,12 +29,8 @@ export function CharacterSwitcher() {
 
   const handleClick = (charId: string) => {
     handleCloseMenu();
-
-    if (pathname.includes(PATHS.CHARACTERS)) {
-      router.push(PATHS.CHARACTER(charId).OVERVIEW);
-    } else {
-      setActiveCharacterId(charId);
-    }
+    setActiveCharacterId(charId);
+    router.push(PATHS.CHARACTER(charId).OVERVIEW);
   };
 
   return (

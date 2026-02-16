@@ -1,15 +1,13 @@
 import AddIcon from "@mui/icons-material/Add";
-
 import { PATHS } from "@/core/paths";
+import { NAVIGATION_IMAGES } from "../images";
+import type { NavigationSection } from "../types";
 
-import { NAVIGATION_IMAGES } from "./images";
-import type { NavigationSection } from "./types";
-
-export const DESKTOP_APP_NAVIGATION_DRAWER_WIDTH = "240px";
+export const DESKTOP_APP_NAVIGATION_DRAWER_WIDTH = "250px";
 export const APP_BAR_HEIGHT = "64px";
 
 export const NAVIGATION_IDS = {
-  CHARACTER: "character",
+  DASHBOARD: "dashboard",
   CHARMS: "charms",
   BESTIARY: "bestiary",
   HUNT_SESSIONS: "hunt-sessions",
@@ -26,49 +24,37 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
     title: "Character Overview",
     elements: [
       {
-        id: NAVIGATION_IDS.CHARACTER,
-        text: "My Character",
-        to: (c) => c.OVERVIEW,
+        id: NAVIGATION_IDS.DASHBOARD,
+        text: "Dashboard",
+        to: (p) => p.OVERVIEW,
         requiresCharacter: true,
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.character,
-        },
-      },
-      {
-        id: NAVIGATION_IDS.CHARMS,
-        text: "Charms",
-        to: (c) => c.CHARMS,
-        requiresCharacter: true,
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.charms,
-        },
+        icon: { type: "image", src: NAVIGATION_IMAGES.character },
       },
       {
         id: NAVIGATION_IDS.BESTIARY,
         text: "Bestiary",
-        to: (c) => c.BESTIARY,
+        to: (p) => p.BESTIARY,
         requiresCharacter: true,
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.monster,
-        },
+        icon: { type: "image", src: NAVIGATION_IMAGES.monster },
+      },
+      {
+        id: NAVIGATION_IDS.CHARMS,
+        text: "Charms",
+        to: (p) => p.CHARMS,
+        requiresCharacter: true,
+        icon: { type: "image", src: NAVIGATION_IMAGES.charms },
       },
       {
         id: NAVIGATION_IDS.HUNT_SESSIONS,
         text: "Hunt Sessions",
-        to: (c) => c.HUNT_SESSIONS.LIST,
+        to: (p) => p.HUNT_SESSIONS.LIST,
         requiresCharacter: true,
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.hunt,
-        },
+        icon: { type: "image", src: NAVIGATION_IMAGES.hunt },
         children: [
           {
             id: NAVIGATION_IDS.ADD_HUNT_SESSION,
             text: "Add New Session",
-            to: (c) => c.HUNT_SESSIONS.NEW,
+            to: (p) => p.HUNT_SESSIONS.NEW,
             requiresCharacter: true,
             icon: {
               type: "mui",
@@ -80,12 +66,9 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
       {
         id: NAVIGATION_IDS.HUNT_PLACES,
         text: "Hunt Places",
-        to: (c) => c.HUNT_PLACES,
+        to: (p) => p.HUNT_PLACES,
         requiresCharacter: true,
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.huntGold,
-        },
+        icon: { type: "image", src: NAVIGATION_IMAGES.huntGold },
       },
     ],
   },
@@ -96,42 +79,30 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
         id: NAVIGATION_IDS.CHARACTERS,
         text: "Characters",
         to: PATHS.CHARACTERS,
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.characters,
-        },
+        icon: { type: "image", src: NAVIGATION_IMAGES.characters },
       },
     ],
   },
   {
-    title: "Utilities",
+    title: "Calculators",
     elements: [
       {
         id: NAVIGATION_IDS.IMBUING,
         text: "Imbuing",
-        to: PATHS.IMBUING,
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.scroll,
-        },
+        to: PATHS.CALCULATORS.IMBUING,
+        icon: { type: "image", src: NAVIGATION_IMAGES.scroll },
       },
       {
         id: NAVIGATION_IDS.TRAINING_CALCULATOR,
-        text: "Training Calculator",
-        to: PATHS.TRAINING_CALCULATOR,
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.training,
-        },
+        text: "Training",
+        to: PATHS.CALCULATORS.TRAINING,
+        icon: { type: "image", src: NAVIGATION_IMAGES.training },
       },
       {
         id: NAVIGATION_IDS.STAMINA_CALCULATOR,
-        text: "Stamina Calculator",
-        to: PATHS.STAMINA_CALCULATOR,
-        icon: {
-          type: "image",
-          src: NAVIGATION_IMAGES.calculator,
-        },
+        text: "Stamina",
+        to: PATHS.CALCULATORS.STAMINA,
+        icon: { type: "image", src: NAVIGATION_IMAGES.calculator },
       },
     ],
   },

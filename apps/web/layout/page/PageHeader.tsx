@@ -25,7 +25,11 @@ type PageHeaderProps = {
 
 export function PageHeader({ title, description, action, subtitle }: PageHeaderProps) {
   return (
-    <Stack sx={PAGE_HEADER_STYLING}>
+    <Stack
+      sx={PAGE_HEADER_STYLING}
+      direction={{ xs: "column", md: "row" }}
+      alignItems={{ xs: "flex-start", md: "center" }}
+    >
       <Stack spacing={0.5} flex={1}>
         {subtitle && (
           <Typography variant="overline" color="text.secondary">

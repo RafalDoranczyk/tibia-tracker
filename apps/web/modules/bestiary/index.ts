@@ -11,8 +11,8 @@ export { BestiaryView } from "./components/BestiaryView";
 // ======================
 export { parseBestiaryFiltersFromSearchParams } from "./parsers/parseBestiaryFiltersFromSearchParams";
 export {
-  CharacterBestiaryClassRequestSchema,
   CharacterBestiarySummaryRequestSchema,
+  FetchCharacterBestiaryClassSummaryPayloadSchema,
   type Monster,
   MonsterSchema,
 } from "./schemas";

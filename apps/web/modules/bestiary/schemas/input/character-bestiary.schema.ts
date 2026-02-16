@@ -14,22 +14,28 @@ export const CharacterBestiarySummaryRequestSchema = z.object({
 });
 export type CharacterBestiarySummaryRequest = z.infer<typeof CharacterBestiarySummaryRequestSchema>;
 
-export const CharacterBestiaryClassRequestSchema = z.object({
-  characterId: CharacterIDSchema,
-  bestiaryClass: BestiaryClassSchema,
-});
-export type CharacterBestiaryClassRequest = z.infer<typeof CharacterBestiaryClassRequestSchema>;
-
 /**
  * Update bestiary progress
  */
+export const FetchCharacterBestiaryClassSummaryPayloadSchema = z.object({
+  characterId: CharacterIDSchema,
+  bestiaryClass: BestiaryClassSchema,
+});
+export type FetchCharacterBestiaryClassSummaryPayload = z.infer<
+  typeof FetchCharacterBestiaryClassSummaryPayloadSchema
+>;
+
 export const UpdateCharacterBestiaryPayloadSchema = CharacterBestiarySchema.pick({
   character_id: true,
   monster_id: true,
   kills: true,
   stage: true,
   has_soul: true,
+}).extend({
+  // We need this to know which cache tags to invalidate, but it's not stored in the character bestiary table
+  bestiary_class: BestiaryClassSchema.optional(),
 });
+
 export type UpdateCharacterBestiaryPayload = z.infer<typeof UpdateCharacterBestiaryPayloadSchema>;
 
 export const FetchCharacterBestiaryPayloadSchema = z.object({

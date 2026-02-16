@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
+    "analyze": "next experimental-analyze",
     "db:types": "supabase gen types typescript --project-id saoouvvhunyuohwqmbwy > core/supabase/types/database.types.ts"
   },
   "dependencies": {
