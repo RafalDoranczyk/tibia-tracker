@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { isDevEnv } from "@/core/env";
 import { PATHS } from "@/core/paths";
 import { createServerSupabase } from "@/core/supabase/auth/server";
+import { getUserSettings } from "@/modules/user/server";
 
 // Helper functions
 function isValidRedirectPath(path: string): boolean {
@@ -49,9 +50,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       return redirectToError(origin);
     }
 
+    const settings = await getUserSettings();
+
+    const targetPath = settings?.last_active_character_id
+      ? PATHS.CHARACTER(settings.last_active_character_id).OVERVIEW
+      : PATHS.CHARACTERS;
+
     const redirectBase = getRedirectBase(request, origin);
 
-    return NextResponse.redirect(`${redirectBase}${next}`);
+    return NextResponse.redirect(`${redirectBase}${targetPath}`);
   } catch (error) {
     console.error("Unexpected error during OAuth callback:", error);
     return redirectToError(origin);

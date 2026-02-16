@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import type { PropsWithChildren } from "react";
-
 import { getCharacterList } from "@/modules/characters/server";
 import {
   APP_BAR_HEIGHT,

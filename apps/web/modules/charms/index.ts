@@ -1,9 +1,10 @@
 // ======================
 // UI – public components
 // ======================
+
+export { CharmStats } from "./components/CharmStats";
 export { CharmsCards } from "./components/CharmsCards";
 export { CharmsResetButton } from "./components/CharmsResetButton";
-export { CharmStats } from "./components/CharmStats";
 
 // ======================
 // UI – Shared

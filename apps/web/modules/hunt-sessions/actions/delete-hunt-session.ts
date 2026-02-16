@@ -1,9 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
 import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { PATHS } from "@/core/paths";
+
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
 
@@ -20,6 +18,4 @@ export async function deleteHuntSession(payload: unknown): Promise<void> {
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to delete hunt session");
   }
-
-  revalidatePath(PATHS.CHARACTER(id.toString()).HUNT_SESSIONS.LIST);
 }

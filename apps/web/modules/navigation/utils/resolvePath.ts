@@ -1,15 +1,13 @@
-import { PATHS } from "@/core/paths";
-
-import type { NavigationLinkElementProps } from "../types";
+import { type CharacterPaths, characterPaths } from "@/core/paths";
 
 export function resolvePath(
-  to: NavigationLinkElementProps["to"],
-  characterId?: string | null
+  to: string | ((p: CharacterPaths) => string),
+  activeCharacterId: string | null
 ): string | null {
-  if (typeof to === "function") {
-    if (!characterId) return null;
-    return to(PATHS.CHARACTER(characterId));
-  }
+  if (typeof to === "string") return to;
 
-  return to;
+  if (!activeCharacterId) return null;
+
+  const paths = characterPaths(activeCharacterId);
+  return to(paths);
 }

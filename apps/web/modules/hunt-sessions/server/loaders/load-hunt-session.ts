@@ -1,10 +1,10 @@
-import { getMonsterList } from "@/modules/bestiary/server";
 import { getCharacterCharmList } from "@/modules/charms/server";
 import { getHuntPlaceList } from "@/modules/hunt-places/server";
 import { getItemList, getSupplyList } from "@/modules/items/server";
 
 import { getDamageElements } from "./get-damage-elements";
 import { getHuntSession } from "./get-hunt-session";
+import { getMonsterList } from "./get-monster-list";
 import { getPreyBonuses } from "./get-prey-bonuses";
 
 type LoadHuntSessionProps = {

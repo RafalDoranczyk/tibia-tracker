@@ -1,4 +1,4 @@
-import { ErrorPage } from "@/layout/page";
+import { ErrorPage } from "@/layout/page/ErrorPage";
 
 export default function AuthCodeErrorPage() {
   return (

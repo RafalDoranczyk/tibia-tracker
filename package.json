@@ -2,32 +2,31 @@
   "private": true,
   "name": "tibia-tracker",
   "type": "module",
+
   "scripts": {
-    "build": "turbo run build",
-    "clean": "turbo run clean && rimraf package-lock.json .turbo node_modules",
     "dev": "turbo run dev",
+    "build": "turbo run build",
     "start": "turbo run start",
+    "lint": "turbo run lint",
+    "format": "biome check . --write",
     "typecheck": "turbo run typecheck",
-    "lint": "npm run lint:biome && npm run lint:eslint",
-    "lint:biome": "biome check . --write",
-    "lint:eslint": "eslint --fix .",
-    "lint:imports": "eslint --fix . --ext .ts,.tsx,.js,.jsx",
-    "format": "npm run lint",
+    "clean": "turbo run clean && rimraf .turbo node_modules apps/*/.next packages/*/dist",
     "commitlint": "commitlint",
     "prepare": "lefthook install",
     "postinstall": "lefthook install"
   },
+
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@commitlint/cli": "19.6.0",
-    "@commitlint/config-conventional": "19.6.0",
-    "@typescript-eslint/parser": "8.34.1",
-    "eslint": "9.29.0",
-    "eslint-plugin-simple-import-sort": "12.1.1",
-    "lefthook": "1.11.12",
-    "rimraf": "6.0.1",
-    "turbo": "2.8.3"
+    "@biomejs/biome": "2.3.15",
+    "@commitlint/cli": "19.4.1",
+    "@commitlint/config-conventional": "20.4.1",
+    "lefthook": "2.1.1",
+    "rimraf": "6.1.2",
+    "turbo": "2.8.8"
   },
-  "packageManager": "npm@10.8.2",
-  "workspaces": ["apps/*", "packages/*"]
+  "packageManager": "npm@11.10.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }

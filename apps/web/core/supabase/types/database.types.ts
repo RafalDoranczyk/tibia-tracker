@@ -115,22 +115,25 @@ export type Database = {
         Row: {
           id: string;
           name: string;
+          synchronized_at: string | null;
           user_id: string;
-          vocation: Database["public"]["Enums"]["character_vocation"];
+          vocation: Database["public"]["Enums"]["character_vocation"] | null;
           world: string;
         };
         Insert: {
           id?: string;
           name: string;
+          synchronized_at?: string | null;
           user_id?: string;
-          vocation: Database["public"]["Enums"]["character_vocation"];
+          vocation?: Database["public"]["Enums"]["character_vocation"] | null;
           world: string;
         };
         Update: {
           id?: string;
           name?: string;
+          synchronized_at?: string | null;
           user_id?: string;
-          vocation?: Database["public"]["Enums"]["character_vocation"];
+          vocation?: Database["public"]["Enums"]["character_vocation"] | null;
           world?: string;
         };
         Relationships: [];
@@ -840,98 +843,12 @@ export type Database = {
         };
         Relationships: [];
       };
-      character_charm_spent: {
+      character_charms_summary: {
         Row: {
           character_id: string | null;
-          charm_type: Database["public"]["Enums"]["charm_type"] | null;
-          spent_points: number | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "character_charms_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "character_bestiary_class_summary";
-            referencedColumns: ["character_id"];
-          },
-          {
-            foreignKeyName: "character_charms_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "character_charm_economy";
-            referencedColumns: ["character_id"];
-          },
-          {
-            foreignKeyName: "character_charms_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "characters";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      character_major_spent: {
-        Row: {
-          character_id: string | null;
-          spent_major_points: number | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "character_charms_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "character_bestiary_class_summary";
-            referencedColumns: ["character_id"];
-          },
-          {
-            foreignKeyName: "character_charms_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "character_charm_economy";
-            referencedColumns: ["character_id"];
-          },
-          {
-            foreignKeyName: "character_charms_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "characters";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      character_minor_pool: {
-        Row: {
-          character_id: string | null;
-          unlocked_minor_points: number | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "character_charms_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "character_bestiary_class_summary";
-            referencedColumns: ["character_id"];
-          },
-          {
-            foreignKeyName: "character_charms_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "character_charm_economy";
-            referencedColumns: ["character_id"];
-          },
-          {
-            foreignKeyName: "character_charms_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "characters";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      character_minor_spent: {
-        Row: {
-          character_id: string | null;
-          spent_minor_points: number | null;
+          minor_pool_unlocked: number | null;
+          spent_major: number | null;
+          spent_minor: number | null;
         };
         Relationships: [
           {
@@ -1034,7 +951,7 @@ export type Database = {
         }[];
       };
       reset_all_charms: { Args: { p_character_id: string }; Returns: undefined };
-      set_character_charm: {
+      set_character_charm_level: {
         Args: { p_character_id: string; p_charm_id: number; p_level: number };
         Returns: undefined;
       };
@@ -1098,7 +1015,7 @@ export type Database = {
         | "Undead"
         | "Vermin";
       bestiary_stage_filter: "completed" | "not_completed";
-      character_vocation: "paladin" | "knight" | "monk" | "sorcerer" | "druid";
+      character_vocation: "paladin" | "knight" | "sorcerer" | "monk" | "druid";
       charm_type: "major" | "minor";
       imbuing_price_key:
         | "gold_token"
@@ -1330,7 +1247,7 @@ export const Constants = {
         "Vermin",
       ],
       bestiary_stage_filter: ["completed", "not_completed"],
-      character_vocation: ["paladin", "knight", "monk", "sorcerer", "druid"],
+      character_vocation: ["paladin", "knight", "sorcerer", "monk", "druid"],
       charm_type: ["major", "minor"],
       imbuing_price_key: [
         "gold_token",

@@ -3,8 +3,8 @@
 import { Container, Divider, Grid, Typography } from "@mui/material";
 import { useMemo, useState, useTransition } from "react";
 
+import { useToast } from "@/hooks";
 import { useRequiredCharacterId } from "@/modules/characters";
-import { useToast } from "@/providers/app";
 
 import { setCharacterCharmLevel } from "../actions/set-character-charm-level";
 import type { CharacterCharmWithProgress, CharmLevel } from "../schemas";

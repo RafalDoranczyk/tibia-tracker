@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
+import { useToast } from "@/hooks";
 import { useRequiredCharacterId } from "@/modules/characters";
-import { useToast } from "@/providers/app";
 
-import { updateCharacterBestiary } from "../actions/updateCharacterBestiary";
+import { updateCharacterBestiary } from "../actions/update-character-bestiary";
 import {
   BESTIARY_STAGE,
   type MonsterWithCharacterProgress,
@@ -20,7 +20,7 @@ export function useMonsterProgress(monsterToUpdate: MonsterWithCharacterProgress
   const [monster, setMonster] = useState(monsterToUpdate);
   const [isLoading, setIsLoading] = useState(false);
 
-  const isBestiaryCompleted = monster.stage === 3;
+  const isBestiaryCompleted = monster.stage === BESTIARY_STAGE.COMPLETED;
 
   const runUpdate = async (
     updates: Partial<UpdateCharacterBestiaryPayload>,
@@ -39,6 +39,7 @@ export function useMonsterProgress(monsterToUpdate: MonsterWithCharacterProgress
         kills: updates.kills ?? monster.kills,
         stage: updates.stage ?? monster.stage,
         has_soul: updates.has_soul ?? monster.has_soul,
+        bestiary_class: monster.bestiary_class,
       });
 
       if (successMessage) toast.success(successMessage);

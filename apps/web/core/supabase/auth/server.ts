@@ -12,7 +12,7 @@ import type { TypedSupabaseClient } from "../types";
 export async function createServerSupabase(): Promise<TypedSupabaseClient> {
   const cookieStore = await cookies();
 
-  return createServerClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key, {
+  return createServerClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll(cookiesToSet) {
@@ -21,7 +21,7 @@ export async function createServerSupabase(): Promise<TypedSupabaseClient> {
             cookieStore.set(name, value, options);
           }
         } catch {
-          // Server Component – ignore if middleware refreshes sessions
+          // Server Component – ignore if proxy refreshes sessions
         }
       },
     },

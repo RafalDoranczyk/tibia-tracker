@@ -9,7 +9,7 @@ export function dbSetCharacterCharmLevel(
   p_level: CharmLevel
 ) {
   // Call RPC (DB does ALL economy validation)
-  return supabase.rpc("set_character_charm", {
+  return supabase.rpc("set_character_charm_level", {
     p_character_id,
     p_charm_id,
     p_level,

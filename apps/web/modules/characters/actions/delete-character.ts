@@ -1,25 +1,23 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-
+import { updateTag } from "next/cache";
 import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { PATHS } from "@/core/paths";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
-
+import { CharactersCache } from "../cache/characters-cache";
 import { CharacterIDSchema } from "../schemas";
 import { dbDeleteCharacter } from "../server";
 
 export async function deleteCharacter(payload: unknown): Promise<void> {
   const id = assertZodParse(CharacterIDSchema, payload);
 
-  const { supabase } = await requireAuthenticatedSupabase();
+  const { supabase, user } = await requireAuthenticatedSupabase();
 
-  const { error } = await dbDeleteCharacter(supabase, id);
+  const { error } = await dbDeleteCharacter(supabase, user.id, id);
 
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to delete character");
   }
 
-  revalidatePath(PATHS.CHARACTERS);
+  updateTag(CharactersCache.characterList(user.id));
 }
