@@ -7,19 +7,16 @@ import FactCheckIcon from "@mui/icons-material/FactCheck";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import PublicIcon from "@mui/icons-material/Public";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
-import { Box, Drawer, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, Drawer, LinearProgress, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-
-import { FloatingStatsButton } from "@/components";
-
 import type { CharacterBestiaryClassSummary, CharacterBestiarySummary } from "../schemas";
 
-type BestiaryFloatingPanelProps = {
+type BestiarySummaryPanelProps = {
   globalSummary: CharacterBestiarySummary;
   classSummary: CharacterBestiaryClassSummary | null;
 };
 
-export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryFloatingPanelProps) {
+export function BestiarySummaryPanel({ globalSummary, classSummary }: BestiarySummaryPanelProps) {
   const [open, setOpen] = useState(false);
 
   const charmPercent =
@@ -29,8 +26,14 @@ export function BestiaryFloatingPanel({ globalSummary, classSummary }: BestiaryF
 
   return (
     <>
-      {/* Floating action button */}
-      <FloatingStatsButton onClick={() => setOpen(true)} />
+      <Button
+        onClick={() => setOpen(true)}
+        variant="outlined"
+        color="secondary"
+        startIcon={<AssessmentIcon />}
+      >
+        Summary Panel
+      </Button>
 
       {/* Drawer */}
       <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>

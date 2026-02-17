@@ -31,8 +31,16 @@ type CharCardProps = {
 export function CharCard({ character, onSelect, onSettings, isActive }: CharCardProps) {
   const lastDeath = character.deaths && character.deaths.length > 0 ? character.deaths[0] : null;
   const lastLoginDate = character.last_login
-    ? new Date(character.last_login).toLocaleDateString()
+    ? new Date(character.last_login).toLocaleString(undefined, {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
     : "Never";
+
+  console.log(character);
   return (
     <Card
       onClick={() => !isActive && onSelect(character)}
@@ -95,7 +103,7 @@ export function CharCard({ character, onSelect, onSettings, isActive }: CharCard
           </Stack>
 
           {/* PRAWA STRONA: Ikona Active Status */}
-          <Tooltip title={isActive ? "Active character" : "Set as active"} arrow>
+          <Tooltip title={isActive ? "Active character" : "Set as active"}>
             <Box sx={{ display: "flex", alignItems: "center", pt: 0.5 }}>
               {isActive ? (
                 <Chip

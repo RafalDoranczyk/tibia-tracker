@@ -9,11 +9,11 @@ import type { MonsterWithCharacterProgress } from "../schemas";
 import { MonsterCard } from "./MonsterCard";
 import { MonsterDetailsDrawer } from "./MonsterDetailsDrawer";
 
-type BestiaryViewProps = {
+type BestiaryCardGridProps = {
   monstersWithProgress: MonsterWithCharacterProgress[];
 };
 
-export function BestiaryView({ monstersWithProgress }: BestiaryViewProps) {
+export function BestiaryCardGrid({ monstersWithProgress }: BestiaryCardGridProps) {
   const [selectedMonster, setSelectedMonster] = useState<MonsterWithCharacterProgress | null>(null);
 
   if (monstersWithProgress.length === 0) {
@@ -33,6 +33,7 @@ export function BestiaryView({ monstersWithProgress }: BestiaryViewProps) {
           </Grid>
         ))}
       </Grid>
+
       <MonsterDetailsDrawer
         monster={selectedMonster}
         open={Boolean(selectedMonster)}

@@ -1,12 +1,11 @@
 import { Grid } from "@mui/material";
 import type { Metadata } from "next";
-
 import { PageHeader } from "@/layout/page/PageHeader";
 import {
+  BestiaryCardGrid,
   BestiaryFiltersPanel,
-  BestiaryFloatingPanel,
   BestiaryPagination,
-  BestiaryView,
+  BestiarySummaryPanel,
   parseBestiaryFiltersFromSearchParams,
 } from "@/modules/bestiary";
 import {
@@ -14,7 +13,6 @@ import {
   getCharacterBestiarySummary,
   getMonsterListWithProgress,
 } from "@/modules/bestiary/server";
-
 import type { CharacterPageProps } from "../../../types";
 
 export const metadata: Metadata = {
@@ -45,12 +43,12 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Ch
       <PageHeader
         title="Bestiary"
         description="Explore the collection of monsters encountered by your character."
+        action={<BestiarySummaryPanel globalSummary={summary} classSummary={classSummary} />}
       />
       <Grid container spacing={4} direction="column">
         <BestiaryFiltersPanel />
-        <BestiaryView monstersWithProgress={bestiary.monstersWithProgress} />
+        <BestiaryCardGrid monstersWithProgress={bestiary.monstersWithProgress} />
         <BestiaryPagination totalPages={bestiary.totalPages} />
-        <BestiaryFloatingPanel globalSummary={summary} classSummary={classSummary} />
       </Grid>
     </>
   );
