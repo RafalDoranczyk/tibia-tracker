@@ -21,7 +21,7 @@ export default async function CharactersPage() {
   return (
     <>
       <PageHeader
-        title="Your Characters"
+        title="Observe Your Characters"
         description={`Characters represent your playable profiles.
            The active character is used across all character-related features like bestiary, hunts, and statistics.`}
         action={

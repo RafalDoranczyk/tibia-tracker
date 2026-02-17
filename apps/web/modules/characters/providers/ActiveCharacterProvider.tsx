@@ -11,12 +11,12 @@ import {
 } from "react";
 import { useToast } from "@/hooks";
 import { updateLastActiveCharacter } from "@/modules/user/actions/update-last-active-character";
-import type { Character } from "../schemas";
+import type { AppCharacter } from "../schemas";
 
 type ContextCharacterId = string | null;
 
 type ActiveCharacterContextType = {
-  activeCharacter: Character | null;
+  activeCharacter: AppCharacter | null;
   setActiveCharacterId: (id: ContextCharacterId) => void;
 };
 
@@ -24,7 +24,7 @@ const ActiveCharacterContext = createContext<ActiveCharacterContextType | null>(
 
 type ActiveCharacterProviderProps = PropsWithChildren<{
   initialActiveCharacterId: ContextCharacterId;
-  initialCharacters: Character[];
+  initialCharacters: AppCharacter[];
 }>;
 
 export function ActiveCharacterProvider({

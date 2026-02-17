@@ -38,7 +38,6 @@ export async function getCharacterBestiarySummary(
 
     return assertZodParse(CharacterBestiarySummarySchema, safeData);
   } catch (error) {
-    console.log(error);
     throwAndLogError(
       error,
       AppErrorCode.SERVER_ERROR,

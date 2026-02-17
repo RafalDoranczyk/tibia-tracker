@@ -25,7 +25,7 @@ export function HuntSessionListView({ count, huntSessionList }: HuntSessionListV
   const pagination = usePagination({ limit: HUNT_SESSION_PAGINATION_LIMIT });
   const [sessionIdToDelete, setSessionIdToDelete] = useState<number | null>(null);
 
-  const { mutate, loading } = useDeleteHuntSession();
+  const { mutate, loading } = useDeleteHuntSession(characterId);
 
   const handleDeleteSession = async () => {
     if (!sessionIdToDelete) return;

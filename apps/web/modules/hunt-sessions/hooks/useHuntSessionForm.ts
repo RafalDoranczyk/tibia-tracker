@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
+import { useActiveCharacter } from "@/modules/characters/providers/ActiveCharacterProvider";
 import { mapHuntSessionToForm } from "../mappers/mapHuntSessionToForm";
 import { type HuntSession, type HuntSessionForm, HuntSessionFormSchema } from "../schemas";
 
@@ -39,9 +39,18 @@ export function useHuntSessionForm({
   huntSession?: HuntSession | null;
   placeId: number;
 }) {
+  const { activeCharacter } = useActiveCharacter();
+
+  const baseValues = huntSession
+    ? mapHuntSessionToForm(huntSession)
+    : getDefaultValues({ placeId });
+
   return useForm<HuntSessionForm>({
     resolver: zodResolver(HuntSessionFormSchema),
-    defaultValues: huntSession ? mapHuntSessionToForm(huntSession) : getDefaultValues({ placeId }),
+    defaultValues: {
+      ...baseValues,
+      level: huntSession?.level ?? activeCharacter?.level ?? 0,
+    },
     shouldUnregister: false,
   });
 }

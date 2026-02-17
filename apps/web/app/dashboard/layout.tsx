@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import type { PropsWithChildren } from "react";
-import { getCharacterList } from "@/modules/characters/server";
+import { getAppCharacters } from "@/modules/characters/server";
 import {
   APP_BAR_HEIGHT,
   DESKTOP_APP_NAVIGATION_DRAWER_WIDTH,
@@ -13,7 +13,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
   const [user, settings, characters] = await Promise.all([
     getUser(),
     getUserSettings(),
-    getCharacterList(),
+    getAppCharacters(),
   ]);
 
   return (

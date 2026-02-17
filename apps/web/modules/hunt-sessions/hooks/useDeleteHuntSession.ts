@@ -4,7 +4,7 @@ import { useToast } from "@/hooks";
 
 import { deleteHuntSession } from "../actions/delete-hunt-session";
 
-export function useDeleteHuntSession() {
+export function useDeleteHuntSession(characterId: string) {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
@@ -12,7 +12,7 @@ export function useDeleteHuntSession() {
     async (id: number) => {
       try {
         setLoading(true);
-        await deleteHuntSession({ id });
+        await deleteHuntSession({ id, characterId });
         toast.success("Hunt session deleted");
       } catch {
         toast.error("Failed to delete hunt session");
@@ -20,7 +20,7 @@ export function useDeleteHuntSession() {
         setLoading(false);
       }
     },
-    [toast]
+    [toast, characterId]
   );
 
   return { mutate, loading };

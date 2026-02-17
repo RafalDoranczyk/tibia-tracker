@@ -10,11 +10,11 @@ import {
   useState,
 } from "react";
 
-import type { Character } from "../schemas";
+import type { AppCharacter } from "../schemas";
 
 type CharactersContextValue = {
-  characters: Character[];
-  setCharacters: Dispatch<SetStateAction<Character[]>>;
+  characters: AppCharacter[];
+  setCharacters: Dispatch<SetStateAction<AppCharacter[]>>;
 };
 
 const CharactersContext = createContext<CharactersContextValue | null>(null);
@@ -22,7 +22,7 @@ const CharactersContext = createContext<CharactersContextValue | null>(null);
 export function CharactersProvider({
   initialCharacters,
   children,
-}: PropsWithChildren<{ initialCharacters: Character[] }>) {
+}: PropsWithChildren<{ initialCharacters: AppCharacter[] }>) {
   const [characters, setCharacters] = useState(initialCharacters);
 
   useEffect(() => {
