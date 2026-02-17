@@ -1,26 +1,43 @@
-"use server";
-
+import { cacheLife, cacheTag } from "next/cache";
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
+import { createAdminClient } from "@/core/supabase/clients/admin";
 import { assertZodParse } from "@/lib/zod";
-
-import { FetchHuntSessionPayloadSchema, type HuntSession, HuntSessionSchema } from "../../schemas";
+import { HuntSessionCache } from "../../cache/hunt-session-cache";
+import {
+  type FetchHuntSessionPayload,
+  FetchHuntSessionPayloadSchema,
+  type HuntSession,
+  HuntSessionSchema,
+} from "../../schemas";
 import { dbGetHuntSession } from "../queries/get-hunt-session";
+
+async function getCachedHuntSession(payload: FetchHuntSessionPayload) {
+  "use cache";
+  cacheLife("max");
+  cacheTag(HuntSessionCache.huntSession(payload.id));
+
+  const supabase = createAdminClient();
+
+  const { data, error, count } = await dbGetHuntSession(supabase, payload);
+
+  if (error) throw error;
+  return { data, count };
+}
 
 export async function getHuntSession(payload: unknown): Promise<HuntSession | null> {
   const { id, character_id } = assertZodParse(FetchHuntSessionPayloadSchema, payload);
 
-  const { supabase } = await requireAuthenticatedSupabase();
+  await requireAuthenticatedSupabase();
 
-  const { data, error } = await dbGetHuntSession(supabase, { character_id, id });
+  try {
+    const data = await getCachedHuntSession({ character_id, id });
+    if (!data) {
+      return null;
+    }
 
-  if (error) {
+    return assertZodParse(HuntSessionSchema, data);
+  } catch (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch hunt session");
   }
-
-  if (!data) {
-    return null;
-  }
-
-  return assertZodParse(HuntSessionSchema, data);
 }

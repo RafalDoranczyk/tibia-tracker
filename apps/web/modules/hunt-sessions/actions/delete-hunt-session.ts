@@ -1,15 +1,15 @@
 "use server";
 
+import { updateTag } from "next/cache";
 import { AppErrorCode, throwAndLogError } from "@/core/error";
-
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
-
+import { HuntSessionCache } from "../cache/hunt-session-cache";
 import { DeleteHuntSessionPayloadSchema } from "../schemas";
 import { dbDeleteHuntSession } from "../server";
 
 export async function deleteHuntSession(payload: unknown): Promise<void> {
-  const { id } = assertZodParse(DeleteHuntSessionPayloadSchema, payload);
+  const { id, characterId } = assertZodParse(DeleteHuntSessionPayloadSchema, payload);
 
   const { supabase } = await requireAuthenticatedSupabase();
 
@@ -18,4 +18,6 @@ export async function deleteHuntSession(payload: unknown): Promise<void> {
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to delete hunt session");
   }
+
+  updateTag(HuntSessionCache.huntSessionList(characterId));
 }

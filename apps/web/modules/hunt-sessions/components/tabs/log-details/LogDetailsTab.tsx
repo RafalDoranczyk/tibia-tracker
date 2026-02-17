@@ -4,11 +4,9 @@ import InvertColorsRounded from "@mui/icons-material/InventoryTwoTone";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
-
 import type { CharacterCharmDetailed } from "@/modules/charms";
 import type { HuntPlace } from "@/modules/hunt-places";
 import type { ItemPreview } from "@/modules/items";
-
 import type {
   HuntSessionForm,
   HuntSessionUnknownEntities,

@@ -88,4 +88,5 @@ export type UpdateHuntSessionPayload = z.infer<typeof UpdateHuntSessionPayloadSc
 
 export const DeleteHuntSessionPayloadSchema = z.object({
   id: HuntSessionSchema.shape.id,
+  characterId: CharacterIDSchema,
 });

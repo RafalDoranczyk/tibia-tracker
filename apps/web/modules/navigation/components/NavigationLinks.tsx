@@ -25,7 +25,7 @@ type NavItemProps = {
 
 function NavItem({ element, pathname, activeCharacterId, depth = 0 }: NavItemProps) {
   const { icon, text, to, requiresCharacter, children } = element;
-  console.log(`Renderuję: ${element.text}`); // <-- LOG
+
   const href = resolvePath(to, activeCharacterId);
   const isSelected = href ? isPathActive(pathname, href) : false;
 
@@ -127,7 +127,6 @@ export function NavigationLinks() {
     <>
       {NAVIGATION_MODULES.map(({ elements, title }) => (
         <Box key={title} mt={2}>
-          {/* SECTION TITLE */}
           <Typography
             sx={{
               color: "text.secondary",
@@ -143,7 +142,6 @@ export function NavigationLinks() {
             {title}
           </Typography>
 
-          {/* SECTION LINKS */}
           <List component="nav" disablePadding>
             {elements.map((element) => (
               <NavItem

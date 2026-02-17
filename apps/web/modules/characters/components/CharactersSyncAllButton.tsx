@@ -1,7 +1,7 @@
 "use client";
 
 import SyncIcon from "@mui/icons-material/Sync";
-import { Button } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import { useEffect, useState, useTransition } from "react";
 import { useToast } from "@/hooks";
 import { syncAllCharacters } from "@/modules/characters/actions/sync-all-characters";
@@ -58,27 +58,33 @@ export function CharactersSyncAllButton({
   };
 
   return (
-    <Button
-      onClick={handleSync}
-      disabled={disabled || isPending || secondsLeft > 0}
-      color="secondary"
-      variant="outlined"
-      startIcon={<SyncIcon className={isPending ? "animate-spin" : ""} />}
-      sx={{
-        "@keyframes spin": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
-        },
-        "& .animate-spin": {
-          animation: "spin 1s linear infinite",
-        },
-      }}
+    <Tooltip
+      placement="left"
+      arrow
+      title={`Syncing will refresh all character data immediately fetching from Tibia website.`}
     >
-      {isPending
-        ? "Syncing..."
-        : secondsLeft > 0
-          ? `Sync available in ${secondsLeft}s`
-          : "Sync all characters"}
-    </Button>
+      <Button
+        onClick={handleSync}
+        disabled={disabled || isPending || secondsLeft > 0}
+        color="secondary"
+        variant="outlined"
+        startIcon={<SyncIcon className={isPending ? "animate-spin" : ""} />}
+        sx={{
+          "@keyframes spin": {
+            "0%": { transform: "rotate(0deg)" },
+            "100%": { transform: "rotate(360deg)" },
+          },
+          "& .animate-spin": {
+            animation: "spin 1s linear infinite",
+          },
+        }}
+      >
+        {isPending
+          ? "Syncing..."
+          : secondsLeft > 0
+            ? `Sync available in ${secondsLeft}s`
+            : "Sync all characters"}
+      </Button>
+    </Tooltip>
   );
 }

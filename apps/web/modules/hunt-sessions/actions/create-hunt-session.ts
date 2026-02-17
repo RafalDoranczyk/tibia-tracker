@@ -1,9 +1,10 @@
 "use server";
 
+import { updateTag } from "next/cache";
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
-
+import { HuntSessionCache } from "../cache/hunt-session-cache";
 import {
   CreateHuntSessionPayloadSchema,
   type HuntSessionDbFields,
@@ -21,6 +22,8 @@ export async function createHuntSession(payload: unknown): Promise<HuntSessionDb
   if (error || !data) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to create hunt session");
   }
+
+  updateTag(HuntSessionCache.huntSessionList(parsed.character_id));
 
   return assertZodParse(HuntSessionDbFieldsSchema, data);
 }
