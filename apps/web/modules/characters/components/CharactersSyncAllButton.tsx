@@ -60,7 +60,6 @@ export function CharactersSyncAllButton({
   return (
     <Tooltip
       placement="left"
-      arrow
       title={`Syncing will refresh all character data immediately fetching from Tibia website.`}
     >
       <Button

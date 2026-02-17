@@ -82,8 +82,8 @@ export function SettingsDialog({
               <Typography variant="subtitle2" fontWeight={700}>
                 Data Synchronization
               </Typography>
-              <Tooltip title={TOOLTIP_TEXT} arrow>
-                <InfoOutlinedIcon sx={{ fontSize: 16, color: "text.disabled", cursor: "help" }} />
+              <Tooltip title={TOOLTIP_TEXT}>
+                <InfoOutlinedIcon fontSize="small" sx={{ cursor: "help" }} />
               </Tooltip>
             </Stack>
 

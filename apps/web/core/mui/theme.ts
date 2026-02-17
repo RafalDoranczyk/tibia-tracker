@@ -231,5 +231,33 @@ export const theme = createTheme({
         }),
       },
     },
+
+    MuiTooltip: {
+      defaultProps: {
+        arrow: true,
+      },
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: "rgba(20, 20, 20, 0.95)",
+          color: "#fff",
+          backdropFilter: "blur(4px)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
+          padding: "8px 12px",
+          fontSize: "0.75rem",
+          borderRadius: "8px",
+          maxWidth: 300,
+          "& .MuiTypography-root": {
+            fontSize: "inherit",
+          },
+        },
+        arrow: {
+          color: "rgba(20, 20, 20, 0.95)",
+          "&::before": {
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+          },
+        },
+      },
+    },
   },
 });

@@ -2,7 +2,6 @@
   "private": true,
   "name": "tibia-tracker",
   "type": "module",
-
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
@@ -15,7 +14,6 @@
     "prepare": "lefthook install",
     "postinstall": "lefthook install"
   },
-
   "devDependencies": {
     "@biomejs/biome": "2.3.15",
     "@commitlint/cli": "19.4.1",

@@ -1,10 +1,12 @@
 // ======================
 // UI – public components
 // ======================
+
+export { AIFloatingPanel } from "./components/ai/AIFloatingPanel";
+export { BestiaryCardGrid } from "./components/BestiaryCardGrid";
 export { BestiaryFiltersPanel } from "./components/BestiaryFiltersPanel";
-export { BestiaryFloatingPanel } from "./components/BestiaryFloatingPanel";
 export { BestiaryPagination } from "./components/BestiaryPagination";
-export { BestiaryView } from "./components/BestiaryView";
+export { BestiarySummaryPanel } from "./components/BestiarySummaryPanel";
 
 // ======================
 // Domain / shared
