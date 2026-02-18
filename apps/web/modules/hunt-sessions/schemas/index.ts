@@ -6,6 +6,7 @@ export * from "./db/prey-bonus.schema";
 
 // Input schemas
 export * from "./input/hunt-session-filters.schema";
+export * from "./input/hunt-session-image.schema";
 export * from "./input/input.schema";
 
 // Mappers

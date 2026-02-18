@@ -2,7 +2,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { Avatar, Paper, Stack, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-
+import { AIActionButton } from "@/components";
 import { useHuntStats } from "../hooks/useHuntStats";
 import type { HuntSessionForm, MonsterPreview, PreyBonus } from "../schemas";
 
@@ -40,9 +40,10 @@ function SummaryStat({ title, value, trend }: SummaryStatProps) {
 type SummaryStatsProps = {
   preyBonusList: PreyBonus[];
   monsterList: MonsterPreview[];
+  setScanModal: () => void;
 };
 
-export function SummaryStats({ preyBonusList, monsterList }: SummaryStatsProps) {
+export function SummaryStats({ preyBonusList, monsterList, setScanModal }: SummaryStatsProps) {
   const { getValues } = useFormContext<HuntSessionForm>();
   const { rawExpPerHour, expPerHour, profitPerHour, formattedBalance, preysWithMonster } =
     useHuntStats({ preyBonusList, monsterList });
@@ -60,7 +61,7 @@ export function SummaryStats({ preyBonusList, monsterList }: SummaryStatsProps) 
         borderRadius: 2,
       }}
     >
-      <Stack direction="row" flexWrap="wrap" gap={2}>
+      <Stack direction="row" flexWrap="wrap" gap={2} alignItems="center">
         <SummaryStat title="Raw XP / h" value={rawExpPerHour} />
         <SummaryStat title="XP / h" value={expPerHour} />
         <SummaryStat title="Profit" value={formattedBalance} trend={getValues("profit")} />
@@ -89,6 +90,10 @@ export function SummaryStats({ preyBonusList, monsterList }: SummaryStatsProps) 
             </Stack>
           </Paper>
         ))}
+
+        <AIActionButton onClick={setScanModal} sx={{ ml: "auto" }}>
+          Upload Screenshoot
+        </AIActionButton>
       </Stack>
     </Paper>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import InvertColorsRounded from "@mui/icons-material/InventoryTwoTone";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { useState } from "react";
@@ -65,24 +66,21 @@ export function LogDetailsTab({
         <Stack spacing={SPACING} direction="row" alignItems="center">
           {!hasSessionData && (
             <>
-              <Typography variant="caption" color="textSecondary" textAlign="center">
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ display: { xs: "none", md: "block" }, alignSelf: "center" }}
+              >
                 Auto-fill from session log
               </Typography>
-              <Button
-                onClick={() => setUploadModalOpen(true)}
-                variant="contained"
-                color="secondary"
-                sx={{
-                  "@keyframes uploadPulse": {
-                    "0%": { boxShadow: "0 0 0 0 rgba(230,194,106,0.5)" },
-                    "70%": { boxShadow: "0 0 0 16px rgba(230,194,106,0)" },
-                    "100%": { boxShadow: "0 0 0 0 rgba(230,194,106,0)" },
-                  },
 
-                  animation: "uploadPulse 1.2s ease-out infinite",
-                }}
+              <Button
+                variant="outlined"
+                size="small"
+                startIcon={<FileUploadIcon />}
+                onClick={() => setUploadModalOpen(true)}
               >
-                Upload Session Log
+                Upload Log
               </Button>
             </>
           )}

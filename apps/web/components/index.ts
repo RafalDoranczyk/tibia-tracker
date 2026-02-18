@@ -1,3 +1,4 @@
+export { AIActionButton } from "./AIActionButton";
 export { ConfirmDialog } from "./ConfirmDialog";
 export { EmptyState } from "./EmptyState/EmptyState";
 export { FloatingActionButton } from "./FloatingActionButton";
