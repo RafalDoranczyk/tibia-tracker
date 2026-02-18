@@ -49,7 +49,7 @@ type AIScanPreviewCardProps = {
   onClear: () => void;
 };
 
-export function AIScanPreviewCard({ scan, damageElementList, onClear }: AIScanPreviewCardProps) {
+export function AIScanPreviewCard({ scan, damageElementList }: AIScanPreviewCardProps) {
   const { skills_window, hunt_analyser } = scan;
 
   const activeResistances = Object.fromEntries(

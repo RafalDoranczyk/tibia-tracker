@@ -2,9 +2,9 @@ import { ai, GEMINI_MODEL } from "@/lib/google-ai";
 
 import { type AIHuntSessionScan, AIHuntSessionScanSchema } from "../schemas";
 
-const getAiBlueprint = (obj: any) => {
-  const blueprint: any = {};
-  for (const key in obj) {
+const getAiBlueprint = (obj: unknown) => {
+  const blueprint: Record<string, unknown> = {};
+  for (const key in obj as Record<string, unknown>) {
     // Proste mapowanie dla czytelności AI
     blueprint[key] = "value";
   }
