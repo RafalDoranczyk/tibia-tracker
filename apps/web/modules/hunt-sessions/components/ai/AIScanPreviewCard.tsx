@@ -277,7 +277,19 @@ function SectionHeader({ icon, title }: { icon: React.ReactElement; title: strin
   );
 }
 
-function DataRow({ label, value, unit, color, bold }: any) {
+function DataRow({
+  label,
+  value,
+  unit,
+  color,
+  bold,
+}: {
+  label: string;
+  value: string | number | undefined;
+  unit?: string;
+  color?: string;
+  bold?: boolean;
+}) {
   return (
     <Stack direction="row" justifyContent="space-between" sx={{ mb: 0.5 }}>
       <Typography variant="body2" color="text.secondary" fontSize="0.75rem">
