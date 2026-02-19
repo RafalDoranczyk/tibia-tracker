@@ -144,10 +144,7 @@ export const theme = createTheme({
         paper: ({ theme }) => ({
           width: 380,
           padding: theme.spacing(3),
-          bgcolor: "#12121e",
-          backgroundImage: "none",
-          borderLeft: `1px solid ${theme.palette.divider}`,
-          backdropFilter: "blur(8px)",
+          background: theme.palette.background.paper,
         }),
       },
     },

@@ -71,7 +71,7 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
         pointerEvents: isLoading ? "none" : "auto",
         width: "100%",
         position: "relative",
-        opacity: completed ? 1 : 0.5,
+        opacity: completed ? 1 : 0.7,
         transition: "transform 200ms ease, opacity 200ms ease",
         willChange: "transform, opacity",
 
@@ -83,6 +83,7 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
 
         "&:hover": {
           transform: "translateY(-4px) scale(1.008)",
+          opacity: 1,
         },
 
         [`&:hover .${AVATAR_CLASSNAME}`]: {

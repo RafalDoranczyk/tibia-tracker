@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 import { LocalDatetime, NonEmptyString, PositiveInt } from "@/lib/zod";
 
 // This schema is used to parse hunt session from json file that user can upload
