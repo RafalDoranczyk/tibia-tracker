@@ -2,9 +2,9 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { Avatar, Paper, Stack, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-
+import type { PreyBonus } from "@/modules/prey-bonus";
 import { useHuntStats } from "../hooks/useHuntStats";
-import type { HuntSessionForm, MonsterPreview, PreyBonus } from "../schemas";
+import type { HuntSessionForm, MonsterPreview } from "../schemas";
 
 type SummaryStatProps = {
   title: string;

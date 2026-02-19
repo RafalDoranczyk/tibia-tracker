@@ -2,11 +2,9 @@ import HealthAndSafety from "@mui/icons-material/HealthAndSafety";
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-
 import { Autocomplete, EmptyState } from "@/components";
 import { getPublicAssetUrl } from "@/core/assets";
 import type { ItemPreview } from "@/modules/items";
-
 import type { HuntSessionForm } from "../../../schemas";
 import { SectionHeader } from "../SectionHeader";
 import { SectionPaperCard } from "../SectionPaperCard";

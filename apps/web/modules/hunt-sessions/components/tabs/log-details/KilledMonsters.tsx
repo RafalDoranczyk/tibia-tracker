@@ -5,8 +5,8 @@ import { Controller, useFieldArray, useFormContext, useWatch } from "react-hook-
 
 import { EmptyState } from "@/components";
 import type { CharacterCharmDetailed } from "@/modules/charms";
-
-import type { HuntSessionForm, MonsterPreview, PreyBonus } from "../../../schemas";
+import type { PreyBonus } from "@/modules/prey-bonus";
+import type { HuntSessionForm, MonsterPreview } from "../../../schemas";
 import { CharmChipEditor } from "./CharmChipEditor";
 import { PreyChipEditor } from "./PreyChipEditor";
 

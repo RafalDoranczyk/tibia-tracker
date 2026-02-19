@@ -4,10 +4,9 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartmentShar
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-
 import { Autocomplete, EmptyState } from "@/components";
-
-import type { DamageElement, HuntSessionForm } from "../../../schemas";
+import type { DamageElement } from "@/modules/damage-elements";
+import type { HuntSessionForm } from "../../../schemas";
 import { DamageElementList } from "../DamageElementList";
 import { SectionHeader } from "../SectionHeader";
 import { SectionPaperCard } from "../SectionPaperCard";

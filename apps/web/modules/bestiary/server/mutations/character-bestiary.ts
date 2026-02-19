@@ -1,5 +1,4 @@
 import type { TypedSupabaseClient } from "@/core/supabase/types";
-
 import type { UpdateCharacterBestiaryPayload } from "../../schemas";
 
 export async function dbUpsertCharacterBestiary(

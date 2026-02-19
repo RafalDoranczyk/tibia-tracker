@@ -1,5 +1,5 @@
+import type { BestiaryDifficulty } from "@/modules/monsters";
 import type { BestiaryStage } from "../db/character-bestiary.schema";
-import type { BestiaryDifficulty } from "../db/monster.schema";
 import type { BestiaryStageFilter } from "../input/bestiary-filters.schema";
 
 export const BESTIARY_DIFFICULTY_LABELS: Record<BestiaryDifficulty, string> = {

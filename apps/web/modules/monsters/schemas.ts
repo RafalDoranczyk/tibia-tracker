@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import type { Enums, Tables } from "@/core/supabase/types";
 import { NonEmptyString, NonNegativeInt, PositiveInt } from "@/lib/zod";
+import { DamageElementSlugs } from "@/modules/damage-elements";
 
 export const BestiaryClassSchema = z.enum([
   "Amphibic",
@@ -51,7 +52,7 @@ export const MonsterSchema = z.object({
   exp: NonNegativeInt,
   image_path: NonEmptyString,
   hp: PositiveInt,
-  elemental_resistances: z.record(z.string(), z.number()),
+  elemental_resistances: z.record(DamageElementSlugs, z.number().optional()),
   charm_points: PositiveInt,
   bestiary_class: BestiaryClassSchema,
   bestiary_difficulty: BestiaryDifficultySchema,

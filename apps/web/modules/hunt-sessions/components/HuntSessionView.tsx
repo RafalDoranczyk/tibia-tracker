@@ -3,20 +3,18 @@
 import { Box, Container, Divider, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
-
 import { FloatingActionButton } from "@/components";
 import type { CharacterCharmDetailed } from "@/modules/charms";
+import type { DamageElement } from "@/modules/damage-elements";
 import type { HuntPlace } from "@/modules/hunt-places";
 import type { ItemPreview } from "@/modules/items";
-
+import type { PreyBonus } from "@/modules/prey-bonus";
 import { useSaveHuntSession } from "../hooks/useSaveHuntSession";
 import type {
-  DamageElement,
   HuntSession,
   HuntSessionForm,
   HuntSessionUnknownEntities,
   MonsterPreview,
-  PreyBonus,
 } from "../schemas";
 import { FloatingStatsPanel } from "./FloatingStatsPanel";
 import { SummaryStats } from "./SummaryStats";
