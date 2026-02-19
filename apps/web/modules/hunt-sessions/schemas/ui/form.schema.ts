@@ -1,12 +1,10 @@
 import { z } from "zod";
-
-import { MonsterSchema } from "@/modules/bestiary";
 import { CharmSchema } from "@/modules/charms";
+import { DamageElementSchema } from "@/modules/damage-elements";
 import { ItemSchema } from "@/modules/items";
-
-import { DamageElementSchema } from "../db/damage-elements.schema";
+import { MonsterSchema } from "@/modules/monsters";
+import { PreyBonusSchema } from "@/modules/prey-bonus/schemas";
 import { HuntSessionDbBaseFieldsSchema } from "../db/hunt-session.schema";
-import { PreyBonusSchema } from "../db/prey-bonus.schema";
 
 const KilledMonsterSchema = z.object({
   monsterId: MonsterSchema.shape.id,

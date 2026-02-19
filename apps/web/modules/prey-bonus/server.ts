@@ -1,16 +1,18 @@
+import "server-only";
+
 import { cacheLife, cacheTag } from "next/cache";
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { createStaticSupabaseClient } from "@/core/supabase/clients/static";
 import { assertZodParse } from "@/lib/zod";
-import { HuntSessionCache } from "../../cache/hunt-session-cache";
-import { type PreyBonus, PreyBonusSchema } from "../../schemas";
-import { dbGetPreyBonuses } from "../queries/prey-bonuses";
+import { PreyBonusCache } from "./cache";
+import { dbGetPreyBonuses } from "./queries";
+import { type PreyBonus, PreyBonusSchema } from "./schemas";
 
 async function getCachedPreyBonuses() {
   "use cache";
   cacheLife("max");
-  cacheTag(HuntSessionCache.preyBonuses);
+  cacheTag(PreyBonusCache);
 
   const supabase = createStaticSupabaseClient();
 

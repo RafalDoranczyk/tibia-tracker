@@ -13,11 +13,9 @@ import {
 } from "@mui/material";
 
 import { DebouncedSearchFieldURL } from "@/components";
-
+import { BESTIARY_CLASSES, BESTIARY_DIFFICULTIES } from "@/modules/monsters";
 import { useBestiaryFilters } from "../hooks/useBestiaryFilters";
 import {
-  BESTIARY_CLASSES,
-  BESTIARY_DIFFICULTIES,
   BESTIARY_DIFFICULTY_LABELS,
   BESTIARY_STAGE_FILTER_LABELS,
   BESTIARY_STAGE_FILTER_VALUES,

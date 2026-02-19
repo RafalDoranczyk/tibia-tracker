@@ -1,16 +1,18 @@
+import "server-only";
+
 import { cacheLife, cacheTag } from "next/cache";
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { createStaticSupabaseClient } from "@/core/supabase/clients/static";
 import { assertZodParse } from "@/lib/zod";
-import { HuntSessionCache } from "../../cache/hunt-session-cache";
-import { type DamageElement, DamageElementSchema } from "../../schemas";
-import { dbGetDamageElements } from "../queries/damage-elements";
+import { type DamageElement, DamageElementSchema } from "@/modules/damage-elements";
+import { DamageElementCache } from "./cache";
+import { dbGetDamageElements } from "./queries";
 
 async function getCachedDamageElements() {
   "use cache";
   cacheLife("max");
-  cacheTag(HuntSessionCache.damageElements);
+  cacheTag(DamageElementCache);
 
   const supabase = createStaticSupabaseClient();
 

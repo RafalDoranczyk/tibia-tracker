@@ -1,12 +1,10 @@
 import { z } from "zod";
-
 import { NonEmptyString, PositiveInt } from "@/lib/zod";
-import { MonsterSchema } from "@/modules/bestiary";
 import { CharmSchema } from "@/modules/charms";
+import { DamageElementSchema } from "@/modules/damage-elements";
 import { ItemPreviewSchema } from "@/modules/items";
-
-import { DamageElementSchema } from "./damage-elements.schema";
-import { PreyBonusSchema } from "./prey-bonus.schema";
+import { MonsterSchema } from "@/modules/monsters";
+import { PreyBonusSchema } from "@/modules/prey-bonus/schemas";
 
 /* ==========================================================================
    1. PREVIEW / LIGHT ENTITY TYPES (used in relations)

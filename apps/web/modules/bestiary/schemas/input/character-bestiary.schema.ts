@@ -1,9 +1,7 @@
 import { z } from "zod";
-
 import { CharacterIDSchema } from "@/modules/characters";
-
+import { BestiaryClassSchema } from "@/modules/monsters";
 import { CharacterBestiarySchema } from "../db/character-bestiary.schema";
-import { BestiaryClassSchema } from "../db/monster.schema";
 import { BestiaryFiltersSchema } from "./bestiary-filters.schema";
 
 /**

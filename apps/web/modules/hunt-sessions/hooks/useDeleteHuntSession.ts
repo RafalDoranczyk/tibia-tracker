@@ -1,7 +1,5 @@
 import { useCallback, useState } from "react";
-
 import { useToast } from "@/hooks";
-
 import { deleteHuntSession } from "../actions/delete-hunt-session";
 
 export function useDeleteHuntSession(characterId: string) {

@@ -1,7 +1,6 @@
 import { Chip, type ChipProps, Divider, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-
-import type { PreyBonus } from "../../../schemas";
+import type { PreyBonus } from "@/modules/prey-bonus";
 
 type PreyChipEditorProps = {
   value?: number | null; // preyBonusId

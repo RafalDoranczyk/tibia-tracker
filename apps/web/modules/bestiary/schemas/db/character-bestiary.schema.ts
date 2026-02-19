@@ -1,10 +1,8 @@
 import { z } from "zod";
-
 import type { Tables } from "@/core/supabase/types";
 import { LocalDatetime, NonNegativeInt } from "@/lib/zod";
 import { CharacterIDSchema } from "@/modules/characters";
-
-import { BestiaryClassSchema, MonsterSchema } from "./monster.schema";
+import { BestiaryClassSchema, MonsterSchema } from "@/modules/monsters";
 
 /**
  * VIEW: character_bestiary_summary

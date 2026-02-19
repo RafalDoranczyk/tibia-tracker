@@ -8,12 +8,8 @@ import { useFormContext } from "react-hook-form";
 import type { CharacterCharmDetailed } from "@/modules/charms";
 import type { HuntPlace } from "@/modules/hunt-places";
 import type { ItemPreview } from "@/modules/items";
-import type {
-  HuntSessionForm,
-  HuntSessionUnknownEntities,
-  MonsterPreview,
-  PreyBonus,
-} from "../../../schemas";
+import type { PreyBonus } from "@/modules/prey-bonus";
+import type { HuntSessionForm, HuntSessionUnknownEntities, MonsterPreview } from "../../../schemas";
 import { SectionHeader } from "../SectionHeader";
 import { SectionPaperCard } from "../SectionPaperCard";
 import { HuntSetup } from "./HuntSetup";
