@@ -36,7 +36,7 @@ export function CharmsResetButton({ characterId, majorSpent }: CharmsResetButton
         title={
           majorSpent > 0
             ? "Reset all charms and reclaim spent charm points. This cannot be undone."
-            : "You haven't spent any charm points yet." // Lepiej dać info dlaczego disabled
+            : "You haven't spent any charm points yet."
         }
         placement="left"
       >

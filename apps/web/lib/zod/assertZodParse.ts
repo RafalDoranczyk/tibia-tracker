@@ -4,15 +4,11 @@ import { isDevEnv } from "@/core/env";
 import { AppError, AppErrorCode } from "@/core/error";
 
 function mapZodErrorToAppError(error: ZodError): AppError {
-  // 2. Zmiana: error.errors -> error.issues
   const formattedErrors = error.issues.map((issue) => {
     const path = issue.path.length > 0 ? issue.path.join(".") : "root";
 
-    // Enhanced error message
     let message = `• ${path}: ${issue.message}`;
 
-    // 3. Bezpieczne sprawdzanie pól 'received' i 'expected' bez importowania typu ZodIssue
-    // W Zodzie te pola istnieją tylko w specyficznych typach błędów, więc używamy operatora 'in'
     if ("received" in issue && issue.received !== undefined) {
       try {
         message += ` (received: ${JSON.stringify(issue.received)})`;

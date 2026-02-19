@@ -9,7 +9,6 @@ export type NavigationIcon =
 
 export type NavigationId = (typeof NAVIGATION_IDS)[keyof typeof NAVIGATION_IDS];
 
-// Definiujemy typ dla dynamicznego generatora ścieżek
 export type DynamicPathGetter = (paths: CharacterPaths) => string;
 
 export type NavigationLinkElementProps = {

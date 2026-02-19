@@ -5,7 +5,7 @@ import { alpha, Box, Card, Grid, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { MAX_CHARACTERS_PER_USER } from "../constants";
 import type { AppCharacter } from "../schemas";
-import { AddCharacterCard } from "./AddCharacterCard"; // Import nowej karty
+import { AddCharacterCard } from "./AddCharacterCard";
 import { CharCard } from "./CharCard";
 
 type CardGridProps = {
@@ -42,7 +42,7 @@ export function CardGrid({ characters, onSelect, onSettings, activeCharacterId }
               sx={{
                 cursor: "pointer",
                 height: "100%",
-                minHeight: 220, // Zapewnia spójną wysokość
+                minHeight: 220,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
