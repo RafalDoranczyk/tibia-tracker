@@ -2,6 +2,7 @@ export * from "./db/hunt-session.schema";
 export * from "./db/hunt-session-relations.schema";
 
 export * from "./input/hunt-session-filters.schema";
+export * from "./input/hunt-session-image.schema";
 export * from "./input/input.schema";
 
 export * from "./ui/form.schema";

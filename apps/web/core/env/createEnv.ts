@@ -6,7 +6,6 @@ export const env = createEnv({
    * Server-only environment variables
    */
   server: {
-    ANTHROPIC_API_KEY: z.string().min(1),
     SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
     GEMINI_API_KEY: z.string().min(1),
   },
@@ -35,7 +34,6 @@ export const env = createEnv({
    */
   runtimeEnv: {
     // server
-    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
 

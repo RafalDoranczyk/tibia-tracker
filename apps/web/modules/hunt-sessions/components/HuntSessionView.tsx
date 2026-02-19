@@ -10,12 +10,15 @@ import type { HuntPlace } from "@/modules/hunt-places";
 import type { ItemPreview } from "@/modules/items";
 import type { PreyBonus } from "@/modules/prey-bonus";
 import { useSaveHuntSession } from "../hooks/useSaveHuntSession";
+import { parseAIScanToForm } from "../parsers/parseAIScanToForm";
 import type {
+  AIHuntSessionScan,
   HuntSession,
   HuntSessionForm,
   HuntSessionUnknownEntities,
   MonsterPreview,
 } from "../schemas";
+import { ScannerModal } from "./ai/ScannerModal";
 import { FloatingStatsPanel } from "./FloatingStatsPanel";
 import { SummaryStats } from "./SummaryStats";
 import { DamageTab } from "./tabs/damage/DamageTab";
@@ -63,15 +66,28 @@ export function HuntSessionView({
 }: HuntSessionViewProps) {
   const [unknownEntitiesModalOpen, setUnknownEntitiesModalOpen] = useState(false);
   const [unknownEntities, setUnknownEntities] = useState<HuntSessionUnknownEntities>(null);
+  const [scanModal, setScanModal] = useState(false);
   const [tab, setTab] = useState(0);
 
-  const { handleSubmit, formState } = useFormContext<HuntSessionForm>();
+  const { handleSubmit, formState, reset } = useFormContext<HuntSessionForm>();
+
   const saveHuntSession = useSaveHuntSession();
+
   const onSubmit = handleSubmit((data) => saveHuntSession(data, huntSessionId));
+
+  const onScanApply = (scan: AIHuntSessionScan) => {
+    const d = parseAIScanToForm(scan, monsterList);
+    console.log(d);
+    reset(d, { keepDirty: false });
+  };
 
   return (
     <Container maxWidth="xl">
-      <SummaryStats preyBonusList={preyBonusList} monsterList={monsterList} />
+      <SummaryStats
+        setScanModal={() => setScanModal(true)}
+        preyBonusList={preyBonusList}
+        monsterList={monsterList}
+      />
 
       <Tabs
         value={tab}
@@ -100,20 +116,29 @@ export function HuntSessionView({
           openUnknownEntitiesModal={() => setUnknownEntitiesModalOpen(true)}
         />
       </TabPanel>
-
       <TabPanel value={tab} index={1}>
         <DamageTab monsterList={monsterList} damageElementList={damageElementList} />
       </TabPanel>
-
       <TabPanel value={tab} index={2}>
         <SuppliesTab supplyList={supplyList} />
       </TabPanel>
-
-      <TabPanel value={tab} index={3}>
-        {/* <CombatStatsTab damageElementList={damageElementList} /> */}
-      </TabPanel>
+      <TabPanel value={tab} index={3}></TabPanel>
 
       <FloatingStatsPanel />
+
+      <UnknownEntitiesModal
+        open={unknownEntitiesModalOpen}
+        unknownEntities={unknownEntities}
+        onClose={() => setUnknownEntitiesModalOpen(false)}
+      />
+
+      <ScannerModal
+        open={scanModal}
+        damageElementList={damageElementList}
+        monsterList={monsterList}
+        onClose={() => setScanModal(false)}
+        onApply={onScanApply}
+      />
 
       <FloatingActionButton
         visible={formState.isDirty}
@@ -122,12 +147,6 @@ export function HuntSessionView({
       >
         Save changes
       </FloatingActionButton>
-
-      <UnknownEntitiesModal
-        open={unknownEntitiesModalOpen}
-        unknownEntities={unknownEntities}
-        onClose={() => setUnknownEntitiesModalOpen(false)}
-      />
     </Container>
   );
 }

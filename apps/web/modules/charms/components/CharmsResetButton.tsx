@@ -1,7 +1,7 @@
 "use client";
 
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { Button } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 import { useState, useTransition } from "react";
 
 import { ConfirmDialog } from "@/components";
@@ -11,10 +11,10 @@ import { resetCharacterCharms } from "../actions/reset-character-charms";
 
 type CharmsResetButtonProps = {
   characterId: string;
-  majorCharmsUnlocked: number;
+  majorSpent: number;
 };
 
-export function CharmsResetButton({ characterId, majorCharmsUnlocked }: CharmsResetButtonProps) {
+export function CharmsResetButton({ characterId, majorSpent }: CharmsResetButtonProps) {
   const toast = useToast();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -32,16 +32,27 @@ export function CharmsResetButton({ characterId, majorCharmsUnlocked }: CharmsRe
   };
   return (
     <>
-      <Button
-        disabled={majorCharmsUnlocked === 0}
-        loading={isPending}
-        color="error"
-        variant="outlined"
-        startIcon={<RestartAltIcon />}
-        onClick={() => setOpen(true)}
+      <Tooltip
+        title={
+          majorSpent > 0
+            ? "Reset all charms and reclaim spent charm points. This cannot be undone."
+            : "You haven't spent any charm points yet."
+        }
+        placement="left"
       >
-        Reset All Charms
-      </Button>
+        <Box component="span">
+          <Button
+            disabled={majorSpent === 0}
+            loading={isPending}
+            color="error"
+            variant="outlined"
+            startIcon={<RestartAltIcon />}
+            onClick={() => setOpen(true)}
+          >
+            Reset All Charms
+          </Button>
+        </Box>
+      </Tooltip>
 
       <ConfirmDialog.Root open={open} onOpenChange={setOpen}>
         <ConfirmDialog.Header

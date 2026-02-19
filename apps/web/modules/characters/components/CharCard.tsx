@@ -40,7 +40,6 @@ export function CharCard({ character, onSelect, onSettings, isActive }: CharCard
       })
     : "Never";
 
-  console.log(character);
   return (
     <Card
       onClick={() => !isActive && onSelect(character)}

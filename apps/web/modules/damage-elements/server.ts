@@ -27,6 +27,7 @@ export async function getDamageElements(): Promise<DamageElement[]> {
 
   try {
     const data = await getCachedDamageElements();
+
     return assertZodParse(DamageElementSchema.array(), data);
   } catch (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch damage elements");
