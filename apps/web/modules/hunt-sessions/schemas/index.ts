@@ -1,6 +1,5 @@
 export * from "./db/hunt-session.schema";
 export * from "./db/hunt-session-relations.schema";
-export * from "./db/prey-bonus.schema";
 
 export * from "./input/hunt-session-filters.schema";
 export * from "./input/input.schema";

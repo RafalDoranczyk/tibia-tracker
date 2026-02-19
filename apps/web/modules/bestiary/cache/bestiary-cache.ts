@@ -1,4 +1,4 @@
-import type { BestiaryClass } from "../schemas";
+import type { BestiaryClass } from "@/modules/monsters";
 
 export const BestiaryCache = {
   summary: (characterId: string) => `bestiary-summary-${characterId}` as const,

@@ -2,7 +2,7 @@ import { getCharacterCharmList } from "@/modules/charms/server";
 import { getDamageElements } from "@/modules/damage-elements/server";
 import { getHuntPlaceList } from "@/modules/hunt-places/server";
 import { getItemList, getSupplyList } from "@/modules/items/server";
-import { getMonsterList } from "@/modules/monsters";
+import { getMonsterList } from "@/modules/monsters/server";
 import { getPreyBonuses } from "@/modules/prey-bonus/server";
 import { getHuntSession } from "./get-hunt-session";
 

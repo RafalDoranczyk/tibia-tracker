@@ -1,1 +1,1 @@
-export { getMonsterList } from "./server";
+export * from "./schemas";

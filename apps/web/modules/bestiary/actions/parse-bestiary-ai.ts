@@ -1,7 +1,7 @@
 "use server";
 
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
-import { getMonsterList } from "@/modules/monsters";
+import { getMonsterList } from "@/modules/monsters/server";
 import { parseBestiaryImage } from "../parsers/parseBestiaryImage";
 import type { AIMonsterScan } from "../schemas";
 

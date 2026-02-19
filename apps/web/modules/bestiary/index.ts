@@ -1,7 +1,6 @@
 // ======================
 // UI – public components
 // ======================
-
 export { AIFloatingPanel } from "./components/ai/AIFloatingPanel";
 export { BestiaryCardGrid } from "./components/BestiaryCardGrid";
 export { BestiaryFiltersPanel } from "./components/BestiaryFiltersPanel";
@@ -15,6 +14,4 @@ export { parseBestiaryFiltersFromSearchParams } from "./parsers/parseBestiaryFil
 export {
   CharacterBestiarySummaryRequestSchema,
   FetchCharacterBestiaryClassSummaryPayloadSchema,
-  type Monster,
-  MonsterSchema,
 } from "./schemas";

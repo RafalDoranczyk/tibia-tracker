@@ -1,5 +1,4 @@
 import type { TypedSupabaseClient } from "@/core/supabase/types";
-
 import type { FetchCharacterBestiaryPayload } from "../../schemas";
 
 export function dbGetMonsterListWithProgress(

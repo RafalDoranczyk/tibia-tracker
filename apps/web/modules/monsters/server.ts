@@ -5,7 +5,7 @@ import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { createStaticSupabaseClient } from "@/core/supabase/clients/static";
 import { assertZodParse } from "@/lib/zod";
-import { type Monster, MonsterSchema } from "@/modules/bestiary";
+import { type Monster, MonsterSchema } from "@/modules/monsters";
 import { MonsterListCache } from "./cache";
 import { dbGetMonsterList } from "./queries";
 
