@@ -1,10 +1,8 @@
 import { z } from "zod";
-
 import { MonsterSchema } from "@/modules/bestiary";
 import { CharmSchema } from "@/modules/charms";
+import { DamageElementSchema } from "@/modules/damage-elements";
 import { ItemSchema } from "@/modules/items";
-
-import { DamageElementSchema } from "../db/damage-elements.schema";
 import { HuntSessionDbBaseFieldsSchema } from "../db/hunt-session.schema";
 import { PreyBonusSchema } from "../db/prey-bonus.schema";
 

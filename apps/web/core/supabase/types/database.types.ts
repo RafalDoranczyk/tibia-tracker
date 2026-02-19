@@ -117,7 +117,7 @@ export type Database = {
           name: string;
           synchronized_at: string | null;
           user_id: string;
-          vocation: Database["public"]["Enums"]["character_vocation"] | null;
+          vocation: Database["public"]["Enums"]["character_vocation"];
           world: string;
         };
         Insert: {
@@ -125,7 +125,7 @@ export type Database = {
           name: string;
           synchronized_at?: string | null;
           user_id?: string;
-          vocation?: Database["public"]["Enums"]["character_vocation"] | null;
+          vocation: Database["public"]["Enums"]["character_vocation"];
           world: string;
         };
         Update: {
@@ -133,7 +133,7 @@ export type Database = {
           name?: string;
           synchronized_at?: string | null;
           user_id?: string;
-          vocation?: Database["public"]["Enums"]["character_vocation"] | null;
+          vocation?: Database["public"]["Enums"]["character_vocation"];
           world?: string;
         };
         Relationships: [];
@@ -183,18 +183,21 @@ export type Database = {
       damage_elements: {
         Row: {
           id: number;
-          image_path: string | null;
-          name: string | null;
+          image_path: string;
+          name: string;
+          slug: Database["public"]["Enums"]["damage_element"] | null;
         };
         Insert: {
           id?: number;
-          image_path?: string | null;
-          name?: string | null;
+          image_path: string;
+          name: string;
+          slug?: Database["public"]["Enums"]["damage_element"] | null;
         };
         Update: {
           id?: number;
-          image_path?: string | null;
-          name?: string | null;
+          image_path?: string;
+          name?: string;
+          slug?: Database["public"]["Enums"]["damage_element"] | null;
         };
         Relationships: [];
       };
@@ -1017,6 +1020,16 @@ export type Database = {
       bestiary_stage_filter: "completed" | "not_completed";
       character_vocation: "paladin" | "knight" | "sorcerer" | "monk" | "druid";
       charm_type: "major" | "minor";
+      damage_element:
+        | "death"
+        | "earth"
+        | "fire"
+        | "ice"
+        | "physical"
+        | "life_drain"
+        | "mana_drain"
+        | "energy"
+        | "holy";
       imbuing_price_key:
         | "gold_token"
         | "vampire_teeth"
@@ -1249,6 +1262,17 @@ export const Constants = {
       bestiary_stage_filter: ["completed", "not_completed"],
       character_vocation: ["paladin", "knight", "sorcerer", "monk", "druid"],
       charm_type: ["major", "minor"],
+      damage_element: [
+        "death",
+        "earth",
+        "fire",
+        "ice",
+        "physical",
+        "life_drain",
+        "mana_drain",
+        "energy",
+        "holy",
+      ],
       imbuing_price_key: [
         "gold_token",
         "vampire_teeth",

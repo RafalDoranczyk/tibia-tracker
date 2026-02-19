@@ -58,7 +58,7 @@ export function useMonsterProgress(monsterFromProps: MonsterWithCharacterProgres
   const toggleSoulpit = () => {
     return runUpdate(
       { has_soul: !monster.has_soul },
-      { showLoading: false, successMessage: `Soulpit for ${monster.name} saved` }
+      { successMessage: `Soulpit for ${monster.name} saved` }
     );
   };
 

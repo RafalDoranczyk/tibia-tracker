@@ -3,9 +3,8 @@ import { z } from "zod";
 import { NonEmptyString, PositiveInt } from "@/lib/zod";
 import { MonsterSchema } from "@/modules/bestiary";
 import { CharmSchema } from "@/modules/charms";
+import { DamageElementSchema } from "@/modules/damage-elements";
 import { ItemPreviewSchema } from "@/modules/items";
-
-import { DamageElementSchema } from "./damage-elements.schema";
 import { PreyBonusSchema } from "./prey-bonus.schema";
 
 /* ==========================================================================

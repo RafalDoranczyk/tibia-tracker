@@ -1,0 +1,1 @@
+export { getMonsterList } from "./server";

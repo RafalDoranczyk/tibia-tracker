@@ -4,9 +4,8 @@ import { NonNegativeInt, PaginationSchema, PositiveInt } from "@/lib/zod";
 import { MonsterSchema } from "@/modules/bestiary";
 import { CharacterIDSchema } from "@/modules/characters";
 import { CharmSchema } from "@/modules/charms";
+import { DamageElementSchema } from "@/modules/damage-elements";
 import { ItemSchema } from "@/modules/items";
-
-import { DamageElementSchema } from "../db/damage-elements.schema";
 import {
   HuntSessionDbBaseFieldsSchema,
   HuntSessionListItemSchema,
