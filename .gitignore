@@ -30,3 +30,6 @@ coverage
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+
+# TypeScript build info
+*.tsbuildinfo
