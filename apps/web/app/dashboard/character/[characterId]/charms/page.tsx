@@ -25,7 +25,7 @@ export default async function Charms({ params }: CharacterPageProps) {
   ]);
 
   const { unlocked_charm_points, total_charm_points } = bestiarySummary;
-  const { major_available, minor_available, major_unlocked } = charmEconomy;
+  const { major_available, minor_available, major_spent } = charmEconomy;
   const progress = total_charm_points > 0 ? (unlocked_charm_points / total_charm_points) * 100 : 0;
 
   return (
@@ -36,7 +36,7 @@ export default async function Charms({ params }: CharacterPageProps) {
          Unlock new bestiary to gain more charm points and be able to unlock more charms."
         action={
           <Box ml="auto">
-            <CharmsResetButton characterId={characterId} majorCharmsUnlocked={major_unlocked} />
+            <CharmsResetButton characterId={characterId} majorSpent={major_spent} />
           </Box>
         }
       />
