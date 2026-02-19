@@ -10,7 +10,9 @@ import type { HuntPlace } from "@/modules/hunt-places";
 import type { ItemPreview } from "@/modules/items";
 import type { PreyBonus } from "@/modules/prey-bonus";
 import { useSaveHuntSession } from "../hooks/useSaveHuntSession";
+import { parseAIScanToForm } from "../parsers/parseAIScanToForm";
 import type {
+  AIHuntSessionScan,
   HuntSession,
   HuntSessionForm,
   HuntSessionUnknownEntities,
@@ -67,10 +69,17 @@ export function HuntSessionView({
   const [scanModal, setScanModal] = useState(false);
   const [tab, setTab] = useState(0);
 
-  const { handleSubmit, formState } = useFormContext<HuntSessionForm>();
+  const { handleSubmit, formState, reset } = useFormContext<HuntSessionForm>();
 
   const saveHuntSession = useSaveHuntSession();
+
   const onSubmit = handleSubmit((data) => saveHuntSession(data, huntSessionId));
+
+  const onScanApply = (scan: AIHuntSessionScan) => {
+    const d = parseAIScanToForm(scan, monsterList);
+    console.log(d);
+    reset(d, { keepDirty: false });
+  };
 
   return (
     <Container maxWidth="xl">
@@ -125,11 +134,10 @@ export function HuntSessionView({
 
       <ScannerModal
         open={scanModal}
-        onClose={() => setScanModal(false)}
         damageElementList={damageElementList}
-        onApply={() => {
-          console.log("log");
-        }}
+        monsterList={monsterList}
+        onClose={() => setScanModal(false)}
+        onApply={onScanApply}
       />
 
       <FloatingActionButton

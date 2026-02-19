@@ -1,33 +1,72 @@
 "use client";
 
 import CloseIcon from "@mui/icons-material/Close";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
-import {
-  Backdrop,
-  Box,
-  Button,
-  Fade,
-  IconButton,
-  Modal,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Backdrop, Box, Button, Fade, IconButton, Modal, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import type { AIHuntSessionScan, DamageElement } from "../../schemas";
+import type { DamageElement } from "@/modules/damage-elements";
+import type { AIHuntSessionScan, MonsterPreview } from "../../schemas";
 import { AIScanPreviewCard } from "./AIScanPreviewCard";
 import { UploadFilesCard } from "./UploadFilesCard";
+
+const exampleScan: AIHuntSessionScan = {
+  skills_window: {
+    level: 150,
+    xp: 123456789,
+    armor: 200,
+    defense: 150,
+    mitigation: 75,
+    skills: {
+      magic_level: 80,
+      sword: 90,
+      axe: 85,
+      club: 88,
+      distance: 92,
+    },
+    resistances: {
+      fire: 20,
+      ice: 10,
+      energy: null,
+      earth: 5,
+    },
+  },
+  hunt_analyser: {
+    session: "2h 30m",
+    raw_xp_gain: 123456789,
+    xp_gain: 100000000,
+    raw_xp_h: 49382745,
+    xp_h: 40000000,
+    loot: 5000000,
+    supplies: 2000000,
+    balance: 3000000,
+    damage: 2500000,
+    damage_h: 1000000,
+    healing: 500000,
+    healing_h: 200000,
+    killed_monsters: [
+      { name: "Demon", amount: 50 },
+      { name: "Dragon", amount: 20 },
+      { name: "Giant Spider", amount: 100 },
+    ],
+  },
+};
 
 type ScannerModalProps = {
   open: boolean;
   damageElementList: DamageElement[];
+  monsterList: MonsterPreview[];
   onClose: () => void;
-  onApply: (data: AIHuntSessionScan) => void;
+  onApply: (scan: AIHuntSessionScan) => void;
 };
 
-export function ScannerModal({ open, damageElementList, onClose, onApply }: ScannerModalProps) {
-  const [scan, setScan] = useState<AIHuntSessionScan | null>(null);
+export function ScannerModal({
+  open,
+  damageElementList,
+  monsterList,
+  onClose,
+  onApply,
+}: ScannerModalProps) {
+  const [scan, setScan] = useState<AIHuntSessionScan | null>(exampleScan);
 
   const handleClose = (
     _event: React.SyntheticEvent,
@@ -42,7 +81,6 @@ export function ScannerModal({ open, damageElementList, onClose, onApply }: Scan
   const handleApply = () => {
     if (scan) {
       onApply(scan);
-      setScan(null);
       onClose();
     }
   };
@@ -103,23 +141,6 @@ export function ScannerModal({ open, damageElementList, onClose, onApply }: Scan
                 Upload a screenshot of your Tibia hunt session summary to automatically extract
                 details like monsters killed, loot collected, and skill progression.
               </Typography>
-              <Tooltip
-                title={
-                  <Box sx={{ p: 1 }}>
-                    <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
-                      Best quality tips:
-                    </Typography>
-                    <ul style={{ margin: 0, paddingLeft: "1.2rem", fontSize: "0.75rem" }}>
-                      <li>Ensure windows are not overlapping each other</li>
-                      <li>Use default Tibia UI scale for best OCR results</li>
-                      <li>Include "Killed Monsters" list in the frame</li>
-                    </ul>
-                  </Box>
-                }
-                placement="top"
-              >
-                <InfoOutlinedIcon fontSize="small" sx={{ cursor: "help", color: "#a78bfa" }} />
-              </Tooltip>
             </Stack>
           )}
 
@@ -128,6 +149,7 @@ export function ScannerModal({ open, damageElementList, onClose, onApply }: Scan
             {scan ? (
               <AIScanPreviewCard
                 damageElementList={damageElementList}
+                monsterList={monsterList}
                 scan={scan}
                 onClear={() => setScan(null)}
               />

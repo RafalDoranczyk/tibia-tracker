@@ -13,17 +13,22 @@ import {
   Grid,
   Paper,
   Stack,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { getPublicAssetUrl } from "@/core/assets";
-import type { AIHuntSessionScan, DamageElement } from "../../schemas";
+import type { DamageElement } from "@/modules/damage-elements";
+import type { AIHuntSessionScan, MonsterPreview } from "../../schemas";
+
+const normalizeName = (name: string) => name.toLowerCase().replace(/[\s_]/g, "");
 
 const getResistanceMeta = (damageElementList: DamageElement[], scannedKey: string) => {
-  const normalize = (name: string) => name.toLowerCase().replace(/[\s_]/g, "");
-  const target = normalize(scannedKey);
+  const target = normalizeName(scannedKey);
+  return damageElementList.find((item) => normalizeName(item.name) === target);
+};
 
-  return damageElementList.find((item) => normalize(item.name) === target);
+const getMonsterMeta = (monsterList: MonsterPreview[], scannedName: string) => {
+  const target = normalizeName(scannedName);
+  return monsterList.find((m) => normalizeName(m.name) === target);
 };
 
 const formatSkillName = (skill: string) => {
@@ -31,25 +36,18 @@ const formatSkillName = (skill: string) => {
   return skill.charAt(0).toUpperCase() + skill.slice(1).toLowerCase();
 };
 
-export const getActiveResistances = (resistances: Record<string, number | undefined>) => {
-  return Object.entries(resistances).reduce(
-    (acc, [key, value]) => {
-      if (value && value > 0) {
-        acc[key] = value;
-      }
-      return acc;
-    },
-    {} as Record<string, number>
-  );
-};
-
 type AIScanPreviewCardProps = {
   scan: AIHuntSessionScan;
   damageElementList: DamageElement[];
+  monsterList: MonsterPreview[];
   onClear: () => void;
 };
 
-export function AIScanPreviewCard({ scan, damageElementList }: AIScanPreviewCardProps) {
+export function AIScanPreviewCard({
+  scan,
+  damageElementList,
+  monsterList,
+}: AIScanPreviewCardProps) {
   const { skills_window, hunt_analyser } = scan;
 
   const activeResistances = Object.fromEntries(
@@ -87,7 +85,7 @@ export function AIScanPreviewCard({ scan, damageElementList }: AIScanPreviewCard
           <Grid size={{ xs: 12, lg: 6 }}>
             <SectionHeader icon={<InsightsIcon />} title="Performance" />
             <Paper sx={{ p: 2, bgcolor: "rgba(255,255,255,0.02)" }}>
-              <DataRow label="Duration" value={hunt_analyser?.session_duration} />
+              <DataRow label="Duration" value={hunt_analyser?.session} />
               <Divider sx={{ my: 1, opacity: 0.1 }} />
               <DataRow
                 label="Raw XP Gain"
@@ -116,12 +114,9 @@ export function AIScanPreviewCard({ scan, damageElementList }: AIScanPreviewCard
                 color={(hunt_analyser?.balance ?? 0) >= 0 ? "success.main" : "error.main"}
               />
               <Divider sx={{ my: 1, opacity: 0.1 }} />
-              <DataRow label="Damage Total" value={hunt_analyser?.damage_total?.toLocaleString()} />
+              <DataRow label="Damage Total" value={hunt_analyser?.damage?.toLocaleString()} />
               <DataRow label="Damage/h" value={hunt_analyser?.damage_h?.toLocaleString()} />
-              <DataRow
-                label="Healing Total"
-                value={hunt_analyser?.healing_total?.toLocaleString()}
-              />
+              <DataRow label="Healing Total" value={hunt_analyser?.healing?.toLocaleString()} />
               <DataRow label="Healing/h" value={hunt_analyser?.healing_h?.toLocaleString()} />
             </Paper>
           </Grid>
@@ -130,11 +125,11 @@ export function AIScanPreviewCard({ scan, damageElementList }: AIScanPreviewCard
           <Grid size={{ xs: 12, lg: 6 }}>
             <SectionHeader icon={<ShieldIcon />} title="Combat Stats" />
             <Paper sx={{ p: 2, bgcolor: "rgba(255,255,255,0.02)" }}>
-              <DataRow label="Level" value={skills_window?.base_stats.level} bold />
+              <DataRow label="Level" value={skills_window?.level} bold />
               <Divider sx={{ my: 1, opacity: 0.1 }} />
-              <DataRow label="Mitigation" value={skills_window?.base_stats.mitigation} unit="%" />
-              <DataRow label="Armor" value={skills_window?.base_stats.armor_value} />
-              <DataRow label="Defense" value={skills_window?.base_stats.defense_value} />
+              <DataRow label="Mitigation" value={skills_window?.mitigation} unit="%" />
+              <DataRow label="Armor" value={skills_window?.armor} />
+              <DataRow label="Defense" value={skills_window?.defense} />
 
               <Typography
                 variant="caption"
@@ -169,7 +164,7 @@ export function AIScanPreviewCard({ scan, damageElementList }: AIScanPreviewCard
                               }}
                             />
                           }
-                          label={`${meta?.name}: ${displayValue}%`}
+                          label={`${meta?.name || res}: ${displayValue}%`}
                           size="small"
                           variant="outlined"
                           sx={{
@@ -191,7 +186,7 @@ export function AIScanPreviewCard({ scan, damageElementList }: AIScanPreviewCard
             <SectionHeader icon={<PsychologyIcon />} title="Skill Levels" />
             <Paper sx={{ p: 2, bgcolor: "rgba(255,255,255,0.02)" }}>
               <Grid container spacing={1.5}>
-                {Object.entries(skills_window?.skill_levels || {}).map(([skill, val]) => (
+                {Object.entries(skills_window?.skills || {}).map(([skill, val]) => (
                   <Grid size={{ xs: 6 }} key={skill}>
                     <Stack direction="row" spacing={1} alignItems="center">
                       <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: "#a78bfa" }} />
@@ -208,7 +203,7 @@ export function AIScanPreviewCard({ scan, damageElementList }: AIScanPreviewCard
             </Paper>
           </Grid>
 
-          {/* KILLED MONSTERS */}
+          {/* KILLED MONSTERS  */}
           <Grid size={{ xs: 12, lg: 6 }}>
             <SectionHeader icon={<PetsIcon />} title="Killed Monsters" />
             <Box
@@ -218,33 +213,51 @@ export function AIScanPreviewCard({ scan, damageElementList }: AIScanPreviewCard
                 gap: 1,
                 maxHeight: 180,
                 overflowY: "auto",
-                p: 1,
+                p: 1.5,
                 bgcolor: "rgba(0,0,0,0.2)",
                 borderRadius: 1,
+                border: "1px solid rgba(255,255,255,0.05)",
               }}
             >
-              {hunt_analyser?.killed_monsters.length === 0 && (
+              {hunt_analyser?.killed_monsters.length === 0 ? (
                 <Typography variant="caption" color="text.disabled">
                   No monsters detected.
                 </Typography>
+              ) : (
+                hunt_analyser?.killed_monsters.map((m) => {
+                  const monsterMeta = getMonsterMeta(monsterList, m.name);
+
+                  return (
+                    <Chip
+                      key={m.name}
+                      avatar={
+                        <Avatar
+                          src={monsterMeta ? monsterMeta.image_path : undefined}
+                          sx={{
+                            width: 24,
+                            height: 24,
+                            bgcolor: monsterMeta ? "transparent" : "rgba(167, 139, 250, 0.1)",
+                            "& img": { objectFit: "contain" },
+                          }}
+                        >
+                          {!monsterMeta && m.name[0].toUpperCase()}
+                        </Avatar>
+                      }
+                      label={`${m.amount}x ${monsterMeta?.name || m.name}`}
+                      variant="outlined"
+                      sx={{
+                        borderColor: "rgba(167, 139, 250, 0.2)",
+                        bgcolor: "rgba(167, 139, 250, 0.05)",
+                        "& .MuiChip-label": {
+                          fontSize: "0.7rem",
+                          fontWeight: 600,
+                          color: monsterMeta ? "text.primary" : "text.secondary",
+                        },
+                      }}
+                    />
+                  );
+                })
               )}
-              {hunt_analyser?.killed_monsters.map((m) => (
-                <Tooltip key={m.name} title={m.name}>
-                  <Chip
-                    avatar={
-                      <Avatar sx={{ width: 24, height: 24, bgcolor: "rgba(167, 139, 250, 0.1)" }}>
-                        {m.name[0]}
-                      </Avatar>
-                    }
-                    label={`${m.amount}x ${m.name}`}
-                    variant="outlined"
-                    sx={{
-                      borderColor: "rgba(167, 139, 250, 0.2)",
-                      "& .MuiChip-label": { fontSize: "0.7rem" },
-                    }}
-                  />
-                </Tooltip>
-              ))}
             </Box>
           </Grid>
         </Grid>

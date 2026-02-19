@@ -2,53 +2,60 @@ import { ai, GEMINI_MODEL } from "@/lib/google-ai";
 
 import { type AIHuntSessionScan, AIHuntSessionScanSchema } from "../schemas";
 
-const getAiBlueprint = (obj: unknown) => {
-  const blueprint: Record<string, unknown> = {};
-  for (const key in obj as Record<string, unknown>) {
-    // Proste mapowanie dla czytelności AI
-    blueprint[key] = "value";
-  }
-  return blueprint;
+const getAiBlueprint = () => {
+  return {
+    skills_window: {
+      level: 0,
+      xp: 0,
+      armor: 0,
+      defense: 0,
+      mitigation: 0.0,
+      skills: { magic: 0, sword: 0, etc: 0 },
+      resistances: { physical: 0.0, fire: 0.0, etc: 0.0 },
+    },
+    hunt_analyser: {
+      session: "00:00h",
+      raw_xp_gain: 0,
+      xp_gain: 0,
+      raw_xp_h: 0,
+      xp_h: 0,
+      loot: 0,
+      supplies: 0,
+      balance: 0,
+      damage: 0,
+      damage_h: 0,
+      healing: 0,
+      healing_h: 0,
+      killed_monsters: [{ name: "string", amount: 0 }],
+    },
+  };
 };
 
-const prompt = `.
-Role: Professional Tibia Game Data Analyst specialized in UI OCR.
-Task: Extract all character and session data from the provided screenshot.
-Context: Focus on two main floating containers: "Skills" and "Hunt Analyser". These can be anywhere on the screen.
+const prompt = `
+Role: Tibia UI Specialist & OCR Expert.
+Task: Extract data from "Skills" and "Hunt Analyser" windows.
 
-1. Window: "Skills" (Character Stats)
-Locate the container with the header "Skills" and extract data with high precision:
-Base Stats:
-Level: Extract the numeric value at the very top of the Skills window.
-XP: Extract the total experience points (long integer).
-Armor, Defense: Extract as integers.
-Mitigation: Extract the value next to "Mitigation". If it shows a decimal (e.g., 1.52%), return as float: 1.52.
-Skill Levels:
-Find the list of combat skills and extract only the numeric values for these specific keys in this exact order: magic, fist, club, sword, axe, distance, shielding, fishing.
-Resistances (Elemental Icons):
-Identify small icons (circles/squares) with percentage values. Use these keys: physical, fire, earth, energy, ice, holy, death, mana_drain, life_drain.
-Precision Requirement: Extract the exact numeric value. Values frequently contain decimals (e.g., 12.34%). Always return the value as a float (e.g., 12.34).
-OCR Correction Logic: If the OCR detects a large integer like 1234 or 509 where a percentage is expected, and the visual context shows a decimal should be there, treat it as 12.34 or 5.09.
-Constraints:
-Maximum allowed value is 100.00.
-If an icon is missing or the value is completely unreadable, return null for that specific key.
-Do not assume 0 if the icon is not present; use null.
+### DATA PROCESSING RULES:
+- Numbers: Remove "gp", "x", commas, and "%".
+- Values with 'k': Convert to thousands (e.g., 500k -> 500000).
+- Values with 'kk': Convert to millions (e.g., 1.5kk -> 1500000).
+- Percentages: Return as floats (e.g., 12.34% -> 12.34).
+- Missing Data: If a window is missing, return null for its key. If an icon/skill is missing, return null.
 
-2. Window: "Hunt Analyser" (Session Stats)
-- Identification: Locate the container titled "Hunt Analyser".
-- Performance Data: Extract "Session" (as string), "Raw XP Gain", "XP Gain", "Raw XP/h", "XP/h", "Loot", "Supplies", "Balance".
-- Combat Data: Extract "Damage", "Damage/h", "Healing", "Healing/h".
-- Killed Monsters: In the bottom part of this window, find the list of monsters. 
-  Format each entry as: {"name": "Monster Name", "amount": number}. 
-  Example: "1,234x Demon" becomes {"name": "Demon", "amount": 1234}.
+### 1. SKILLS WINDOW
+Extract directly into "skills_window":
+- Numeric values for: level, xp, armor, defense, mitigation.
+- Object "skills": all combat skills (magic, fist, club, sword, axe, distance, shielding, fishing).
+- Object "resistances": all elemental icons (physical, fire, earth, energy, ice, holy, death, mana_drain, life_drain).
 
-Data Formatting Rules (CRITICAL):
-- Numbers: Remove currency symbols (gp), commas (,), dots (.), and percent signs (%).
-- Scaling: Convert "k" to thousands (500k = 500000) and "kk" to millions (1.2kk = 1200000).
-- Empty states: If a window is not present on the screen, return null for that entire window object.
+### 2. HUNT ANALYSER WINDOW
+Extract directly into "hunt_analyser" (STRICTLY FLAT STRUCTURE, NO SUB-OBJECTS):
+- Fields: session, raw_xp_gain, xp_gain, raw_xp_h, xp_h, loot, supplies, balance, damage, damage_h, healing, healing_h.
+- List "killed_monsters": array of { name: string, amount: number }.
 
-Output: Return ONLY a valid JSON object matching this structure:
-${JSON.stringify(getAiBlueprint(AIHuntSessionScanSchema.shape), null, 2)}
+### OUTPUT FORMAT:
+Return ONLY a valid JSON object matching this exact structure:
+${JSON.stringify(getAiBlueprint(), null, 2)}
 `;
 
 export async function parseHuntSessionImage(

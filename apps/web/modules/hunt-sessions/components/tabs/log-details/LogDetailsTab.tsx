@@ -60,26 +60,22 @@ export function LogDetailsTab({
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack spacing={SPACING} direction="row" alignItems="center">
-          {!hasSessionData && (
-            <>
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                sx={{ display: { xs: "none", md: "block" }, alignSelf: "center" }}
-              >
-                Auto-fill from session log
-              </Typography>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ display: { xs: "none", md: "block" }, alignSelf: "center" }}
+          >
+            Auto-fill from session log
+          </Typography>
 
-              <Button
-                variant="outlined"
-                size="small"
-                startIcon={<FileUploadIcon />}
-                onClick={() => setUploadModalOpen(true)}
-              >
-                Upload Log
-              </Button>
-            </>
-          )}
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<FileUploadIcon />}
+            onClick={() => setUploadModalOpen(true)}
+          >
+            Upload Log
+          </Button>
         </Stack>
       </SectionHeader>
 
