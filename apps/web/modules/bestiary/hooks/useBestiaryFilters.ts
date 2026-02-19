@@ -1,13 +1,7 @@
 import { useTransition } from "react";
-
 import { usePaginationQueryParams } from "@/hooks";
-
-import type {
-  BestiaryClass,
-  BestiaryDifficulty,
-  BestiaryFilters,
-  BestiaryStageFilter,
-} from "../schemas";
+import type { BestiaryClass, BestiaryDifficulty } from "@/modules/monsters";
+import type { BestiaryFilters, BestiaryStageFilter } from "../schemas";
 
 type BestiaryStageFilterOption = BestiaryStageFilter | "all";
 type BestiaryClassOption = BestiaryClass | "all";

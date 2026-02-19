@@ -1,8 +1,7 @@
 import { useFormContext, useWatch } from "react-hook-form";
-
+import type { PreyBonus } from "@/modules/prey-bonus";
 import { formatNumberCompact } from "@/utils";
-
-import type { HuntSessionForm, MonsterPreview, PreyBonus } from "../schemas";
+import type { HuntSessionForm, MonsterPreview } from "../schemas";
 
 type UseHuntStatProps = {
   preyBonusList: PreyBonus[];
