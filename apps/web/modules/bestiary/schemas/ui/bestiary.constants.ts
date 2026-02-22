@@ -1,14 +1,5 @@
-import type { BestiaryDifficulty } from "@/modules/monsters";
-import type { BestiaryStage } from "../db/character-bestiary.schema";
+import type { BestiaryStage, MonsterWithCharacterProgress } from "../db/character-bestiary.schema";
 import type { BestiaryStageFilter } from "../input/bestiary-filters.schema";
-
-export const BESTIARY_DIFFICULTY_LABELS: Record<BestiaryDifficulty, string> = {
-  1: "Trivial",
-  2: "Easy",
-  3: "Medium",
-  4: "Hard",
-  5: "Challenging",
-};
 
 // --- FILTERS ---
 
@@ -43,3 +34,9 @@ export const BESTIARY_STAGE = {
 
 // Helper type guard if needed later
 export const isBestiaryStage = (val: number): val is BestiaryStage => [1, 2, 3].includes(val);
+
+export type FetchCharacterBestiaryResult = {
+  monstersWithProgress: MonsterWithCharacterProgress[];
+  totalCount: number;
+  totalPages: number;
+};

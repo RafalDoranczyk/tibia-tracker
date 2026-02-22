@@ -4,7 +4,7 @@ import type { Enums, Tables } from "@/core/supabase/types";
 import { NonEmptyString, NonNegativeInt, PositiveInt } from "@/lib/zod";
 import { DamageElementSlugs } from "@/modules/damage-elements";
 
-export const BestiaryClassSchema = z.enum([
+export const MonsterClassSchema = z.enum([
   "Amphibic",
   "Aquatic",
   "Bird",
@@ -26,22 +26,27 @@ export const BestiaryClassSchema = z.enum([
   "Slime",
   "Undead",
   "Vermin",
-]) satisfies z.ZodType<Enums<"bestiary_class">>;
-export type BestiaryClass = z.infer<typeof BestiaryClassSchema>;
-
+]) satisfies z.ZodType<Enums<"monster_class">>;
+export type MonsterClass = z.infer<typeof MonsterClassSchema>;
 // We can use it as a labels for UI cause it's already human readable, so no need for a separate mapping
-export const BESTIARY_CLASSES = BestiaryClassSchema.options;
+export const MONSTER_CLASSES = MonsterClassSchema.options;
 
-// Difficulty is a number from 1 to 5, representing the difficulty of the monster, with 1 being the easiest and 5 being the hardest.
-export const BestiaryDifficultySchema = z.union([
-  z.literal(1),
-  z.literal(2),
-  z.literal(3),
-  z.literal(4),
-  z.literal(5),
-]);
-export type BestiaryDifficulty = z.infer<typeof BestiaryDifficultySchema>;
-export const BESTIARY_DIFFICULTIES = [1, 2, 3, 4, 5] as const satisfies BestiaryDifficulty[];
+export const MonsterDifficultySchema = z.enum([
+  "Harmless",
+  "Trivial",
+  "Easy",
+  "Medium",
+  "Hard",
+  "Challenging",
+]) satisfies z.ZodType<Enums<"monster_difficulty">>;
+export type MonsterDifficulty = z.infer<typeof MonsterDifficultySchema>;
+// We can use it as a labels for UI cause it's already human readable, so no need for a separate mapping
+export const MONSTER_DIFFICULTIES = MonsterDifficultySchema.options;
+
+export const MonsterRaritySchema = z.enum(["Ordinary", "Very Rare"]) satisfies z.ZodType<
+  Enums<"monster_rarity">
+>;
+export type MonsterRarity = z.infer<typeof MonsterRaritySchema>;
 
 /**
  * Core domain entity: Monster
@@ -54,8 +59,8 @@ export const MonsterSchema = z.object({
   hp: PositiveInt,
   elemental_resistances: z.record(DamageElementSlugs, z.number().optional()),
   charm_points: PositiveInt,
-  bestiary_class: BestiaryClassSchema,
-  bestiary_difficulty: BestiaryDifficultySchema,
+  monster_class: MonsterClassSchema,
+  difficulty: MonsterDifficultySchema,
   sort_order: PositiveInt,
   // Kills required to reach each bestiary stage
   bestiary_kills: z.object({
@@ -63,5 +68,6 @@ export const MonsterSchema = z.object({
     stage2: PositiveInt,
     stage3: PositiveInt,
   }),
+  rarity: MonsterRaritySchema,
 }) satisfies z.ZodType<Tables<"monsters">>;
 export type Monster = z.infer<typeof MonsterSchema>;

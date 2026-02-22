@@ -43,7 +43,7 @@ export function useMonsterProgress(monsterFromProps: MonsterWithCharacterProgres
         kills: updates.kills ?? monster.kills,
         stage: updates.stage ?? monster.stage,
         has_soul: updates.has_soul ?? monster.has_soul,
-        bestiary_class: monster.bestiary_class,
+        monster_class: monster.monster_class,
       });
 
       if (successMessage) toast.success(successMessage);

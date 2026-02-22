@@ -9,7 +9,7 @@ export function dbGetBestiaryClassSummary(
     .from("character_bestiary_class_summary")
     .select(`
       character_id,
-      bestiary_class,
+      monster_class,
       total_monsters,
       completed_monsters,
       completed_soulpits,
@@ -17,6 +17,6 @@ export function dbGetBestiaryClassSummary(
       unlocked_charm_points
     `)
     .eq("character_id", payload.characterId)
-    .eq("bestiary_class", payload.bestiaryClass)
+    .eq("monster_class", payload.bestiaryClass)
     .maybeSingle();
 }

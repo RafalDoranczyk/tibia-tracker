@@ -676,42 +676,45 @@ export type Database = {
       };
       monsters: {
         Row: {
-          bestiary_class: Database["public"]["Enums"]["bestiary_class"];
-          bestiary_difficulty: number;
           bestiary_kills: Json;
           charm_points: number;
+          difficulty: Database["public"]["Enums"]["monster_difficulty"];
           elemental_resistances: Json;
           exp: number;
           hp: number;
           id: number;
           image_path: string | null;
+          monster_class: Database["public"]["Enums"]["monster_class"];
           name: string;
+          rarity: Database["public"]["Enums"]["monster_rarity"];
           sort_order: number | null;
         };
         Insert: {
-          bestiary_class: Database["public"]["Enums"]["bestiary_class"];
-          bestiary_difficulty: number;
           bestiary_kills?: Json;
           charm_points: number;
-          elemental_resistances: Json;
+          difficulty: Database["public"]["Enums"]["monster_difficulty"];
+          elemental_resistances?: Json;
           exp: number;
           hp: number;
           id?: number;
           image_path?: string | null;
+          monster_class: Database["public"]["Enums"]["monster_class"];
           name: string;
+          rarity: Database["public"]["Enums"]["monster_rarity"];
           sort_order?: number | null;
         };
         Update: {
-          bestiary_class?: Database["public"]["Enums"]["bestiary_class"];
-          bestiary_difficulty?: number;
           bestiary_kills?: Json;
           charm_points?: number;
+          difficulty?: Database["public"]["Enums"]["monster_difficulty"];
           elemental_resistances?: Json;
           exp?: number;
           hp?: number;
           id?: number;
           image_path?: string | null;
+          monster_class?: Database["public"]["Enums"]["monster_class"];
           name?: string;
+          rarity?: Database["public"]["Enums"]["monster_rarity"];
           sort_order?: number | null;
         };
         Relationships: [];
@@ -793,10 +796,10 @@ export type Database = {
     Views: {
       character_bestiary_class_summary: {
         Row: {
-          bestiary_class: Database["public"]["Enums"]["bestiary_class"] | null;
           character_id: string | null;
           completed_monsters: number | null;
           completed_soulpits: number | null;
+          monster_class: Database["public"]["Enums"]["monster_class"] | null;
           total_charm_points: number | null;
           total_monsters: number | null;
           unlocked_charm_points: number | null;
@@ -889,6 +892,10 @@ export type Database = {
       };
     };
     Functions: {
+      calculate_monster_static_data: {
+        Args: { diff: string; rar: string };
+        Returns: Json;
+      };
       can_access_character: { Args: { cid: string }; Returns: boolean };
       can_access_hunt_session: { Args: { sid: number }; Returns: boolean };
       create_hunt_session: {
@@ -927,19 +934,18 @@ export type Database = {
       };
       get_monsters_with_character_progress: {
         Args: {
-          p_bestiary_class?: Database["public"]["Enums"]["bestiary_class"];
-          p_bestiary_difficulty?: number;
+          p_bestiary_difficulty?: string;
           p_character_id: string;
           p_limit?: number;
+          p_monster_class?: string;
           p_offset?: number;
           p_search?: string;
-          p_stage_filter?: Database["public"]["Enums"]["bestiary_stage_filter"];
+          p_stage_filter?: string;
         };
         Returns: {
-          bestiary_class: Database["public"]["Enums"]["bestiary_class"];
-          bestiary_difficulty: number;
           bestiary_kills: Json;
           charm_points: number;
+          difficulty: Database["public"]["Enums"]["monster_difficulty"];
           elemental_resistances: Json;
           exp: number;
           has_soul: boolean;
@@ -947,7 +953,9 @@ export type Database = {
           id: number;
           image_path: string;
           kills: number;
+          monster_class: string;
           name: string;
+          rarity: Database["public"]["Enums"]["monster_rarity"];
           sort_order: number;
           stage: number;
           total_count: number;
@@ -995,28 +1003,6 @@ export type Database = {
       upsert_imbuing_prices: { Args: { p_prices: Json }; Returns: undefined };
     };
     Enums: {
-      bestiary_class:
-        | "Amphibic"
-        | "Aquatic"
-        | "Bird"
-        | "Construct"
-        | "Demon"
-        | "Dragon"
-        | "Elemental"
-        | "Extra Dimensional"
-        | "Fey"
-        | "Giant"
-        | "Human"
-        | "Humanoid"
-        | "Inkborn"
-        | "Lycanthrope"
-        | "Magical"
-        | "Mammal"
-        | "Plant"
-        | "Reptile"
-        | "Slime"
-        | "Undead"
-        | "Vermin";
       bestiary_stage_filter: "completed" | "not_completed";
       character_vocation: "paladin" | "knight" | "sorcerer" | "monk" | "druid";
       charm_type: "major" | "minor";
@@ -1093,6 +1079,30 @@ export type Database = {
         | "scroll_quara_scale"
         | "scroll_snake_skin"
         | "scroll_lich_shroud";
+      monster_class:
+        | "Amphibic"
+        | "Aquatic"
+        | "Bird"
+        | "Construct"
+        | "Demon"
+        | "Dragon"
+        | "Elemental"
+        | "Extra Dimensional"
+        | "Fey"
+        | "Giant"
+        | "Human"
+        | "Humanoid"
+        | "Inkborn"
+        | "Lycanthrope"
+        | "Magical"
+        | "Mammal"
+        | "Plant"
+        | "Reptile"
+        | "Slime"
+        | "Undead"
+        | "Vermin";
+      monster_difficulty: "Harmless" | "Trivial" | "Easy" | "Medium" | "Hard" | "Challenging";
+      monster_rarity: "Ordinary" | "Very Rare";
       prey_bonus_type: "exp" | "loot" | "damage" | "damage_reduction";
       user_role: "user" | "admin";
     };
@@ -1236,29 +1246,6 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      bestiary_class: [
-        "Amphibic",
-        "Aquatic",
-        "Bird",
-        "Construct",
-        "Demon",
-        "Dragon",
-        "Elemental",
-        "Extra Dimensional",
-        "Fey",
-        "Giant",
-        "Human",
-        "Humanoid",
-        "Inkborn",
-        "Lycanthrope",
-        "Magical",
-        "Mammal",
-        "Plant",
-        "Reptile",
-        "Slime",
-        "Undead",
-        "Vermin",
-      ],
       bestiary_stage_filter: ["completed", "not_completed"],
       character_vocation: ["paladin", "knight", "sorcerer", "monk", "druid"],
       charm_type: ["major", "minor"],
@@ -1337,6 +1324,31 @@ export const Constants = {
         "scroll_snake_skin",
         "scroll_lich_shroud",
       ],
+      monster_class: [
+        "Amphibic",
+        "Aquatic",
+        "Bird",
+        "Construct",
+        "Demon",
+        "Dragon",
+        "Elemental",
+        "Extra Dimensional",
+        "Fey",
+        "Giant",
+        "Human",
+        "Humanoid",
+        "Inkborn",
+        "Lycanthrope",
+        "Magical",
+        "Mammal",
+        "Plant",
+        "Reptile",
+        "Slime",
+        "Undead",
+        "Vermin",
+      ],
+      monster_difficulty: ["Harmless", "Trivial", "Easy", "Medium", "Hard", "Challenging"],
+      monster_rarity: ["Ordinary", "Very Rare"],
       prey_bonus_type: ["exp", "loot", "damage", "damage_reduction"],
       user_role: ["user", "admin"],
     },

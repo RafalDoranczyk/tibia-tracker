@@ -10,9 +10,9 @@ type LiveDataFields = {
   last_login: TibiaCharacterInfo["last_login"];
   achievement_points: TibiaCharacterInfo["achievement_points"];
   residence: TibiaCharacterInfo["residence"];
-  vocation: string;
+  vocation: TibiaDataCharacter["character"]["vocation"];
   deaths: TibiaDataCharacter["deaths"];
   _cachedAt: string;
 };
 
-export type AppCharacter = Omit<Character, "vocation"> & Partial<LiveDataFields>;
+export type AppCharacter = Omit<Character, "vocation"> & LiveDataFields;

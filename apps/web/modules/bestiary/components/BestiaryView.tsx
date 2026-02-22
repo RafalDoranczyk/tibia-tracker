@@ -3,31 +3,26 @@
 import { Grid } from "@mui/material";
 import { useState } from "react";
 
-import { EmptyState } from "@/components";
+import type { FetchCharacterBestiaryResult, MonsterWithCharacterProgress } from "../schemas";
 
-import type { MonsterWithCharacterProgress } from "../schemas";
 import { MonsterCard } from "./MonsterCard";
 import { MonsterDetailsDrawer } from "./MonsterDetailsDrawer";
 
-type BestiaryCardGridProps = {
-  monstersWithProgress: MonsterWithCharacterProgress[];
+type BestiaryViewProps = {
+  bestiary: FetchCharacterBestiaryResult;
 };
 
-export function BestiaryCardGrid({ monstersWithProgress }: BestiaryCardGridProps) {
+export function BestiaryView({ bestiary }: BestiaryViewProps) {
   const [selectedMonster, setSelectedMonster] = useState<MonsterWithCharacterProgress | null>(null);
-
-  if (monstersWithProgress.length === 0) {
-    return <EmptyState variant="monsters" title="No monsters found with the selected filters." />;
-  }
 
   return (
     <>
-      <Grid container spacing={2} alignItems="flex-start">
-        {monstersWithProgress.map((monster) => (
+      <Grid container spacing={4}>
+        {bestiary.monstersWithProgress.map((monster) => (
           <Grid
             key={monster.id}
-            size={{ xs: 12, md: 4, xl: 3, xxl: 2 }}
-            sx={{ display: "flex", justifyContent: "center", maxWidth: 280 }}
+            size={{ xs: 12, sm: 6, lg: 6, xl: 4, xxl: 2.4 }}
+            sx={{ maxWidth: { xxl: 300 } }}
           >
             <MonsterCard monster={monster} onOpenDetails={() => setSelectedMonster(monster)} />
           </Grid>

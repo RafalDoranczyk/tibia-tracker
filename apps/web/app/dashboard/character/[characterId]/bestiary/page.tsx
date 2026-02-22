@@ -1,11 +1,10 @@
-import { Grid } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import type { Metadata } from "next";
-import { PageHeader } from "@/layout/page/PageHeader";
+import { EmptyState } from "@/components";
 import {
-  BestiaryCardGrid,
   BestiaryFiltersPanel,
-  BestiaryPagination,
   BestiarySummaryPanel,
+  BestiaryView,
   parseBestiaryFiltersFromSearchParams,
 } from "@/modules/bestiary";
 import {
@@ -13,6 +12,7 @@ import {
   getCharacterBestiarySummary,
   getMonsterListWithProgress,
 } from "@/modules/bestiary/server";
+import { APP_BAR_HEIGHT } from "@/modules/navigation";
 import type { CharacterPageProps } from "../../../types";
 
 export const metadata: Metadata = {
@@ -37,19 +37,41 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Ch
     getCharacterBestiarySummary(characterId),
     classSummaryPromise,
   ]);
+  console.log(summary);
+  const progress =
+    Math.round(Math.min((summary.unlocked_charm_points / summary.total_charm_points) * 100, 100)) ||
+    0;
 
   return (
-    <>
-      <PageHeader
-        title="Bestiary"
-        description="Explore the collection of monsters encountered by your character."
-        action={<BestiarySummaryPanel globalSummary={summary} classSummary={classSummary} />}
-      />
-      <Grid container spacing={4} direction="column">
-        <BestiaryFiltersPanel />
-        <BestiaryCardGrid monstersWithProgress={bestiary.monstersWithProgress} />
-        <BestiaryPagination totalPages={bestiary.totalPages} />
-      </Grid>
-    </>
+    <Stack
+      direction={{ xs: "column-reverse", lg: "row" }}
+      spacing={4}
+      alignItems="flex-start"
+      sx={{ mt: 2 }}
+    >
+      <Box sx={{ flex: 1, width: "100%", minWidth: 0 }}>
+        <Stack spacing={4}>
+          <BestiaryFiltersPanel totalPages={bestiary.totalPages} progress={progress} />
+
+          {bestiary.monstersWithProgress.length === 0 ? (
+            <EmptyState variant="monsters" title="No monsters found with the selected filters." />
+          ) : (
+            <BestiaryView bestiary={bestiary} />
+          )}
+        </Stack>
+      </Box>
+
+      <Box
+        component="aside"
+        sx={{
+          width: { xs: "100%", lg: 320 },
+          flexShrink: 0,
+          position: { lg: "sticky" },
+          top: { lg: `calc(${APP_BAR_HEIGHT} + 16px)` },
+        }}
+      >
+        <BestiarySummaryPanel classSummary={classSummary} globalSummary={summary} />
+      </Box>
+    </Stack>
   );
 }

@@ -63,8 +63,8 @@ export function PageHeaderSkeleton({
     <Box sx={PAGE_HEADER_STYLING}>
       <Box sx={{ flex: 1 }}>
         {hasSubtitle && <Skeleton height={16} width={80} variant="text" sx={{ mb: 0.5 }} />}
-        <Skeleton height={40} width={titleWidth} variant="text" sx={{ mb: 1 }} />
-        <Skeleton height={24} width={descriptionWidth} variant="text" />
+        <Skeleton height={24} width={titleWidth} variant="text" sx={{ mb: 1 }} />
+        <Skeleton height={14} width={descriptionWidth} variant="text" />
       </Box>
 
       {hasAction && (

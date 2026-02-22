@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CharacterIDSchema } from "@/modules/characters";
-import { BestiaryClassSchema } from "@/modules/monsters";
+import { MonsterClassSchema } from "@/modules/monsters";
 import { CharacterBestiarySchema } from "../db/character-bestiary.schema";
 import { BestiaryFiltersSchema } from "./bestiary-filters.schema";
 
@@ -17,7 +17,7 @@ export type CharacterBestiarySummaryRequest = z.infer<typeof CharacterBestiarySu
  */
 export const FetchCharacterBestiaryClassSummaryPayloadSchema = z.object({
   characterId: CharacterIDSchema,
-  bestiaryClass: BestiaryClassSchema,
+  bestiaryClass: MonsterClassSchema,
 });
 export type FetchCharacterBestiaryClassSummaryPayload = z.infer<
   typeof FetchCharacterBestiaryClassSummaryPayloadSchema
@@ -31,7 +31,7 @@ export const UpdateCharacterBestiaryPayloadSchema = CharacterBestiarySchema.pick
   has_soul: true,
 }).extend({
   // We need this to know which cache tags to invalidate, but it's not stored in the character bestiary table
-  bestiary_class: BestiaryClassSchema.optional(),
+  monster_class: MonsterClassSchema.optional(),
 });
 
 export type UpdateCharacterBestiaryPayload = z.infer<typeof UpdateCharacterBestiaryPayloadSchema>;

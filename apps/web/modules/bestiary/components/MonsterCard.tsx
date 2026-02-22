@@ -1,11 +1,13 @@
 "use client";
 
+import CheckIcon from "@mui/icons-material/Check";
 import DiamondIcon from "@mui/icons-material/Diamond";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import SpeedIcon from "@mui/icons-material/Speed";
 import StarIcon from "@mui/icons-material/Star";
 import {
+  alpha,
   Box,
   Button,
   Card,
@@ -23,8 +25,8 @@ import {
 } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import Image from "next/image";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import type { MonsterDifficulty } from "@/modules/monsters";
 import { useMonsterProgress } from "../hooks/useMonsterProgress";
 import type { MonsterWithCharacterProgress } from "../schemas";
 import { MonsterPortraitFrame } from "./MonsterPortraitFrame";
@@ -34,6 +36,8 @@ type MonsterCardProps = {
   onOpenDetails: () => void;
 };
 
+const AVATAR_CLASSNAME = "monster-avatar";
+
 export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: MonsterCardProps) {
   const {
     monster: {
@@ -41,12 +45,12 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
       bestiary_kills,
       name,
       image_path,
-      bestiary_class,
+      monster_class,
       hp,
       exp,
       has_soul,
       charm_points,
-      bestiary_difficulty,
+      difficulty,
     },
     isLoading,
     isBestiaryCompleted: completed,
@@ -58,6 +62,10 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [value, setValue] = useState(kills);
 
+  useEffect(() => {
+    setValue(kills);
+  }, [kills]);
+
   const handleSaveKills = () => {
     setAnchorEl(null);
     saveKills(value);
@@ -68,10 +76,11 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
   return (
     <Card
       sx={{
+        maxHeight: "max-content",
+        overflow: "hidden",
         pointerEvents: isLoading ? "none" : "auto",
-        width: "100%",
+        opacity: completed ? 1 : 0.5,
         position: "relative",
-        opacity: completed ? 1 : 0.7,
         transition: "transform 200ms ease, opacity 200ms ease",
         willChange: "transform, opacity",
 
@@ -82,15 +91,48 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
         },
 
         "&:hover": {
-          transform: "translateY(-4px) scale(1.008)",
+          transform: "translateY(-5px) scale(1.008)",
           opacity: 1,
         },
 
         [`&:hover .${AVATAR_CLASSNAME}`]: {
-          transform: "scale(1.3) rotate(-5deg)",
+          transform: "scale(1.2) rotate(-5deg)",
         },
       }}
     >
+      {has_soul && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: 60,
+            height: 60,
+            zIndex: 10,
+            overflow: "hidden",
+            "&::before": {
+              content: '"SOULPIT"',
+              position: "absolute",
+              top: 10,
+              left: -25,
+              width: 85,
+              height: 16,
+              bgcolor: "#3b82f6",
+              color: "white",
+              fontSize: "8px",
+              fontWeight: 900,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transform: "rotate(-45deg)",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
+              letterSpacing: 0.5,
+              textShadow: "0 1px 1px rgba(0,0,0,0.4)",
+            },
+          }}
+        />
+      )}
+
       {isLoading && <MonsterCardOverlay />}
 
       <LinearProgress
@@ -99,7 +141,7 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
         sx={(t) => ({
           height: 8,
           "& .MuiLinearProgress-bar": {
-            backgroundColor: completed ? t.palette.secondary.main : t.palette.primary.light,
+            backgroundColor: completed ? t.palette.success.main : t.palette.primary.light,
             opacity: completed ? 1 : 0.3,
           },
         })}
@@ -118,31 +160,31 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
         }
         subheader={
           <Typography color="textSecondary" variant="caption">
-            {bestiary_class}
+            {monster_class}
           </Typography>
         }
       />
 
       <CardContent>
-        <Stack direction="row" spacing={1} alignItems="center" height={28}>
+        <Stack direction="row" spacing={0} sx={{ mb: 1.5, height: 32 }}>
           <Box
             onClick={(e) => setAnchorEl(e.currentTarget)}
             sx={(t) => ({
-              height: "100%",
+              flex: 1,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              flex: 1,
-              borderRadius: 1,
-              fontSize: 10,
-              fontWeight: 700,
-              textAlign: "center",
+              borderRadius: "4px 0 0 4px",
+              fontSize: 11,
+              fontWeight: 800,
               cursor: "pointer",
-              bgcolor: "rgba(255,255,255,0.05)",
+              bgcolor: alpha(t.palette.common.white, 0.05),
               border: "1px solid rgba(255,255,255,0.1)",
+              borderRight: "none",
               transition: "all 150ms ease",
+              color: completed ? t.palette.success.light : "text.primary",
               "&:hover": {
-                bgcolor: "rgba(255,255,255,0.1)",
+                bgcolor: alpha(t.palette.common.white, 0.1),
                 borderColor: t.palette.primary.main,
               },
             })}
@@ -150,61 +192,76 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
             {kills} / {bestiary_kills.stage3}
           </Box>
 
-          <Popover
-            open={Boolean(anchorEl)}
-            anchorEl={anchorEl}
-            onClose={() => setAnchorEl(null)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          >
-            <Stack spacing={1} sx={{ p: 1.5, width: 160 }}>
-              <TextField
-                size="small"
-                type="number"
-                label="Set Kills"
-                fullWidth
-                value={value}
-                onChange={(e) => {
-                  const val = Number(e.target.value);
-                  const clampedVal = Math.max(0, Math.min(val, bestiary_kills.stage3));
-                  setValue(clampedVal);
-                }}
-                slotProps={{
-                  htmlInput: {
-                    min: 0,
-                    max: bestiary_kills.stage3,
-                    step: 1,
-                  },
-                }}
-              />
-              <Stack direction="row" spacing={1} justifyContent="flex-end">
-                <Button size="small" onClick={() => setAnchorEl(null)}>
-                  Cancel
-                </Button>
-                <Button size="small" variant="contained" onClick={handleSaveKills}>
-                  Save
-                </Button>
-              </Stack>
-            </Stack>
-          </Popover>
-
-          {!completed && (
-            <Tooltip title="Click to mark as completed (Stage 3)">
+          {!completed ? (
+            <Tooltip title="Mark as completed">
               <Button
                 variant="contained"
+                size="small"
                 onClick={toggleFullBestiary}
-                sx={{ width: 90, maxHeight: "100%" }}
+                sx={{
+                  minWidth: 50,
+                  borderRadius: "0 4px 4px 0",
+                  px: 1,
+                  fontSize: 10,
+                  fontWeight: 900,
+                  boxShadow: "none",
+                }}
               >
-                Complete
+                DONE
               </Button>
             </Tooltip>
+          ) : (
+            <Box
+              sx={(t) => ({
+                display: "flex",
+                alignItems: "center",
+                px: 1.5,
+                borderRadius: "0 4px 4px 0",
+                bgcolor: alpha(t.palette.success.main, 0.15),
+                border: `1px solid ${alpha(t.palette.success.main, 0.3)}`,
+                color: t.palette.success.light,
+              })}
+            >
+              <CheckIcon sx={{ fontSize: 14 }} />
+            </Box>
           )}
         </Stack>
 
+        <Popover
+          open={Boolean(anchorEl)}
+          anchorEl={anchorEl}
+          onClose={() => setAnchorEl(null)}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Stack spacing={1} sx={{ p: 1.5, width: 160 }}>
+            <TextField
+              autoFocus
+              size="small"
+              type="number"
+              label="Set Kills"
+              fullWidth
+              value={value}
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                setValue(Math.max(0, Math.min(val, bestiary_kills.stage3)));
+              }}
+              slotProps={{ htmlInput: { min: 0, max: bestiary_kills.stage3, step: 1 } }}
+            />
+            <Stack direction="row" spacing={1} justifyContent="flex-end">
+              <Button size="small" onClick={() => setAnchorEl(null)}>
+                Cancel
+              </Button>
+              <Button size="small" variant="contained" onClick={handleSaveKills}>
+                Save
+              </Button>
+            </Stack>
+          </Stack>
+        </Popover>
+
         <Divider sx={{ my: 1.5, borderColor: "rgba(255,255,255,0.1)" }} />
-        {/* Basic Stats */}
+
         <Stack spacing={0.5} color="textSecondary">
           <Stack spacing={1}>
-            {/* HP */}
             <Stack direction="row" spacing={1} alignItems="center">
               <FavoriteIcon sx={{ fontSize: 16, color: "#f43f5e" }} />
               <Typography variant="body2" color="text.secondary">
@@ -212,7 +269,6 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
               </Typography>
             </Stack>
 
-            {/* XP */}
             <Stack direction="row" spacing={1} alignItems="center">
               <StarIcon sx={{ fontSize: 16, color: "#fbbf24" }} />
               <Typography variant="body2" color="text.secondary">
@@ -220,7 +276,6 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
               </Typography>
             </Stack>
 
-            {/* Charm Points */}
             <Stack direction="row" spacing={1} alignItems="center">
               <DiamondIcon sx={{ fontSize: 16, color: "#60a5fa" }} />
               <Typography variant="body2" color="text.secondary">
@@ -228,26 +283,21 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
               </Typography>
             </Stack>
 
-            {/* Difficulty */}
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <SpeedIcon sx={{ fontSize: 16, color: "#a78bfa" }} />
               <Typography variant="body2" sx={{ minWidth: 70, pl: 0.8 }}>
                 Difficulty
               </Typography>
               <Rating
-                value={bestiary_difficulty}
-                max={5}
+                value={difficultyToStars[difficulty] ?? 0}
+                max={6}
                 readOnly
                 size="small"
                 icon={<StarIcon fontSize="inherit" />}
                 emptyIcon={<StarIcon fontSize="inherit" />}
                 sx={(t) => ({
-                  "& .MuiRating-iconFilled": {
-                    color: t.palette.secondary.main,
-                  },
-                  "& .MuiRating-iconEmpty": {
-                    color: t.palette.text.disabled,
-                  },
+                  "& .MuiRating-iconFilled": { color: t.palette.secondary.main },
+                  "& .MuiRating-iconEmpty": { color: t.palette.text.disabled },
                 })}
               />
             </Stack>
@@ -265,11 +315,7 @@ export function MonsterCard({ monster: monsterToUpdate, onOpenDetails }: Monster
               cursor: "pointer",
               opacity: has_soul ? 1 : 0.5,
               filter: has_soul ? "none" : "grayscale(1)",
-              "&:hover": has_soul
-                ? {
-                    transform: "scale(1.05)",
-                  }
-                : undefined,
+              "&:hover": has_soul ? { transform: "scale(1.05)" } : undefined,
             }}
           >
             <MonsterPortraitFrame src={image_path} alt={name} size={32} />
@@ -330,4 +376,11 @@ function MonsterCardOverlay() {
   );
 }
 
-const AVATAR_CLASSNAME = "monster-avatar";
+const difficultyToStars: Record<MonsterDifficulty, number> = {
+  Harmless: 1,
+  Trivial: 2,
+  Easy: 3,
+  Medium: 4,
+  Hard: 5,
+  Challenging: 6,
+};

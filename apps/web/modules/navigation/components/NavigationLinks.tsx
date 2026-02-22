@@ -60,8 +60,8 @@ function NavItem({ element, pathname, activeCharacterId, depth = 0 }: NavItemPro
             <Image
               src={icon.src}
               alt={text}
-              width={isSubItem ? 12 : 18}
-              height={isSubItem ? 12 : 18}
+              width={isSubItem ? 14 : 22}
+              height={isSubItem ? 14 : 22}
             />
           )}
         </ListItemIcon>
@@ -71,10 +71,10 @@ function NavItem({ element, pathname, activeCharacterId, depth = 0 }: NavItemPro
 
       <Typography
         variant="body2"
-        color={isSelected ? "primary.light" : "text.primary"}
+        color={isSelected ? "secondary.light" : "text.primary"}
         fontWeight={isSelected ? 600 : 400}
         sx={{
-          fontSize: isSubItem ? "0.72rem" : "0.85rem",
+          fontSize: isSubItem ? "0.8rem" : ".95rem",
           lineHeight: 1.2,
         }}
       >
@@ -130,7 +130,7 @@ export function NavigationLinks() {
           <Typography
             sx={{
               color: "text.secondary",
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: 700,
               pl: 2,
               mb: 0.5,
