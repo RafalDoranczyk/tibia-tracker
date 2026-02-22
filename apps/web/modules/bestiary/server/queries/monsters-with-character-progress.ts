@@ -12,7 +12,7 @@ export function dbGetMonsterListWithProgress(
   return supabase.rpc("get_monsters_with_character_progress", {
     p_character_id: characterId,
     p_search: search,
-    p_bestiary_class: bestiaryClass,
+    p_monster_class: bestiaryClass,
     p_bestiary_difficulty: bestiaryDifficulty,
     p_stage_filter: stage,
     p_limit: limit,

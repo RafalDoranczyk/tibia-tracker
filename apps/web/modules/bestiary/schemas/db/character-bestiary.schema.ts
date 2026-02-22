@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { Tables } from "@/core/supabase/types";
 import { LocalDatetime, NonNegativeInt } from "@/lib/zod";
 import { CharacterIDSchema } from "@/modules/characters";
-import { BestiaryClassSchema, MonsterSchema } from "@/modules/monsters";
+import { MonsterClassSchema, MonsterSchema } from "@/modules/monsters";
 
 /**
  * VIEW: character_bestiary_summary
@@ -22,7 +22,7 @@ export type CharacterBestiarySummary = z.infer<typeof CharacterBestiarySummarySc
  */
 export const CharacterBestiaryClassSummarySchema = z.object({
   character_id: CharacterIDSchema,
-  bestiary_class: BestiaryClassSchema,
+  monster_class: MonsterClassSchema,
   total_monsters: NonNegativeInt,
   completed_monsters: NonNegativeInt,
   completed_soulpits: NonNegativeInt,

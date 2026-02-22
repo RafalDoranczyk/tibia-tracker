@@ -19,12 +19,12 @@ export async function updateCharacterBestiary(payload: unknown): Promise<void> {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to update character bestiary");
   }
 
-  const { character_id, bestiary_class } = parsed;
+  const { character_id, monster_class } = parsed;
 
   updateTag(BestiaryCache.summary(character_id));
   updateCharacterCharmTags(character_id);
 
-  if (bestiary_class) {
-    updateTag(BestiaryCache.classSummary(character_id, bestiary_class));
+  if (monster_class) {
+    updateTag(BestiaryCache.classSummary(character_id, monster_class));
   }
 }

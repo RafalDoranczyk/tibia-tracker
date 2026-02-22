@@ -101,7 +101,6 @@ export function CharCard({ character, onSelect, onSettings, isActive }: CharCard
             </Box>
           </Stack>
 
-          {/* PRAWA STRONA: Ikona Active Status */}
           <Tooltip title={isActive ? "Active character" : "Set as active"}>
             <Box sx={{ display: "flex", alignItems: "center", pt: 0.5 }}>
               {isActive ? (

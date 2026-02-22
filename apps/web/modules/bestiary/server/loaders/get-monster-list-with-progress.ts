@@ -3,16 +3,10 @@ import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
 import {
   FetchCharacterBestiaryPayloadSchema,
-  type MonsterWithCharacterProgress,
+  type FetchCharacterBestiaryResult,
   MonsterWithCharacterProgressSchema,
 } from "../../schemas";
 import { dbGetMonsterListWithProgress } from "../queries/monsters-with-character-progress";
-
-type FetchCharacterBestiaryResult = {
-  monstersWithProgress: MonsterWithCharacterProgress[];
-  totalCount: number;
-  totalPages: number;
-};
 
 export async function getMonsterListWithProgress(
   payload: unknown

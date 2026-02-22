@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { Enums } from "@/core/supabase/types";
-import { BestiaryClassSchema, BestiaryDifficultySchema } from "@/modules/monsters";
+import { MonsterClassSchema, MonsterDifficultySchema } from "@/modules/monsters";
 
 const BestiaryStageFilterSchema = z.enum(["not_completed", "completed"]) satisfies z.ZodType<
   Enums<"bestiary_stage_filter">
@@ -13,8 +13,8 @@ const PaginationSchema = z.object({
 });
 
 export const BestiaryFiltersSchema = PaginationSchema.extend({
-  bestiaryClass: BestiaryClassSchema.optional(),
-  bestiaryDifficulty: BestiaryDifficultySchema.optional(),
+  bestiaryClass: MonsterClassSchema.optional(),
+  bestiaryDifficulty: MonsterDifficultySchema.optional(),
   stage: BestiaryStageFilterSchema.optional(),
   search: z.string().min(1).optional(),
 });

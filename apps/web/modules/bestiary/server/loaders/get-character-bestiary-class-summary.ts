@@ -50,7 +50,7 @@ export async function getCharacterBestiaryClassSummary(
 
     const safeData = data ?? {
       character_id: characterId,
-      bestiary_class: bestiaryClass,
+      monster_class: bestiaryClass,
       total_monsters: 0,
       completed_monsters: 0,
       completed_soulpits: 0,

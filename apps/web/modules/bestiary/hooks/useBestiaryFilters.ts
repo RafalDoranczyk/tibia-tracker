@@ -1,11 +1,11 @@
 import { useTransition } from "react";
 import { usePaginationQueryParams } from "@/hooks";
-import type { BestiaryClass, BestiaryDifficulty } from "@/modules/monsters";
+import type { MonsterClass, MonsterDifficulty } from "@/modules/monsters";
 import type { BestiaryFilters, BestiaryStageFilter } from "../schemas";
 
 type BestiaryStageFilterOption = BestiaryStageFilter | "all";
-type BestiaryClassOption = BestiaryClass | "all";
-type BestiaryDifficultyOption = BestiaryDifficulty | "all";
+type BestiaryClassOption = MonsterClass | "all";
+type BestiaryDifficultyOption = MonsterDifficulty | "all";
 
 const ALL = "all" as const;
 

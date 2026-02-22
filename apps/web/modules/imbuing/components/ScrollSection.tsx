@@ -12,7 +12,7 @@ export function ScrollSection({ scrolls, title }: ScrollSectionProps) {
   return (
     <div>
       <Stack direction="row" alignItems="center" spacing={2} mb={2} px={1}>
-        <Typography variant="h5" fontWeight={800}>
+        <Typography variant="h4" fontWeight={800}>
           {title}
         </Typography>
         <Divider sx={{ flexGrow: 1 }} />

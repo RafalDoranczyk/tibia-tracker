@@ -1,14 +1,11 @@
-"use client";
-
-import AssessmentIcon from "@mui/icons-material/Assessment";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import PublicIcon from "@mui/icons-material/Public";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
-import { Box, Button, Drawer, LinearProgress, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { LinearProgress, Paper, Stack, Typography } from "@mui/material";
+
 import type { CharacterBestiaryClassSummary, CharacterBestiarySummary } from "../schemas";
 
 type BestiarySummaryPanelProps = {
@@ -16,177 +13,134 @@ type BestiarySummaryPanelProps = {
   classSummary: CharacterBestiaryClassSummary | null;
 };
 
-export function BestiarySummaryPanel({ globalSummary, classSummary }: BestiarySummaryPanelProps) {
-  const [open, setOpen] = useState(false);
-
+export function BestiarySummaryPanel({ classSummary, globalSummary }: BestiarySummaryPanelProps) {
   const charmPercent =
     globalSummary.total_charm_points > 0
       ? (globalSummary.unlocked_charm_points / globalSummary.total_charm_points) * 100
       : 0;
 
   return (
-    <>
-      <Button
-        onClick={() => setOpen(true)}
-        variant="outlined"
-        color="secondary"
-        startIcon={<AssessmentIcon />}
+    <Stack direction="column" spacing={2}>
+      <Paper
+        sx={{
+          p: 2,
+          border: "1px solid",
+          borderColor: "divider",
+          bgcolor: "background.paper",
+        }}
       >
-        Summary Panel
-      </Button>
-
-      {/* Drawer */}
-      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
-        {/* Header */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 2,
-          }}
+        <Typography
+          variant="subtitle2"
+          fontWeight="bold"
+          display="flex"
+          alignItems="center"
+          gap={1}
+          sx={{ mb: 2, color: "text.secondary", textTransform: "uppercase", letterSpacing: 0.5 }}
         >
-          <Typography variant="h6" fontWeight="bold" display="flex" alignItems="center" gap={1}>
-            <AssessmentIcon fontSize="small" />
-            Bestiary Overview
-          </Typography>
-        </Box>
+          <PublicIcon sx={{ fontSize: 18 }} />
+          Global Summary
+        </Typography>
 
-        {/* Global summary */}
-        <Box
-          sx={{
-            background: "linear-gradient(90deg, #1a1a1a, #292929)",
-            borderRadius: 3,
-            p: 2.5,
-            mb: 3,
-            boxShadow: "0 0 10px rgba(0,0,0,0.3)",
-          }}
-        >
-          <Typography
-            variant="subtitle1"
-            fontWeight="bold"
-            gutterBottom
-            display="flex"
-            alignItems="center"
-            gap={1}
-          >
-            <PublicIcon fontSize="small" />
-            Global Summary
-          </Typography>
-
-          <Stack spacing={2}>
-            {/* Charm Points */}
-            <Stack spacing={1}>
-              <Stack direction="row" justifyContent="space-between">
-                <Stack direction="row" alignItems="center" gap={1}>
-                  <AutoAwesomeIcon fontSize="small" />
-                  <Typography variant="body2">Unlocked Charm Points</Typography>
-                </Stack>
-
-                <Typography fontWeight="bold" variant="body2">
-                  {globalSummary.unlocked_charm_points} / {globalSummary.total_charm_points}
+        <Stack spacing={2.5}>
+          <Stack spacing={0.5}>
+            <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
+              <Stack direction="row" alignItems="center" gap={0.5}>
+                <AutoAwesomeIcon sx={{ fontSize: 14, color: "text.secondary" }} />
+                <Typography variant="caption" color="text.secondary">
+                  Charm Points
                 </Typography>
               </Stack>
-
-              <LinearProgress
-                variant="determinate"
-                value={charmPercent}
-                sx={{
-                  height: 10,
-                  borderRadius: 2,
-                  "& .MuiLinearProgress-bar": {
-                    backgroundColor: "#60a5fa",
-                  },
-                }}
-              />
+              <Typography fontWeight="bold" variant="caption">
+                {globalSummary.unlocked_charm_points} / {globalSummary.total_charm_points}
+              </Typography>
             </Stack>
-
-            {/* Soulpits */}
-            <Stack spacing={1}>
-              <Stack direction="row" justifyContent="space-between">
-                <Stack direction="row" alignItems="center" gap={1}>
-                  <WhatshotIcon fontSize="small" />
-                  <Typography variant="body2">Completed Soulpits</Typography>
-                </Stack>
-
-                <Typography fontWeight="bold" variant="body2">
-                  {globalSummary.completed_soulpits}
-                </Typography>
-              </Stack>
-
-              <LinearProgress
-                variant="determinate"
-                value={(globalSummary.completed_soulpits / 500) * 100}
-                sx={{
-                  height: 10,
-                  borderRadius: 2,
-                  "& .MuiLinearProgress-bar": {
-                    backgroundColor: "#f5b342",
-                  },
-                }}
-              />
-            </Stack>
+            <LinearProgress
+              variant="determinate"
+              value={charmPercent}
+              sx={{
+                height: 6,
+                borderRadius: 1,
+                "& .MuiLinearProgress-bar": { backgroundColor: "#60a5fa" },
+              }}
+            />
           </Stack>
-        </Box>
 
-        {/* Class summary */}
+          <Stack spacing={0.5}>
+            <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
+              <Stack direction="row" alignItems="center" gap={0.5}>
+                <WhatshotIcon sx={{ fontSize: 14, color: "text.secondary" }} />
+                <Typography variant="caption" color="text.secondary">
+                  Completed Soulpits
+                </Typography>
+              </Stack>
+              <Typography fontWeight="bold" variant="caption">
+                {globalSummary.completed_soulpits}
+              </Typography>
+            </Stack>
+            <LinearProgress
+              variant="determinate"
+              value={Math.min((globalSummary.completed_soulpits / 500) * 100, 100)}
+              sx={{
+                height: 6,
+                borderRadius: 1,
+                "& .MuiLinearProgress-bar": { backgroundColor: "#f5b342" },
+              }}
+            />
+          </Stack>
+        </Stack>
+      </Paper>
+
+      <Paper
+        sx={{
+          p: 2,
+          border: "1px solid",
+          borderColor: "divider",
+          bgcolor: "background.paper",
+          minHeight: 100,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: !classSummary ? "center" : "flex-start",
+        }}
+      >
         {!classSummary ? (
-          <Box
-            sx={{
-              background: "linear-gradient(90deg, #1c1c1c, #2a2a2a)",
-              borderRadius: 3,
-              p: 2.5,
-              textAlign: "center",
-              boxShadow: "0 0 10px rgba(0,0,0,0.4)",
-            }}
-          >
-            <Typography
-              variant="body2"
-              color="gray"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              gap={1}
-            >
-              <ManageSearchIcon fontSize="small" />
-              Searching across all classes — class summary hidden
+          <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+            <ManageSearchIcon sx={{ fontSize: 18, color: "text.disabled" }} />
+            <Typography variant="caption" color="text.disabled" textAlign="center">
+              Select a class to see progress
             </Typography>
-          </Box>
+          </Stack>
         ) : (
-          <Box
-            sx={{
-              background: "linear-gradient(90deg, #1c1c1c, #2a2a2a)",
-              borderRadius: 3,
-              p: 2.5,
-              boxShadow: "0 0 10px rgba(0,0,0,0.4)",
-            }}
-          >
+          <>
             <Typography
-              variant="subtitle1"
+              variant="subtitle2"
               fontWeight="bold"
-              gutterBottom
               display="flex"
               alignItems="center"
               gap={1}
+              sx={{
+                mb: 2,
+                color: "text.secondary",
+                textTransform: "uppercase",
+                letterSpacing: 0.5,
+              }}
             >
-              <FactCheckIcon fontSize="small" />
-              {classSummary.bestiary_class} Progress
+              <FactCheckIcon sx={{ fontSize: 18 }} />
+              {classSummary.monster_class}
             </Typography>
 
             <Stack spacing={2}>
-              {/* Completed entries */}
-              <Stack spacing={1}>
-                <Stack direction="row" justifyContent="space-between">
-                  <Stack direction="row" alignItems="center" gap={1}>
-                    <ChecklistIcon fontSize="small" />
-                    <Typography variant="body2">Completed Entries</Typography>
+              <Stack spacing={0.5}>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
+                  <Stack direction="row" alignItems="center" gap={0.5}>
+                    <ChecklistIcon sx={{ fontSize: 14, color: "text.secondary" }} />
+                    <Typography variant="caption" color="text.secondary">
+                      Entries
+                    </Typography>
                   </Stack>
-
-                  <Typography fontWeight="bold" variant="body2">
+                  <Typography fontWeight="bold" variant="caption">
                     {classSummary.completed_monsters} / {classSummary.total_monsters}
                   </Typography>
                 </Stack>
-
                 <LinearProgress
                   variant="determinate"
                   value={
@@ -195,28 +149,25 @@ export function BestiarySummaryPanel({ globalSummary, classSummary }: BestiarySu
                       : 0
                   }
                   sx={{
-                    height: 10,
-                    borderRadius: 2,
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#4ade80",
-                    },
+                    height: 6,
+                    borderRadius: 1,
+                    "& .MuiLinearProgress-bar": { backgroundColor: "#4ade80" },
                   }}
                 />
               </Stack>
 
-              {/* Soulpits */}
-              <Stack spacing={1}>
-                <Stack direction="row" justifyContent="space-between">
-                  <Stack direction="row" alignItems="center" gap={1}>
-                    <WhatshotIcon fontSize="small" />
-                    <Typography variant="body2">Unlocked Soulpits</Typography>
+              <Stack spacing={0.5}>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
+                  <Stack direction="row" alignItems="center" gap={0.5}>
+                    <WhatshotIcon sx={{ fontSize: 14, color: "text.secondary" }} />
+                    <Typography variant="caption" color="text.secondary">
+                      Soulpits
+                    </Typography>
                   </Stack>
-
-                  <Typography fontWeight="bold" variant="body2">
+                  <Typography fontWeight="bold" variant="caption">
                     {classSummary.completed_soulpits} / {classSummary.total_monsters}
                   </Typography>
                 </Stack>
-
                 <LinearProgress
                   variant="determinate"
                   value={
@@ -225,28 +176,25 @@ export function BestiarySummaryPanel({ globalSummary, classSummary }: BestiarySu
                       : 0
                   }
                   sx={{
-                    height: 10,
-                    borderRadius: 2,
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#f5b342",
-                    },
+                    height: 6,
+                    borderRadius: 1,
+                    "& .MuiLinearProgress-bar": { backgroundColor: "#f5b342" },
                   }}
                 />
               </Stack>
 
-              {/* Charm Points */}
-              <Stack spacing={1}>
-                <Stack direction="row" justifyContent="space-between">
-                  <Stack direction="row" alignItems="center" gap={1}>
-                    <AutoAwesomeIcon fontSize="small" />
-                    <Typography variant="body2">Charm Points</Typography>
+              <Stack spacing={0.5}>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
+                  <Stack direction="row" alignItems="center" gap={0.5}>
+                    <AutoAwesomeIcon sx={{ fontSize: 14, color: "text.secondary" }} />
+                    <Typography variant="caption" color="text.secondary">
+                      Charm Points
+                    </Typography>
                   </Stack>
-
-                  <Typography fontWeight="bold" variant="body2">
+                  <Typography fontWeight="bold" variant="caption">
                     {classSummary.unlocked_charm_points} / {classSummary.total_charm_points}
                   </Typography>
                 </Stack>
-
                 <LinearProgress
                   variant="determinate"
                   value={
@@ -255,18 +203,16 @@ export function BestiarySummaryPanel({ globalSummary, classSummary }: BestiarySu
                       : 0
                   }
                   sx={{
-                    height: 10,
-                    borderRadius: 2,
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#60a5fa",
-                    },
+                    height: 6,
+                    borderRadius: 1,
+                    "& .MuiLinearProgress-bar": { backgroundColor: "#60a5fa" },
                   }}
                 />
               </Stack>
             </Stack>
-          </Box>
+          </>
         )}
-      </Drawer>
-    </>
+      </Paper>
+    </Stack>
   );
 }

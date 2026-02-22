@@ -6,6 +6,7 @@ export default function Loading() {
   return (
     <>
       <PageHeaderSkeleton />
+
       <Stack spacing={3}>
         <Stack alignItems="center">
           <Skeleton variant="rounded" width={140} height={40} sx={{ ml: "auto" }} />

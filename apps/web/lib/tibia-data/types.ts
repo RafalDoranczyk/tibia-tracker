@@ -40,7 +40,9 @@ type Vocation =
   | "Master Sorcerer"
   | "Elder Druid"
   | "Royal Paladin"
-  | "Elite Knight";
+  | "Elite Knight"
+  | "Monk"
+  | "Exalted Monk";
 
 type CharacterDetails = {
   account_status: string;

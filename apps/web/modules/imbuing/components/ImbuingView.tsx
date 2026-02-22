@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Stack } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 import { FloatingActionButton } from "@/components";
@@ -51,17 +51,19 @@ export function ImbuingView({ imbuingItemPrices }: ImbuingViewProps) {
   });
 
   return (
-    <FormProvider {...form}>
-      <Stack spacing={3}>
-        <Box display="flex" justifyContent="flex-end">
-          <GoldTokenInput />
-        </Box>
+    <Container maxWidth="xxl">
+      <FormProvider {...form}>
+        <Stack spacing={3}>
+          <Box display="flex" justifyContent="flex-end">
+            <GoldTokenInput />
+          </Box>
 
-        <ScrollSection title="Basic Scrolls" scrolls={baseScrolls} />
-        <ScrollSection title="Elemental Scrolls" scrolls={elementalScrolls} />
-        <ScrollSection title="Skill Scrolls" scrolls={skillScrolls} />
-        <SaveButton />
-      </Stack>
-    </FormProvider>
+          <ScrollSection title="Basic Scrolls" scrolls={baseScrolls} />
+          <ScrollSection title="Elemental Scrolls" scrolls={elementalScrolls} />
+          <ScrollSection title="Skill Scrolls" scrolls={skillScrolls} />
+          <SaveButton />
+        </Stack>
+      </FormProvider>
+    </Container>
   );
 }

@@ -93,7 +93,7 @@ export function MonsterDetailsDrawer({ monster, open, onClose }: MonsterDetailsD
                   color="text.secondary"
                   sx={{ textTransform: "uppercase" }}
                 >
-                  {monster.bestiary_class}
+                  {monster.monster_class}
                 </Typography>
               </Box>
             </Stack>
@@ -186,7 +186,7 @@ export function MonsterDetailsDrawer({ monster, open, onClose }: MonsterDetailsD
             sx={{ p: 2, bgcolor: "rgba(0,0,0,0.2)", borderTop: "1px solid rgba(255,255,255,0.06)" }}
           >
             <Typography variant="caption" color="text.disabled" align="center" display="block">
-              Difficulty Level: {monster.bestiary_difficulty}/5
+              Difficulty Level: {monster.difficulty}
             </Typography>
           </Box>
         </Box>
