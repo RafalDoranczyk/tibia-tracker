@@ -37,7 +37,7 @@ export default async function CharacterBestiaryPage({ params, searchParams }: Ch
     getCharacterBestiarySummary(characterId),
     classSummaryPromise,
   ]);
-  console.log(summary);
+
   const progress =
     Math.round(Math.min((summary.unlocked_charm_points / summary.total_charm_points) * 100, 100)) ||
     0;
