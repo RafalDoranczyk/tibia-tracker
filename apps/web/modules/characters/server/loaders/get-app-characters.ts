@@ -3,7 +3,7 @@ import { getCharacterByName } from "./get-character-by-name";
 import { getCharacterList } from "./get-character-list";
 
 const NoLiveDataPlaceholder: AppCharacter = {
-  id: -1,
+  id: "unknown",
   name: "Unknown",
   world: "Unknown",
   level: 0,
@@ -13,6 +13,8 @@ const NoLiveDataPlaceholder: AppCharacter = {
   residence: "Unknown",
   deaths: [],
   _cachedAt: new Date().toISOString(),
+  synchronized_at: null,
+  last_login: undefined,
 };
 
 export async function getAppCharacters(): Promise<AppCharacter[]> {
