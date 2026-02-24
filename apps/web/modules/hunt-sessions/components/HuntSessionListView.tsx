@@ -51,7 +51,7 @@ export function HuntSessionListView({ huntSessionList, count }: HuntSessionListV
   const order = "asc";
   const orderBy = "date";
 
-  const onSort = (newOrder: "asc" | "desc", property: string) => {
+  const onSort = (_newOrder: "asc" | "desc", _property: string) => {
     // Implement sorting logic here, e.g., update state or call a sorting function
   };
 
