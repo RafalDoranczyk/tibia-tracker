@@ -1,25 +1,35 @@
 "use client";
 
-import { Stack } from "@mui/material";
+import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-import { ConfirmDialog } from "@/components";
+import { ConfirmDialog, Table, TooltipIconButton } from "@/components";
 import { PATHS } from "@/core/paths";
 import { usePagination } from "@/hooks";
+import { formatDate } from "@/lib/dayjs";
 import { useRequiredCharacterId } from "@/modules/characters";
-
-import { HUNT_SESSION_PAGINATION_LIMIT } from "../constants";
+import { formatNumberCompact } from "@/utils";
+import { HUNT_SESSION_PAGINATION_LIMIT, HUNT_SESSIONS_TABLE_HEAD_CELLS } from "../constants";
 import { useDeleteHuntSession } from "../hooks/useDeleteHuntSession";
 import type { HuntSessionListItem } from "../schemas";
-import { SessionsTable } from "./SessionsTable";
+import { parseSecondsToMinutes } from "../utils/parseSecondsToMinutes";
+
+function formatSessionRow(session: HuntSessionListItem) {
+  return {
+    date: formatDate(session.date),
+    rawXp: formatNumberCompact(session.raw_xp_gain),
+    xp: formatNumberCompact(session.xp_gain),
+    profit: formatNumberCompact(session.profit),
+    duration: parseSecondsToMinutes(session.duration_seconds),
+  };
+}
 
 type HuntSessionListViewProps = {
-  count: number;
   huntSessionList: HuntSessionListItem[];
+  count: number;
 };
 
-export function HuntSessionListView({ count, huntSessionList }: HuntSessionListViewProps) {
+export function HuntSessionListView({ huntSessionList, count }: HuntSessionListViewProps) {
   const router = useRouter();
   const characterId = useRequiredCharacterId();
   const pagination = usePagination({ limit: HUNT_SESSION_PAGINATION_LIMIT });
@@ -38,23 +48,69 @@ export function HuntSessionListView({ count, huntSessionList }: HuntSessionListV
     router.push(PATHS.CHARACTER(characterId).HUNT_SESSIONS.EDIT(sessionId));
   };
 
+  const order = "asc";
+  const orderBy = "date";
+
+  const onSort = (_newOrder: "asc" | "desc", _property: string) => {
+    // Implement sorting logic here, e.g., update state or call a sorting function
+  };
+
   return (
-    <Stack spacing={3}>
-      <SessionsTable
-        huntSessionList={huntSessionList}
-        page={pagination.page}
-        rowsPerPage={pagination.limitParam}
-        onPageChange={pagination.onPageChange}
-        onRowClick={handleRowClick}
-        onDeleteClick={setSessionIdToDelete}
-        onSort={() => {
-          console.log("on sort");
-        }}
-        count={count}
-        onRowsPerPageChange={(limit) =>
-          pagination.onParamsChange([{ param: "limit", value: limit }])
-        }
-      />
+    <>
+      <Table.Root sx={{ maxHeight: 850 }}>
+        <Table.Head
+          headCells={HUNT_SESSIONS_TABLE_HEAD_CELLS}
+          onRequestSort={(_event, property) => {
+            const isAsc = orderBy === property && order === "asc";
+            onSort(isAsc ? "desc" : "asc", property);
+          }}
+          order={order}
+          orderBy={orderBy}
+        />
+
+        <Table.Body>
+          {huntSessionList.map((session) => {
+            const { date, rawXp, profit, duration, xp } = formatSessionRow(session);
+            const { id, level, place } = session;
+
+            return (
+              <Table.ZebraRow key={id} hover onClick={() => handleRowClick(id)}>
+                <Table.Cell>{date}</Table.Cell>
+                <Table.Cell>{level}</Table.Cell>
+                <Table.Cell>{duration}</Table.Cell>
+                <Table.Cell>{rawXp}</Table.Cell>
+                <Table.Cell>{xp}</Table.Cell>
+                <Table.Cell>{profit}</Table.Cell>
+                <Table.Cell>{place.name}</Table.Cell>
+
+                <Table.Cell align="center" sx={{ width: 60 }}>
+                  <Box>
+                    <TooltipIconButton
+                      variant="delete"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSessionIdToDelete(session.id);
+                      }}
+                    />
+                  </Box>
+                </Table.Cell>
+              </Table.ZebraRow>
+            );
+          })}
+        </Table.Body>
+      </Table.Root>
+
+      {count > pagination.limitParam && (
+        <Table.Pagination
+          count={count}
+          page={pagination.page}
+          rowsPerPage={pagination.limitParam}
+          onPageChange={(_, page) => pagination.onParamsChange([{ param: "page", value: page }])}
+          onRowsPerPageChange={(event) =>
+            pagination.onParamsChange([{ param: "limit", value: parseInt(event.target.value, 10) }])
+          }
+        />
+      )}
 
       <ConfirmDialog.Root
         open={sessionIdToDelete !== null}
@@ -76,6 +132,6 @@ export function HuntSessionListView({ count, huntSessionList }: HuntSessionListV
           </ConfirmDialog.Actions>
         </ConfirmDialog.Content>
       </ConfirmDialog.Root>
-    </Stack>
+    </>
   );
 }

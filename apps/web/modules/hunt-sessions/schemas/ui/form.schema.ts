@@ -23,7 +23,7 @@ const DamageElementFormSchema = z.object({
   percent: z.number(),
 });
 
-const MonsterDamageSourceSchema = z.object({
+const HuntSessionMonsterDamageSourceSchema = z.object({
   // damage source is always monster source
   monsterId: MonsterSchema.shape.id,
   percent: z.number(),
@@ -41,9 +41,10 @@ export const HuntSessionFormSchema = HuntSessionDbBaseFieldsSchema.omit({
   id: HuntSessionDbBaseFieldsSchema.shape.id.optional(),
   killed_monsters: KilledMonsterSchema.array(),
   looted_items: LootedItemsFormSchema.array(),
-  damage_elements: DamageElementFormSchema.array(),
-  monster_damage_sources: MonsterDamageSourceSchema.array(),
+  monster_damage_sources: HuntSessionMonsterDamageSourceSchema.array(),
   supplies: SupplyCountFormSchema.array(),
+  damage_elements: DamageElementFormSchema.array(),
+  resistances: DamageElementFormSchema.array(),
 });
 
 export type HuntSessionForm = z.infer<typeof HuntSessionFormSchema>;

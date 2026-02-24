@@ -30,6 +30,7 @@ const getDefaultValues = ({
   damage_elements: [],
   monster_damage_sources: [],
   looted_items: [],
+  resistances: [],
 });
 
 export function useHuntSessionForm({

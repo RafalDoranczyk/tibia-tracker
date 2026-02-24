@@ -1,6 +1,6 @@
 import type { ItemPreview } from "@/modules/items";
+import { parseHuntSessionJSON } from "../parsers/parseHuntSessionJSON";
 import { type HuntSessionForm, HuntSessionLogParsedSchema, type MonsterPreview } from "../schemas";
-import { parseHuntSessionJSON } from "../utils/parseHuntSessionJSON";
 
 function mapParsedEntitiesToCatalog<
   TParsed extends { name: string; count: number },
@@ -27,17 +27,6 @@ function mapParsedEntitiesToCatalog<
 
   return { mapped, unknown };
 }
-
-const mapDamageSources = (
-  monsters: HuntSessionForm["killed_monsters"]
-): HuntSessionForm["monster_damage_sources"] => {
-  const percent = Math.round((monsters.length ? 100 / monsters.length : 0) * 10) / 10;
-
-  return monsters.map((m) => ({
-    percent,
-    monsterId: m.monsterId,
-  }));
-};
 
 type MapHuntSessionJSONToFormParams = {
   json: string;
@@ -72,7 +61,6 @@ export function mapHuntSessionJSONToForm({
     ...rest,
     killed_monsters: monstersForm,
     looted_items: itemsForm,
-    monster_damage_sources: mapDamageSources(monstersForm),
   };
 
   return {

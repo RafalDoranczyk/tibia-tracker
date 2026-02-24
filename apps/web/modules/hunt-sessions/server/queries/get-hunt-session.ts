@@ -4,6 +4,7 @@ import type { FetchHuntSessionPayload } from "../../schemas";
 
 const SELECT = `
   id,
+  updated_at,
   character_id,
   place_id,
   date,
@@ -52,7 +53,12 @@ const SELECT = `
 
   damage_elements:hunt_session_damage_elements(
     percent,
-    damage_element:damage_elements(id, name, image_path)
+    damage_element:damage_elements(id, name, image_path, slug)
+  ),
+
+  resistances:hunt_session_resistances(
+    percent,
+    damage_element:damage_elements(id, name, image_path, slug)
   ),
 
   monster_damage_sources:hunt_session_monster_damage_sources(

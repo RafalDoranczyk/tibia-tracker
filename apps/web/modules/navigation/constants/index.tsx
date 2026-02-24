@@ -73,17 +73,6 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
     ],
   },
   {
-    title: "My Account",
-    elements: [
-      {
-        id: NAVIGATION_IDS.CHARACTERS,
-        text: "Characters",
-        to: PATHS.CHARACTERS,
-        icon: { type: "image", src: NAVIGATION_IMAGES.characters },
-      },
-    ],
-  },
-  {
     title: "Calculators",
     elements: [
       {
@@ -103,6 +92,17 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
         text: "Stamina",
         to: PATHS.CALCULATORS.STAMINA,
         icon: { type: "image", src: NAVIGATION_IMAGES.calculator },
+      },
+    ],
+  },
+  {
+    title: "My Account",
+    elements: [
+      {
+        id: NAVIGATION_IDS.CHARACTERS,
+        text: "Characters",
+        to: PATHS.CHARACTERS,
+        icon: { type: "image", src: NAVIGATION_IMAGES.characters },
       },
     ],
   },

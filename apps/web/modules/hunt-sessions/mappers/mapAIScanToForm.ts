@@ -11,7 +11,7 @@ const parseSessionToSeconds = (sessionStr: string | undefined): number => {
   return hours * 3600 + minutes * 60;
 };
 
-export function parseAIScanToForm(
+export function mapAIScanToForm(
   scan: AIHuntSessionScan,
   monsterList: MonsterPreview[]
 ): Partial<HuntSessionForm> {
