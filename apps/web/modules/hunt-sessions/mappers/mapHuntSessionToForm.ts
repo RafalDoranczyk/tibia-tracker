@@ -34,6 +34,13 @@ export function mapHuntSessionToForm(huntSession: HuntSession): HuntSessionForm 
         name: de.damage_element.name,
       })) ?? [],
 
+    resistances:
+      huntSession.resistances?.map((r) => ({
+        damageElementId: r.damage_element.id,
+        percent: r.percent,
+        name: r.damage_element.name,
+      })) ?? [],
+
     monster_damage_sources:
       huntSession.monster_damage_sources?.map((ds) => ({
         monsterId: ds.damage_source.id,

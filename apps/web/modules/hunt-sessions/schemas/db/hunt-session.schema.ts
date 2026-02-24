@@ -8,6 +8,7 @@ import {
   HuntSessionDamageSourceSchema,
   HuntSessionKilledMonsterSchema,
   HuntSessionLootedItemSchema,
+  HuntSessionResistanceSchema,
   HuntSessionSupplySchema,
 } from "./hunt-session-relations.schema";
 
@@ -56,12 +57,23 @@ export const HuntSessionSchema = HuntSessionDbFieldsSchema.extend({
   looted_items: HuntSessionLootedItemSchema.array(),
   damage_elements: HuntSessionDamageElementSchema.array(),
   monster_damage_sources: HuntSessionDamageSourceSchema.array(),
+  resistances: HuntSessionResistanceSchema.array(),
 });
 export type HuntSession = z.infer<typeof HuntSessionSchema>;
 
 /* Session for list view */
 
-export const HuntSessionListItemSchema = HuntSessionDbFieldsSchema.extend({
+export const HuntSessionListItemSchema = HuntSessionDbFieldsSchema.pick({
+  id: true,
+  date: true,
+  duration_seconds: true,
+  level: true,
+  created_at: true,
+  updated_at: true,
+  xp_gain: true,
+  raw_xp_gain: true,
+  profit: true,
+}).extend({
   place: HuntPlaceSchema.pick({ id: true, name: true, image_path: true }),
 });
 

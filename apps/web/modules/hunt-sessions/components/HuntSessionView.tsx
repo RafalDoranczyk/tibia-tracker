@@ -10,20 +10,17 @@ import type { HuntPlace } from "@/modules/hunt-places";
 import type { ItemPreview } from "@/modules/items";
 import type { PreyBonus } from "@/modules/prey-bonus";
 import { useSaveHuntSession } from "../hooks/useSaveHuntSession";
-import { parseAIScanToForm } from "../parsers/parseAIScanToForm";
 import type {
-  AIHuntSessionScan,
   HuntSession,
   HuntSessionForm,
   HuntSessionUnknownEntities,
   MonsterPreview,
 } from "../schemas";
-import { ScannerModal } from "./ai/ScannerModal";
 import { FloatingStatsPanel } from "./FloatingStatsPanel";
 import { SummaryStats } from "./SummaryStats";
 import { DamageTab } from "./tabs/damage/DamageTab";
 import { LogDetailsTab } from "./tabs/log-details/LogDetailsTab";
-import { SuppliesTab } from "./tabs/supplies/SuppliesTab";
+import { SuppliesAndResistancesTab } from "./tabs/supplies-and-resistances/SuppliesAndResistancesTab";
 import { UnknownEntitiesModal } from "./UnknownEntitiesModal";
 
 function TabPanel({
@@ -66,28 +63,17 @@ export function HuntSessionView({
 }: HuntSessionViewProps) {
   const [unknownEntitiesModalOpen, setUnknownEntitiesModalOpen] = useState(false);
   const [unknownEntities, setUnknownEntities] = useState<HuntSessionUnknownEntities>(null);
-  const [scanModal, setScanModal] = useState(false);
+
   const [tab, setTab] = useState(0);
 
-  const { handleSubmit, formState, reset } = useFormContext<HuntSessionForm>();
+  const { handleSubmit, formState } = useFormContext<HuntSessionForm>();
 
   const saveHuntSession = useSaveHuntSession();
-
   const onSubmit = handleSubmit((data) => saveHuntSession(data, huntSessionId));
-
-  const onScanApply = (scan: AIHuntSessionScan) => {
-    const d = parseAIScanToForm(scan, monsterList);
-    console.log(d);
-    reset(d, { keepDirty: false });
-  };
 
   return (
     <Container maxWidth="xl">
-      <SummaryStats
-        setScanModal={() => setScanModal(true)}
-        preyBonusList={preyBonusList}
-        monsterList={monsterList}
-      />
+      <SummaryStats preyBonusList={preyBonusList} monsterList={monsterList} />
 
       <Tabs
         value={tab}
@@ -97,9 +83,8 @@ export function HuntSessionView({
         }}
       >
         <Tab id="tab-0" aria-controls="tabpanel-0" label="Log Details" />
-        <Tab id="tab-1" aria-controls="tabpanel-1" label="Damage" />
-        <Tab id="tab-2" aria-controls="tabpanel-2" label="Supplies" />
-        <Tab id="tab-3" aria-controls="tabpanel-3" label="Combat Stats" />
+        <Tab id="tab-1" aria-controls="tabpanel-1" label="Damage Elements And Sources" />
+        <Tab id="tab-2" aria-controls="tabpanel-2" label="Supplies & Resistances" />
       </Tabs>
 
       <Divider sx={{ my: 2 }} />
@@ -120,9 +105,8 @@ export function HuntSessionView({
         <DamageTab monsterList={monsterList} damageElementList={damageElementList} />
       </TabPanel>
       <TabPanel value={tab} index={2}>
-        <SuppliesTab supplyList={supplyList} />
+        <SuppliesAndResistancesTab supplyList={supplyList} damageElementList={damageElementList} />
       </TabPanel>
-      <TabPanel value={tab} index={3}></TabPanel>
 
       <FloatingStatsPanel />
 
@@ -130,14 +114,6 @@ export function HuntSessionView({
         open={unknownEntitiesModalOpen}
         unknownEntities={unknownEntities}
         onClose={() => setUnknownEntitiesModalOpen(false)}
-      />
-
-      <ScannerModal
-        open={scanModal}
-        damageElementList={damageElementList}
-        monsterList={monsterList}
-        onClose={() => setScanModal(false)}
-        onApply={onScanApply}
       />
 
       <FloatingActionButton

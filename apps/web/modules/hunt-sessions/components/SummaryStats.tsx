@@ -2,7 +2,6 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { Avatar, Paper, Stack, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-import { AIActionButton } from "@/components";
 import type { PreyBonus } from "@/modules/prey-bonus";
 import { useHuntStats } from "../hooks/useHuntStats";
 import type { HuntSessionForm, MonsterPreview } from "../schemas";
@@ -41,10 +40,9 @@ function SummaryStat({ title, value, trend }: SummaryStatProps) {
 type SummaryStatsProps = {
   preyBonusList: PreyBonus[];
   monsterList: MonsterPreview[];
-  setScanModal: () => void;
 };
 
-export function SummaryStats({ preyBonusList, monsterList, setScanModal }: SummaryStatsProps) {
+export function SummaryStats({ preyBonusList, monsterList }: SummaryStatsProps) {
   const { getValues } = useFormContext<HuntSessionForm>();
   const { rawExpPerHour, expPerHour, profitPerHour, formattedBalance, preysWithMonster } =
     useHuntStats({ preyBonusList, monsterList });
@@ -91,10 +89,6 @@ export function SummaryStats({ preyBonusList, monsterList, setScanModal }: Summa
             </Stack>
           </Paper>
         ))}
-
-        <AIActionButton onClick={setScanModal} sx={{ ml: "auto" }}>
-          Upload Screenshoot
-        </AIActionButton>
       </Stack>
     </Paper>
   );

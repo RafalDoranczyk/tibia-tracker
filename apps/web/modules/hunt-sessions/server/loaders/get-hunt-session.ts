@@ -31,7 +31,8 @@ export async function getHuntSession(payload: unknown): Promise<HuntSession | nu
   await requireAuthenticatedSupabase();
 
   try {
-    const data = await getCachedHuntSession({ character_id, id });
+    const { data } = await getCachedHuntSession({ character_id, id });
+
     if (!data) {
       return null;
     }

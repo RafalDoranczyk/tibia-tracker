@@ -24,6 +24,7 @@ export async function updateHuntSession(payload: unknown): Promise<HuntSessionDb
   }
 
   updateTag(HuntSessionCache.huntSessionList(parsed.character_id));
+  updateTag(HuntSessionCache.huntSession(parsed.id));
 
   return assertZodParse(HuntSessionDbFieldsSchema, data);
 }

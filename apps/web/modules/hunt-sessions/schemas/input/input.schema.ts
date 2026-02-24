@@ -11,7 +11,7 @@ import {
   HuntSessionListItemSchema,
   HuntSessionSchema,
 } from "../db/hunt-session.schema";
-import { MonsterDamageSourceSchema } from "../db/hunt-session-relations.schema";
+import { HuntSessionMonsterDamageSourceSchema } from "../db/hunt-session-relations.schema";
 
 // ==========================================
 // 🔍 READ / FETCH SCHEMAS
@@ -56,7 +56,12 @@ const HuntSessionDamageElementInputSchema = z.object({
 });
 
 const HuntSessionMonsterDamageSourceInputSchema = z.object({
-  monster_id: MonsterDamageSourceSchema.shape.id,
+  monster_id: HuntSessionMonsterDamageSourceSchema.shape.id,
+  percent: z.number().positive(),
+});
+
+const HuntSessionResistanceInputSchema = z.object({
+  damage_element_id: DamageElementSchema.shape.id,
   percent: z.number().positive(),
 });
 
@@ -72,6 +77,7 @@ export const CreateHuntSessionPayloadSchema = HuntSessionDbBaseFieldsSchema.omit
   supplies: HuntSessionItemInputSchema.array(),
   damage_elements: HuntSessionDamageElementInputSchema.array(),
   monster_damage_sources: HuntSessionMonsterDamageSourceInputSchema.array(),
+  resistances: HuntSessionResistanceInputSchema.array(),
 });
 export type CreateHuntSessionPayload = z.infer<typeof CreateHuntSessionPayloadSchema>;
 

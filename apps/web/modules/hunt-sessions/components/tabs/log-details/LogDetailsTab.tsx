@@ -1,21 +1,32 @@
 "use client";
 
-import FileUploadIcon from "@mui/icons-material/FileUpload";
 import InvertColorsRounded from "@mui/icons-material/InventoryTwoTone";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import type { CharacterCharmDetailed } from "@/modules/charms";
 import type { HuntPlace } from "@/modules/hunt-places";
 import type { ItemPreview } from "@/modules/items";
 import type { PreyBonus } from "@/modules/prey-bonus";
+import { mapHuntSessionJSONToForm } from "../../../mappers/mapHuntSessionJSONToForm";
+import { HuntSessionParseError } from "../../../parsers/parseHuntSessionJSON";
 import type { HuntSessionForm, HuntSessionUnknownEntities, MonsterPreview } from "../../../schemas";
 import { SectionHeader } from "../SectionHeader";
 import { SectionPaperCard } from "../SectionPaperCard";
+import { UploadLogButton } from "../UploadLogButton";
+import { UploadLogModal } from "../UploadLogModal";
 import { HuntSetup } from "./HuntSetup";
 import { KilledMonsters } from "./KilledMonsters";
 import { LootedItems } from "./LootedItems";
-import { UploadLogModal } from "./UploadLogModal";
+
+function patchFormValues<T extends Record<string, unknown>>(
+  values: T,
+  setValue: (name: keyof T, value: T[keyof T], options?: { shouldDirty?: boolean }) => void
+) {
+  for (const key of Object.keys(values) as (keyof T)[]) {
+    setValue(key, values[key], { shouldDirty: true });
+  }
+}
 
 const SPACING = 2 as const;
 
@@ -41,7 +52,7 @@ export function LogDetailsTab({
   setUnknownEntities,
 }: LogDetailsTabProps) {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
-  const { getValues } = useFormContext<HuntSessionForm>();
+  const { getValues, setValue } = useFormContext<HuntSessionForm>();
 
   const isAnyMonsterUnknown = (unknownEntities?.monsters?.length ?? 0) > 0;
   const isAnyItemUnknown = (unknownEntities?.items?.length ?? 0) > 0;
@@ -49,35 +60,37 @@ export function LogDetailsTab({
   // Get computed values that user can't edit tto determine if there is log data
   const hasSessionData = !!getValues("healing");
 
+  const handleImport = (text: string) => {
+    try {
+      const { formValues, unknown } = mapHuntSessionJSONToForm({
+        json: text,
+        monsterList,
+        itemList,
+      });
+
+      patchFormValues(formValues, (name, value) => setValue(name, value, { shouldDirty: true }));
+      setUnknownEntities(unknown);
+
+      return null;
+    } catch (err) {
+      if (err instanceof HuntSessionParseError) {
+        return `Missing fields: ${err.missingFields.join(", ")}`;
+      }
+      return "Invalid session format.";
+    }
+  };
+
   return (
     <Stack spacing={SPACING}>
       <SectionHeader
-        title="Log Data"
-        icon={
-          <InvertColorsRounded color={hasSessionData ? "primary" : "secondary"} fontSize="small" />
+        title="Hunt Session Log"
+        icon={<InvertColorsRounded color="secondary" fontSize="small" />}
+        action={
+          <UploadLogButton isSuccess={!!hasSessionData} onClick={() => setUploadModalOpen(true)}>
+            {hasSessionData ? "Analyser Data Loaded" : "Upload Session Log"}
+          </UploadLogButton>
         }
-      >
-        <Box sx={{ flexGrow: 1 }} />
-
-        <Stack spacing={SPACING} direction="row" alignItems="center">
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ display: { xs: "none", md: "block" }, alignSelf: "center" }}
-          >
-            Auto-fill from session log
-          </Typography>
-
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<FileUploadIcon />}
-            onClick={() => setUploadModalOpen(true)}
-          >
-            Upload Log
-          </Button>
-        </Stack>
-      </SectionHeader>
+      />
 
       <Grid container spacing={SPACING}>
         <Grid size={{ xs: 12, xl: 2.5 }}>
@@ -110,11 +123,11 @@ export function LogDetailsTab({
       </Grid>
 
       <UploadLogModal
-        monsterList={monsterList}
-        itemList={itemList}
-        setUnknownEntities={setUnknownEntities}
         open={uploadModalOpen}
         onClose={() => setUploadModalOpen(false)}
+        title="Upload Hunt Session Log"
+        placeholder="Paste JSON session log here..."
+        onImport={handleImport}
       />
     </Stack>
   );

@@ -6,7 +6,6 @@ export function dbInsertHuntSession(
   supabase: TypedSupabaseClient,
   payload: CreateHuntSessionPayload
 ) {
-  console.log(payload);
   return supabase.rpc("create_hunt_session", {
     p_payload: {
       session: {
@@ -31,6 +30,7 @@ export function dbInsertHuntSession(
       damage_elements: payload.damage_elements,
       monster_damage_sources: payload.monster_damage_sources,
       loot: payload.looted_items,
+      resistances: payload.resistances,
     },
   });
 }
