@@ -8,7 +8,6 @@ import {
   HuntSessionDamageSourceSchema,
   HuntSessionKilledMonsterSchema,
   HuntSessionLootedItemSchema,
-  HuntSessionResistanceSchema,
   HuntSessionSupplySchema,
 } from "./hunt-session-relations.schema";
 
@@ -57,7 +56,6 @@ export const HuntSessionSchema = HuntSessionDbFieldsSchema.extend({
   looted_items: HuntSessionLootedItemSchema.array(),
   damage_elements: HuntSessionDamageElementSchema.array(),
   monster_damage_sources: HuntSessionDamageSourceSchema.array(),
-  resistances: HuntSessionResistanceSchema.array(),
 });
 export type HuntSession = z.infer<typeof HuntSessionSchema>;
 

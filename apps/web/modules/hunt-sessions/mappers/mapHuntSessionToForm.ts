@@ -1,6 +1,10 @@
 import type { HuntSession, HuntSessionForm } from "../schemas";
 
-export function mapHuntSessionToForm(huntSession: HuntSession): HuntSessionForm {
+export function mapHuntSessionToForm({
+  // we don't need these in the form
+  character_id,
+  ...huntSession
+}: HuntSession): HuntSessionForm {
   return {
     ...huntSession,
     place_id: huntSession.place.id,
@@ -32,13 +36,6 @@ export function mapHuntSessionToForm(huntSession: HuntSession): HuntSessionForm 
         damageElementId: de.damage_element.id,
         percent: de.percent,
         name: de.damage_element.name,
-      })) ?? [],
-
-    resistances:
-      huntSession.resistances?.map((r) => ({
-        damageElementId: r.damage_element.id,
-        percent: r.percent,
-        name: r.damage_element.name,
       })) ?? [],
 
     monster_damage_sources:

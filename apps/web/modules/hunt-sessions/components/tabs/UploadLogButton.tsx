@@ -15,7 +15,6 @@ const pulse = keyframes`
   100% { box-shadow: 0 0 0 0 ${alpha("#4caf50", 0)}; }
 `;
 
-// Definiujemy dodatkowy prop 'isSuccess' dla stylizacji
 interface StyledButtonProps extends ButtonProps {
   isSuccess?: boolean;
 }
@@ -38,7 +37,6 @@ const StyledButton = styled(Button, {
     fontWeight: 700,
     textTransform: "none",
 
-    // Animacja Shimmer tylko gdy NIE ma sukcesu
     "&::before": !isSuccess
       ? {
           content: '""',
@@ -53,7 +51,6 @@ const StyledButton = styled(Button, {
         }
       : {},
 
-    // Animacja Pulse tylko gdy JEST sukces
     animation: isSuccess ? `${pulse} 2s infinite` : "none",
 
     "&:hover": {

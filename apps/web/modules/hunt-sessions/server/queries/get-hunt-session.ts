@@ -56,11 +56,6 @@ const SELECT = `
     damage_element:damage_elements(id, name, image_path, slug)
   ),
 
-  resistances:hunt_session_resistances(
-    percent,
-    damage_element:damage_elements(id, name, image_path, slug)
-  ),
-
   monster_damage_sources:hunt_session_monster_damage_sources(
     percent,
     damage_source:monsters(id, name, image_path)

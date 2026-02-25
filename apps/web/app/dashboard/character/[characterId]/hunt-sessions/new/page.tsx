@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { NextLink } from "@/components";
 import { PATHS } from "@/core/paths";
 import { PageHeader } from "@/layout/page/PageHeader";
-import { HuntSessionFormProvider, HuntSessionView } from "@/modules/hunt-sessions";
+import { HuntSessionView } from "@/modules/hunt-sessions";
 import { loadHuntSession } from "@/modules/hunt-sessions/server";
 import type { CharacterPageProps } from "../../../../types";
 
@@ -52,17 +52,15 @@ export default async function NewHuntSessionPage({ params }: CharacterPageProps)
           Paste your Tibia session log to automatically calculate experience, profit, supplies, damage, and monster statistics`}
       />
 
-      <HuntSessionFormProvider placeId={huntPlaceList[0].id}>
-        <HuntSessionView
-          characterCharmList={characterCharmList}
-          itemList={itemList}
-          supplyList={supplyList}
-          huntPlaceList={huntPlaceList}
-          monsterList={monsterList}
-          preyBonusList={preyBonusList}
-          damageElementList={damageElementList}
-        />
-      </HuntSessionFormProvider>
+      <HuntSessionView
+        characterCharmList={characterCharmList}
+        itemList={itemList}
+        supplyList={supplyList}
+        huntPlaceList={huntPlaceList}
+        monsterList={monsterList}
+        preyBonusList={preyBonusList}
+        damageElementList={damageElementList}
+      />
     </>
   );
 }

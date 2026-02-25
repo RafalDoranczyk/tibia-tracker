@@ -29,8 +29,7 @@ export function dbInsertHuntSession(
       supplies: payload.supplies,
       damage_elements: payload.damage_elements,
       monster_damage_sources: payload.monster_damage_sources,
-      loot: payload.looted_items,
-      resistances: payload.resistances,
+      looted_items: payload.looted_items,
     },
   });
 }
