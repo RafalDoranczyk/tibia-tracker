@@ -1,7 +1,7 @@
 "use client";
 
 import InvertColorsRounded from "@mui/icons-material/InventoryTwoTone";
-import { Grid, Stack } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import type { CharacterCharmDetailed } from "@/modules/charms";
@@ -81,10 +81,11 @@ export function LogDetailsTab({
   };
 
   return (
-    <Stack spacing={SPACING}>
+    <Box>
       <SectionHeader
         title="Hunt Session Log"
         icon={<InvertColorsRounded color="secondary" fontSize="small" />}
+        description="Detailed information about the hunt session that can be imported from a JSON log file. You can export this log from the Input Analyser after your hunt session by going to 'Hunt Analyser' and clicking 'Copy To Clipboard'."
         action={
           <UploadLogButton isSuccess={!!hasSessionData} onClick={() => setUploadModalOpen(true)}>
             {hasSessionData ? "Analyser Data Loaded" : "Upload Session Log"}
@@ -129,6 +130,6 @@ export function LogDetailsTab({
         placeholder="Paste JSON session log here..."
         onImport={handleImport}
       />
-    </Stack>
+    </Box>
   );
 }

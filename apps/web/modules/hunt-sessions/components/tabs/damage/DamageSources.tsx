@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, Stack, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useMemo } from "react";
 import { type FieldArrayWithId, useFieldArray, useFormContext } from "react-hook-form";
 
@@ -8,7 +8,7 @@ import { EmptyState } from "@/components";
 import type { HuntSessionForm, MonsterPreview } from "../../../schemas";
 import { SectionHeader } from "../SectionHeader";
 import { SectionPaperCard } from "../SectionPaperCard";
-import { StatProgressBarRow } from "../StatProgressBarRow";
+import { StatProgressBarRow } from "./StatProgressBarRow";
 
 type DamageSourceField = FieldArrayWithId<HuntSessionForm, "monster_damage_sources"> & {
   monsterId: number;
@@ -32,14 +32,8 @@ export function DamageSources({ monsterList }: DamageSourcesProps) {
   );
 
   return (
-    <Stack spacing={2}>
-      <SectionHeader title="Damage Sources" size="small">
-        <Typography variant="caption" color="text.secondary">
-          Damage sources are the monsters that dealt damage to you during the hunt session. It will
-          auto populate when you upload a log file with the damage sources feature enabled in the
-          log parser.
-        </Typography>
-      </SectionHeader>
+    <Box height="100%">
+      <SectionHeader title="Damage Sources" size="small" />
 
       <SectionPaperCard>
         {fields.length === 0 ? (
@@ -66,6 +60,6 @@ export function DamageSources({ monsterList }: DamageSourcesProps) {
           </Grid>
         )}
       </SectionPaperCard>
-    </Stack>
+    </Box>
   );
 }

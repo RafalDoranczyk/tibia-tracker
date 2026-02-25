@@ -44,7 +44,6 @@ export const HuntSessionFormSchema = HuntSessionDbBaseFieldsSchema.omit({
   monster_damage_sources: HuntSessionMonsterDamageSourceSchema.array(),
   supplies: SupplyCountFormSchema.array(),
   damage_elements: DamageElementFormSchema.array(),
-  resistances: DamageElementFormSchema.array(),
 });
 
 export type HuntSessionForm = z.infer<typeof HuntSessionFormSchema>;

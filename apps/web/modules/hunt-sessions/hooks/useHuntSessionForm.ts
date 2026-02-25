@@ -1,19 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useActiveCharacter } from "@/modules/characters/providers/ActiveCharacterProvider";
+import { useActiveCharacter } from "@/modules/characters";
 import { mapHuntSessionToForm } from "../mappers/mapHuntSessionToForm";
 import { type HuntSession, type HuntSessionForm, HuntSessionFormSchema } from "../schemas";
 
 const startDate = new Date().toISOString().slice(0, 10);
 
-const getDefaultValues = ({
-  placeId,
-}: {
-  placeId: HuntSessionForm["place_id"];
-}): HuntSessionForm => ({
+export const HUNT_SESSION_FORM_DEFAULT_VALUES: HuntSessionForm = {
   damage: 0,
   healing: 0,
-  place_id: placeId,
+  place_id: 1,
   date: startDate,
   started_at: startDate,
   ended_at: startDate,
@@ -30,28 +27,29 @@ const getDefaultValues = ({
   damage_elements: [],
   monster_damage_sources: [],
   looted_items: [],
-  resistances: [],
-});
+};
 
-export function useHuntSessionForm({
-  huntSession,
-  placeId,
-}: {
-  huntSession?: HuntSession | null;
-  placeId: number;
-}) {
+export function useHuntSessionForm(huntSession?: HuntSession) {
   const { activeCharacter } = useActiveCharacter();
 
-  const baseValues = huntSession
-    ? mapHuntSessionToForm(huntSession)
-    : getDefaultValues({ placeId });
-
-  return useForm<HuntSessionForm>({
+  const form = useForm<HuntSessionForm>({
     resolver: zodResolver(HuntSessionFormSchema),
     defaultValues: {
-      ...baseValues,
-      level: huntSession?.level ?? activeCharacter?.level ?? 0,
+      ...HUNT_SESSION_FORM_DEFAULT_VALUES,
+      level: activeCharacter?.level ?? 0,
     },
-    shouldUnregister: false,
   });
+
+  useEffect(() => {
+    if (huntSession) {
+      form.reset(mapHuntSessionToForm(huntSession));
+    } else {
+      form.reset({
+        ...HUNT_SESSION_FORM_DEFAULT_VALUES,
+        level: activeCharacter?.level ?? 0,
+      });
+    }
+  }, [huntSession, form.reset, activeCharacter?.level]);
+
+  return form;
 }

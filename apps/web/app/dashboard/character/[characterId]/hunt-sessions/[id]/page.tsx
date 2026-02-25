@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { NextLink } from "@/components";
 import { PATHS } from "@/core/paths";
 import { PageHeader } from "@/layout/page/PageHeader";
-import { HuntSessionFormProvider, HuntSessionView } from "@/modules/hunt-sessions";
+import { HuntSessionView } from "@/modules/hunt-sessions";
 import { loadHuntSession } from "@/modules/hunt-sessions/server";
 import type { CharacterPageProps } from "../../../../types";
 
@@ -59,18 +59,16 @@ export default async function EditHuntSessionPage({ params }: EditHuntSessionPag
 
       <PageHeader title="Edit Hunt Session" description="Edit and review your hunt session." />
 
-      <HuntSessionFormProvider huntSession={huntSession} placeId={huntPlaceList[0].id}>
-        <HuntSessionView
-          huntSessionId={huntSession?.id}
-          itemList={itemList}
-          characterCharmList={characterCharmList}
-          supplyList={supplyList}
-          huntPlaceList={huntPlaceList}
-          monsterList={monsterList}
-          preyBonusList={preyBonusList}
-          damageElementList={damageElementList}
-        />
-      </HuntSessionFormProvider>
+      <HuntSessionView
+        huntSession={huntSession}
+        itemList={itemList}
+        characterCharmList={characterCharmList}
+        supplyList={supplyList}
+        huntPlaceList={huntPlaceList}
+        monsterList={monsterList}
+        preyBonusList={preyBonusList}
+        damageElementList={damageElementList}
+      />
     </>
   );
 }

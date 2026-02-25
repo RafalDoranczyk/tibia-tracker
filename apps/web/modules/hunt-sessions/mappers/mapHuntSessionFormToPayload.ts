@@ -32,8 +32,4 @@ export const mapHuntSessionFormToPayload = ({
     item_id: s.supplyId,
     count: s.count,
   })),
-  resistances: formData.resistances.map((r) => ({
-    damage_element_id: r.damageElementId,
-    percent: r.percent,
-  })),
 });

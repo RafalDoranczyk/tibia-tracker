@@ -40,8 +40,9 @@ export function DamageTab({ damageElementList, monsterList }: DamageTabProps) {
   };
 
   return (
-    <Stack spacing={2}>
+    <Stack>
       <SectionHeader
+        description="Distribution of damage types and sources dealt by monsters during the session. Both sections are auto-populated when you upload a log file from the Input Analyser."
         title="Input Analyser"
         icon={<InvertColorsRounded color="secondary" fontSize="small" />}
         action={

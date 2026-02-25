@@ -73,11 +73,6 @@ export const HuntSessionMonsterDamageSourceSchema = z.object({
 
 /** Resistances relation */
 
-export const HuntSessionResistanceSchema = z.object({
-  percent: z.float64(),
-  damage_element: DamageElementSchema,
-});
-
 export const HuntSessionDamageSourceSchema = z.object({
   percent: z.number().positive(),
   damage_source: HuntSessionMonsterDamageSourceSchema,
