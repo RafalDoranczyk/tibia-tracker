@@ -7,7 +7,9 @@ import { useUser } from "@/modules/user";
 
 import { APP_BAR_HEIGHT, DESKTOP_APP_NAVIGATION_DRAWER_WIDTH } from "..";
 import { ActionButtons } from "./ActionButtons";
+import { Drome } from "./Drome";
 import { NavigationLinks } from "./NavigationLinks";
+import { Rashid } from "./Rashid";
 
 export function DesktopNavigation() {
   const user = useUser();
@@ -29,6 +31,8 @@ export function DesktopNavigation() {
         }}
       >
         <Toolbar>
+          <Rashid />
+          <Drome />
           <Box ml="auto" />
           <ActionButtons />
         </Toolbar>
