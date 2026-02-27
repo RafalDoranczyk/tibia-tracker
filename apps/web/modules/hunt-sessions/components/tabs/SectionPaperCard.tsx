@@ -1,6 +1,16 @@
-import { Paper } from "@mui/material";
+import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
+import type { PropsWithChildren, ReactNode } from "react";
 
-export function SectionPaperCard({ children }: React.PropsWithChildren) {
+type SectionPaperCardProps = {
+  title: string;
+  icon: ReactNode;
+};
+
+export function SectionPaperCard({
+  children,
+  title,
+  icon,
+}: PropsWithChildren<SectionPaperCardProps>) {
   return (
     <Paper
       variant="outlined"
@@ -11,7 +21,14 @@ export function SectionPaperCard({ children }: React.PropsWithChildren) {
         border: "1px solid rgba(255,255,255,0.06)",
       }}
     >
-      {children}
+      <Stack direction="row" alignItems="center" spacing={1}>
+        {icon}
+        <Typography fontWeight={700}>{title}</Typography>
+      </Stack>
+
+      <Divider sx={{ mt: 1.5 }} />
+
+      <Box mt={2}>{children}</Box>
     </Paper>
   );
 }

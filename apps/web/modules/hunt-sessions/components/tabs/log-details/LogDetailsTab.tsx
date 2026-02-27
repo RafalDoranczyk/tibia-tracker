@@ -10,9 +10,8 @@ import type { ItemPreview } from "@/modules/items";
 import type { PreyBonus } from "@/modules/prey-bonus";
 import { mapHuntSessionJSONToForm } from "../../../mappers/mapHuntSessionJSONToForm";
 import { HuntSessionParseError } from "../../../parsers/parseHuntSessionJSON";
-import type { HuntSessionForm, HuntSessionUnknownEntities, MonsterPreview } from "../../../schemas";
+import type { HuntSessionForm, MonsterPreview } from "../../../schemas";
 import { SectionHeader } from "../SectionHeader";
-import { SectionPaperCard } from "../SectionPaperCard";
 import { UploadLogButton } from "../UploadLogButton";
 import { UploadLogModal } from "../UploadLogModal";
 import { HuntSetup } from "./HuntSetup";
@@ -36,9 +35,6 @@ type LogDetailsTabProps = {
   monsterList: MonsterPreview[];
   itemList: ItemPreview[];
   characterCharmList: CharacterCharmDetailed[];
-  unknownEntities: HuntSessionUnknownEntities;
-  openUnknownEntitiesModal: () => void;
-  setUnknownEntities: (entities: HuntSessionUnknownEntities) => void;
 };
 
 export function LogDetailsTab({
@@ -46,30 +42,23 @@ export function LogDetailsTab({
   huntPlaceList,
   monsterList,
   itemList,
-  unknownEntities,
   characterCharmList,
-  openUnknownEntitiesModal,
-  setUnknownEntities,
 }: LogDetailsTabProps) {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const { getValues, setValue } = useFormContext<HuntSessionForm>();
-
-  const isAnyMonsterUnknown = (unknownEntities?.monsters?.length ?? 0) > 0;
-  const isAnyItemUnknown = (unknownEntities?.items?.length ?? 0) > 0;
 
   // Get computed values that user can't edit tto determine if there is log data
   const hasSessionData = !!getValues("healing");
 
   const handleImport = (text: string) => {
     try {
-      const { formValues, unknown } = mapHuntSessionJSONToForm({
+      const { formValues } = mapHuntSessionJSONToForm({
         json: text,
         monsterList,
         itemList,
       });
 
       patchFormValues(formValues, (name, value) => setValue(name, value, { shouldDirty: true }));
-      setUnknownEntities(unknown);
 
       return null;
     } catch (err) {
@@ -95,31 +84,19 @@ export function LogDetailsTab({
 
       <Grid container spacing={SPACING}>
         <Grid size={{ xs: 12, xl: 2.5 }}>
-          <SectionPaperCard>
-            <HuntSetup huntPlaceList={huntPlaceList} />
-          </SectionPaperCard>
+          <HuntSetup huntPlaceList={huntPlaceList} />
         </Grid>
 
         <Grid size={{ xs: 12, xl: 4.75 }}>
-          <SectionPaperCard>
-            <KilledMonsters
-              characterCharmList={characterCharmList}
-              preyBonusList={preyBonusList}
-              monsterList={monsterList}
-              isAnyMonsterUnknown={isAnyMonsterUnknown}
-              openUnknownEntitiesModal={openUnknownEntitiesModal}
-            />
-          </SectionPaperCard>
+          <KilledMonsters
+            characterCharmList={characterCharmList}
+            preyBonusList={preyBonusList}
+            monsterList={monsterList}
+          />
         </Grid>
 
         <Grid size={{ xs: 12, xl: 4.75 }}>
-          <SectionPaperCard>
-            <LootedItems
-              itemList={itemList}
-              isAnyItemUnknown={isAnyItemUnknown}
-              openUnknownEntitiesModal={openUnknownEntitiesModal}
-            />
-          </SectionPaperCard>
+          <LootedItems itemList={itemList} />
         </Grid>
       </Grid>
 

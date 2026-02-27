@@ -3,7 +3,7 @@ import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { createAdminClient } from "@/core/supabase/clients/admin";
 import { assertZodParse } from "@/lib/zod";
-import { HuntSessionCache } from "../../cache/hunt-session-cache";
+import { HuntSessionCache } from "../../cache/hunt-session";
 import {
   type FetchHuntSessionListPayload,
   FetchHuntSessionListPayloadSchema,

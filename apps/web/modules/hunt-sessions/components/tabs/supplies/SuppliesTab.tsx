@@ -1,4 +1,5 @@
 import HealthAndSafety from "@mui/icons-material/HealthAndSafety";
+import InventoryTwoTone from "@mui/icons-material/InventoryTwoTone";
 import { Avatar, Box, Grid, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
@@ -37,16 +38,19 @@ export function SuppliesTab({ supplyList }: SuppliesTabProps) {
   return (
     <Box>
       <SectionHeader
-        title="Supplies"
-        icon={<HealthAndSafety color="secondary" fontSize="small" />}
+        title="Supplies Analyser"
+        icon={<InventoryTwoTone color="secondary" fontSize="small" />}
         description="Add the supplies you used during the hunt session from the Supply Analyzer."
       />
 
       <Box maxWidth={850}>
-        <SectionPaperCard>
+        <SectionPaperCard
+          title="Supplies"
+          icon={<HealthAndSafety color="primary" fontSize="small" />}
+        >
           <Stack spacing={2}>
             <Autocomplete
-              label="Add supply"
+              label="Search Supply"
               options={options}
               onChange={(item) =>
                 append({

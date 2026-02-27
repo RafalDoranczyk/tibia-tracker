@@ -67,9 +67,7 @@ export const HuntSessionListItemSchema = HuntSessionDbFieldsSchema.pick({
   duration_seconds: true,
   level: true,
   created_at: true,
-  updated_at: true,
-  xp_gain: true,
-  raw_xp_gain: true,
+  raw_xp_per_hour: true,
   profit: true,
 }).extend({
   place: HuntPlaceSchema.pick({ id: true, name: true, image_path: true }),

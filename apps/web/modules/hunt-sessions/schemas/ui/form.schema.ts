@@ -3,7 +3,7 @@ import { CharmSchema } from "@/modules/charms";
 import { DamageElementSchema } from "@/modules/damage-elements";
 import { ItemSchema } from "@/modules/items";
 import { MonsterSchema } from "@/modules/monsters";
-import { PreyBonusSchema } from "@/modules/prey-bonus/schemas";
+import { PreyBonusSchema } from "@/modules/prey-bonus";
 import { HuntSessionDbBaseFieldsSchema } from "../db/hunt-session.schema";
 
 const KilledMonsterSchema = z.object({

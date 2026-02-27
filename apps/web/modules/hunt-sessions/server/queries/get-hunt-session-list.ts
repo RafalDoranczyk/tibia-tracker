@@ -1,6 +1,6 @@
 import type { TypedSupabaseClient } from "@/core/supabase/types";
 
-import type { FetchHuntSessionListPayload, FetchHuntSessionListResponse } from "../../schemas";
+import type { FetchHuntSessionListPayload } from "../../schemas";
 
 const SELECT = `
   id,
@@ -8,9 +8,7 @@ const SELECT = `
   duration_seconds,
   level,
   created_at,
-  updated_at,
-  xp_gain,
-  raw_xp_gain,
+  raw_xp_per_hour,
   profit,
   place:hunt_places!inner(
     id, 
@@ -23,7 +21,7 @@ export function dbGetHuntSessionList(
   supabase: TypedSupabaseClient,
   payload: FetchHuntSessionListPayload
 ) {
-  const sortCol = payload.sortBy || "date";
+  const sortCol = payload.sortBy || "created_at";
   const sortDir = payload.sortDirection || "desc";
 
   let query = supabase
@@ -39,5 +37,5 @@ export function dbGetHuntSessionList(
     query = query.range(from, to);
   }
 
-  return query.returns<FetchHuntSessionListResponse["data"]>();
+  return query;
 }

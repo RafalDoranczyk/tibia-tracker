@@ -1,7 +1,6 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Breadcrumbs, Button, Typography } from "@mui/material";
 import type { Metadata } from "next";
-
 import { notFound } from "next/navigation";
 import { NextLink } from "@/components";
 import { PATHS } from "@/core/paths";

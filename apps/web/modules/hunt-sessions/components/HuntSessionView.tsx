@@ -17,13 +17,12 @@ import { createHuntSession } from "../actions/create-hunt-session";
 import { updateHuntSession } from "../actions/update-hunt-session";
 import { useHuntSessionForm } from "../hooks/useHuntSessionForm";
 import { mapHuntSessionFormToPayload } from "../mappers/mapHuntSessionFormToPayload";
-import type { HuntSession, HuntSessionUnknownEntities, MonsterPreview } from "../schemas";
+import type { HuntSession, MonsterPreview } from "../schemas";
 import { FloatingStatsPanel } from "./FloatingStatsPanel";
 import { SummaryStats } from "./SummaryStats";
 import { DamageTab } from "./tabs/damage/DamageTab";
 import { LogDetailsTab } from "./tabs/log-details/LogDetailsTab";
 import { SuppliesTab } from "./tabs/supplies/SuppliesTab";
-import { UnknownEntitiesModal } from "./UnknownEntitiesModal";
 
 function TabPanel({
   value,
@@ -67,8 +66,6 @@ export function HuntSessionView({
   const router = useRouter();
   const toast = useToast();
 
-  const [unknownEntitiesModalOpen, setUnknownEntitiesModalOpen] = useState(false);
-  const [unknownEntities, setUnknownEntities] = useState<HuntSessionUnknownEntities>(null);
   const [tab, setTab] = useState(0);
 
   const form = useHuntSessionForm(huntSession);
@@ -118,9 +115,6 @@ export function HuntSessionView({
             huntPlaceList={huntPlaceList}
             itemList={itemList}
             monsterList={monsterList}
-            unknownEntities={unknownEntities}
-            setUnknownEntities={setUnknownEntities}
-            openUnknownEntitiesModal={() => setUnknownEntitiesModalOpen(true)}
           />
         </TabPanel>
         <TabPanel value={tab} index={1}>
@@ -131,12 +125,6 @@ export function HuntSessionView({
         </TabPanel>
 
         <FloatingStatsPanel />
-
-        <UnknownEntitiesModal
-          open={unknownEntitiesModalOpen}
-          unknownEntities={unknownEntities}
-          onClose={() => setUnknownEntitiesModalOpen(false)}
-        />
 
         <FloatingActionButton
           visible={formState.isDirty}

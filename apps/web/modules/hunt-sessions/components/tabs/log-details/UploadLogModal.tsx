@@ -15,7 +15,7 @@ import type { ItemPreview } from "@/modules/items";
 
 import { mapHuntSessionJSONToForm } from "../../../mappers/mapHuntSessionJSONToForm";
 import { HuntSessionParseError } from "../../../parsers/parseHuntSessionJSON";
-import type { HuntSessionForm, HuntSessionUnknownEntities, MonsterPreview } from "../../../schemas";
+import type { HuntSessionForm, MonsterPreview } from "../../../schemas";
 
 function patchFormValues<T extends Record<string, unknown>>(
   values: T,
@@ -30,17 +30,10 @@ type UploadLogModalProps = {
   open: boolean;
   monsterList: MonsterPreview[];
   itemList: ItemPreview[];
-  setUnknownEntities: (unknown: HuntSessionUnknownEntities) => void;
   onClose: () => void;
 };
 
-export function UploadLogModal({
-  open,
-  monsterList,
-  itemList,
-  setUnknownEntities,
-  onClose,
-}: UploadLogModalProps) {
+export function UploadLogModal({ open, monsterList, itemList, onClose }: UploadLogModalProps) {
   const { setValue } = useFormContext<HuntSessionForm>();
 
   const [text, setText] = useState("");
@@ -62,14 +55,13 @@ export function UploadLogModal({
     }
 
     try {
-      const { formValues, unknown } = mapHuntSessionJSONToForm({
+      const { formValues } = mapHuntSessionJSONToForm({
         json: text,
         monsterList,
         itemList,
       });
 
       patchFormValues(formValues, (name, value) => setValue(name, value, { shouldDirty: true }));
-      setUnknownEntities(unknown);
 
       onClose();
     } catch (err) {

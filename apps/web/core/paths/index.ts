@@ -8,7 +8,7 @@ export const characterPaths = (characterId: string) => {
   return {
     OVERVIEW: base,
     BESTIARY: `${base}/bestiary`,
-    HUNT_PLACES: `${base}/hunt-places`,
+    HUNT_SPOTS: `${base}/hunt-spots`,
     CHARMS: `${base}/charms`,
     HUNT_SESSIONS: {
       LIST: `${base}/hunt-sessions`,
