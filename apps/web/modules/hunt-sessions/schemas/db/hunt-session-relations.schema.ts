@@ -4,7 +4,7 @@ import { CharmSchema } from "@/modules/charms";
 import { DamageElementSchema } from "@/modules/damage-elements";
 import { ItemPreviewSchema } from "@/modules/items";
 import { MonsterSchema } from "@/modules/monsters";
-import { PreyBonusSchema } from "@/modules/prey-bonus/schemas";
+import { PreyBonusSchema } from "@/modules/prey-bonus";
 
 /* ==========================================================================
    1. PREVIEW / LIGHT ENTITY TYPES (used in relations)

@@ -111,6 +111,49 @@ export type Database = {
           },
         ];
       };
+      character_logs: {
+        Row: {
+          character_id: string;
+          created_at: string;
+          exp: number;
+          id: number;
+        };
+        Insert: {
+          character_id: string;
+          created_at?: string;
+          exp: number;
+          id?: number;
+        };
+        Update: {
+          character_id?: string;
+          created_at?: string;
+          exp?: number;
+          id?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "character_logs_character_id_fkey";
+            columns: ["character_id"];
+            isOneToOne: false;
+            referencedRelation: "character_bestiary_class_summary";
+            referencedColumns: ["character_id"];
+          },
+          {
+            foreignKeyName: "character_logs_character_id_fkey";
+            columns: ["character_id"];
+            isOneToOne: false;
+            referencedRelation: "character_charm_economy";
+            referencedColumns: ["character_id"];
+          },
+          {
+            foreignKeyName: "character_logs_character_id_fkey";
+            columns: ["character_id"];
+            isOneToOne: false;
+            referencedRelation: "characters";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       characters: {
         Row: {
           id: string;
@@ -931,6 +974,25 @@ export type Database = {
           isOneToOne: true;
           isSetofReturn: false;
         };
+      };
+      get_hunt_place_analytics: {
+        Args: { p_character_id: string; p_recent_limit?: number };
+        Returns: {
+          avg_damage_h: number;
+          avg_healing_h: number;
+          avg_monsters_per_hour: Json;
+          avg_profit_h: number;
+          avg_raw_xp_h: number;
+          last_hunted_at: string;
+          max_profit_h: number;
+          max_raw_xp_h: number;
+          place_id: number;
+          place_image_path: string;
+          place_name: string;
+          sessions_analyzed: number;
+          total_duration_seconds: number;
+          total_sessions: number;
+        }[];
       };
       get_monsters_with_character_progress: {
         Args: {

@@ -1,7 +1,5 @@
 import type { TypedSupabaseClient } from "@/core/supabase/types";
 
-import type { CharacterCharmDetailed } from "../../schemas";
-
 export function dbGetCharacterCharms(supabase: TypedSupabaseClient, characterId: string) {
   return supabase
     .from("character_charms")
@@ -23,6 +21,5 @@ export function dbGetCharacterCharms(supabase: TypedSupabaseClient, characterId:
         image_path
       )
     `)
-    .eq("character_id", characterId)
-    .overrideTypes<CharacterCharmDetailed[]>();
+    .eq("character_id", characterId);
 }

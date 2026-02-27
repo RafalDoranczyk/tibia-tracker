@@ -1,4 +1,4 @@
-import InvertColorsRounded from "@mui/icons-material/InventoryTwoTone";
+import InventoryTwoTone from "@mui/icons-material/InventoryTwoTone";
 import { Grid, Stack } from "@mui/material";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -44,7 +44,7 @@ export function DamageTab({ damageElementList, monsterList }: DamageTabProps) {
       <SectionHeader
         description="Distribution of damage types and sources dealt by monsters during the session. Both sections are auto-populated when you upload a log file from the Input Analyser."
         title="Input Analyser"
-        icon={<InvertColorsRounded color="secondary" fontSize="small" />}
+        icon={<InventoryTwoTone color="secondary" fontSize="small" />}
         action={
           <UploadLogButton isSuccess={!!inputAnalyserdata} onClick={() => setUploadModalOpen(true)}>
             {inputAnalyserdata ? "Analyser Data Loaded" : "Upload log"}

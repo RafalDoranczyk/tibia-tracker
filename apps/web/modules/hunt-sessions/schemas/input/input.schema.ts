@@ -1,17 +1,18 @@
 import { z } from "zod";
-import { NonNegativeInt, PaginationSchema, PositiveInt } from "@/lib/zod";
+import { NonNegativeInt, PositiveInt } from "@/lib/zod";
 import { CharacterIDSchema } from "@/modules/characters";
 import { CharmSchema } from "@/modules/charms";
 import { DamageElementSchema } from "@/modules/damage-elements";
 import { ItemSchema } from "@/modules/items";
 import { MonsterSchema } from "@/modules/monsters";
-import { PreyBonusSchema } from "@/modules/prey-bonus/schemas";
+import { PreyBonusSchema } from "@/modules/prey-bonus";
 import {
   HuntSessionDbBaseFieldsSchema,
   HuntSessionListItemSchema,
   HuntSessionSchema,
 } from "../db/hunt-session.schema";
 import { HuntSessionMonsterDamageSourceSchema } from "../db/hunt-session-relations.schema";
+import { HuntSessionFiltersSchema } from "./hunt-session-filters.schema";
 
 // ==========================================
 // 🔍 READ / FETCH SCHEMAS
@@ -23,7 +24,7 @@ export const FetchHuntSessionPayloadSchema = HuntSessionDbBaseFieldsSchema.pick(
 });
 export type FetchHuntSessionPayload = z.infer<typeof FetchHuntSessionPayloadSchema>;
 
-export const FetchHuntSessionListPayloadSchema = PaginationSchema.extend({
+export const FetchHuntSessionListPayloadSchema = HuntSessionFiltersSchema.extend({
   character_id: CharacterIDSchema,
 });
 export type FetchHuntSessionListPayload = z.infer<typeof FetchHuntSessionListPayloadSchema>;
@@ -33,10 +34,6 @@ export const FetchHuntSessionListResponseSchema = z.object({
   data: z.array(HuntSessionListItemSchema),
 });
 export type FetchHuntSessionListResponse = z.infer<typeof FetchHuntSessionListResponseSchema>;
-
-// ==========================================
-// 📝 WRITE / MUTATION SCHEMAS (Create, Update, Delete)
-// ==========================================
 
 const HuntSessionKilledMonsterInputSchema = z.object({
   monster_id: MonsterSchema.shape.id,

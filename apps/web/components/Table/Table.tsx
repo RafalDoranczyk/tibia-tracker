@@ -22,7 +22,7 @@ export type TableOrder = "asc" | "desc";
 export type TableHeadCell = {
   id: string;
   label: string;
-  width: number;
+  width: number | string;
   sortable?: boolean;
 };
 

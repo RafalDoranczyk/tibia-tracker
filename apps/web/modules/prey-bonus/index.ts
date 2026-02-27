@@ -1,1 +1,1 @@
-export type { PreyBonus } from "./schemas";
+export { type PreyBonus, PreyBonusSchema } from "./schemas";
