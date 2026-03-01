@@ -22,10 +22,14 @@ jobs:
       - name: Install dependencies
         run: npm install --ignore-scripts
 
+      - name: Fix esbuild for Linux
+
+        run: npm install @esbuild/linux-x64
+
       - name: Run Scraper
         run: npx turbo run execute --filter=exp-highscore-scraper
         env:
-   
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SCRAPER_API_KEY: ${{ secrets.SCRAPER_API_KEY }}
