@@ -4,6 +4,7 @@ import type { VocationId, WorldName } from "../../constants";
 import type { HighscoreEntry } from "../../db";
 
 export const HIGHSCORE_URL = "https://www.tibia.com/community/?subtopic=highscores";
+
 // The number of columns in the highscores table
 const PAGE_COLUMN_NUMBER = 6;
 

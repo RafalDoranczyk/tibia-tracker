@@ -1,6 +1,5 @@
+import type { Enums, Tables } from "@repo/database";
 import { z } from "zod";
-
-import type { Enums, Tables } from "@/core/supabase/types";
 import { NonEmptyString, PositiveInt } from "@/lib/zod";
 
 export const DamageElementSlugs = z.enum([

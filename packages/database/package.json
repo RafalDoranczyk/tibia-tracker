@@ -1,0 +1,9 @@
+{
+  "name": "@repo/database",
+  "version": "0.0.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "db:types": "supabase gen types typescript --project-id saoouvvhunyuohwqmbwy > ./src/db.ts"
+  }
+}

@@ -871,6 +871,27 @@ export type Database = {
           },
         ];
       };
+      user_tracked_characters: {
+        Row: {
+          character_name: string;
+          created_at: string | null;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          character_name: string;
+          created_at?: string | null;
+          id?: string;
+          user_id: string;
+        };
+        Update: {
+          character_name?: string;
+          created_at?: string | null;
+          id?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       character_bestiary_class_summary: {

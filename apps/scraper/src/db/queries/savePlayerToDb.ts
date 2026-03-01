@@ -4,5 +4,5 @@ import type { HighscoreEntry } from "../types";
 export async function savePlayersToDatabase(players: HighscoreEntry[]) {
   if (players.length === 0) return { error: null };
 
-  return await supabase.from("highscores").upsert(players, { onConflict: "world,name" });
+  return await supabase.from("highscores").insert(players);
 }
