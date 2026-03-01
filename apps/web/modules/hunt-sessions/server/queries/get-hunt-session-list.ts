@@ -9,7 +9,7 @@ const SELECT = `
   level,
   created_at,
   raw_xp_per_hour,
-  profit,
+  profit_per_hour,
   place:hunt_places!inner(
     id, 
     name, 

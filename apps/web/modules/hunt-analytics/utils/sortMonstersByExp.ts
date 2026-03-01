@@ -1,7 +1,7 @@
-import type { HuntSpot } from "../schemas";
+import type { HuntSpotAnalytics } from "../schemas";
 
 export function sortMonstersByExp(
-  monstersPerHour: HuntSpot["avg_monsters_per_hour"],
+  monstersPerHour: HuntSpotAnalytics["avg_monsters_per_hour"],
   currentMultiplier: number
 ) {
   if (!monstersPerHour) return [];
