@@ -9,7 +9,8 @@
     "NEXT_PUBLIC_ASSET_BASE_URL",
     "SUPABASE_SERVICE_ROLE_KEY",
     "NEXT_PUBLIC_TIBIA_DATA_API_URL",
-    "GEMINI_API_KEY"
+    "GEMINI_API_KEY",
+    "SCRAPER_API_KEY"
   ],
   "tasks": {
     "lint": {
@@ -39,7 +40,8 @@
       "cache": false
     },
     "execute": {
-      "cache": false
+      "cache": false,
+      "persistent": false
     }
   }
 }

@@ -10,27 +10,21 @@ type Props = {
 };
 
 export async function scrapeHighscorePage({ world, vocationId, page }: Props) {
-  const url = `${HIGHSCORE_URL}&world=${world}&category=6&profession=${vocationId}&currentpage=${page}`;
+  const SCRAPER_API_KEY = process.env.SCRAPER_API_KEY;
+
+  const targetUrl = `${HIGHSCORE_URL}&world=${world}&category=6&profession=${vocationId}&currentpage=${page}`;
+
+  const finalUrl = SCRAPER_API_KEY
+    ? `http://api.scraperapi.com?api_key=${SCRAPER_API_KEY}&url=${encodeURIComponent(targetUrl)}`
+    : targetUrl;
 
   try {
-    const { data } = await axios.get(url, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-        "Accept-Language": "pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Cache-Control": "no-cache",
-        Pragma: "no-cache",
-        Referer: "https://www.tibia.com/community/?subtopic=highscores",
-      },
-    });
+    const { data } = await axios.get(finalUrl);
 
     const $ = cheerio.load(data);
     const players: HighscoreEntry[] = [];
     const timestamp = new Date().toISOString();
 
-    // The highscores table has a header row, so we skip the first tr element
     $(".TableContent tr:not(:first-child)").each((_, el) => {
       const cols = $(el).find("td");
 
@@ -55,8 +49,8 @@ export async function scrapeHighscorePage({ world, vocationId, page }: Props) {
     });
 
     return players;
-  } catch (error) {
-    console.error(`[Scraper] Failed to fetch: ${url}`, error);
+  } catch (error: any) {
+    console.error(`[Scraper] Failed to fetch page ${page}: ${error.message}`);
     return [];
   }
 }
