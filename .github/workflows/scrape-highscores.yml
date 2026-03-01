@@ -17,24 +17,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+          cache: 'npm' 
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Build Scraper
-        run: pnpm turbo build --filter=exp-highscore-scraper
+        run: npx turbo build --filter=exp-highscore-scraper
         env:
-          # Turbo needs these during build if they are in globalEnv
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: Run Scraper
-        run: pnpm turbo start --filter=exp-highscore-scraper
+        run: npx turbo start --filter=exp-highscore-scraper
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
