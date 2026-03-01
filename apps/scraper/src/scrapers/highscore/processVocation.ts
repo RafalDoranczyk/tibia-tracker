@@ -1,7 +1,7 @@
-import { PAGES_PER_VOCATION, type VocationId, type WorldName } from "./constants";
-import { savePlayersToDatabase } from "./db";
+import { PAGES_PER_VOCATION, type VocationId, type WorldName } from "../../constants";
+import { savePlayersToDatabase } from "../../db";
+import { delay } from "../../utils/delay";
 import { scrapeHighscorePage } from "./scrapeHighscorePage";
-import { delay } from "./utils/delay";
 
 // Base delay in milliseconds between page requests to avoid rate limiting
 const DELAY_MS = 800;

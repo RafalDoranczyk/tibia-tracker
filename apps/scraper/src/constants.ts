@@ -1,11 +1,6 @@
-export const HIGHSCORE_URL = "https://www.tibia.com/community/?subtopic=highscores";
-
 // Worlds to scrape highscores for - can be expanded to include more worlds as needed
 export const WORLDS = ["Bona"];
 export type WorldName = (typeof WORLDS)[number];
-
-// The number of columns in the highscores table
-export const PAGE_COLUMN_NUMBER = 6;
 
 // Each vocation has 20 pages of highscores, with 50 players per page, so we can get up to 1000 players per vocation
 export const PAGES_PER_VOCATION = 20;
