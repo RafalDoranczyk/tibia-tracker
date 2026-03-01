@@ -22,6 +22,9 @@
     "rimraf": "6.1.2",
     "turbo": "2.8.8"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "*"
+  },
   "packageManager": "npm@11.10.0",
   "workspaces": [
     "apps/*",
