@@ -1,5 +1,6 @@
 "use client";
 
+import Cake from "@mui/icons-material/Cake";
 import Celebration from "@mui/icons-material/Celebration";
 import FlashOn from "@mui/icons-material/FlashOn";
 import LocalFireDepartment from "@mui/icons-material/LocalFireDepartment";
@@ -141,6 +142,10 @@ function XpSimulatorBar({
           </ToggleButton>
           <ToggleButton color="secondary" value="double">
             <Celebration fontSize="small" /> Double
+          </ToggleButton>
+
+          <ToggleButton color="secondary" value="cake">
+            <Cake fontSize="small" /> Cake Event
           </ToggleButton>
         </ToggleButtonGroup>
       </Stack>
