@@ -1,0 +1,23 @@
+{
+  "name": "exp-highscore-scraper",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --clean",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "db:types": "supabase gen types typescript --project-id saoouvvhunyuohwqmbwy > src/db/types/db.types.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.39.0",
+    "axios": "1.6.0",
+    "cheerio": "1.0.0-rc.12",
+    "dotenv": "16.3.1"
+  },
+  "devDependencies": {
+    "tsx": "4.0.0",
+    "tsup": "8.0.1",
+    "typescript": "5.0.0",
+    "@types/node": "20.0.0"
+  }
+}

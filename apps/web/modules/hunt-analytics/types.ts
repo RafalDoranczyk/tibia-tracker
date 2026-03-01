@@ -1,6 +1,6 @@
 import type { HuntSpotAnalytics } from "./schemas";
 
-export type ActiveBoost = "stamina" | "boost" | "double";
+export type ActiveBoost = "stamina" | "boost" | "double" | "cake";
 
 export type HuntSpotsAnalyticsUI = {
   bestXpSpot: HuntSpotAnalytics;
