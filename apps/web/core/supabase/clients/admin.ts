@@ -1,9 +1,8 @@
 import "server-only";
 
+import type { Database } from "@repo/database";
 import { createClient } from "@supabase/supabase-js";
-
 import { SUPABASE_CONFIG } from "../config";
-import type { Database } from "../types";
 
 /**
  * Creates a Supabase client with Service Role privileges.

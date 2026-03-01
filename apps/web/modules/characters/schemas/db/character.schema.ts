@@ -1,6 +1,5 @@
+import type { Enums, Tables } from "@repo/database";
 import { z } from "zod";
-
-import type { Enums, Tables } from "@/core/supabase/types";
 import { NonEmptyString, UUID } from "@/lib/zod";
 import { MIN_CHARACTER_NAME_LENGTH } from "../../constants";
 

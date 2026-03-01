@@ -1,5 +1,5 @@
+import type { Enums } from "@repo/database";
 import { z } from "zod";
-import type { Enums } from "@/core/supabase/types";
 import { MonsterClassSchema, MonsterDifficultySchema } from "@/modules/monsters";
 
 const BestiaryStageFilterSchema = z.enum(["not_completed", "completed"]) satisfies z.ZodType<

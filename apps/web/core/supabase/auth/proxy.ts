@@ -1,6 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
-
 import { SUPABASE_CONFIG } from "../config";
 
 export function createSupabaseProxy(request: NextRequest) {

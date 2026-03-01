@@ -1,6 +1,5 @@
 import type { User } from "@supabase/supabase-js";
 import { cache } from "react";
-
 import { AppError, AppErrorCode } from "../../error";
 import type { TypedSupabaseClient } from "../types";
 import { createServerSupabase } from "./server";

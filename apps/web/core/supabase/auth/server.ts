@@ -1,6 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-
 import { SUPABASE_CONFIG } from "../config";
 import type { TypedSupabaseClient } from "../types";
 

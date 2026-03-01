@@ -1,7 +1,6 @@
+import type { Database } from "@repo/database";
 import { createClient } from "@supabase/supabase-js";
-
 import { SUPABASE_CONFIG } from "../config";
-import type { Database } from "../types";
 
 /**
  * STATIC CLIENT (No Cookies)

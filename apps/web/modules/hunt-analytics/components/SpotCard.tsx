@@ -17,12 +17,14 @@ import { useMemo, useState } from "react";
 import { getPublicAssetUrl } from "@/core/assets";
 import { formatNumberCompact } from "@/utils";
 import type { HuntSpotAnalytics } from "../schemas";
+import { HUNT_SPOT_RECENT_LIMIT } from "../server/queries/hunt-spots-analytics";
 import { calculateTimeToNextLevel, calculateTotalExp, sortMonstersByExp } from "../utils";
 
 // 3 Prey is just max in the game, so it makes sense to limit the selection to that
 const MAX_PREY_SELECTION = 3;
-const HUNT_SPOT_CONFIDENCE = 5;
-const HUNT_SPOT_CONFIDENCE_THRESHOLD = HUNT_SPOT_CONFIDENCE * 2;
+
+// Minimum sessions for high confidence (green dot)
+const HUNT_SPOT_CONFIDENCE_THRESHOLD = HUNT_SPOT_RECENT_LIMIT / 2;
 
 type Highlight = "xp" | "profit";
 
@@ -121,7 +123,7 @@ function CardHeader({
   place_name: string;
   sessions_analyzed: number;
 }) {
-  const confidenceScore = Math.min(Math.ceil(sessions_analyzed / 2), HUNT_SPOT_CONFIDENCE);
+  const confidenceScore = Math.min(Math.ceil(sessions_analyzed), HUNT_SPOT_RECENT_LIMIT);
   const isHighConfidence = sessions_analyzed >= HUNT_SPOT_CONFIDENCE_THRESHOLD;
 
   return (
@@ -138,7 +140,7 @@ function CardHeader({
 
         <Stack direction="row" spacing={0.5} alignItems="center">
           <Stack direction="row" spacing={0.3}>
-            {[...Array(HUNT_SPOT_CONFIDENCE)].map((_, i) => (
+            {[...Array(HUNT_SPOT_RECENT_LIMIT)].map((_, i) => (
               <Box
                 // biome-ignore lint/suspicious/noArrayIndexKey: <Skeletons are static>
                 key={i}

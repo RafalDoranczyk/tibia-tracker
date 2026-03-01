@@ -1,5 +1,5 @@
+import type { Tables } from "@repo/database";
 import { z } from "zod";
-import type { Tables } from "@/core/supabase/types";
 import { LocalDatetime, NonNegativeInt } from "@/lib/zod";
 import { CharacterIDSchema } from "@/modules/characters";
 import { MonsterClassSchema, MonsterSchema } from "@/modules/monsters";
