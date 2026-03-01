@@ -16,7 +16,7 @@ import {
 import { useMemo, useState } from "react";
 import { getPublicAssetUrl } from "@/core/assets";
 import { formatNumberCompact } from "@/utils";
-import type { HuntSpot } from "../schemas";
+import type { HuntSpotAnalytics } from "../schemas";
 import { calculateTimeToNextLevel, calculateTotalExp, sortMonstersByExp } from "../utils";
 
 // 3 Prey is just max in the game, so it makes sense to limit the selection to that
@@ -26,14 +26,14 @@ const HUNT_SPOT_CONFIDENCE_THRESHOLD = HUNT_SPOT_CONFIDENCE * 2;
 
 type Highlight = "xp" | "profit";
 
-type HuntCardProps = {
-  stats: HuntSpot;
+type SpotCardProps = {
+  stats: HuntSpotAnalytics;
   highlight?: Highlight;
   xpToNextLevel: number;
   currentMultiplier: number;
 };
 
-export function HuntCard({ stats, highlight, xpToNextLevel, currentMultiplier }: HuntCardProps) {
+export function SpotCard({ stats, highlight, xpToNextLevel, currentMultiplier }: SpotCardProps) {
   const {
     avg_profit_h,
     avg_monsters_per_hour,

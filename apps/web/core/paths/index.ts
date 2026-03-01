@@ -15,6 +15,7 @@ export const characterPaths = (characterId: string) => {
       NEW: `${base}/hunt-sessions/new`,
       EDIT: (sessionId: number | string) => `${base}/hunt-sessions/${sessionId}`,
     },
+    HUNT_ANALYTICS: `${base}/hunt-analytics`,
   } as const;
 };
 

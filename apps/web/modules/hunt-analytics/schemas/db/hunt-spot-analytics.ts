@@ -10,7 +10,7 @@ export const MonsterAvgStatsSchema = z.object({
   avg_count_per_hour: z.number(),
 });
 
-export const HuntSpotSchema = z.object({
+export const HuntSpotAnalyticsSchema = z.object({
   place_id: HuntPlaceSchema.shape.id,
   place_name: HuntPlaceSchema.shape.name,
   place_image_path: HuntPlaceSchema.shape.image_path,
@@ -27,4 +27,4 @@ export const HuntSpotSchema = z.object({
   avg_monsters_per_hour: z.array(MonsterAvgStatsSchema),
 });
 
-export type HuntSpot = z.infer<typeof HuntSpotSchema>;
+export type HuntSpotAnalytics = z.infer<typeof HuntSpotAnalyticsSchema>;

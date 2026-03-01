@@ -4,16 +4,20 @@ import { NAVIGATION_IMAGES } from "../images";
 import type { NavigationSection } from "../types";
 
 export const NAVIGATION_IDS = {
+  // Character Overview
   DASHBOARD: "dashboard",
   CHARMS: "charms",
   BESTIARY: "bestiary",
+  // Hunting
   HUNT_SESSIONS: "hunt-sessions",
-  HUNT_SPOTS: "hunt-places",
   ADD_HUNT_SESSION: "add-hunt-session",
-  CHARACTERS: "characters",
-  IMBUING: "imbuing",
+  HUNT_ANALYTICS: "hunt-analytics",
+  // Calculators
+  IMBUING: "imbuing-calculator",
   TRAINING_CALCULATOR: "training-calculator",
   STAMINA_CALCULATOR: "stamina-calculator",
+  // My Account
+  CHARACTERS: "characters",
 } as const;
 
 export const NAVIGATION_MODULES: NavigationSection[] = [
@@ -41,6 +45,11 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
         requiresCharacter: true,
         icon: { type: "image", src: NAVIGATION_IMAGES.charms },
       },
+    ],
+  },
+  {
+    title: "Hunting",
+    elements: [
       {
         id: NAVIGATION_IDS.HUNT_SESSIONS,
         text: "Hunt Sessions",
@@ -61,9 +70,9 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
         ],
       },
       {
-        id: NAVIGATION_IDS.HUNT_SPOTS,
-        text: "Hunt Spots",
-        to: (p) => p.HUNT_SPOTS,
+        id: NAVIGATION_IDS.HUNT_ANALYTICS,
+        text: "Hunt Analytics",
+        to: (p) => p.HUNT_ANALYTICS,
         requiresCharacter: true,
         icon: { type: "image", src: NAVIGATION_IMAGES.huntGold },
       },

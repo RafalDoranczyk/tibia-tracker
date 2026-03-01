@@ -19,7 +19,7 @@ const formatSession = (s: HuntSessionListItem) => ({
   ...s,
   displayDate: formatDate(s.date),
   displayXp: formatNumberCompact(s.raw_xp_per_hour),
-  displayProfit: formatNumberCompact(s.profit),
+  displayProfit: formatNumberCompact(s.profit_per_hour),
   displayDuration: parseSecondsToMinutes(s.duration_seconds),
 });
 
