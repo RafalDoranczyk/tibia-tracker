@@ -5,7 +5,6 @@ import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import PublicIcon from "@mui/icons-material/Public";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import { LinearProgress, Paper, Stack, Typography } from "@mui/material";
-
 import type { CharacterBestiaryClassSummary, CharacterBestiarySummary } from "../schemas";
 
 type BestiarySummaryPanelProps = {

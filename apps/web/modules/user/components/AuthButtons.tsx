@@ -3,8 +3,7 @@
 import GitHub from "@mui/icons-material/GitHub";
 import Google from "@mui/icons-material/Google";
 import { Button, Divider, Stack } from "@mui/material";
-
-import { startOAuthLogin } from "@/modules/user/actions/start-oauth-login";
+import { startOAuthLogin } from "@/modules/user/actions";
 
 export function AuthButtons() {
   return (

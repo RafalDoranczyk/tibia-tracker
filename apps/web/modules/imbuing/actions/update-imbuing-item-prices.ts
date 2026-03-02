@@ -6,7 +6,7 @@ import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
 import { ImbuingCache } from "../cache/imbuing-cache";
 import { ImbuingFormSchema, type ImbuingPriceKey } from "../schemas";
-import { dbUpsertImbuingItemPrices } from "../server";
+import { dbUpsertImbuingItemPrices } from "../server/mutations/upsert-imbuing-prices";
 
 export async function updateImbuingItemPrices(payload: unknown): Promise<void> {
   const prices = assertZodParse(ImbuingFormSchema, payload);
@@ -24,9 +24,9 @@ export async function updateImbuingItemPrices(payload: unknown): Promise<void> {
 
   const { error } = await dbUpsertImbuingItemPrices(supabase, data);
 
-  updateTag(ImbuingCache.imbuingPrices(user.id));
-
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to update imbuing item prices");
   }
+
+  updateTag(ImbuingCache.imbuingPrices(user.id));
 }

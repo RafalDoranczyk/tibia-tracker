@@ -1,5 +1,4 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
-
 import type { ImbuingScroll } from "../schemas";
 import { ScrollCard } from "./ScrollCard";
 

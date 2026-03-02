@@ -6,7 +6,7 @@ import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
 import { CharactersCache } from "../cache/characters-cache";
 import { type Character, CharacterSchema, CreateCharacterSchema } from "../schemas";
-import { dbInsertCharacter } from "../server";
+import { dbInsertCharacter } from "../server/mutations/characters";
 
 export async function createCharacter(payload: unknown): Promise<Character> {
   const parsed = assertZodParse(CreateCharacterSchema, payload);

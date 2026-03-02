@@ -2,9 +2,7 @@
 
 import { AppBar, Drawer, Toolbar } from "@mui/material";
 import { useState } from "react";
-
 import { TooltipIconButton } from "@/components";
-
 import { NavigationLinks } from "./NavigationLinks";
 
 export function MobileNavigation() {

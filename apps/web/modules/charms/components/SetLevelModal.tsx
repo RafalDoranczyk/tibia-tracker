@@ -1,8 +1,6 @@
 import { Box, Card, CardActionArea, CardContent, Stack, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
-
 import { ConfirmDialog } from "@/components";
-
 import { CHARM_LEVELS, type CharacterCharmWithProgress, type CharmLevel } from "../schemas";
 import { getCharmEffectAtLevel, getCharmTotalCostToLevel } from "../utils/getCharmEconomy";
 

@@ -1,7 +1,5 @@
 import { z } from "zod";
-
 import { Email, UUID } from "@/lib/zod";
-
 import { UserRoleEnumSchema } from "../db/user.schema";
 
 export const AppUserSchema = z

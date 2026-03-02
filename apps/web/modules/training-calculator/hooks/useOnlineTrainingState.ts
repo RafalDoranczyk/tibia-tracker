@@ -1,7 +1,5 @@
 import { useState } from "react";
-
 import type { CharacterVocation } from "@/modules/characters";
-
 import { CHARACTER_ONLINE_TRAINING_DEFAULT, MAX_LOYALTY_POINTS } from "../constants";
 import type {
   CharacterSkillVariant,

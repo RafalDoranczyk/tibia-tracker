@@ -1,3 +1,5 @@
+"use client";
+
 import InventoryTwoTone from "@mui/icons-material/InventoryTwoTone";
 import { Grid, Stack } from "@mui/material";
 import { useState } from "react";

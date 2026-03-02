@@ -6,9 +6,9 @@ import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
 import { CharacterIDSchema } from "@/modules/characters";
 import { UserCache } from "../cache/user-cache";
-import { dbUpdateLastActiveCharacter } from "../server";
+import { dbUpdateLastActiveCharacter } from "../server/mutations/user-settings";
 
-export async function updateLastActiveCharacter(payload: unknown) {
+export async function updateLastActiveCharacter(payload: unknown): Promise<void> {
   const id = assertZodParse(CharacterIDSchema, payload);
 
   const { supabase, user } = await requireAuthenticatedSupabase();

@@ -1,6 +1,7 @@
 import type { StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 import type { CharacterPaths } from "@/core/paths";
+import type { AppCharacter } from "@/modules/characters";
 import type { NAVIGATION_IDS } from "./constants";
 
 export type NavigationIcon =
@@ -26,3 +27,5 @@ export type NavigationSection = {
   title: string;
   elements: NavigationLinkElementProps[];
 };
+
+export type VocationRecord = Record<Exclude<AppCharacter["vocation"], undefined>, string>;

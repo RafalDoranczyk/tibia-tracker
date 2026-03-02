@@ -1,5 +1,3 @@
-"use client";
-
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import { Box, Grid } from "@mui/material";
 import { useMemo } from "react";

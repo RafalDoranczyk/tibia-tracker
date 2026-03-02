@@ -19,27 +19,42 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { createCharacter } from "../actions/create-character";
+import { useToast } from "@/hooks/useToast";
+import { setupNewCharacter } from "../actions/setup-new-character";
 import { MIN_CHARACTER_NAME_LENGTH } from "../constants";
 import { useCharacterSearch } from "../hooks/useCharacterSearch";
 import { mapDataCharToDb } from "../mappers/mapDataCharToDb";
 
 export function AddCharacterCard({ onCancel }: { onCancel: () => void }) {
-  const { searchName, setSearchName, foundCharacter, isSearching, error, search, setError } =
+  const toast = useToast();
+
+  const { searchName, setSearchName, foundCharacter, isSearching, error, search, setError, reset } =
     useCharacterSearch();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleAdd = async () => {
     if (!foundCharacter) return;
     setIsSubmitting(true);
+    setError(null);
+
     try {
       const charData = mapDataCharToDb(foundCharacter.character);
-      await createCharacter(charData);
+      const { character, status } = await setupNewCharacter(charData);
+
+      if (status.isFullySynced) {
+        toast.success(`Character ${character.name} added with exp history!`);
+      } else {
+        toast.error(`Character ${character.name} added, but failed to sync experience history.`);
+      }
+
       onCancel();
-    } catch {
-      setError("Failed to save character");
+    } catch (err) {
+      console.error("Add character error:", err);
+      setError("Critical error: Could not create character.");
+      toast.error("Failed to create character.");
     } finally {
       setIsSubmitting(false);
+      reset();
     }
   };
 

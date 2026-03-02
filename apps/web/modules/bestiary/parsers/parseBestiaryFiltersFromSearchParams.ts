@@ -1,5 +1,4 @@
 import { parseJsonQuery } from "@/lib/url";
-
 import { BestiaryFiltersSchema } from "../schemas";
 
 const FILTER_TOKEN = "filters";

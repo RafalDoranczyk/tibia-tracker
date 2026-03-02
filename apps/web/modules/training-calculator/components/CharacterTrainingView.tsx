@@ -2,7 +2,6 @@
 
 import { Box, Grid, Tab, Tabs } from "@mui/material";
 import { type PropsWithChildren, useState } from "react";
-
 import { OnlineTrainingView } from "./OnlineTrainingView";
 
 type TabPanelProps = PropsWithChildren<{

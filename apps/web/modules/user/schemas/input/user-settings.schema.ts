@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 import { CharacterIDSchema } from "@/modules/characters";
 
 export const UpdateUserSettingsSchema = z

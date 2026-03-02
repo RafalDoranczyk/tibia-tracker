@@ -1,11 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
-
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 
-export async function logoutUser() {
+export async function logoutUser(): Promise<void> {
   const { supabase } = await requireAuthenticatedSupabase();
 
   const { error } = await supabase.auth.signOut({ scope: "global" });

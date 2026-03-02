@@ -1,7 +1,6 @@
 import ShoppingBasket from "@mui/icons-material/ShoppingBasket";
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import Image from "next/image";
-
 import { IMBUING_CONFIG } from "../constants";
 import { ITEM_IMAGES } from "../images";
 import type { ScrollEconomyResult } from "../utils/calculateScrollEconomy";

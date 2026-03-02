@@ -1,7 +1,6 @@
 import type { Tables } from "@repo/database";
 import { z } from "zod";
 import { NonNegativeInt } from "@/lib/zod";
-
 import { ImbuingPriceKeySchema } from "./imbuing-keys.schema";
 
 export const ImbuingItemSchema = z.object({

@@ -10,7 +10,7 @@ import {
   type HuntSessionDbFields,
   HuntSessionDbFieldsSchema,
 } from "../schemas";
-import { dbInsertHuntSession } from "../server";
+import { dbInsertHuntSession } from "../server/mutations/insert-hunt-session";
 
 export async function createHuntSession(payload: unknown): Promise<HuntSessionDbFields> {
   const parsed = assertZodParse(CreateHuntSessionPayloadSchema, payload);

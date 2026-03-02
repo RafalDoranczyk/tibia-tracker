@@ -1,5 +1,4 @@
 import type { TypedSupabaseClient } from "@/core/supabase/types";
-
 import type { FetchHuntSessionListPayload } from "../../schemas";
 
 const SELECT = `

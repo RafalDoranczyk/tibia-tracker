@@ -3,7 +3,7 @@ import { z } from "zod";
 import { NonEmptyString, UUID } from "@/lib/zod";
 import { MIN_CHARACTER_NAME_LENGTH } from "../../constants";
 
-const CharacterVocationSchema = z.enum([
+export const CharacterVocationSchema = z.enum([
   "knight",
   "paladin",
   "sorcerer",

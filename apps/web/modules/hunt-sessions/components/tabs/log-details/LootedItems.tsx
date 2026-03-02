@@ -2,11 +2,9 @@ import Inventory2 from "@mui/icons-material/Inventory2";
 import { Avatar, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-
 import { EmptyState } from "@/components";
 import { getPublicAssetUrl } from "@/core/assets";
 import type { ItemPreview } from "@/modules/items";
-
 import type { HuntSessionForm } from "../../../schemas";
 import { SectionPaperCard } from "../SectionPaperCard";
 

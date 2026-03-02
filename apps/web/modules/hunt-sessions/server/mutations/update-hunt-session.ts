@@ -1,5 +1,4 @@
 import type { TypedSupabaseClient } from "@/core/supabase/types";
-
 import type { UpdateHuntSessionPayload } from "../../schemas";
 
 export async function dbUpdateHuntSession(

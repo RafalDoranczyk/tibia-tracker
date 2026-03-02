@@ -2,17 +2,19 @@
 // UI – public components
 // ======================
 
+export { CharacterHistorySyncAllButton } from "./components/CharacterHistorySyncAllButton";
 export { CharactersSyncAllButton } from "./components/CharactersSyncAllButton";
 export { CharactersView } from "./components/CharactersView";
+
 // ======================
 // Providers and hooks
 // ======================
 export {
-  ActiveCharacterProvider,
+  ActiveCharacterContext,
   useActiveCharacter,
   useRequiredCharacterId,
-} from "./providers/ActiveCharacterProvider";
-export { CharactersProvider, useCharacters } from "./providers/CharactersProvider";
+} from "./context/ActiveCharacterContext";
+export { CharactersContext, useCharacters } from "./context/CharactersContext";
 
 // ======================
 // Shared
@@ -23,4 +25,5 @@ export {
   type Character,
   CharacterIDSchema,
   type CharacterVocation,
+  CharacterVocationSchema,
 } from "./schemas";

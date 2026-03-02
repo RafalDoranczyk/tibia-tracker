@@ -7,21 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PATHS } from "@/core/paths";
-import { type AppCharacter, useActiveCharacter, useCharacters } from "@/modules/characters";
-
-const VOCATION_COLORS: Record<Exclude<AppCharacter["vocation"], undefined>, string> = {
-  "Elite Knight": "#ef4444",
-  Knight: "#ef4444",
-  "Master Sorcerer": "#a855f7",
-  Sorcerer: "#a855f7",
-  "Elder Druid": "#3b82f6",
-  Druid: "#3b82f6",
-  "Royal Paladin": "#f59e0b",
-  Paladin: "#f59e0b",
-  Monk: "#10b981",
-  "Exalted Monk": "#10b981",
-  none: "#94a3b8",
-};
+import { useActiveCharacter, useCharacters } from "@/modules/characters";
+import { VOCATION_COLORS } from "../constants";
 
 const getVocationInitials = (vocation: string) => {
   if (!vocation || vocation.toLowerCase() === "none") return "?";

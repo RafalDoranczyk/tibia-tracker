@@ -1,5 +1,3 @@
-"use client";
-
 import { Avatar, alpha, Box, LinearProgress, Stack, Typography } from "@mui/material";
 import { type Control, type FieldValues, type Path, useWatch } from "react-hook-form";
 import { getPublicAssetUrl } from "@/core/assets";

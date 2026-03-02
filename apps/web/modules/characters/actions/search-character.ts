@@ -2,10 +2,11 @@
 
 import { assertZodParse } from "@/lib/zod";
 import { CharacterNameSchema } from "../schemas";
-import { getCharacterByName } from "../server/loaders/get-character-by-name";
+import { getCharacterByName } from "../server";
 
 export async function searchCharacter(payload: unknown) {
   const name = assertZodParse(CharacterNameSchema, payload);
+
   const data = await getCharacterByName(name);
 
   if (!data) {

@@ -1,5 +1,4 @@
 import type { StaticImageData } from "next/image";
-
 import type { ImbuingPriceKey } from "../db/imbuing-keys.schema";
 
 export type ImbuingScrollType = "powerful" | "intricate";

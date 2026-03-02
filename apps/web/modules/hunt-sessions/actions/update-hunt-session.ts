@@ -10,7 +10,7 @@ import {
   HuntSessionDbFieldsSchema,
   UpdateHuntSessionPayloadSchema,
 } from "../schemas";
-import { dbUpdateHuntSession } from "../server";
+import { dbUpdateHuntSession } from "../server/mutations/update-hunt-session";
 
 export async function updateHuntSession(payload: unknown): Promise<HuntSessionDbFields> {
   const parsed = assertZodParse(UpdateHuntSessionPayloadSchema, payload);

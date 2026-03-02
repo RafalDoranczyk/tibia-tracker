@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-
 import { getPublicAssetUrl } from "@/core/assets";
 import type { CharacterCharmDetailed, CharmType } from "@/modules/charms";
 

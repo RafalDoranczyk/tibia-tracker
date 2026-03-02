@@ -14,10 +14,6 @@ import {
 import { HuntSessionMonsterDamageSourceSchema } from "../db/hunt-session-relations.schema";
 import { HuntSessionFiltersSchema } from "./hunt-session-filters.schema";
 
-// ==========================================
-// 🔍 READ / FETCH SCHEMAS
-// ==========================================
-
 export const FetchHuntSessionPayloadSchema = HuntSessionDbBaseFieldsSchema.pick({
   id: true,
   character_id: true,

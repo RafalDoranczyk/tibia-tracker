@@ -5,7 +5,7 @@ import { createAdminClient } from "@/core/supabase/clients/admin";
 import { assertZodParse } from "@/lib/zod";
 import { CharactersCache } from "../../cache/characters-cache";
 import { type Character, CharacterSchema } from "../../schemas";
-import { dbGetCharacters } from "../queries/characters";
+import { dbGetCharacters } from "../queries/get-characters";
 
 async function getCachedCharacterList(userId: string) {
   "use cache";

@@ -7,7 +7,7 @@ import { assertZodParse } from "@/lib/zod";
 import { UserCache } from "@/modules/user";
 import { CharactersCache } from "../cache/characters-cache";
 import { CharacterIDSchema } from "../schemas";
-import { dbDeleteCharacter } from "../server";
+import { dbDeleteCharacter } from "../server/mutations/characters";
 
 export async function deleteCharacter(payload: unknown): Promise<void> {
   const id = assertZodParse(CharacterIDSchema, payload);
@@ -20,6 +20,7 @@ export async function deleteCharacter(payload: unknown): Promise<void> {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to delete character");
   }
 
+  // We have to update user cache to remove the reference to the deleted character in the last active character setting
   updateTag(UserCache.settings(user.id));
   updateTag(CharactersCache.characterList(user.id));
 }

@@ -5,7 +5,7 @@ import { assertZodParse } from "@/lib/zod";
 import { requireCharacterOwnership } from "@/modules/characters/server";
 import { BestiaryCache } from "../../cache/bestiary-cache";
 import { type CharacterBestiarySummary, CharacterBestiarySummarySchema } from "../../schemas";
-import { dbGetBestiarySummary } from "../queries/character_bestiary_summary";
+import { dbGetBestiarySummary } from "../queries/character-bestiary-summary";
 
 async function getCachedBestiarySummary(characterId: string) {
   "use cache";

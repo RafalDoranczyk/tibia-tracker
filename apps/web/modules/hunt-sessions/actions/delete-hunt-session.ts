@@ -6,7 +6,7 @@ import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
 import { HuntSessionCache } from "../cache/hunt-session";
 import { DeleteHuntSessionPayloadSchema } from "../schemas";
-import { dbDeleteHuntSession } from "../server";
+import { dbDeleteHuntSession } from "../server/mutations/delete-hunt-session";
 
 export async function deleteHuntSession(payload: unknown): Promise<void> {
   const { id, characterId } = assertZodParse(DeleteHuntSessionPayloadSchema, payload);

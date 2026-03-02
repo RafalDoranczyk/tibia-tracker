@@ -9,10 +9,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
-    "analyze": "next experimental-analyze",
-    "db:types": "supabase gen types typescript --project-id saoouvvhunyuohwqmbwy > core/supabase/types/database.types.ts"
+    "analyze": "next experimental-analyze"
   },
   "dependencies": {
+    "@repo/scrapers": "*",
     "@emotion/cache": "11.14.0",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.0",

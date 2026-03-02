@@ -1,5 +1,3 @@
-"use client";
-
 import Thunderstorm from "@mui/icons-material/Thunderstorm";
 import { Grid } from "@mui/material";
 import { useMemo } from "react";

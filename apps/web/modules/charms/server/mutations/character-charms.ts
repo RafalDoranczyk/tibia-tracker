@@ -1,5 +1,4 @@
 import type { TypedSupabaseClient } from "@/core/supabase/types";
-
 import type { Charm, CharmLevel } from "../../schemas";
 
 export function dbSetCharacterCharmLevel(

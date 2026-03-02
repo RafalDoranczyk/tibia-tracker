@@ -2,9 +2,7 @@
 
 import { Grid } from "@mui/material";
 import { useState } from "react";
-
 import type { FetchCharacterBestiaryResult, MonsterWithCharacterProgress } from "../schemas";
-
 import { MonsterCard } from "./MonsterCard";
 import { MonsterDetailsDrawer } from "./MonsterDetailsDrawer";
 

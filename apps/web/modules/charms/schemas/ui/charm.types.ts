@@ -1,7 +1,5 @@
 import { z } from "zod";
-
 import { NonEmptyString, PositiveInt } from "@/lib/zod";
-
 import { CHARM_LEVELS, type CharmLevel, CharmLevelSchema, CharmSchema } from "../db/charm.schema";
 
 const CharmLevelValuesSchema = z.object({

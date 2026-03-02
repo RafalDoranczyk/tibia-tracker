@@ -1,7 +1,6 @@
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
-
 import { type AppUser, AppUserSchema } from "../../schemas";
 import { dbGetUserRole } from "../queries/user-role";
 

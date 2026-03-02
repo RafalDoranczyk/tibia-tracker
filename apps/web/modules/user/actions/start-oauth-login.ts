@@ -1,13 +1,11 @@
 "use server";
 
 import { redirect } from "next/navigation";
-
 import { env } from "@/core/env";
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { createServerSupabase } from "@/core/supabase/auth/server";
 import { mapSupabaseErrorToAppError } from "@/core/supabase/errors";
 import { assertZodParse } from "@/lib/zod";
-
 import { OAuthProviderSchema } from "../schemas";
 
 export async function startOAuthLogin(payload: unknown): Promise<void> {

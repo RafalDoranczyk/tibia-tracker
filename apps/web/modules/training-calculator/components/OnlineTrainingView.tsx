@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-
 import { useOnlineTrainingState } from "../hooks/useOnlineTrainingState";
 import { OnlineTrainingSummary } from "./OnlineTrainingSummary";
 import { TrainingWeaponCharacterCard } from "./TrainingWeaponCharacterCard";

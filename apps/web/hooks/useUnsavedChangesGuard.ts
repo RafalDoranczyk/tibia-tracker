@@ -1,3 +1,5 @@
+"use client";
+
 import { useBeforeUnloadWarning } from "./useBeforeUnloadWarning";
 import { useNavigationWarning } from "./useNavigationWarning";
 

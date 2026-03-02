@@ -1,5 +1,4 @@
 import { useFormContext, useWatch } from "react-hook-form";
-
 import type { ImbuingFormValues, ImbuingPriceKey, ImbuingPrices, ImbuingScroll } from "../schemas";
 import { calculateScrollEconomy } from "../utils/calculateScrollEconomy";
 

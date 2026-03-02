@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useActiveCharacter } from "@/modules/characters";
-
 import type { ActiveBoost, HuntSpotsAnalyticsUI } from "../types";
 import { calculateXpMultiplier, getExpNextLevel } from "../utils";
 import { PerformanceBadge } from "./PerformanceBadge";

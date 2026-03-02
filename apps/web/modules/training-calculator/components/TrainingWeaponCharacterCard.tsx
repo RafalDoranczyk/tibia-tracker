@@ -22,9 +22,7 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-
 import type { CharacterVocation } from "@/modules/characters";
-
 import {
   ALLOWED_SKILLS_FOR_VOCATION,
   LOYALTY_MARKS,

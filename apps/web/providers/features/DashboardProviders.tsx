@@ -1,11 +1,7 @@
 import type { PropsWithChildren } from "react";
 
-import {
-  ActiveCharacterProvider,
-  type AppCharacter,
-  CharactersProvider,
-} from "@/modules/characters";
-import { type AppUser, UserProvider } from "@/modules/user";
+import { ActiveCharacterContext, type AppCharacter, CharactersContext } from "@/modules/characters";
+import { type AppUser, UserContext } from "@/modules/user";
 
 type DashboardProvidersProps = PropsWithChildren<{
   initialUser: AppUser | null;
@@ -20,15 +16,15 @@ export function DashboardProviders({
   initialActiveCharacterId,
 }: DashboardProvidersProps) {
   return (
-    <UserProvider initialUser={initialUser}>
-      <CharactersProvider initialCharacters={initialCharacters}>
-        <ActiveCharacterProvider
+    <UserContext initialUser={initialUser}>
+      <CharactersContext initialCharacters={initialCharacters}>
+        <ActiveCharacterContext
           initialCharacters={initialCharacters}
           initialActiveCharacterId={initialActiveCharacterId}
         >
           {children}
-        </ActiveCharacterProvider>
-      </CharactersProvider>
-    </UserProvider>
+        </ActiveCharacterContext>
+      </CharactersContext>
+    </UserContext>
   );
 }

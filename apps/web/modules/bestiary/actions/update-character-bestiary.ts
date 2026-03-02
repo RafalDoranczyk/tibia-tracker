@@ -4,10 +4,10 @@ import { updateTag } from "next/cache";
 import { AppErrorCode, throwAndLogError } from "@/core/error";
 import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
 import { assertZodParse } from "@/lib/zod";
-import { updateCharacterCharmTags } from "@/modules/charms/server";
+import { updateCharacterCharmTags } from "@/modules/charms";
 import { BestiaryCache } from "../cache/bestiary-cache";
 import { UpdateCharacterBestiaryPayloadSchema } from "../schemas";
-import { dbUpsertCharacterBestiary } from "../server";
+import { dbUpsertCharacterBestiary } from "../server/mutations/character-bestiary";
 
 export async function updateCharacterBestiary(payload: unknown): Promise<void> {
   const parsed = assertZodParse(UpdateCharacterBestiaryPayloadSchema, payload);

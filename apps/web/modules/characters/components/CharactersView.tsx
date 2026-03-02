@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 import { useToast } from "@/hooks";
 import { deleteCharacter } from "../actions/delete-character";
 
-import { useActiveCharacter } from "../providers/ActiveCharacterProvider";
+import { useActiveCharacter } from "../context/ActiveCharacterContext";
 import type { AppCharacter } from "../schemas";
 import { CardGrid } from "./CardGrid";
 import { SettingsDialog } from "./SettingsDialog";

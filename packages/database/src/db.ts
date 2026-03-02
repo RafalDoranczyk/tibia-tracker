@@ -111,49 +111,6 @@ export type Database = {
           },
         ];
       };
-      character_logs: {
-        Row: {
-          character_id: string;
-          created_at: string;
-          exp: number;
-          id: number;
-        };
-        Insert: {
-          character_id: string;
-          created_at?: string;
-          exp: number;
-          id?: number;
-        };
-        Update: {
-          character_id?: string;
-          created_at?: string;
-          exp?: number;
-          id?: number;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "character_logs_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "character_bestiary_class_summary";
-            referencedColumns: ["character_id"];
-          },
-          {
-            foreignKeyName: "character_logs_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "character_charm_economy";
-            referencedColumns: ["character_id"];
-          },
-          {
-            foreignKeyName: "character_logs_character_id_fkey";
-            columns: ["character_id"];
-            isOneToOne: false;
-            referencedRelation: "characters";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
       characters: {
         Row: {
           id: string;
@@ -244,38 +201,41 @@ export type Database = {
         };
         Relationships: [];
       };
-      highscores: {
+      experience_log: {
         Row: {
+          character_name: string;
+          created_at: string | null;
           experience: number;
           id: string;
-          last_updated_at: string;
           level: number;
-          name: string;
-          rank: number;
-          vocation: string;
-          vocation_id: number;
+          rank: number | null;
+          recorded_at: string;
+          source: Database["public"]["Enums"]["scraper_source"];
+          vocation: string | null;
           world: string;
         };
         Insert: {
+          character_name: string;
+          created_at?: string | null;
           experience: number;
           id?: string;
-          last_updated_at?: string;
           level: number;
-          name: string;
-          rank: number;
-          vocation: string;
-          vocation_id: number;
+          rank?: number | null;
+          recorded_at: string;
+          source?: Database["public"]["Enums"]["scraper_source"];
+          vocation?: string | null;
           world: string;
         };
         Update: {
+          character_name?: string;
+          created_at?: string | null;
           experience?: number;
           id?: string;
-          last_updated_at?: string;
           level?: number;
-          name?: string;
-          rank?: number;
-          vocation?: string;
-          vocation_id?: number;
+          rank?: number | null;
+          recorded_at?: string;
+          source?: Database["public"]["Enums"]["scraper_source"];
+          vocation?: string | null;
           world?: string;
         };
         Relationships: [];
@@ -871,27 +831,6 @@ export type Database = {
           },
         ];
       };
-      user_tracked_characters: {
-        Row: {
-          character_name: string;
-          created_at: string | null;
-          id: string;
-          user_id: string;
-        };
-        Insert: {
-          character_name: string;
-          created_at?: string | null;
-          id?: string;
-          user_id: string;
-        };
-        Update: {
-          character_name?: string;
-          created_at?: string | null;
-          id?: string;
-          user_id?: string;
-        };
-        Relationships: [];
-      };
     };
     Views: {
       character_bestiary_class_summary: {
@@ -1223,6 +1162,7 @@ export type Database = {
       monster_difficulty: "Harmless" | "Trivial" | "Easy" | "Medium" | "Hard" | "Challenging";
       monster_rarity: "Ordinary" | "Very Rare";
       prey_bonus_type: "exp" | "loot" | "damage" | "damage_reduction";
+      scraper_source: "official" | "guildstats" | "manual";
       user_role: "user" | "admin";
     };
     CompositeTypes: {
@@ -1469,6 +1409,7 @@ export const Constants = {
       monster_difficulty: ["Harmless", "Trivial", "Easy", "Medium", "Hard", "Challenging"],
       monster_rarity: ["Ordinary", "Very Rare"],
       prey_bonus_type: ["exp", "loot", "damage", "damage_reduction"],
+      scraper_source: ["official", "guildstats", "manual"],
       user_role: ["user", "admin"],
     },
   },
