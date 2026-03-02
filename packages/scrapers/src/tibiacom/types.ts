@@ -1,3 +1,3 @@
 import type { Tables } from "@repo/database";
 
-export type ExperienceLogEntry = Omit<Tables<"experience_log">, "id">;
+export type ExperienceLogEntry = Omit<Tables<"experience_log">, "id" | "created_at">;
