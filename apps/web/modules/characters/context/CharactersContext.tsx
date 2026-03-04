@@ -9,7 +9,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import type { AppCharacter } from "../schemas";
+import type { AppCharacter } from "../types";
 
 type CharactersContextValue = {
   characters: AppCharacter[];

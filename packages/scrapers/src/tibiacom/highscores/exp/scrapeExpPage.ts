@@ -31,9 +31,9 @@ export async function scrapeExpPage({
       const txt = (i: number) => $(cols[i]).text().trim();
 
       results.push({
-        world,
+        // TODO: Not available on this page
+        global_character_id: "",
         character_name: txt(1),
-        vocation: txt(2),
         level: parseInt(txt(4), 10),
         experience: parseInt(txt(5).replace(/,/g, ""), 10),
         rank: parseInt(txt(0), 10),

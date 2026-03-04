@@ -1,7 +1,7 @@
 "use client";
 
+import { AppErrorCode, isAppError } from "@repo/errors";
 import { isDevEnv } from "@/core/env";
-import { AppErrorCode, isAppError } from "@/core/error";
 import { ErrorPage } from "@/layout/page/ErrorPage";
 
 export default function GlobalError({

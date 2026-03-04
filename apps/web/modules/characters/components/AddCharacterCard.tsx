@@ -21,9 +21,7 @@ import {
 import { useState } from "react";
 import { useToast } from "@/hooks/useToast";
 import { setupNewCharacter } from "../actions/setup-new-character";
-import { MIN_CHARACTER_NAME_LENGTH } from "../constants";
 import { useCharacterSearch } from "../hooks/useCharacterSearch";
-import { mapDataCharToDb } from "../mappers/mapDataCharToDb";
 
 export function AddCharacterCard({ onCancel }: { onCancel: () => void }) {
   const toast = useToast();
@@ -38,28 +36,20 @@ export function AddCharacterCard({ onCancel }: { onCancel: () => void }) {
     setError(null);
 
     try {
-      const charData = mapDataCharToDb(foundCharacter.character);
-      const { character, status } = await setupNewCharacter(charData);
-
-      if (status.isFullySynced) {
-        toast.success(`Character ${character.name} added with exp history!`);
-      } else {
-        toast.error(`Character ${character.name} added, but failed to sync experience history.`);
-      }
+      const result = await setupNewCharacter(foundCharacter.character.name);
+      toast.success(`Character ${result} added and synced!`);
 
       onCancel();
-    } catch (err) {
-      console.error("Add character error:", err);
-      setError("Critical error: Could not create character.");
-      toast.error("Failed to create character.");
+    } catch {
+      setError("Failed to add character. Please try again.");
+      toast.error("Failed to add character. Please try again.");
     } finally {
       setIsSubmitting(false);
       reset();
     }
   };
 
-  const isSearchDisabled =
-    searchName.length < MIN_CHARACTER_NAME_LENGTH || isSearching || isSubmitting;
+  const isSearchDisabled = isSearching || isSubmitting;
 
   return (
     <Card
@@ -136,7 +126,6 @@ export function AddCharacterCard({ onCancel }: { onCancel: () => void }) {
                 overflow: "hidden",
               }}
             >
-              {/* Dekoracyjny pasek statusu konta */}
               <Box
                 sx={{
                   position: "absolute",
@@ -226,10 +215,10 @@ export function AddCharacterCard({ onCancel }: { onCancel: () => void }) {
                 size="medium"
                 sx={{ mt: 2.5, fontWeight: 700 }}
                 onClick={handleAdd}
-                loading={isSubmitting}
-                startIcon={<PersonAddIcon />}
+                disabled={isSubmitting}
+                startIcon={isSubmitting ? undefined : <PersonAddIcon />}
               >
-                Confirm & Add
+                {isSubmitting ? "Adding to account..." : "Confirm & Add"}
               </Button>
             </Box>
           )}

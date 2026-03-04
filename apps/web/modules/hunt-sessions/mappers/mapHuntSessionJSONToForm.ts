@@ -1,6 +1,6 @@
-import type { ItemPreview } from "@/modules/items";
+import type { ItemPreview, MonsterPreview } from "@repo/database";
 import { parseHuntSessionJSON } from "../parsers/parseHuntSessionJSON";
-import { type HuntSessionForm, HuntSessionLogParsedSchema, type MonsterPreview } from "../schemas";
+import { type HuntSessionForm, HuntSessionLogParsedSchema } from "../schemas";
 
 function mapParsedEntitiesToCatalog<
   TParsed extends { name: string; count: number },

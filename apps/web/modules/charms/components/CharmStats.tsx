@@ -10,7 +10,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import type { CharacterCharmEconomy } from "../schemas";
+import type { CharacterCharmEconomy } from "@repo/database";
 
 type CharmStatsProps = {
   charmEconomy: CharacterCharmEconomy;

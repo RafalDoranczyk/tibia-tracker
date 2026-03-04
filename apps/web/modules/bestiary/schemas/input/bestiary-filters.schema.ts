@@ -1,6 +1,5 @@
-import type { Enums } from "@repo/database";
-import { z } from "zod";
-import { MonsterClassSchema, MonsterDifficultySchema } from "@/modules/monsters";
+import { type Enums, MonsterClassSchema, MonsterDifficultySchema } from "@repo/database";
+import { z } from "@repo/validation";
 
 const BestiaryStageFilterSchema = z.enum(["not_completed", "completed"]) satisfies z.ZodType<
   Enums<"bestiary_stage_filter">

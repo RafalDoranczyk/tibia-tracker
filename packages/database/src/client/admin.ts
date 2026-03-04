@@ -1,0 +1,29 @@
+import type { Database } from "@repo/database";
+import { createClient } from "@supabase/supabase-js";
+import { SUPABASE_CONFIG } from "../config";
+
+/**
+ * Creates a Supabase client with Service Role privileges.
+ * * ⚠️ SECURITY WARNING:
+ * This client bypasses Row Level Security (RLS).
+ * It must ONLY be used on the server-side within secure loaders or actions.
+ * Always ensure you have performed manual authorization checks (e.g., Auth Guards)
+ * before fetching or mutating data with this client.
+ * * NEVER export or use this in Client Components.
+ */
+export function createAdminClient() {
+  if (typeof window !== "undefined") {
+    throw new Error("CRITICAL SECURITY ERROR: createAdminClient cannot be used in the browser!");
+  }
+
+  if (!SUPABASE_CONFIG.serviceRoleKey) {
+    throw new Error("SUPABASE_SERVICE_ROLE_KEY is missing! Cannot create admin client.");
+  }
+
+  return createClient<Database>(SUPABASE_CONFIG.url, SUPABASE_CONFIG.serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+}

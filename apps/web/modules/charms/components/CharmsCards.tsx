@@ -1,11 +1,12 @@
 "use client";
 
 import { Container, Divider, Grid, Typography } from "@mui/material";
+import type { CharmLevel } from "@repo/database";
 import { useMemo, useState, useTransition } from "react";
 import { useToast } from "@/hooks";
 import { useRequiredCharacterId } from "@/modules/characters";
 import { setCharacterCharmLevel } from "../actions/set-character-charm-level";
-import type { CharacterCharmWithProgress, CharmLevel } from "../schemas";
+import type { CharacterCharmWithProgress } from "../types";
 import { MajorCard } from "./MajorCard";
 import { MinorCard } from "./MinorCard";
 import { SetLevelModal } from "./SetLevelModal";

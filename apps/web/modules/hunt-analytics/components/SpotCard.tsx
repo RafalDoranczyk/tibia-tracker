@@ -13,13 +13,14 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+import type { HuntSpotAnalytics } from "@repo/database";
+import { getNeededTimeForNextLevel } from "@repo/tibia-utils";
 import { useMemo, useState } from "react";
 import { getPublicAssetUrl } from "@/core/assets";
 import { formatNumberCompact } from "@/utils";
-import type { HuntSpotAnalytics } from "../schemas";
-import { HUNT_SPOT_RECENT_LIMIT } from "../server/queries/hunt-spots-analytics";
-import { calculateTimeToNextLevel, calculateTotalExp, sortMonstersByExp } from "../utils";
+import { calculateTotalExp, sortMonstersByExp } from "../utils";
 
+const HUNT_SPOT_RECENT_LIMIT = 8;
 // 3 Prey is just max in the game, so it makes sense to limit the selection to that
 const MAX_PREY_SELECTION = 3;
 
@@ -63,7 +64,7 @@ export function SpotCard({ stats, highlight, xpToNextLevel, currentMultiplier }:
   );
 
   const timeToNextLevel = useMemo(
-    () => calculateTimeToNextLevel(xpToNextLevel, totalExp),
+    () => getNeededTimeForNextLevel(xpToNextLevel, totalExp),
     [xpToNextLevel, totalExp]
   );
 

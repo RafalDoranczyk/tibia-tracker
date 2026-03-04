@@ -1,6 +1,6 @@
+import type { MonsterClass, MonsterDifficulty } from "@repo/database";
 import { useTransition } from "react";
 import { usePaginationQueryParams } from "@/hooks";
-import type { MonsterClass, MonsterDifficulty } from "@/modules/monsters";
 import type { BestiaryFilters, BestiaryStageFilter } from "../schemas";
 
 type BestiaryStageFilterOption = BestiaryStageFilter | "all";

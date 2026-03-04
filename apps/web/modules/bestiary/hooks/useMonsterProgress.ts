@@ -1,14 +1,11 @@
 "use client";
 
+import type { MonsterWithCharacterProgress } from "@repo/database";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks";
 import { useRequiredCharacterId } from "@/modules/characters";
 import { updateCharacterBestiary } from "../actions/update-character-bestiary";
-import {
-  BESTIARY_STAGE,
-  type MonsterWithCharacterProgress,
-  type UpdateCharacterBestiaryPayload,
-} from "../schemas";
+import { BESTIARY_STAGE, type UpdateCharacterBestiaryPayload } from "../schemas";
 import { calculateBestiaryStage } from "../utils/calculateBestiaryStage";
 
 export function useMonsterProgress(monsterFromProps: MonsterWithCharacterProgress) {

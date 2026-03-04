@@ -1,8 +1,8 @@
 "use server";
 
+import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { redirect } from "next/navigation";
-import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
+import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
 
 export async function logoutUser(): Promise<void> {
   const { supabase } = await requireAuthenticatedSupabase();

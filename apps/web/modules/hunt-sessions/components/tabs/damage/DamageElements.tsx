@@ -1,9 +1,9 @@
 import Thunderstorm from "@mui/icons-material/Thunderstorm";
 import { Grid } from "@mui/material";
+import type { DamageElement } from "@repo/database";
 import { useMemo } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { EmptyState } from "@/components";
-import type { DamageElement } from "@/modules/damage-elements";
 import type { HuntSessionForm } from "../../../schemas";
 import { SectionPaperCard } from "../SectionPaperCard";
 import { StatProgressBarRow } from "./StatProgressBarRow";

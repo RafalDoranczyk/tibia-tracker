@@ -1,9 +1,8 @@
 "use client";
 
+import type { TibiaDataCharacter } from "@repo/tibia-data";
 import { useState } from "react";
-import type { TibiaDataCharacter } from "@/lib/tibia-data";
-import { searchCharacter } from "../actions/search-character";
-import { MIN_CHARACTER_NAME_LENGTH } from "../constants";
+import { searchCharacterByName } from "../actions/search-character-by-name";
 
 export function useCharacterSearch() {
   const [searchName, setSearchName] = useState("");
@@ -14,17 +13,12 @@ export function useCharacterSearch() {
   const search = async (e?: React.FormEvent) => {
     e?.preventDefault();
 
-    if (searchName.trim().length < MIN_CHARACTER_NAME_LENGTH) {
-      setError(`Name must be at least ${MIN_CHARACTER_NAME_LENGTH} characters`);
-      return;
-    }
-
     setIsSearching(true);
     setError(null);
     setFoundCharacter(null);
 
     try {
-      const result = await searchCharacter(searchName.trim());
+      const result = await searchCharacterByName(searchName.trim());
 
       if (result.success && result.data) {
         setFoundCharacter(result.data);

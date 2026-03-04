@@ -1,0 +1,14 @@
+import { mapHuntSpotsToUI } from "../mappers/mapHuntSpotsToUI";
+import { getHuntSpotsAnalytics } from "./get-hunt-spots-analytics";
+
+export async function loadHuntSpotsAnalytics(characterId: string) {
+  const data = await getHuntSpotsAnalytics(characterId);
+
+  if (data.length === 0) {
+    return [];
+  }
+
+  const mappedHuntSpots = mapHuntSpotsToUI(data);
+
+  return mappedHuntSpots;
+}

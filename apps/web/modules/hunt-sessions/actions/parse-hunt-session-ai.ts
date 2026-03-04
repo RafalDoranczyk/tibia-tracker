@@ -1,6 +1,6 @@
 "use server";
 
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
+import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
 import { parseHuntSessionImage } from "../parsers/parseHuntSessionImage";
 
 export async function parseHuntSessionAI(formData: unknown) {

@@ -1,8 +1,2 @@
-export { calculateXpMultiplier } from "./calculateXpMultiplier";
-export {
-  calculateTimeToNextLevel,
-  calculateTotalExp,
-  getExpForLevel,
-  getExpNextLevel,
-} from "./experience";
+export { calculateTotalExp } from "./calculateTotalExp";
 export { sortMonstersByExp } from "./sortMonstersByExp";

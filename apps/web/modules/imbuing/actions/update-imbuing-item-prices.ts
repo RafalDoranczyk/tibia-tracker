@@ -1,28 +1,28 @@
 "use server";
 
+import { dbUpsertImbuingItemPricesRPC, type ImbuingPriceKey } from "@repo/database";
+import { AppErrorCode, throwAndLogError } from "@repo/errors";
+import { assertZodParse } from "@repo/validation";
 import { updateTag } from "next/cache";
-import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
-import { assertZodParse } from "@/lib/zod";
-import { ImbuingCache } from "../cache/imbuing-cache";
-import { ImbuingFormSchema, type ImbuingPriceKey } from "../schemas";
-import { dbUpsertImbuingItemPrices } from "../server/mutations/upsert-imbuing-prices";
+import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
+import { ImbuingCache } from "../cache";
+import { ImbuingFormSchema } from "../schemas";
 
 export async function updateImbuingItemPrices(payload: unknown): Promise<void> {
-  const prices = assertZodParse(ImbuingFormSchema, payload);
+  const parsed = assertZodParse(ImbuingFormSchema, payload);
 
   const { supabase, user } = await requireAuthenticatedSupabase();
 
-  const data = Object.entries(prices).map(([key, price]) => ({
+  const prices = Object.entries(parsed).map(([key, price]) => ({
     key: key as ImbuingPriceKey,
     price,
   }));
 
-  if (data.length === 0) {
+  if (prices.length === 0) {
     return;
   }
 
-  const { error } = await dbUpsertImbuingItemPrices(supabase, data);
+  const { error } = await dbUpsertImbuingItemPricesRPC({ supabase, prices });
 
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to update imbuing item prices");

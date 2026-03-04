@@ -255,5 +255,41 @@ export const theme = createTheme({
         },
       },
     },
+
+    MuiTableContainer: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          "::-webkit-scrollbar": { width: "10px" },
+          "::-webkit-scrollbar-thumb": {
+            background: theme.palette.primary.dark,
+            borderRadius: "5px",
+          },
+          "::-webkit-scrollbar-thumb:hover": { background: theme.palette.primary.main },
+          "::-webkit-scrollbar-track": { background: theme.palette.primary.light },
+        }),
+      },
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: () => ({
+          "&.MuiTableRow-hover:hover": {
+            backgroundColor: "rgba(255, 255, 255, 0.04) !important",
+            cursor: "pointer",
+          },
+
+          "&.zebra:nth-of-type(even)": {
+            backgroundColor: "rgba(255, 255, 255, 0.02)",
+          },
+        }),
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        head: ({ theme }) => ({
+          backgroundColor: theme.palette.background.paper,
+          fontWeight: "bold",
+        }),
+      },
+    },
   },
 });

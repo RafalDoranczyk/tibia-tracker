@@ -18,10 +18,10 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+import { calculateXpMultiplier, getNeededExpForNextLevel } from "@repo/tibia-utils";
 import { useMemo, useState } from "react";
 import { useActiveCharacter } from "@/modules/characters";
 import type { ActiveBoost, HuntSpotsAnalyticsUI } from "../types";
-import { calculateXpMultiplier, getExpNextLevel } from "../utils";
 import { PerformanceBadge } from "./PerformanceBadge";
 import { SpotCard } from "./SpotCard";
 
@@ -38,7 +38,7 @@ export function HuntAnalyticsView({
   const xpToNextLevel = useMemo(() => {
     if (!activeCharacter) return 0;
 
-    const totalExpForNextLevel = getExpNextLevel(activeCharacter.level);
+    const totalExpForNextLevel = getNeededExpForNextLevel(activeCharacter.level);
 
     return Math.floor((percentToGo / 100) * totalExpForNextLevel);
   }, [activeCharacter, percentToGo]);

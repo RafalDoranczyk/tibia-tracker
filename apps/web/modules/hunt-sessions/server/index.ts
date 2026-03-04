@@ -1,4 +1,4 @@
 import "server-only";
 
-export { getHuntSessionList } from "./loaders/get-hunt-sesion-list";
-export { loadHuntSession } from "./loaders/load-hunt-session";
+export { getHuntSessionList } from "./get-hunt-sesion-list";
+export { loadHuntSession } from "./load-hunt-session";

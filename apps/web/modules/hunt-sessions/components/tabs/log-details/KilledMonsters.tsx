@@ -1,11 +1,10 @@
 import BugReportOutlined from "@mui/icons-material/BugReportOutlined";
 import { Avatar, Box, Stack, Typography } from "@mui/material";
+import type { CharacterCharmDetailed, MonsterPreview, PreyBonus } from "@repo/database";
 import { useMemo } from "react";
 import { Controller, useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { EmptyState } from "@/components";
-import type { CharacterCharmDetailed } from "@/modules/charms";
-import type { PreyBonus } from "@/modules/prey-bonus";
-import type { HuntSessionForm, MonsterPreview } from "../../../schemas";
+import type { HuntSessionForm } from "@/modules/hunt-sessions/schemas";
 import { SectionPaperCard } from "../SectionPaperCard";
 import { CharmChipEditor } from "./CharmChipEditor";
 import { PreyChipEditor } from "./PreyChipEditor";

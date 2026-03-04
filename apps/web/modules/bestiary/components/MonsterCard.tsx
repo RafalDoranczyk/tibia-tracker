@@ -24,11 +24,10 @@ import {
   Typography,
 } from "@mui/material";
 import Rating from "@mui/material/Rating";
+import type { MonsterDifficulty, MonsterWithCharacterProgress } from "@repo/database";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import type { MonsterDifficulty } from "@/modules/monsters";
 import { useMonsterProgress } from "../hooks/useMonsterProgress";
-import type { MonsterWithCharacterProgress } from "../schemas";
 import { MonsterPortraitFrame } from "./MonsterPortraitFrame";
 
 type MonsterCardProps = {

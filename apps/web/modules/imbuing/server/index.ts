@@ -1,3 +1,3 @@
 import "server-only";
 
-export { getImbuingItemPrices } from "./loaders/get-imbuing-item-prices";
+export { getImbuingItemPrices } from "./get-imbuing-item-prices";

@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-
 import { SearchFieldURL } from "./SearchFieldURL";
 
 type DebouncedSearchFieldURLProps = {

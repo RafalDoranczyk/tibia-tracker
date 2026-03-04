@@ -2,12 +2,18 @@
 
 import SuccessIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
-import InfoIcon from "@mui/icons-material/Info"; // Nowa ikona
+import InfoIcon from "@mui/icons-material/Info";
 import { Box, Snackbar as MuiSnackbar, SnackbarContent } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { createContext, useState } from "react";
 
-import type { ToastContextType, ToastType } from "@/lib/toast";
+type ToastType = "error" | "success" | "info";
+
+interface ToastContextType {
+  error: (message: string) => void;
+  success: (message: string) => void;
+  info: (message: string) => void;
+}
 
 export const ToastContext = createContext<ToastContextType | undefined>(undefined);
 

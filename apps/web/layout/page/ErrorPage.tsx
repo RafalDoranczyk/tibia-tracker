@@ -55,13 +55,9 @@ export function ErrorPage({
         <Paper elevation={3} sx={{ p: 4 }}>
           <Stack spacing={3} alignItems="center" textAlign="center">
             <ReportProblemRounded color="error" sx={{ fontSize: 56 }} />
-
             {errorCode && <Chip label={errorCode} color="error" variant="outlined" />}
-
             <Typography variant="h4">{title}</Typography>
-
             {description && <Typography color="text.secondary">{description}</Typography>}
-
             {/* Actions */}
             <Stack spacing={2} width="100%">
               {reset && (
@@ -75,11 +71,9 @@ export function ErrorPage({
                   Try Again
                 </Button>
               )}
-
               <Button href="/" size="large" variant="outlined" startIcon={<Home />} fullWidth>
                 Go Home
               </Button>
-
               <Button onClick={handleReportBug} startIcon={<BugReport />}>
                 Report Bug
               </Button>

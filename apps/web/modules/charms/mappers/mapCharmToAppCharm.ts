@@ -1,4 +1,5 @@
-import type { Charm, CharmViewModel } from "../schemas";
+import type { Charm } from "@repo/database";
+import type { CharmViewModel } from "../types";
 
 export function mapCharmToAppCharm(row: Charm): CharmViewModel {
   return {

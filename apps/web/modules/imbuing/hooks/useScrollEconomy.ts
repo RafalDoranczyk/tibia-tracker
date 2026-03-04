@@ -1,5 +1,7 @@
+import type { ImbuingPriceKey } from "@repo/database";
 import { useFormContext, useWatch } from "react-hook-form";
-import type { ImbuingFormValues, ImbuingPriceKey, ImbuingPrices, ImbuingScroll } from "../schemas";
+import type { ImbuingFormValues } from "../schemas";
+import type { ImbuingPrices, ImbuingScroll } from "../types";
 import { calculateScrollEconomy } from "../utils/calculateScrollEconomy";
 
 type PriceMap = Partial<Record<ImbuingPriceKey, number>>;

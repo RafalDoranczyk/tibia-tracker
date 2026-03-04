@@ -1,19 +1,19 @@
 "use server";
 
+import { dbUpsertCharacterBestiary } from "@repo/database";
+import { AppErrorCode, throwAndLogError } from "@repo/errors";
+import { assertZodParse } from "@repo/validation";
 import { updateTag } from "next/cache";
-import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
-import { assertZodParse } from "@/lib/zod";
+import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
 import { updateCharacterCharmTags } from "@/modules/charms";
-import { BestiaryCache } from "../cache/bestiary-cache";
+import { BestiaryCache } from "../cache";
 import { UpdateCharacterBestiaryPayloadSchema } from "../schemas";
-import { dbUpsertCharacterBestiary } from "../server/mutations/character-bestiary";
 
 export async function updateCharacterBestiary(payload: unknown): Promise<void> {
   const parsed = assertZodParse(UpdateCharacterBestiaryPayloadSchema, payload);
 
   const { supabase } = await requireAuthenticatedSupabase();
-  const { error } = await dbUpsertCharacterBestiary(supabase, parsed);
+  const { error } = await dbUpsertCharacterBestiary({ supabase, payload: parsed });
 
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to update character bestiary");

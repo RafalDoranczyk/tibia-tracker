@@ -1,13 +1,16 @@
 import "server-only";
 
+import {
+  createStaticSupabaseClient,
+  type DamageElement,
+  DamageElementSchema,
+  dbGetDamageElements,
+} from "@repo/database";
+import { AppErrorCode, throwAndLogError } from "@repo/errors";
+import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
-import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
-import { createStaticSupabaseClient } from "@/core/supabase/clients/static";
-import { assertZodParse } from "@/lib/zod";
-import { type DamageElement, DamageElementSchema } from "@/modules/damage-elements";
+import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
 import { DamageElementCache } from "./cache";
-import { dbGetDamageElements } from "./queries";
 
 async function getCachedDamageElements() {
   "use cache";

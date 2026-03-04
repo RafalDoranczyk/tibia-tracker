@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
-
 import { useToast } from "@/hooks";
 import { deleteCharacter } from "../actions/delete-character";
-
 import { useActiveCharacter } from "../context/ActiveCharacterContext";
-import type { AppCharacter } from "../schemas";
+import type { AppCharacter } from "../types";
 import { CardGrid } from "./CardGrid";
 import { SettingsDialog } from "./SettingsDialog";
 

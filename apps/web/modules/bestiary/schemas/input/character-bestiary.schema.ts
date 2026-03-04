@@ -1,7 +1,5 @@
-import { z } from "zod";
-import { CharacterIDSchema } from "@/modules/characters";
-import { MonsterClassSchema } from "@/modules/monsters";
-import { CharacterBestiarySchema } from "../db/character-bestiary.schema";
+import { CharacterBestiarySchema, CharacterIDSchema, MonsterClassSchema } from "@repo/database";
+import { z } from "@repo/validation";
 import { BestiaryFiltersSchema } from "./bestiary-filters.schema";
 
 /**

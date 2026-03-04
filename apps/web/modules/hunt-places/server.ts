@@ -1,13 +1,16 @@
 import "server-only";
 
+import {
+  createStaticSupabaseClient,
+  dbGetHuntPlaces,
+  type HuntPlace,
+  HuntPlaceSchema,
+} from "@repo/database";
+import { AppErrorCode, throwAndLogError } from "@repo/errors";
+import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
-import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
-import { createStaticSupabaseClient } from "@/core/supabase/clients/static";
-import { assertZodParse } from "@/lib/zod";
+import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
 import { HuntPlaceCache } from "./cache";
-import { dbGetHuntPlaces } from "./queries";
-import { type HuntPlace, HuntPlaceSchema } from "./schemas";
 
 async function getCachedHuntPlaceList() {
   "use cache";
@@ -27,6 +30,7 @@ export async function getHuntPlaceList(): Promise<HuntPlace[]> {
 
   try {
     const { data } = await getCachedHuntPlaceList();
+
     return assertZodParse(HuntPlaceSchema.array(), data);
   } catch (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch hunt places");

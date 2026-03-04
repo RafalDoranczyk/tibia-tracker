@@ -1,4 +1,4 @@
-import type { HuntSpotAnalytics } from "./schemas";
+import type { HuntSpotAnalytics } from "@repo/database";
 
 export type ActiveBoost = "stamina" | "boost" | "double" | "cake";
 

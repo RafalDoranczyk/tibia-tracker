@@ -1,4 +1,4 @@
-import type { CharacterVocation } from "@/modules/characters";
+import type { CharacterVocation } from "@repo/database";
 
 // COSTS ONLY FOR NOW
 export const TIBIA_TC_PRICE = 42000;
@@ -43,6 +43,7 @@ export const ALLOWED_SKILLS_FOR_VOCATION: Record<
   sorcerer: ["ml"],
   druid: ["ml"],
   monk: ["fist", "ml", "melee"],
+  none: [],
 };
 
 /**
@@ -167,4 +168,5 @@ export const VOCATION_ONLINE_TRAINING_CONFIG = {
       offset: 10,
     },
   },
+  none: null,
 } as const;

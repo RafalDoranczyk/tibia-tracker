@@ -1,4 +1,4 @@
-import type { BestiaryStage, MonsterWithCharacterProgress } from "../db/character-bestiary.schema";
+import type { BestiaryStage, MonsterWithCharacterProgress } from "@repo/database";
 import type { BestiaryStageFilter } from "../input/bestiary-filters.schema";
 
 // --- FILTERS ---

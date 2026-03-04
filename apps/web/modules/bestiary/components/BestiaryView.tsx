@@ -1,8 +1,9 @@
 "use client";
 
 import { Grid } from "@mui/material";
+import type { MonsterWithCharacterProgress } from "@repo/database";
 import { useState } from "react";
-import type { FetchCharacterBestiaryResult, MonsterWithCharacterProgress } from "../schemas";
+import type { FetchCharacterBestiaryResult } from "../schemas";
 import { MonsterCard } from "./MonsterCard";
 import { MonsterDetailsDrawer } from "./MonsterDetailsDrawer";
 

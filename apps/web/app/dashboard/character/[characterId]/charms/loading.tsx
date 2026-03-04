@@ -8,7 +8,6 @@ import {
   Skeleton,
   Stack,
 } from "@mui/material";
-
 import { PageHeaderSkeleton } from "@/layout/page/PageHeader";
 
 const CHARM_BLOCKS_COUNT = 3;

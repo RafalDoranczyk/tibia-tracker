@@ -2,7 +2,6 @@
 
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import {
   alpha,
   Box,
@@ -15,15 +14,10 @@ import {
   IconButton,
   Stack,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { dayjs } from "@/lib/dayjs";
-import type { AppCharacter } from "../schemas";
-
-const TOOLTIP_TEXT = `Synchronizing fetches live data (level, residence, etc.) from Tibia.com via TibiaData API. 
-To prevent spam, global refresh is available every 15 minutes. Data will also automatically refresh upon 1 hour.`;
+import type { AppCharacter } from "../types";
 
 type SettingsDialogProps = {
   character: AppCharacter | null;
@@ -75,36 +69,6 @@ export function SettingsDialog({
             <Typography variant="body2" color="text.secondary">
               {character.vocation?.replace(/_/g, " ")} • Level {character.level ?? "???"}
             </Typography>
-          </Box>
-
-          <Box>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <Typography variant="subtitle2" fontWeight={700}>
-                Data Synchronization
-              </Typography>
-              <Tooltip title={TOOLTIP_TEXT}>
-                <InfoOutlinedIcon fontSize="small" sx={{ cursor: "help" }} />
-              </Tooltip>
-            </Stack>
-
-            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-              <Box>
-                <Typography variant="caption" sx={{ display: "block", color: "text.secondary" }}>
-                  {character.synchronized_at
-                    ? `Last Database Update: ${dayjs(character.synchronized_at).format("HH:mm:ss")}`
-                    : "Never synchronized with API"}
-                </Typography>
-
-                {character._cachedAt && (
-                  <Typography
-                    variant="caption"
-                    sx={{ display: "block", color: "text.disabled", fontStyle: "italic" }}
-                  >
-                    Data freshness: {dayjs(character._cachedAt).format("HH:mm:ss")}
-                  </Typography>
-                )}
-              </Box>
-            </Stack>
           </Box>
 
           <Divider sx={{ opacity: 0.1 }} />

@@ -11,7 +11,7 @@ import {
 } from "react";
 import { useToast } from "@/hooks";
 import { updateLastActiveCharacter } from "@/modules/user/actions";
-import type { AppCharacter } from "../schemas";
+import type { AppCharacter } from "../types";
 
 type ContextCharacterId = string | null;
 

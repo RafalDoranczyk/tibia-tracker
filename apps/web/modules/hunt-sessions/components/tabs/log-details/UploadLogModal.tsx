@@ -8,12 +8,12 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import type { ItemPreview, MonsterPreview } from "@repo/database";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import type { ItemPreview } from "@/modules/items";
 import { mapHuntSessionJSONToForm } from "../../../mappers/mapHuntSessionJSONToForm";
 import { HuntSessionParseError } from "../../../parsers/parseHuntSessionJSON";
-import type { HuntSessionForm, MonsterPreview } from "../../../schemas";
+import type { HuntSessionForm } from "../../../schemas";
 
 function patchFormValues<T extends Record<string, unknown>>(
   values: T,

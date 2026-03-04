@@ -1,6 +1,5 @@
 import Gamepad from "@mui/icons-material/Gamepad";
 import { Box, Container, Paper, Stack, Typography } from "@mui/material";
-
 import { appConfig } from "@/config";
 import { AuthButtons } from "@/modules/user";
 

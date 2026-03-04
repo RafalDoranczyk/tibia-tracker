@@ -1,5 +1,5 @@
-import type { Monster } from "@/modules/monsters";
-import { BESTIARY_STAGE, type BestiaryStage } from "../schemas";
+import type { BestiaryStage, Monster } from "@repo/database";
+import { BESTIARY_STAGE } from "../schemas";
 
 export function calculateBestiaryStage(
   kills: number,

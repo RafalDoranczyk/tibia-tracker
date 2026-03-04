@@ -1,8 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
-
 import { isDevEnv } from "@/core/env";
 import { PATHS } from "@/core/paths";
-import { createServerSupabase } from "@/core/supabase/auth/server";
+import { createServerSupabase } from "@/core/supabase/server";
 import { getUserSettings } from "@/modules/user/server";
 
 // Helper functions

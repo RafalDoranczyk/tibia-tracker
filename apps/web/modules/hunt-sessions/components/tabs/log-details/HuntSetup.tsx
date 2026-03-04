@@ -1,8 +1,8 @@
 import BuildIcon from "@mui/icons-material/Build";
 import { Autocomplete, Stack, TextField } from "@mui/material";
+import type { HuntPlace } from "@repo/database";
 import { Controller, useFormContext } from "react-hook-form";
 import { ControlledSelect, ControlledTextField } from "@/components";
-import type { HuntPlace } from "@/modules/hunt-places";
 import type { HuntSessionForm } from "../../../schemas";
 import { SectionPaperCard } from "../SectionPaperCard";
 

@@ -22,7 +22,7 @@ export const NAVIGATION_IDS = {
 
 export const NAVIGATION_MODULES: NavigationSection[] = [
   {
-    title: "Character Overview",
+    title: "Character",
     elements: [
       {
         id: NAVIGATION_IDS.DASHBOARD,

@@ -1,1 +1,1 @@
-export { insertCharacterExpHistory } from "./insert-character-exp-history";
+export { executeHistorySync } from "./executeHistorySync";

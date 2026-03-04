@@ -4,7 +4,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { alpha, Box, Card, Grid, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { MAX_CHARACTERS_PER_USER } from "../constants";
-import type { AppCharacter } from "../schemas";
+import type { AppCharacter } from "../types";
 import { AddCharacterCard } from "./AddCharacterCard";
 import { CharCard } from "./CharCard";
 

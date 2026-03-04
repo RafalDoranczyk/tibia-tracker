@@ -1,8 +1,8 @@
 "use client";
 
+import type { UserRole } from "@repo/database";
 import type { ReactNode } from "react";
-import { useUser } from "../context/UserContext";
-import type { UserRole } from "../schemas";
+import { useUser } from "../providers/UserProvider";
 
 // Component that conditionally renders its children based on the user's role.
 export function UserRoleGate({
