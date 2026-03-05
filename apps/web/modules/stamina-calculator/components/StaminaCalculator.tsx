@@ -3,7 +3,6 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { type Control, Controller, useForm } from "react-hook-form";
-
 import { FULL_STAMINA_MINUTES } from "../constants";
 import { calculateStaminaRegenTime } from "../utils/calculateStaminaRegenTime";
 

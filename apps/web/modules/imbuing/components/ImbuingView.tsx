@@ -2,15 +2,14 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Container, Stack } from "@mui/material";
+import type { ImbuingItem } from "@repo/database";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
-
 import { FloatingActionButton } from "@/components";
 import { useToast } from "@/hooks";
-
 import { updateImbuingItemPrices } from "../actions/update-imbuing-item-prices";
 import { baseScrolls, elementalScrolls, skillScrolls } from "../constants";
 import { mapImbuingPricesToForm } from "../mappers/mapImbuingPricesToForm";
-import { ImbuingFormSchema, type ImbuingFormValues, type ImbuingItem } from "../schemas";
+import { ImbuingFormSchema, type ImbuingFormValues } from "../schemas";
 import { GoldTokenInput } from "./GoldTokenInput";
 import { ScrollSection } from "./ScrollSection";
 

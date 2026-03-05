@@ -1,5 +1,4 @@
 import { ai, GEMINI_MODEL } from "@/lib/google-ai";
-
 import { type AIMonsterScanResult, AIMonsterScanResultSchema } from "../schemas";
 
 const prompt = `You are a high-precision OCR and Object Detection assistant specialized in Tibia's UI.

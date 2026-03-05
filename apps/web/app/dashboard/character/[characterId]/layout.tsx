@@ -1,8 +1,6 @@
 import { notFound } from "next/navigation";
 import type { PropsWithChildren } from "react";
-
 import { getCharacterList } from "@/modules/characters/server";
-
 import type { CharacterLayoutProps } from "../../types";
 
 export default async function CharacterLayout({

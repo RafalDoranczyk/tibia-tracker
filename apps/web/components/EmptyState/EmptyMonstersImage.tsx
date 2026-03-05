@@ -1,7 +1,6 @@
 "use client";
 
 import { useTheme } from "@mui/material";
-
 import type { EmptySvgProps } from "./EmptyState";
 
 export function EmptyMonstersImage({ height, width }: EmptySvgProps) {

@@ -15,9 +15,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import type { DamageElement, MonsterPreview } from "@repo/database";
 import { getPublicAssetUrl } from "@/core/assets";
-import type { DamageElement } from "@/modules/damage-elements";
-import type { AIHuntSessionScan, MonsterPreview } from "../../schemas";
+import type { AIHuntSessionScan } from "../../schemas";
 
 const normalizeName = (name: string) => name.toLowerCase().replace(/[\s_]/g, "");
 

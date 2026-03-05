@@ -1,10 +1,12 @@
+"use client";
+
 import InventoryTwoTone from "@mui/icons-material/InventoryTwoTone";
 import { Grid, Stack } from "@mui/material";
+import type { DamageElement, MonsterPreview } from "@repo/database";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import type { DamageElement } from "@/modules/damage-elements";
 import { mapInputAnalyserToForm } from "../../../mappers/mapInputAnalyserToForm";
-import type { HuntSessionForm, MonsterPreview } from "../../../schemas";
+import type { HuntSessionForm } from "../../../schemas";
 import { SectionHeader } from "../SectionHeader";
 import { UploadLogButton } from "../UploadLogButton";
 import { UploadLogModal } from "../UploadLogModal";

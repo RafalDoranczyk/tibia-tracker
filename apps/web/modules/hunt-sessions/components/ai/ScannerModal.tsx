@@ -3,9 +3,9 @@
 import CloseIcon from "@mui/icons-material/Close";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import { Backdrop, Box, Button, Fade, IconButton, Modal, Stack, Typography } from "@mui/material";
+import type { DamageElement, MonsterPreview } from "@repo/database";
 import { useState } from "react";
-import type { DamageElement } from "@/modules/damage-elements";
-import type { AIHuntSessionScan, MonsterPreview } from "../../schemas";
+import type { AIHuntSessionScan } from "../../schemas";
 import { AIScanPreviewCard } from "./AIScanPreviewCard";
 import { UploadFilesCard } from "./UploadFilesCard";
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar, Pagination, Stack, Typography } from "@mui/material";
+import type { HuntSessionFilters, HuntSessionListItem } from "@repo/database";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { ConfirmDialog, Table, TooltipIconButton } from "@/components";
@@ -12,7 +13,6 @@ import { useRequiredCharacterId } from "@/modules/characters";
 import { formatNumberCompact } from "@/utils";
 import { HUNT_SESSIONS_TABLE_HEAD_CELLS } from "../constants";
 import { useDeleteHuntSession } from "../hooks/useDeleteHuntSession";
-import type { HuntSessionFilters, HuntSessionListItem } from "../schemas";
 import { parseSecondsToMinutes } from "../utils/parseSecondsToMinutes";
 
 const formatSession = (s: HuntSessionListItem) => ({
@@ -64,7 +64,7 @@ export function HuntSessionListView({
           {huntSessionList.map((session) => {
             const s = formatSession(session);
             return (
-              <Table.ZebraRow
+              <Table.Row
                 key={s.id}
                 hover
                 onClick={() => router.push(PATHS.CHARACTER(characterId).HUNT_SESSIONS.EDIT(s.id))}
@@ -103,7 +103,7 @@ export function HuntSessionListView({
                     }}
                   />
                 </Table.Cell>
-              </Table.ZebraRow>
+              </Table.Row>
             );
           })}
         </Table.Body>

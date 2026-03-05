@@ -1,6 +1,5 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
-
-import type { ImbuingScroll } from "../schemas";
+import type { ImbuingScroll } from "../types";
 import { ScrollCard } from "./ScrollCard";
 
 type ScrollSectionProps = {

@@ -37,7 +37,7 @@ export function PageHeader({ title, description, action, subtitle }: PageHeaderP
           </Typography>
         )}
 
-        <Typography variant="h4" component="h1">
+        <Typography variant="h6" fontWeight={700} component="h1">
           {title}
         </Typography>
 

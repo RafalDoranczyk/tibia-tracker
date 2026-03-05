@@ -1,11 +1,9 @@
 import { Card, CardContent, Divider, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
-
 import { EmptyState } from "@/components";
-
 import { useScrollEconomy } from "../hooks/useScrollEconomy";
-import type { ImbuingScroll } from "../schemas";
+import type { ImbuingScroll } from "../types";
 import { canBuyScrollForTokens } from "../utils/canBuyScrollForTokens";
 import { ScrollCardItems } from "./ScrollCardItems";
 import { ScrollCardPriceInput } from "./ScrollCardPriceInput";

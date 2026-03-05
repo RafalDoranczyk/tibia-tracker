@@ -1,19 +1,19 @@
 import { Box } from "@mui/material";
 import type { PropsWithChildren } from "react";
-import { getAppCharacters } from "@/modules/characters/server";
+import { loadAppCharacters } from "@/modules/characters/server";
 import {
   APP_BAR_HEIGHT,
   DESKTOP_APP_NAVIGATION_DRAWER_WIDTH,
   Navigation,
 } from "@/modules/navigation";
-import { getUser, getUserSettings } from "@/modules/user/server";
+import { getAppUser, getUserSettings } from "@/modules/user/server";
 import { DashboardProviders } from "@/providers/features/DashboardProviders";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const [user, settings, characters] = await Promise.all([
-    getUser(),
+    getAppUser(),
     getUserSettings(),
-    getAppCharacters(),
+    loadAppCharacters(),
   ]);
 
   return (

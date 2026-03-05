@@ -4,9 +4,7 @@ import { Box, List, ListItemButton, ListItemIcon, Tooltip, Typography } from "@m
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import { useActiveCharacter } from "@/modules/characters";
-
 import { NAVIGATION_MODULES } from "../constants";
 import type { NavigationLinkElementProps } from "../types";
 import { isPathActive } from "../utils/isPathActive";

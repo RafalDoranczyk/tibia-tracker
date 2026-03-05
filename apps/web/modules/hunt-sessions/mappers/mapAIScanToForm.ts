@@ -1,4 +1,5 @@
-import type { AIHuntSessionScan, HuntSessionForm, MonsterPreview } from "../schemas";
+import type { MonsterPreview } from "@repo/database";
+import type { AIHuntSessionScan, HuntSessionForm } from "../schemas";
 
 const parseSessionToSeconds = (sessionStr: string | undefined): number => {
   if (!sessionStr) return 0;

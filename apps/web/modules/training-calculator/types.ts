@@ -1,5 +1,4 @@
-import type { CharacterVocation } from "@/modules/characters";
-
+import type { CharacterVocation } from "@repo/database";
 import type {
   EXERCISE_DUMMIES,
   LOYALTY_MARKS,

@@ -1,4 +1,5 @@
-import type { HuntSession, HuntSessionForm } from "../schemas";
+import type { HuntSession } from "@repo/database";
+import type { HuntSessionForm } from "../schemas";
 
 export function mapHuntSessionToForm({
   // we don't need these in the form

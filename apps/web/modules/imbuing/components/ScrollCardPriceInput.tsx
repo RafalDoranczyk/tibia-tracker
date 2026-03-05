@@ -1,7 +1,7 @@
 import { TextField, type TextFieldProps } from "@mui/material";
+import type { ImbuingPriceKey } from "@repo/database";
 import { Controller, useFormContext } from "react-hook-form";
-
-import type { ImbuingFormValues, ImbuingPriceKey } from "../schemas";
+import type { ImbuingFormValues } from "../schemas";
 
 type ScrollCardPriceInputProps = TextFieldProps & {
   inputKey: ImbuingPriceKey;

@@ -1,35 +1,18 @@
 "use client";
 
-import GitHub from "@mui/icons-material/GitHub";
-import Google from "@mui/icons-material/Google";
-import { Button, Divider, Stack } from "@mui/material";
-
-import { startOAuthLogin } from "@/modules/user/actions/start-oauth-login";
+import Discord from "@mui/icons-material/DiscFullRounded";
+import { Button } from "@mui/material";
+import { startOAuthLogin } from "@/modules/user/actions";
 
 export function AuthButtons() {
   return (
-    <Stack spacing={2} width="100%">
-      <Button
-        onClick={() => startOAuthLogin("google")}
-        size="large"
-        variant="contained"
-        startIcon={<Google />}
-        fullWidth
-      >
-        Continue with Google
-      </Button>
-
-      <Divider>OR</Divider>
-
-      <Button
-        onClick={() => startOAuthLogin("github")}
-        size="large"
-        variant="outlined"
-        startIcon={<GitHub />}
-        fullWidth
-      >
-        Continue with GitHub
-      </Button>
-    </Stack>
+    <Button
+      onClick={() => startOAuthLogin("discord")}
+      variant="outlined"
+      startIcon={<Discord />}
+      fullWidth
+    >
+      Continue with Discord
+    </Button>
   );
 }

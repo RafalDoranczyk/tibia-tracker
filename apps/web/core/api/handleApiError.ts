@@ -1,6 +1,5 @@
+import { AppError, AppErrorCode } from "@repo/errors";
 import { NextResponse } from "next/server";
-
-import { AppError, AppErrorCode } from "@/core/error";
 
 function mapAppErrorCodeToHttpStatus(code: AppErrorCode): number {
   switch (code) {

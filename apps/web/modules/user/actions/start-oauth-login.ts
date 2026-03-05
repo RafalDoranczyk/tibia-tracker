@@ -1,14 +1,11 @@
 "use server";
 
+import { mapSupabaseErrorToAppError, OAuthProviderSchema } from "@repo/database";
+import { AppErrorCode, throwAndLogError } from "@repo/errors";
+import { assertZodParse } from "@repo/validation";
 import { redirect } from "next/navigation";
-
 import { env } from "@/core/env";
-import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { createServerSupabase } from "@/core/supabase/auth/server";
-import { mapSupabaseErrorToAppError } from "@/core/supabase/errors";
-import { assertZodParse } from "@/lib/zod";
-
-import { OAuthProviderSchema } from "../schemas";
+import { createServerSupabase } from "@/core/supabase/server";
 
 export async function startOAuthLogin(payload: unknown): Promise<void> {
   const provider = assertZodParse(OAuthProviderSchema, payload);

@@ -15,15 +15,13 @@ export default async function HuntAnalytics({ params }: CharacterPageProps) {
   const { characterId } = await params;
   const data = await loadHuntSpotsAnalytics(characterId);
 
-  const noData = data.bestXpSpot === undefined && data.bestProfitSpot === undefined;
-
   return (
     <div>
       <PageHeader
         title="Hunt Analytics"
         description="Your character's hunt analytics can be viewed here. Track your hunting progress and optimize your hunting strategy."
       />
-      {noData ? (
+      {!data ? (
         <EmptyState
           variant="hunt"
           title="No hunt analytics found."

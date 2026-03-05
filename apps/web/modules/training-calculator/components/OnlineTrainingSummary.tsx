@@ -3,7 +3,6 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import PaidIcon from "@mui/icons-material/Paid";
 import { Card, Checkbox, Chip, Divider, FormControlLabel, Stack, Typography } from "@mui/material";
 import { useMemo } from "react";
-
 import { SKILL_WEAPON_TYPES, TIBIA_TC_PRICE } from "../constants";
 import type { UseOnlineTrainingState } from "../hooks/useOnlineTrainingState";
 import type { ExerciseWeaponType } from "../types";

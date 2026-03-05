@@ -42,6 +42,10 @@
     "execute": {
       "cache": false,
       "persistent": false
+    },
+    "generate-types": {
+      "cache": false,
+      "persistent": false
     }
   }
 }

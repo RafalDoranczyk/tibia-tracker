@@ -1,11 +1,9 @@
 "use client";
 
 import { AppBar, Box, Drawer, Toolbar, Typography } from "@mui/material";
-
 import { appConfig } from "@/config";
 import { useUser } from "@/modules/user";
-
-import { APP_BAR_HEIGHT, DESKTOP_APP_NAVIGATION_DRAWER_WIDTH } from "..";
+import { APP_BAR_HEIGHT, DESKTOP_APP_NAVIGATION_DRAWER_WIDTH } from "../constants";
 import { ActionButtons } from "./ActionButtons";
 import { Drome } from "./Drome";
 import { NavigationLinks } from "./NavigationLinks";

@@ -1,5 +1,4 @@
 import { Box, type BoxProps, Fade, Stack, Typography } from "@mui/material";
-
 import { DefaultEmptyImage } from "./DefaultEmptyImage";
 import { EmptyCharacterImage } from "./EmptyCharacterImage";
 import { EmptyEconomyImage } from "./EmptyEconomyImage";

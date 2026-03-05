@@ -3,9 +3,7 @@ import { dayjs } from "@/lib/dayjs/dayjs";
 export const formatDate = (date: string, locale = "en") => {
   const d = dayjs(date).locale(locale);
 
-  if (!d.isValid()) {
-    throw new Error(`Invalid date passed to formatDate: ${date}`);
-  }
+  if (!d.isValid()) return "Invalid Date";
 
   const now = dayjs().locale(locale);
 

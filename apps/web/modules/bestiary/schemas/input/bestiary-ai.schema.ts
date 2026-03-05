@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@repo/validation";
 
 export const AIMonsterScanSchema = z.object({
   name: z.string(),

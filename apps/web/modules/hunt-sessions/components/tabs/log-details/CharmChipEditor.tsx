@@ -9,10 +9,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import type { CharacterCharmDetailed, CharmType } from "@repo/database";
 import { useState } from "react";
-
 import { getPublicAssetUrl } from "@/core/assets";
-import type { CharacterCharmDetailed, CharmType } from "@/modules/charms";
 
 const CHARM_COLOR_MAP: Record<CharmType, ChipProps["color"]> = {
   major: "primary",

@@ -1,10 +1,6 @@
 import { IMBUING_CONFIG } from "../constants";
-import type {
-  ImbuingFormValues,
-  ImbuingScroll,
-  ImbuingScrollItem,
-  ImbuingScrollType,
-} from "../schemas";
+import type { ImbuingFormValues } from "../schemas";
+import type { ImbuingScroll, ImbuingScrollItem, ImbuingScrollType } from "../types";
 import { canBuyScrollForTokens } from "./canBuyScrollForTokens";
 
 function getScrollLaborCost(scrollType: ImbuingScrollType) {

@@ -3,9 +3,8 @@ import DiamondIcon from "@mui/icons-material/Diamond";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import StarIcon from "@mui/icons-material/Star";
 import { Box, Divider, Drawer, IconButton, LinearProgress, Stack, Typography } from "@mui/material";
+import type { DamageElementSlug, MonsterWithCharacterProgress } from "@repo/database";
 import Image from "next/image";
-import type { DamageElementSlug } from "@/modules/damage-elements";
-import type { MonsterWithCharacterProgress } from "../schemas";
 
 const ELEMENT_META: Record<DamageElementSlug, { color: string; label: string }> = {
   physical: { color: "#94a3b8", label: "Physical" },

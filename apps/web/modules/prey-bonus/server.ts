@@ -1,13 +1,16 @@
 import "server-only";
 
+import {
+  createStaticSupabaseClient,
+  dbGetPreyBonuses,
+  type PreyBonus,
+  PreyBonusSchema,
+} from "@repo/database";
+import { AppErrorCode, throwAndLogError } from "@repo/errors";
+import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
-import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
-import { createStaticSupabaseClient } from "@/core/supabase/clients/static";
-import { assertZodParse } from "@/lib/zod";
+import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
 import { PreyBonusCache } from "./cache";
-import { dbGetPreyBonuses } from "./queries";
-import { type PreyBonus, PreyBonusSchema } from "./schemas";
 
 async function getCachedPreyBonuses() {
   "use cache";
@@ -27,6 +30,7 @@ export async function getPreyBonuses(): Promise<PreyBonus[]> {
 
   try {
     const data = await getCachedPreyBonuses();
+
     return assertZodParse(PreyBonusSchema.array(), data);
   } catch (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch prey bonuses");

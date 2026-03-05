@@ -3,10 +3,8 @@
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { Box, Button, Tooltip } from "@mui/material";
 import { useState, useTransition } from "react";
-
 import { ConfirmDialog } from "@/components";
 import { useToast } from "@/hooks";
-
 import { resetCharacterCharms } from "../actions/reset-character-charms";
 
 type CharmsResetButtonProps = {

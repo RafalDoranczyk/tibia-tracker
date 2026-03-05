@@ -1,7 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { PATHS } from "@/core/paths";
 import { NAVIGATION_IMAGES } from "../images";
-import type { NavigationSection } from "../types";
+import type { NavigationSection, VocationRecord } from "../types";
 
 export const NAVIGATION_IDS = {
   // Character Overview
@@ -22,7 +22,7 @@ export const NAVIGATION_IDS = {
 
 export const NAVIGATION_MODULES: NavigationSection[] = [
   {
-    title: "Character Overview",
+    title: "Character",
     elements: [
       {
         id: NAVIGATION_IDS.DASHBOARD,
@@ -113,3 +113,17 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
     ],
   },
 ];
+
+export const VOCATION_COLORS: VocationRecord = {
+  "Elite Knight": "#ef4444",
+  Knight: "#ef4444",
+  "Master Sorcerer": "#a855f7",
+  Sorcerer: "#a855f7",
+  "Elder Druid": "#3b82f6",
+  Druid: "#3b82f6",
+  "Royal Paladin": "#f59e0b",
+  Paladin: "#f59e0b",
+  Monk: "#10b981",
+  "Exalted Monk": "#10b981",
+  none: "#94a3b8",
+};

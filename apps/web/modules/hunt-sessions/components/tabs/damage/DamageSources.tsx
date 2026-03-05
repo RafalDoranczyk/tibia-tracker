@@ -1,11 +1,10 @@
-"use client";
-
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import { Box, Grid } from "@mui/material";
+import type { MonsterPreview } from "@repo/database";
 import { useMemo } from "react";
 import { type FieldArrayWithId, useFieldArray, useFormContext } from "react-hook-form";
 import { EmptyState } from "@/components";
-import type { HuntSessionForm, MonsterPreview } from "../../../schemas";
+import type { HuntSessionForm } from "../../../schemas";
 import { SectionPaperCard } from "../SectionPaperCard";
 import { StatProgressBarRow } from "./StatProgressBarRow";
 

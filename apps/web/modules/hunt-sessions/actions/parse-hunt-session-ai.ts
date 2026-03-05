@@ -1,12 +1,12 @@
 "use server";
 
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
+import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
 import { parseHuntSessionImage } from "../parsers/parseHuntSessionImage";
 
-export async function parseHuntSessionAI(formData: FormData) {
+export async function parseHuntSessionAI(formData: unknown) {
   await requireAuthenticatedSupabase();
 
-  const file = formData.get("image") as File;
+  const file = (formData as FormData).get("image") as File;
 
   if (!file) {
     return { success: false, error: "No image provided" };

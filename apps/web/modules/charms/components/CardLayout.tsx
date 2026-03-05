@@ -1,6 +1,5 @@
 import { alpha, Box, Card, CardContent, CardMedia, Chip, Typography } from "@mui/material";
-import type { ReactNode } from "react";
-
+import type { PropsWithChildren } from "react";
 import { getPublicAssetUrl } from "@/core/assets";
 
 type CardLayoutProps = {
@@ -9,7 +8,6 @@ type CardLayoutProps = {
   imagePath: string;
   unlocked: boolean;
   level?: number;
-  children?: ReactNode;
 };
 
 export function CardLayout({
@@ -19,7 +17,7 @@ export function CardLayout({
   unlocked,
   level,
   children,
-}: CardLayoutProps) {
+}: PropsWithChildren<CardLayoutProps>) {
   return (
     <Card
       sx={{

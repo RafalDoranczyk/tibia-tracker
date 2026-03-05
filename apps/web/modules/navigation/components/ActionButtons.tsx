@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { TooltipIconButton } from "@/components";
-import { logoutUser } from "@/modules/user/actions/logout-user";
+import { logoutUser } from "@/modules/user/actions";
 import { CharacterSwitcher } from "./CharacterSwitcher";
 
 export function ActionButtons() {

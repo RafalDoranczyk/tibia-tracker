@@ -1,13 +1,16 @@
 import "server-only";
 
+import {
+  createStaticSupabaseClient,
+  dbGetMonsterList,
+  type Monster,
+  MonsterSchema,
+} from "@repo/database";
+import { AppErrorCode, throwAndLogError } from "@repo/errors";
+import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
-import { AppErrorCode, throwAndLogError } from "@/core/error";
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
-import { createStaticSupabaseClient } from "@/core/supabase/clients/static";
-import { assertZodParse } from "@/lib/zod";
-import { type Monster, MonsterSchema } from "@/modules/monsters";
+import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
 import { MonsterListCache } from "./cache";
-import { dbGetMonsterList } from "./queries";
 
 async function getCachedMonsters() {
   "use cache";
@@ -29,6 +32,6 @@ export async function getMonsterList(): Promise<Monster[]> {
     const data = await getCachedMonsters();
     return assertZodParse(MonsterSchema.array(), data);
   } catch (error) {
-    return throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch monsters");
+    throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch monsters");
   }
 }

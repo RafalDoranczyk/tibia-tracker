@@ -1,8 +1,7 @@
 "use client";
 
+import type { AppUser } from "@repo/database";
 import { createContext, type PropsWithChildren, useContext } from "react";
-
-import type { AppUser } from "@/modules/user";
 
 type UserContextType = AppUser | null;
 

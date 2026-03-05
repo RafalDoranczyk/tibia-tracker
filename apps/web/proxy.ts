@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { createSupabaseProxy } from "./core/supabase/auth/proxy";
+import { createSupabaseProxy } from "./core/supabase/proxy";
 
 const PUBLIC_ROUTES = ["/", "/auth", "/auth/callback"];
 

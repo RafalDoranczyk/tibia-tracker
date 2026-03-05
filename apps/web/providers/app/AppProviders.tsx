@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-
 import { DateProvider } from "./DateProvider";
 import { QueryParamsProvider } from "./QueryParamsProvider";
 import { ThemeProvider } from "./ThemeProvider";

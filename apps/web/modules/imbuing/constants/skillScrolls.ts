@@ -1,5 +1,5 @@
 import { ITEM_IMAGES, SCROLL_IMAGES } from "../images";
-import type { ImbuingScroll, ImbuingScrollItem } from "../schemas";
+import type { ImbuingScroll, ImbuingScrollItem } from "../types";
 
 // ImbuingScroll items
 const elvishTalisman: ImbuingScrollItem = {

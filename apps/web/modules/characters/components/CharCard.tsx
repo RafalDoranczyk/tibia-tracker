@@ -19,7 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 import { TooltipIconButton } from "@/components";
-import type { AppCharacter } from "../schemas";
+import type { AppCharacter } from "../types";
 
 type CharCardProps = {
   character: AppCharacter;

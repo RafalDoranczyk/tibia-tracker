@@ -1,5 +1,4 @@
 import { ai, GEMINI_MODEL } from "@/lib/google-ai";
-
 import { type AIHuntSessionScan, AIHuntSessionScanSchema } from "../schemas";
 
 const getAiBlueprint = () => {

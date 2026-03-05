@@ -1,25 +1,26 @@
 "use server";
 
-import { AppErrorCode, throwAndLogError } from "@/core/error";
-
-import { requireAuthenticatedSupabase } from "@/core/supabase/auth/guard";
-import { assertZodParse } from "@/lib/zod";
-
-import { CharacterCharmUpsertPayloadSchema } from "../schemas";
-import { dbSetCharacterCharmLevel, updateCharacterCharmTags } from "../server";
+import { CharacterCharmSchema, dbSetCharacterCharmLevelRPC } from "@repo/database";
+import { AppErrorCode, throwAndLogError } from "@repo/errors";
+import { assertZodParse } from "@repo/validation";
+import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
+import { updateCharacterCharmTags } from "../cache/update-character-charm-tags";
 
 export async function setCharacterCharmLevel(payload: unknown): Promise<void> {
-  const { character_id, charm_id, level } = assertZodParse(
-    CharacterCharmUpsertPayloadSchema,
-    payload
-  );
+  const { character_id, charm_id, level } = assertZodParse(CharacterCharmSchema, payload);
 
   const { supabase } = await requireAuthenticatedSupabase();
 
-  const { error } = await dbSetCharacterCharmLevel(supabase, character_id, charm_id, level);
-  updateCharacterCharmTags(character_id);
+  const { error } = await dbSetCharacterCharmLevelRPC({
+    supabase,
+    characterId: character_id,
+    charmId: charm_id,
+    level,
+  });
 
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to set character charm level");
   }
+
+  updateCharacterCharmTags(character_id);
 }

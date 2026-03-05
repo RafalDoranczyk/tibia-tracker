@@ -10,8 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-
-import type { ImbuingScrollItem } from "../schemas";
+import type { ImbuingScrollItem } from "../types";
 import { ScrollCardPriceInput } from "./ScrollCardPriceInput";
 
 type ScrollCardItemsProps = {

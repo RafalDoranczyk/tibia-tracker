@@ -1,3 +1,3 @@
 import "server-only";
 
-export { loadHuntSpotsAnalytics } from "./loaders/load-hunt-spots-analytics";
+export { loadHuntSpotsAnalytics } from "./load-hunt-spots-analytics";

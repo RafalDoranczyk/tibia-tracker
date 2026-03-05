@@ -18,9 +18,9 @@ import {
   type Theme,
   Typography,
 } from "@mui/material";
+import { MONSTER_CLASSES, MONSTER_DIFFICULTIES } from "@repo/database";
 import { DebouncedSearchFieldURL } from "@/components";
 import { usePaginationQueryParams } from "@/hooks/usePaginationQueryParams";
-import { MONSTER_CLASSES, MONSTER_DIFFICULTIES } from "@/modules/monsters";
 import { useBestiaryFilters } from "../hooks/useBestiaryFilters";
 import { BESTIARY_STAGE_FILTER_LABELS, BESTIARY_STAGE_FILTER_VALUES } from "../schemas";
 
