@@ -1,4 +1,4 @@
-import type { CharacterCharm } from "@repo/database";
+import type { CharacterCharm } from "@repo/database/character-charms";
 import type { CharacterCharmWithProgress, CharmViewModel } from "../types";
 
 export function mapCharmWithProgress(

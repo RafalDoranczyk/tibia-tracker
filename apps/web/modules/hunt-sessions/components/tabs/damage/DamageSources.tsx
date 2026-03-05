@@ -1,6 +1,6 @@
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import { Box, Grid } from "@mui/material";
-import type { MonsterPreview } from "@repo/database";
+import type { MonsterPreview } from "@repo/database/hunt-sessions";
 import { useMemo } from "react";
 import { type FieldArrayWithId, useFieldArray, useFormContext } from "react-hook-form";
 import { EmptyState } from "@/components";

@@ -1,5 +1,5 @@
 import { Chip, type ChipProps, Divider, Menu, MenuItem, Stack, Typography } from "@mui/material";
-import type { PreyBonus } from "@repo/database";
+import type { PreyBonus } from "@repo/database/prey-bonuses";
 import { useState } from "react";
 
 type PreyChipEditorProps = {

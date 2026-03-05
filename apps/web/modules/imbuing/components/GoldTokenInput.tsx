@@ -1,6 +1,8 @@
-import { TextField } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { ITEM_IMAGES } from "../images";
 import type { ImbuingFormValues } from "../schemas";
 
 const INPUT_KEY = "gold_token" as const;
@@ -29,6 +31,15 @@ export function GoldTokenInput() {
       type="number"
       value={localValue}
       onChange={(e) => setLocalValue(Number(e.target.value))}
+      slotProps={{
+        input: {
+          startAdornment: (
+            <InputAdornment position="start">
+              <Image src={ITEM_IMAGES.gold_token} alt="gold token" width={18} height={18} />
+            </InputAdornment>
+          ),
+        },
+      }}
     />
   );
 }

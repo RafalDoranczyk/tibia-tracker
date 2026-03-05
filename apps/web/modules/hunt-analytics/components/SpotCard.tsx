@@ -13,7 +13,7 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import type { HuntSpotAnalytics } from "@repo/database";
+import type { HuntSpotAnalytics } from "@repo/database/hunt-analytics";
 import { getNeededTimeForNextLevel } from "@repo/tibia-utils";
 import { useMemo, useState } from "react";
 import { getPublicAssetUrl } from "@/core/assets";

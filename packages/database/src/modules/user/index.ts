@@ -1,2 +1,2 @@
-export * from "./queries";
+export { UserRepo } from "./repository";
 export * from "./schemas";

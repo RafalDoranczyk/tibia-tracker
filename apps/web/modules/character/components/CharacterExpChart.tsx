@@ -6,6 +6,7 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { Box, Divider, Grid, Paper, Typography, useTheme } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 import type { HistoryChartUI } from "../types";
+import { Overlay } from "./Overlay";
 
 type StatCardProps = {
   title: string;
@@ -38,14 +39,24 @@ function StatCard({ title, value, icon, color }: StatCardProps) {
   );
 }
 
-export function CharacterExpChart({ chartPoints, summary }: HistoryChartUI) {
+type CharacterExpChartProps = HistoryChartUI & {
+  maxRecordDate: string | null;
+  maxRecordExp: number | null;
+};
+
+export function CharacterExpChart({
+  chartPoints,
+  summary,
+  // maxRecordDate,
+  maxRecordExp,
+}: CharacterExpChartProps) {
   const theme = useTheme();
 
   const formatValue = (val: number) =>
     new Intl.NumberFormat("en-US", { notation: "compact" }).format(val);
 
   return (
-    <Paper sx={{ width: "100%", p: 3 }}>
+    <Paper sx={{ width: "100%", p: 3, position: "relative" }}>
       <Grid container spacing={2}>
         <StatCard
           title="Total Monthly Gain"
@@ -66,6 +77,13 @@ export function CharacterExpChart({ chartPoints, summary }: HistoryChartUI) {
           value={summary.averageGain}
           icon={<CalendarMonthIcon />}
           color={theme.palette.info.main}
+        />
+
+        <StatCard
+          title="Best Day Record Ever"
+          value={maxRecordExp ?? 0}
+          icon={<StarIcon />}
+          color={theme.palette.warning.main}
         />
       </Grid>
 
@@ -95,6 +113,7 @@ export function CharacterExpChart({ chartPoints, summary }: HistoryChartUI) {
           margin={{ top: 10, bottom: 30, left: 60, right: 10 }}
         />
       </Box>
+      {summary.totalGained === 0 && <Overlay />}
     </Paper>
   );
 }

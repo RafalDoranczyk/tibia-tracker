@@ -1,19 +1,19 @@
 import { TextField, type TextFieldProps } from "@mui/material";
-import type { ImbuingPriceKey } from "@repo/database";
+import type { ImbuingPriceKey } from "@repo/database/imbuing-prices";
 import { Controller, useFormContext } from "react-hook-form";
 import type { ImbuingFormValues } from "../schemas";
 
 type ScrollCardPriceInputProps = TextFieldProps & {
   inputKey: ImbuingPriceKey;
-  label: string;
+  inputVariant?: "scroll" | "item";
 };
 
 export function ScrollCardPriceInput({
   inputKey,
-  label,
-  ...textFieldProps
+  inputVariant = "item",
 }: ScrollCardPriceInputProps) {
   const { control } = useFormContext<ImbuingFormValues>();
+  const scrollVariant = inputVariant === "scroll";
 
   return (
     <Controller
@@ -22,10 +22,13 @@ export function ScrollCardPriceInput({
       render={({ field }) => (
         <TextField
           {...field}
-          label={label}
           type="number"
-          slotProps={{ htmlInput: { min: 0 } }}
-          {...textFieldProps}
+          size={scrollVariant ? "medium" : "small"}
+          sx={{ maxWidth: 120 }}
+          label={scrollVariant ? "Scroll Price" : undefined}
+          slotProps={{
+            htmlInput: { min: 0 },
+          }}
         />
       )}
     />

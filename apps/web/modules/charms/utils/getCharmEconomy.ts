@@ -1,4 +1,4 @@
-import type { CharmLevel } from "@repo/database";
+import type { CharmLevel } from "@repo/database/character-charms";
 import type { CharacterCharmWithProgress } from "../types";
 
 export function getCharmTotalCostToLevel(

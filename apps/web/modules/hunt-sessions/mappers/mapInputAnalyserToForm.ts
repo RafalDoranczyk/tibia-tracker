@@ -1,4 +1,5 @@
-import type { DamageElement, MonsterPreview } from "@repo/database";
+import type { DamageElement } from "@repo/database/damage-elements";
+import type { MonsterPreview } from "@repo/database/hunt-sessions";
 
 export function mapInputAnalyserToForm(
   damageElementList: DamageElement[],

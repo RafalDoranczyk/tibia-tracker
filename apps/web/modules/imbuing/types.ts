@@ -1,4 +1,4 @@
-import type { ImbuingPriceKey } from "@repo/database";
+import type { ImbuingPriceKey } from "@repo/database/imbuing-prices";
 import type { StaticImageData } from "next/image";
 
 export type ImbuingScrollType = "powerful" | "intricate";

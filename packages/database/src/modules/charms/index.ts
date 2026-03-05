@@ -1,2 +1,2 @@
-export * from "./queries";
+export { CharmsRepo } from "./repository";
 export * from "./schemas";

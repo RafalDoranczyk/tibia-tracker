@@ -1,5 +1,5 @@
 import { Box, Card, CardActionArea, CardContent, Stack, Typography } from "@mui/material";
-import { CHARM_LEVELS, type CharmLevel } from "@repo/database";
+import { CHARM_LEVELS, type CharmLevel } from "@repo/database/character-charms";
 import { useMemo, useState } from "react";
 import { ConfirmDialog } from "@/components";
 import type { CharacterCharmWithProgress } from "../types";

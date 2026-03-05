@@ -1,9 +1,9 @@
+import { createAdminSupabaseClient } from "@repo/database/client";
 import {
-  createAdminClient,
-  dbGetImbuingItemPrices,
   type ImbuingItem,
   ImbuingItemSchema,
-} from "@repo/database";
+  ImbuingPricesRepo,
+} from "@repo/database/imbuing-prices";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -15,9 +15,9 @@ async function getCachedImbuingItemPrices(userId: string) {
   cacheLife("days");
   cacheTag(ImbuingCache.imbuingPrices(userId));
 
-  const supabase = createAdminClient();
+  const supabase = createAdminSupabaseClient();
 
-  const { data, error } = await dbGetImbuingItemPrices(supabase, userId);
+  const { data, error } = await ImbuingPricesRepo.getList(supabase, userId);
 
   if (error) throw error;
   return data;

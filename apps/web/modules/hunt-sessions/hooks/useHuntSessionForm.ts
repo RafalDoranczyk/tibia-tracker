@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { HuntSession } from "@repo/database";
+import type { HuntSession } from "@repo/database/hunt-sessions";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useActiveCharacter } from "@/modules/characters";

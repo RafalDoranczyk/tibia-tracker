@@ -1,6 +1,7 @@
 "use server";
 
-import { CharacterIDSchema, dbUpdateLastActiveCharacter } from "@repo/database";
+import { CharacterIDSchema } from "@repo/database/characters";
+import { UserRepo } from "@repo/database/user";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { updateTag } from "next/cache";
@@ -12,8 +13,7 @@ export async function updateLastActiveCharacter(payload: unknown): Promise<void>
 
   const { supabase, user } = await requireAuthenticatedSupabase();
 
-  const { error } = await dbUpdateLastActiveCharacter({
-    supabase,
+  const { error } = await UserRepo.updateLastActiveCharacter(supabase, {
     userId: user.id,
     characterId: id,
   });

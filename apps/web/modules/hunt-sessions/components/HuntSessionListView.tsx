@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar, Pagination, Stack, Typography } from "@mui/material";
-import type { HuntSessionFilters, HuntSessionListItem } from "@repo/database";
+import type { HuntSessionFilters, HuntSessionListItem } from "@repo/database/hunt-sessions";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { ConfirmDialog, Table, TooltipIconButton } from "@/components";

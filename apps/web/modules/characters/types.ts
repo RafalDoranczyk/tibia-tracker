@@ -1,4 +1,4 @@
-import type { Character } from "@repo/database";
+import type { Character } from "@repo/database/characters";
 import type { TibiaDataCharacter } from "@repo/tibia-data";
 
 // We pick only what we want to show in the UI

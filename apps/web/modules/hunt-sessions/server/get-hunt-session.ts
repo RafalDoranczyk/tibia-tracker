@@ -1,28 +1,27 @@
+import { createAdminSupabaseClient } from "@repo/database/client";
 import {
-  createAdminClient,
-  dbGetHuntSession,
   type FetchHuntSessionPayload,
   FetchHuntSessionPayloadSchema,
   type HuntSession,
   HuntSessionSchema,
-} from "@repo/database";
+  HuntSessionsRepo,
+} from "@repo/database/hunt-sessions";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
 import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
-import { HuntSessionCache } from "../cache/hunt-session";
+import { HuntSessionCache } from "../cache";
 
 async function getCachedHuntSession(payload: FetchHuntSessionPayload) {
   "use cache";
   cacheLife("max");
   cacheTag(HuntSessionCache.huntSession(payload.id));
 
-  const supabase = createAdminClient();
+  const supabase = createAdminSupabaseClient();
 
-  const { data, error, count } = await dbGetHuntSession({
-    supabase,
-    character_id: payload.character_id,
+  const { data, error, count } = await HuntSessionsRepo.getById(supabase, {
     id: payload.id,
+    characterId: payload.character_id,
   });
 
   if (error) throw error;

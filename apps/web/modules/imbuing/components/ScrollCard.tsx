@@ -1,13 +1,13 @@
-import { Card, CardContent, Divider, Grid, Stack, Typography } from "@mui/material";
+import { Box, Card, CardContent, Divider, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import { EmptyState } from "@/components";
 import { useScrollEconomy } from "../hooks/useScrollEconomy";
 import type { ImbuingScroll } from "../types";
 import { canBuyScrollForTokens } from "../utils/canBuyScrollForTokens";
-import { ScrollCardItems } from "./ScrollCardItems";
 import { ScrollCardPriceInput } from "./ScrollCardPriceInput";
 import { ScrollCardSummary } from "./ScrollCardSummary";
+import { ScrollCardTable } from "./ScrollCardTable";
 
 type ScrollCardProps = {
   scroll: ImbuingScroll;
@@ -18,38 +18,47 @@ export const ScrollCard = React.memo(function ScrollCard({ scroll }: ScrollCardP
   const showTokenStrategies = canBuyScrollForTokens(scroll.craftMethods);
 
   return (
-    <Card variant="outlined">
-      <CardContent>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          borderLeft={`3px solid ${scroll.color}`}
-          px={1}
-        >
-          {/* LEFT */}
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Image
-              src={scroll.imageUrl}
-              alt={scroll.name}
-              width={36}
-              height={36}
-              style={{ flexShrink: 0 }}
-            />
-            <Typography variant="h6" fontWeight={700}>
-              {scroll.name.toUpperCase()}
-            </Typography>
-          </Stack>
-
-          {/* RIGHT */}
-          <ScrollCardPriceInput label="Selling for" inputKey={scroll.key} sx={{ width: 110 }} />
+    <Card
+      variant="outlined"
+      sx={{
+        transition: "transform 0.2s, box-shadow 0.2s",
+        "&:hover": {
+          boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+          transform: "translateY(-2px)",
+        },
+      }}
+    >
+      <Box
+        sx={{
+          px: 2,
+          py: 1.5,
+          backgroundColor: "rgba(255, 255, 255, 0.03)",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Stack direction="row" alignItems="center" spacing={2} sx={{ flex: 1 }}>
+          <Image
+            src={scroll.imageUrl}
+            alt={scroll.name}
+            width={64}
+            height={64}
+            style={{ flexShrink: 0, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}
+          />
+          <Typography variant="h6" sx={{ fontSize: "1rem", letterSpacing: 1 }}>
+            {scroll.name.toUpperCase()}
+          </Typography>
         </Stack>
 
-        <Divider sx={{ my: 2 }} />
+        <ScrollCardPriceInput inputKey={scroll.key} inputVariant="scroll" />
+      </Box>
 
-        <Grid container spacing={2} alignItems="stretch">
+      <Divider />
+
+      <CardContent sx={{ p: 2 }}>
+        <Grid container spacing={2}>
           <Grid size={{ xs: 12, xl: 7 }}>
-            <ScrollCardItems items={scroll.items} />
+            <ScrollCardTable items={scroll.items} />
           </Grid>
 
           <Grid size={{ xs: 12, xl: 5 }}>

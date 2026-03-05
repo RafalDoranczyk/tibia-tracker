@@ -1,4 +1,8 @@
-import { IMBUING_SCROLL_ITEM_KEYS, IMBUING_SCROLL_KEYS, type ImbuingItem } from "@repo/database";
+import {
+  IMBUING_SCROLL_ITEM_KEYS,
+  IMBUING_SCROLL_KEYS,
+  type ImbuingItem,
+} from "@repo/database/imbuing-prices";
 import type { ImbuingFormValues } from "../schemas";
 
 const EMPTY_IMBUING_FORM_VALUES = Object.fromEntries(

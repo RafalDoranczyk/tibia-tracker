@@ -1,9 +1,9 @@
 import {
+  CharacterBestiaryRepo,
   type CharacterBestiarySummary,
   CharacterBestiarySummarySchema,
-  createAdminClient,
-  dbGetBestiarySummary,
-} from "@repo/database";
+} from "@repo/database/character-bestiary";
+import { createAdminSupabaseClient } from "@repo/database/client";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -15,9 +15,9 @@ async function getCachedBestiarySummary(characterId: string) {
   cacheLife("hours");
   cacheTag(BestiaryCache.summary(characterId));
 
-  const supabase = createAdminClient();
+  const supabase = createAdminSupabaseClient();
 
-  const { data, error } = await dbGetBestiarySummary({ supabase, characterId });
+  const { data, error } = await CharacterBestiaryRepo.getBestiarySummary(supabase, characterId);
 
   if (error) throw error;
   return data;

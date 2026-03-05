@@ -206,9 +206,9 @@ export type Database = {
       experience_log: {
         Row: {
           character_name: string;
-          created_at: string | null;
+          created_at: string;
           experience: number;
-          global_character_id: string | null;
+          global_character_id: string;
           id: string;
           level: number;
           rank: number;
@@ -219,9 +219,9 @@ export type Database = {
         };
         Insert: {
           character_name: string;
-          created_at?: string | null;
+          created_at?: string;
           experience: number;
-          global_character_id?: string | null;
+          global_character_id: string;
           id?: string;
           level: number;
           rank?: number;
@@ -232,9 +232,9 @@ export type Database = {
         };
         Update: {
           character_name?: string;
-          created_at?: string | null;
+          created_at?: string;
           experience?: number;
-          global_character_id?: string | null;
+          global_character_id?: string;
           id?: string;
           level?: number;
           rank?: number;
@@ -260,6 +260,9 @@ export type Database = {
           last_sync_at: string | null;
           last_sync_error: string | null;
           name: string;
+          peak_experience: number | null;
+          peak_level: number | null;
+          peak_recorded_at: string | null;
           sync_status: Database["public"]["Enums"]["sync_status"];
           vocation: Database["public"]["Enums"]["character_vocation"];
           world: string;
@@ -270,6 +273,9 @@ export type Database = {
           last_sync_at?: string | null;
           last_sync_error?: string | null;
           name: string;
+          peak_experience?: number | null;
+          peak_level?: number | null;
+          peak_recorded_at?: string | null;
           sync_status?: Database["public"]["Enums"]["sync_status"];
           vocation: Database["public"]["Enums"]["character_vocation"];
           world: string;
@@ -280,6 +286,9 @@ export type Database = {
           last_sync_at?: string | null;
           last_sync_error?: string | null;
           name?: string;
+          peak_experience?: number | null;
+          peak_level?: number | null;
+          peak_recorded_at?: string | null;
           sync_status?: Database["public"]["Enums"]["sync_status"];
           vocation?: Database["public"]["Enums"]["character_vocation"];
           world?: string;
@@ -1074,12 +1083,13 @@ export type Database = {
         Args: {
           p_name: string;
           p_user_id: string;
-          p_vocation: Database["public"]["Enums"]["character_vocation"];
+          p_vocation: string;
           p_world: string;
         };
         Returns: {
           global_char_id: string;
-          user_character_id: string;
+          is_new: boolean;
+          user_char_id: string;
         }[];
       };
       update_hunt_session: {

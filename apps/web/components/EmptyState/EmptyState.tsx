@@ -79,7 +79,7 @@ export function EmptyState({
             <Image {...imageSize} />
           </Box>
 
-          <Typography variant="h6" color="text.primary" sx={{ fontWeight: 600 }}>
+          <Typography variant="body1" color="text.primary" sx={{ fontWeight: 600 }}>
             {title}
           </Typography>
 

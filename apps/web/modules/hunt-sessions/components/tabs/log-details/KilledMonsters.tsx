@@ -1,6 +1,8 @@
 import BugReportOutlined from "@mui/icons-material/BugReportOutlined";
 import { Avatar, Box, Stack, Typography } from "@mui/material";
-import type { CharacterCharmDetailed, MonsterPreview, PreyBonus } from "@repo/database";
+import type { CharacterCharmDetailed } from "@repo/database/character-charms";
+import type { MonsterPreview } from "@repo/database/hunt-sessions";
+import type { PreyBonus } from "@repo/database/prey-bonuses";
 import { useMemo } from "react";
 import { Controller, useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { EmptyState } from "@/components";

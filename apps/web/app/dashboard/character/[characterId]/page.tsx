@@ -9,6 +9,7 @@ import {
   LevelUpPrediction,
 } from "@/modules/character";
 import { loadCharacterDashboardData } from "@/modules/character/server";
+import { isCharacterSyncAllowed } from "@/modules/character/utils/isCharacterSyncAllowed";
 import type { CharacterPageProps } from "../../types";
 
 export const metadata: Metadata = {
@@ -19,8 +20,10 @@ export const metadata: Metadata = {
 export default async function DashboardPage({ params }: CharacterPageProps) {
   const { characterId } = await params;
 
-  const { chartPoints, summary, charWithGlobal, logs, canSync } =
-    await loadCharacterDashboardData(characterId);
+  const { chartData, charWithGlobal, logs } = await loadCharacterDashboardData(characterId);
+
+  const lastEntryDate = logs[0]?.recorded_at;
+  const isSyncAllowed = lastEntryDate ? isCharacterSyncAllowed(new Date(lastEntryDate)) : true;
 
   return (
     <>
@@ -32,7 +35,7 @@ export default async function DashboardPage({ params }: CharacterPageProps) {
             name={charWithGlobal.name}
             world={charWithGlobal.global.world}
             vocation={charWithGlobal.global.vocation}
-            canSync={canSync}
+            isSyncAllowed={isSyncAllowed}
           />
         }
       />
@@ -51,7 +54,11 @@ export default async function DashboardPage({ params }: CharacterPageProps) {
           </Box>
 
           <Box sx={{ flex: 1, display: "flex" }}>
-            <CharacterExpChart chartPoints={chartPoints} summary={summary} />
+            <CharacterExpChart
+              {...chartData}
+              maxRecordDate={charWithGlobal?.global?.peak_recorded_at ?? null}
+              maxRecordExp={charWithGlobal?.global?.peak_experience ?? null}
+            />
           </Box>
         </Grid>
 
@@ -68,9 +75,9 @@ export default async function DashboardPage({ params }: CharacterPageProps) {
 
           <Box sx={{ flex: 1, display: "flex" }}>
             <LevelUpPrediction
-              currentLevel={summary.lastLevel}
-              currentExp={summary.currentExp}
-              averageDailyGain={summary.averageGain}
+              currentLevel={chartData.summary.lastLevel}
+              currentExp={chartData.summary.currentExp}
+              averageDailyGain={chartData.summary.averageGain}
             />
           </Box>
         </Grid>

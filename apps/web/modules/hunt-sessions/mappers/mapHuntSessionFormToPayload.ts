@@ -1,4 +1,4 @@
-import type { CreateHuntSessionPayload } from "@repo/database";
+import type { CreateHuntSessionPayload } from "@repo/database/hunt-sessions";
 import type { HuntSessionForm } from "../schemas";
 
 type Props = {

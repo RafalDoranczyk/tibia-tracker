@@ -1,7 +1,10 @@
-import type { BestiaryStage, MonsterWithCharacterProgress } from "@repo/database";
-import type { BestiaryStageFilter } from "../input/bestiary-filters.schema";
-
 // --- FILTERS ---
+
+import type {
+  BestiaryStage,
+  BestiaryStageFilter,
+  MonsterWithCharacterProgress,
+} from "@repo/database/character-bestiary";
 
 /**
  * UI Type: includes 'all' which technically means "undefined" (no filter) sent to API

@@ -1,4 +1,4 @@
-import type { CharacterVocation } from "@repo/database";
+import type { CharacterVocation } from "@repo/database/global-characters";
 import type {
   EXERCISE_DUMMIES,
   LOYALTY_MARKS,

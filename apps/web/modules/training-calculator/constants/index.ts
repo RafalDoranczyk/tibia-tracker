@@ -1,4 +1,4 @@
-import type { CharacterVocation } from "@repo/database";
+import type { CharacterVocation } from "@repo/database/global-characters";
 
 // COSTS ONLY FOR NOW
 export const TIBIA_TC_PRICE = 42000;

@@ -42,7 +42,7 @@ export function PageHeader({ title, description, action, subtitle }: PageHeaderP
         </Typography>
 
         {description && (
-          <Typography color="text.secondary" maxWidth={600}>
+          <Typography color="text.secondary" maxWidth={800}>
             {description}
           </Typography>
         )}

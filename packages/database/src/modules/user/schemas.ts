@@ -1,5 +1,5 @@
 import { Email, UUID, z } from "@repo/validation";
-import type { Enums } from "../../types/db";
+import type { Enums, Tables } from "../../types/db";
 
 export const UserIDSchema = UUID;
 export type UserID = z.infer<typeof UserIDSchema>;
@@ -19,3 +19,9 @@ export type AppUser = z.infer<typeof AppUserSchema>;
 
 export const OAuthProviderSchema = z.enum(["discord"]);
 export type OAuthProvider = z.infer<typeof OAuthProviderSchema>;
+
+export const UserSettingSchema = z.object({
+  user_id: UserIDSchema,
+  last_active_character_id: UUID.nullable(),
+}) satisfies z.ZodType<Tables<"user_settings">>;
+export type UserSetting = z.infer<typeof UserSettingSchema>;

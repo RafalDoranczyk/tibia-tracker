@@ -1,6 +1,6 @@
 "use server";
 
-import { dbUpsertCharacterBestiary } from "@repo/database";
+import { CharacterBestiaryRepo } from "@repo/database/character-bestiary";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { updateTag } from "next/cache";
@@ -13,7 +13,7 @@ export async function updateCharacterBestiary(payload: unknown): Promise<void> {
   const parsed = assertZodParse(UpdateCharacterBestiaryPayloadSchema, payload);
 
   const { supabase } = await requireAuthenticatedSupabase();
-  const { error } = await dbUpsertCharacterBestiary({ supabase, payload: parsed });
+  const { error } = await CharacterBestiaryRepo.upsert(supabase, parsed);
 
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to update character bestiary");

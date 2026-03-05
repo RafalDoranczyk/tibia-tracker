@@ -1,4 +1,4 @@
-import type { CharacterVocation } from "@repo/database";
+import type { CharacterVocation } from "@repo/database/global-characters";
 import * as cheerio from "cheerio";
 import { ScraperClient } from "../../../client";
 import { HIGHSCORE_URL, type VocationId, type WorldName } from "../../constants";
@@ -32,7 +32,8 @@ export async function scrapeExpPage({
       const txt = (i: number) => $(cols[i]).text().trim();
 
       results.push({
-        global_character_id: null, // To be filled later when matching with character list
+        //TODO: To be filled later when matching with character list
+        global_character_id: "",
         world,
         character_name: txt(1),
         vocation: txt(2) as CharacterVocation,

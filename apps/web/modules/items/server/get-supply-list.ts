@@ -1,9 +1,6 @@
-import {
-  createStaticSupabaseClient,
-  dbGetSupplyList,
-  type ItemPreview,
-  ItemPreviewSchema,
-} from "@repo/database";
+import { createStaticSupabaseClient } from "@repo/database/client";
+import { type ItemPreview, ItemPreviewSchema } from "@repo/database/items";
+import { SuppliesRepo } from "@repo/database/supplies";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -16,7 +13,7 @@ async function getCachedSupplyList() {
   cacheTag(ItemsCache.supplies);
   const supabase = createStaticSupabaseClient();
 
-  const { data, error } = await dbGetSupplyList(supabase);
+  const { data, error } = await SuppliesRepo.getAll(supabase);
 
   if (error) throw error;
 

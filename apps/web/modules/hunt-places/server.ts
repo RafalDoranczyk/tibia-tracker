@@ -1,11 +1,7 @@
 import "server-only";
 
-import {
-  createStaticSupabaseClient,
-  dbGetHuntPlaces,
-  type HuntPlace,
-  HuntPlaceSchema,
-} from "@repo/database";
+import { createStaticSupabaseClient } from "@repo/database/client";
+import { type HuntPlace, HuntPlaceSchema, HuntPlacesRepo } from "@repo/database/hunt-places";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -19,7 +15,7 @@ async function getCachedHuntPlaceList() {
 
   const supabase = createStaticSupabaseClient();
 
-  const { data, error, count } = await dbGetHuntPlaces(supabase);
+  const { data, error, count } = await HuntPlacesRepo.getAll(supabase);
 
   if (error) throw error;
   return { data, count };

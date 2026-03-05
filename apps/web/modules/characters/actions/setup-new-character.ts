@@ -1,11 +1,11 @@
 "use server";
 
-import { dbSetupNewCharacterRPC } from "@repo/database";
+import { CharactersRepo } from "@repo/database/characters";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse, NonEmptyString } from "@repo/validation";
 import { updateTag } from "next/cache";
 import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
-import { executeHistorySync } from "@/modules/character/actions";
+import { setupNewGlobalCharacter } from "@/modules/character/server";
 import { CharactersCache } from "../cache";
 import { mapTibiaDataCharacterToDb } from "../mappers/mapTibiaDataCharacterToDb";
 import { getCharacterByName } from "../server";
@@ -14,6 +14,7 @@ export async function setupNewCharacter(payload: unknown) {
   const parsedName = assertZodParse(NonEmptyString, payload);
   const { supabase, user } = await requireAuthenticatedSupabase();
 
+  // 1. Fetch character data from Tibia.com to validate existence
   const tibiaData = await getCharacterByName(parsedName);
 
   if (!tibiaData?.character) {
@@ -24,31 +25,39 @@ export async function setupNewCharacter(payload: unknown) {
     );
   }
 
+  // 2. Map Tibia.com data to our database format
   const { name, world, vocation } = mapTibiaDataCharacterToDb(tibiaData.character);
 
-  const { error: rpcError, data } = await dbSetupNewCharacterRPC({
-    supabase,
-    payload: { name, world, vocation, userId: user.id },
+  // 3. Insert character into database via RPC
+  const { error: rpcError, data } = await CharactersRepo.setupNew(supabase, {
+    name,
+    world,
+    vocation,
+    userId: user.id,
   });
 
-  if (rpcError) {
-    if (rpcError.message.includes("limit reached")) {
-      throw new Error(
-        "You have reached the maximum number of characters allowed. Please delete an existing character before adding a new one."
-      );
-    }
-    throw rpcError;
+  if (rpcError || !data?.[0]) {
+    throwAndLogError(
+      new Error("Failed to set up character"),
+      AppErrorCode.SERVER_ERROR,
+      `RPC error: ${rpcError?.message}`
+    );
   }
 
-  executeHistorySync({
-    supabase,
-    character: {
-      globalCharacterId: data[0].global_char_id,
-      name,
-      world,
-      vocation,
-    },
-  });
+  const { global_char_id, is_new } = data[0];
+
+  // 4. Trigger sync ONLY if character is new to our global system
+  if (is_new) {
+    await setupNewGlobalCharacter({
+      supabase,
+      character: {
+        globalCharacterId: global_char_id,
+        name,
+        world,
+        vocation,
+      },
+    });
+  }
 
   updateTag(CharactersCache.characterList(user.id));
 

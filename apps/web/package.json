@@ -12,11 +12,13 @@
     "analyze": "next experimental-analyze"
   },
   "dependencies": {
+    "@repo/database": "*",
     "@repo/scrapers": "*",
     "@repo/tibia-utils": "*",
     "@repo/tibia-data": "*",
     "@repo/validation": "*",
     "@repo/errors": "*",
+    "@repo/theme": "*",
     "@emotion/cache": "11.14.0",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.0",
@@ -44,7 +46,6 @@
   },
   "devDependencies": {
     "@repo/config-typescript": "*",
-    "@repo/database": "*",
     "@types/node": "25.2.3",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",

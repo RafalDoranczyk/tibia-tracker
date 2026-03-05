@@ -1,4 +1,4 @@
-import { HuntSessionFiltersSchema } from "@repo/database";
+import { HuntSessionFiltersSchema } from "@repo/database/hunt-sessions";
 import { parseJsonQuery } from "@/utils";
 
 const FILTER_TOKEN = "filters";

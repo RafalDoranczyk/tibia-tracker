@@ -1,3 +1,2 @@
-export * from "./mutations";
-export * from "./queries";
+export { ExperienceLogRepo } from "./repository";
 export * from "./schemas";

@@ -1,6 +1,7 @@
 import { NonEmptyString, PositiveInt, z } from "@repo/validation";
 import type { Enums, Tables } from "../../types/db";
-import { CharacterVocationSchema } from "../characters";
+import { CharacterIDSchema } from "../characters";
+import { CharacterVocationSchema } from "../global-characters";
 
 const ScraperSourceEnum = z.enum(["official", "guildstats", "manual"]) satisfies z.ZodType<
   Enums<"scraper_source">
@@ -17,6 +18,6 @@ export const CharacterExpHistorySchema = z.object({
   created_at: NonEmptyString,
   vocation: CharacterVocationSchema,
   world: NonEmptyString,
-  global_character_id: z.string().nullable(),
+  global_character_id: CharacterIDSchema,
 }) satisfies z.ZodType<Tables<"experience_log">>;
 export type CharacterExpHistory = z.infer<typeof CharacterExpHistorySchema>;

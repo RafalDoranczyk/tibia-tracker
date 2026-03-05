@@ -24,7 +24,8 @@ import {
   Typography,
 } from "@mui/material";
 import Rating from "@mui/material/Rating";
-import type { MonsterDifficulty, MonsterWithCharacterProgress } from "@repo/database";
+import type { MonsterWithCharacterProgress } from "@repo/database/character-bestiary";
+import type { MonsterDifficulty } from "@repo/database/monsters";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useMonsterProgress } from "../hooks/useMonsterProgress";

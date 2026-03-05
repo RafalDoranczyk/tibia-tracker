@@ -1,4 +1,4 @@
-import type { SetupNewCharacterPayload } from "@repo/database";
+import type { SetupNewCharacterPayload } from "@repo/database/global-characters";
 import type { TibiaDataCharacter } from "@repo/tibia-data";
 
 const mapVocation = (

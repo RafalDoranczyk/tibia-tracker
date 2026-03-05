@@ -1,4 +1,4 @@
-import type { HuntSpotAnalytics } from "@repo/database";
+import type { HuntSpotAnalytics } from "@repo/database/hunt-analytics";
 import type { HuntSpotsAnalyticsUI } from "../types";
 
 export function mapHuntSpotsToUI(data: HuntSpotAnalytics[]): HuntSpotsAnalyticsUI {

@@ -1,6 +1,6 @@
 "use server";
 
-import { dbUpsertImbuingItemPricesRPC, type ImbuingPriceKey } from "@repo/database";
+import { type ImbuingPriceKey, ImbuingPricesRepo } from "@repo/database/imbuing-prices";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { updateTag } from "next/cache";
@@ -22,7 +22,7 @@ export async function updateImbuingItemPrices(payload: unknown): Promise<void> {
     return;
   }
 
-  const { error } = await dbUpsertImbuingItemPricesRPC({ supabase, prices });
+  const { error } = await ImbuingPricesRepo.upsertBatch(supabase, prices);
 
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to update imbuing item prices");

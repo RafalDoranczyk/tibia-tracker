@@ -1,6 +1,6 @@
 "use server";
 
-import { CharacterIDSchema, dbDeleteCharacter } from "@repo/database";
+import { CharacterIDSchema, CharactersRepo } from "@repo/database/characters";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { updateTag } from "next/cache";
@@ -12,7 +12,7 @@ export async function deleteCharacter(payload: unknown): Promise<void> {
   const characterId = assertZodParse(CharacterIDSchema, payload);
 
   const { supabase, user } = await requireAuthenticatedSupabase();
-  const { error } = await dbDeleteCharacter({ supabase, characterId, userId: user.id });
+  const { error } = await CharactersRepo.delete(supabase, { userId: user.id, characterId });
 
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to delete character");
