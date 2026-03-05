@@ -12,7 +12,8 @@
     "clean": "turbo run clean && rimraf .turbo node_modules apps/*/.next packages/*/dist",
     "commitlint": "commitlint",
     "prepare": "lefthook install",
-    "postinstall": "lefthook install"
+    "postinstall": "lefthook install",
+    "generate-types": "turbo run generate-types"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.15",

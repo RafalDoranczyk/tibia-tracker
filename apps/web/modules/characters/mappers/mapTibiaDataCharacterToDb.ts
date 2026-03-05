@@ -1,9 +1,9 @@
+import type { SetupNewCharacterPayload } from "@repo/database";
 import type { TibiaDataCharacter } from "@repo/tibia-data";
-import type { CreateCharacterPayload } from "../schemas";
 
 const mapVocation = (
   vocation: TibiaDataCharacter["character"]["vocation"]
-): CreateCharacterPayload["vocation"] => {
+): SetupNewCharacterPayload["vocation"] => {
   const voc = vocation.toLowerCase();
   if (voc.includes("knight")) return "knight";
   if (voc.includes("paladin")) return "paladin";
@@ -16,7 +16,7 @@ const mapVocation = (
 
 export function mapTibiaDataCharacterToDb(
   character: TibiaDataCharacter["character"]
-): CreateCharacterPayload {
+): Omit<SetupNewCharacterPayload, "userId"> {
   return {
     name: character.name,
     vocation: mapVocation(character.vocation),

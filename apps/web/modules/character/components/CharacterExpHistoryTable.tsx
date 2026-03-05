@@ -21,9 +21,36 @@ const EXP_HISTORY_HEAD_CELLS = [
   { id: "experience", label: "Total Experience", width: "20%" },
 ];
 
+const getColorForExpChange = (change: number) => {
+  if (change > 0) return "success.main";
+  if (change < 0) return "error.main";
+  return "text.secondary";
+};
+
+function LevelChangeIndicator({ levelGain }: { levelGain: number }) {
+  const isLoss = levelGain < 0;
+  const colorKey = isLoss ? "error" : "success";
+
+  return (
+    <Typography
+      variant="caption"
+      sx={{
+        color: (t) => t.palette.getContrastText(t.palette[colorKey].dark),
+        backgroundColor: (t) => t.palette[colorKey].dark,
+        px: 0.5,
+        py: 0.1,
+        borderRadius: 1,
+        fontWeight: "bold",
+      }}
+    >
+      {levelGain > 0 ? `+${levelGain}` : levelGain}
+    </Typography>
+  );
+}
+
 export function CharacterExpHistoryTable({ logs }: { logs: ExpHistoryEntry[] }) {
   return (
-    <Table.Root sx={{ maxHeight: 1200 }}>
+    <Table.Root>
       <Table.Head headCells={EXP_HISTORY_HEAD_CELLS} />
       <Table.Body>
         {logs.map((entry, index) => {
@@ -44,26 +71,27 @@ export function CharacterExpHistoryTable({ logs }: { logs: ExpHistoryEntry[] }) 
                 <Typography
                   variant="body2"
                   fontWeight="bold"
-                  sx={{ color: expChange > 0 ? "secondary.main" : "text.secondary" }}
+                  sx={{ color: getColorForExpChange(expChange) }}
                 >
                   {expChange > 0 ? `+${expChange.toLocaleString()}` : "0"}
                 </Typography>
               </Table.Cell>
 
+              {/* Vocation Rank */}
               <Table.Cell>
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Typography variant="body2">{entry.rank}</Typography>
                   {rankDiff !== 0 && (
                     <Stack direction="row" alignItems="center" sx={{ opacity: 0.8 }}>
                       {rankDiff > 0 ? (
-                        <ArrowUpwardIcon sx={{ fontSize: 14, color: "secondary.main" }} />
+                        <ArrowUpwardIcon sx={{ fontSize: 14, color: "success.main" }} />
                       ) : (
                         <ArrowDownwardIcon sx={{ fontSize: 14, color: "error.main" }} />
                       )}
                       <Typography
                         variant="caption"
                         fontWeight="bold"
-                        sx={{ color: rankDiff > 0 ? "secondary.main" : "error.main" }}
+                        sx={{ color: rankDiff > 0 ? "success.main" : "error.main" }}
                       >
                         {Math.abs(rankDiff)}
                       </Typography>
@@ -72,26 +100,13 @@ export function CharacterExpHistoryTable({ logs }: { logs: ExpHistoryEntry[] }) 
                 </Stack>
               </Table.Cell>
 
+              {/* Level and Total Experience */}
               <Table.Cell>
                 <Stack direction="row" alignItems="center" spacing={0.5}>
                   <Typography variant="body2" fontWeight="medium">
                     {entry.level}
                   </Typography>
-                  {levelGain > 0 && (
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        color: "primary.main",
-                        backgroundColor: "rgba(0, 229, 255, 0.1)",
-                        px: 0.6,
-                        py: 0.1,
-                        borderRadius: 0.5,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      +{levelGain}
-                    </Typography>
-                  )}
+                  {levelGain !== 0 && <LevelChangeIndicator levelGain={levelGain} />}
                 </Stack>
               </Table.Cell>
 

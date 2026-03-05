@@ -1,32 +1,31 @@
 import { type NextRequest, NextResponse } from "next/server";
+
 import { createSupabaseProxy } from "./core/supabase/proxy";
+
+const PUBLIC_ROUTES = ["/", "/auth", "/auth/callback"];
 
 export async function proxy(request: NextRequest) {
   const { supabase, response } = createSupabaseProxy(request);
-
+  console.log("proxy");
+  // IMPORTANT: DO NOT REMOVE auth.getUser()
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   const pathname = request.nextUrl.pathname;
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
-  if (!user && (pathname.startsWith("/dashboard") || pathname.startsWith("/api"))) {
+  // ========== AUTH LOGIC ==========
+  if (!(isPublicRoute || user)) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
+  // IMPORTANT: You *must* return the supabaseResponse object as it is.
   return response;
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  matcher: ["/dashboard/:path*", "/api/:path*"],
 };

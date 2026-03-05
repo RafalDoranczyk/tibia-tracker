@@ -29,16 +29,10 @@ function StatCard({ title, value, icon, color }: StatCardProps) {
         {icon}
       </Box>
       <Box>
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: "block", lineHeight: 1 }}
-        >
+        <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
           {title}
         </Typography>
-        <Typography variant="h6" sx={{ fontWeight: 700 }}>
-          {value.toLocaleString()}
-        </Typography>
+        <Typography sx={{ fontWeight: 700 }}>{value.toLocaleString()}</Typography>
       </Box>
     </Box>
   );
@@ -51,11 +45,8 @@ export function CharacterExpChart({ chartPoints, summary }: HistoryChartUI) {
     new Intl.NumberFormat("en-US", { notation: "compact" }).format(val);
 
   return (
-    <Paper
-      elevation={0}
-      sx={{ p: 3, borderRadius: 3, border: `1px solid ${theme.palette.divider}` }}
-    >
-      <Grid container spacing={2} sx={{ mb: 4 }}>
+    <Paper sx={{ width: "100%", p: 3 }}>
+      <Grid container spacing={2}>
         <StatCard
           title="Total Monthly Gain"
           value={summary.totalGained}
@@ -78,7 +69,7 @@ export function CharacterExpChart({ chartPoints, summary }: HistoryChartUI) {
         />
       </Grid>
 
-      <Divider sx={{ mb: 4, borderStyle: "dashed" }} />
+      <Divider sx={{ my: 4, borderStyle: "dashed" }} />
 
       <Box sx={{ width: "100%", height: 350 }}>
         <BarChart

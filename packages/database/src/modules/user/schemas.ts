@@ -17,5 +17,5 @@ export const AppUserSchema = z
 
 export type AppUser = z.infer<typeof AppUserSchema>;
 
-export const OAuthProviderSchema = z.enum(["github", "google"]);
+export const OAuthProviderSchema = z.enum(["discord"]);
 export type OAuthProvider = z.infer<typeof OAuthProviderSchema>;

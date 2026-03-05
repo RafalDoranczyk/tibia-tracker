@@ -37,9 +37,9 @@ export default async function DashboardPage({ params }: CharacterPageProps) {
         }
       />
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{ alignItems: "stretch" }}>
         {/* Main Chart Section */}
-        <Grid size={{ xs: 12, lg: 8 }}>
+        <Grid size={{ xs: 12, xl: 8 }} sx={{ display: "flex", flexDirection: "column" }}>
           <Box sx={{ mb: 2 }}>
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
               Experience Over Time
@@ -49,11 +49,14 @@ export default async function DashboardPage({ params }: CharacterPageProps) {
               days.
             </Typography>
           </Box>
-          <CharacterExpChart chartPoints={chartPoints} summary={summary} />
+
+          <Box sx={{ flex: 1, display: "flex" }}>
+            <CharacterExpChart chartPoints={chartPoints} summary={summary} />
+          </Box>
         </Grid>
 
         {/* Prediction Sidebar */}
-        <Grid size={{ xs: 12, lg: 4 }}>
+        <Grid size={{ xs: 12, xl: 4 }} sx={{ display: "flex", flexDirection: "column" }}>
           <Box sx={{ mb: 2 }}>
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
               Progression Forecast
@@ -62,11 +65,14 @@ export default async function DashboardPage({ params }: CharacterPageProps) {
               Estimations based on your recent activity.
             </Typography>
           </Box>
-          <LevelUpPrediction
-            currentLevel={summary.lastLevel}
-            currentExp={summary.currentExp}
-            averageDailyGain={summary.averageGain}
-          />
+
+          <Box sx={{ flex: 1, display: "flex" }}>
+            <LevelUpPrediction
+              currentLevel={summary.lastLevel}
+              currentExp={summary.currentExp}
+              averageDailyGain={summary.averageGain}
+            />
+          </Box>
         </Grid>
 
         {/* History Table Section */}

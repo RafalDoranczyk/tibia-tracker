@@ -2,6 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
+    optimizePackageImports: [
+      "@repo/database",
+      "@repo/tibia-utils",
+      "@mui/material",
+      "@mui/icons-material",
+    ],
     serverActions: {
       bodySizeLimit: "6mb",
     },
@@ -27,6 +33,12 @@ const nextConfig: NextConfig = {
     "@mui/icons-material",
     "@emotion/react",
     "@emotion/styled",
+    "@repo/database",
+    "@repo/scrapers",
+    "@repo/tibia-utils",
+    "@repo/tibia-data",
+    "@repo/validation",
+    "@repo/errors",
   ],
   reactStrictMode: true,
 };

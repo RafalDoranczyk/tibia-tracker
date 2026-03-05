@@ -5,10 +5,8 @@ export async function loadHuntSpotsAnalytics(characterId: string) {
   const data = await getHuntSpotsAnalytics(characterId);
 
   if (data.length === 0) {
-    return [];
+    return null;
   }
 
-  const mappedHuntSpots = mapHuntSpotsToUI(data);
-
-  return mappedHuntSpots;
+  return mapHuntSpotsToUI(data);
 }

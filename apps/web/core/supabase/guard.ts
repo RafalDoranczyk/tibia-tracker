@@ -17,6 +17,7 @@ export const requireAuthenticatedSupabase = cache(
   async (): Promise<AuthenticatedSupabaseResult> => {
     const supabase = await createServerSupabase();
     console.log("🔥 GUARD EXECUTED");
+
     const {
       data: { user },
     } = await supabase.auth.getUser();

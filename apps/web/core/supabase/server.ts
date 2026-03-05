@@ -1,7 +1,7 @@
 import type { Database, TypedSupabaseClient } from "@repo/database";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { env } from "../env";
+import { env } from "@/core/env";
 
 /**
  * DYNAMIC CLIENT (Requires Cookies)

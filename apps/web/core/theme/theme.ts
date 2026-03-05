@@ -36,12 +36,12 @@ export const theme = createTheme({
     },
 
     primary: {
-      main: "#7B5CF5", // royal purple
+      main: "#7B5CF5",
       contrastText: "#FFFFFF",
     },
 
     secondary: {
-      main: "#E6C26A", // antique gold
+      main: "#E6C26A",
       contrastText: "#1A1A1A",
     },
 
@@ -59,45 +59,11 @@ export const theme = createTheme({
       main: "#E6A23C",
     },
 
-    text: {
-      primary: "#F3F0E8", // warm ivory
-      secondary: "#C6C2B8",
-      disabled: "#7A7685",
-    },
-
     divider: "#2E2B45",
   },
 
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-
-    h1: { fontSize: "2rem", fontWeight: 700, color: "#E6C26A" },
-    h2: { fontSize: "1.5rem", fontWeight: 600, color: "#F3F0E8" },
-    h3: { fontSize: "1.25rem", fontWeight: 500, color: "#F3F0E8" },
-    h4: { fontSize: "1.125rem", fontWeight: 500, color: "#F3F0E8" },
-    h5: { fontSize: "1rem", fontWeight: 500, color: "#F3F0E8" },
-    h6: { fontSize: "0.875rem", fontWeight: 500, color: "#F3F0E8" },
-
-    body1: {
-      fontSize: "0.9rem",
-      color: "#F3F0E8",
-      lineHeight: 1.6,
-    },
-    body2: {
-      fontSize: "0.8rem",
-      color: "#C6C2B8",
-      lineHeight: 1.5,
-    },
-
-    button: {
-      fontSize: "0.8rem",
-      fontWeight: 600,
-      textTransform: "none",
-    },
-  },
-
-  shape: {
-    borderRadius: 6,
   },
 
   components: {
@@ -151,10 +117,11 @@ export const theme = createTheme({
 
     MuiPaper: {
       styleOverrides: {
-        root: {
-          backgroundColor: "#171628",
-          border: "1px solid #2E2B45",
-        },
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette.background.default,
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: 8,
+        }),
       },
     },
 
@@ -269,6 +236,7 @@ export const theme = createTheme({
         }),
       },
     },
+
     MuiTableRow: {
       styleOverrides: {
         root: () => ({
@@ -283,6 +251,7 @@ export const theme = createTheme({
         }),
       },
     },
+
     MuiTableCell: {
       styleOverrides: {
         head: ({ theme }) => ({

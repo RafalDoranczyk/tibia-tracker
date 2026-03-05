@@ -1,3 +1,4 @@
+import type { CharacterVocation } from "@repo/database";
 import * as cheerio from "cheerio";
 import { ScraperClient } from "../../../client";
 import { HIGHSCORE_URL, type VocationId, type WorldName } from "../../constants";
@@ -31,9 +32,10 @@ export async function scrapeExpPage({
       const txt = (i: number) => $(cols[i]).text().trim();
 
       results.push({
-        // TODO: Not available on this page
-        global_character_id: "",
+        global_character_id: null, // To be filled later when matching with character list
+        world,
         character_name: txt(1),
+        vocation: txt(2) as CharacterVocation,
         level: parseInt(txt(4), 10),
         experience: parseInt(txt(5).replace(/,/g, ""), 10),
         rank: parseInt(txt(0), 10),

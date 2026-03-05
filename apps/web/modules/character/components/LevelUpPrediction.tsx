@@ -52,12 +52,12 @@ export function LevelUpPrediction({
       </Typography>
       <Box sx={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 2 }}>
         <Typography variant="caption">Current Total:</Typography>
-        <Typography variant="caption" sx={{ fontWeight: "mono" }}>
+        <Typography variant="caption" sx={{ fontFamily: "monospace" }}>
           {currentExp.toLocaleString()}
         </Typography>
 
         <Typography variant="caption">Target Level {nextLevel}:</Typography>
-        <Typography variant="caption" sx={{ fontWeight: "mono" }}>
+        <Typography variant="caption" sx={{ fontFamily: "monospace" }}>
           {totalExpAtNextLevelStart.toLocaleString()}
         </Typography>
 
@@ -77,43 +77,52 @@ export function LevelUpPrediction({
   );
 
   return (
-    <Box sx={{ position: "relative" }}>
+    <Box sx={{ position: "relative", width: "100%", height: "100%" }}>
       <Paper
-        elevation={0}
         sx={{
-          borderRadius: 3,
-          border: `1px solid ${theme.palette.divider}`,
-          background: theme.palette.background.default,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
           overflow: "hidden",
-          // Blokujemy interakcje z formularzem, gdy nie ma danych
           pointerEvents: currentExp === 0 ? "none" : "auto",
-          // Opcjonalne rozmycie treści pod spodem
           filter: currentExp === 0 ? "blur(2px)" : "none",
           transition: "filter 0.3s ease",
         }}
       >
-        {/* SECTION 1: NEXT LEVEL */}
-        <Box sx={{ p: 3 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
-            <UpgradeIcon color="primary" />
+        <Box sx={{ p: 3, flex: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 3 }}>
+            <Box
+              sx={{
+                display: "flex",
+                p: 0.8,
+                borderRadius: 1.5,
+                bgcolor: alpha(theme.palette.primary.main, 0.1),
+                color: theme.palette.primary.main,
+              }}
+            >
+              <UpgradeIcon />
+            </Box>
             <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-              Next Level Prediction
+              Next Level
             </Typography>
           </Box>
 
           <Box
             sx={{
-              mb: 1,
+              mb: 1.5,
               display: "flex",
               justifyContent: "space-between",
               alignItems: "flex-end",
             }}
           >
-            <Typography variant="body2" color="text.secondary">
-              Progress to Level <strong>{nextLevel}</strong>
+            <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+              Progress to {nextLevel}
             </Typography>
-            <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1 }}>
-              {(100 - progress).toFixed(2)}% to go
+            <Typography
+              variant="subtitle2"
+              sx={{ fontWeight: 800, color: theme.palette.primary.main }}
+            >
+              {progress.toFixed(1)}%
             </Typography>
           </Box>
 
@@ -121,44 +130,43 @@ export function LevelUpPrediction({
             <LinearProgress
               variant="determinate"
               value={progress}
-              aria-label="Level progress"
               sx={{
-                height: 12,
-                borderRadius: 6,
-                backgroundColor: theme.palette.action.focus,
+                height: 10,
+                borderRadius: 5,
+                bgcolor: alpha(theme.palette.primary.main, 0.08),
                 "& .MuiLinearProgress-bar": {
-                  borderRadius: 6,
-                  backgroundImage: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+                  borderRadius: 5,
+                  bgcolor: theme.palette.primary.main,
                 },
               }}
             />
           </Tooltip>
 
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
+          <Stack direction="row" justifyContent="space-between" sx={{ mt: 3 }}>
             <Box>
               <Typography
                 variant="caption"
                 color="text.secondary"
-                sx={{ display: "block", textTransform: "uppercase", letterSpacing: 0.5 }}
+                sx={{ fontWeight: 600, textTransform: "uppercase" }}
               >
                 Remaining
               </Typography>
               <Typography
                 variant="body1"
-                sx={{ fontWeight: 700, color: theme.palette.warning.main }}
+                sx={{ fontWeight: 800, color: theme.palette.warning.main }}
               >
-                -{expMissing.toLocaleString()} exp
+                {expMissing.toLocaleString()} <small style={{ fontWeight: 400 }}>exp</small>
               </Typography>
             </Box>
             <Box sx={{ textAlign: "right" }}>
               <Typography
                 variant="caption"
                 color="text.secondary"
-                sx={{ display: "block", textTransform: "uppercase", letterSpacing: 0.5 }}
+                sx={{ fontWeight: 600, textTransform: "uppercase" }}
               >
-                Estimated Date
+                ETA
               </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 600 }}>
+              <Typography variant="body1" sx={{ fontWeight: 800 }}>
                 {daysToLevel
                   ? new Date(Date.now() + daysToLevel * 86400000).toLocaleDateString(undefined, {
                       day: "numeric",
@@ -167,89 +175,104 @@ export function LevelUpPrediction({
                   : "N/A"}
               </Typography>
             </Box>
-          </Box>
+          </Stack>
 
-          <Box sx={{ mt: 3, display: "flex", alignItems: "baseline", gap: 1 }}>
-            <Typography variant="h3" sx={{ fontWeight: 900, color: theme.palette.primary.main }}>
+          <Box sx={{ mt: 4, display: "flex", alignItems: "baseline", gap: 1 }}>
+            <Typography
+              variant="h3"
+              sx={{ fontWeight: 900, color: theme.palette.text.primary, lineHeight: 1 }}
+            >
               {daysToLevel ?? "—"}
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary" sx={{ fontWeight: 700 }}>
-              {daysToLevel === 1 ? "DAY" : "DAYS"} TO GO
+            <Typography
+              variant="subtitle2"
+              color="text.secondary"
+              sx={{ fontWeight: 800, textTransform: "uppercase" }}
+            >
+              {daysToLevel === 1 ? "Day" : "Days"} to go
             </Typography>
           </Box>
         </Box>
 
-        <Divider sx={{ borderStyle: "dashed", borderColor: theme.palette.divider }} />
+        <Divider sx={{ borderStyle: "dashed" }} />
 
-        {/* SECTION 2: GOAL SETTER */}
-        <Box sx={{ p: 3, bgcolor: alpha(theme.palette.primary.main, 0.03) }}>
+        <Box sx={{ p: 3, bgcolor: alpha(theme.palette.secondary.main, 0.02) }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
             <FlagIcon sx={{ color: theme.palette.secondary.main }} />
-            <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
               Goal Setter
             </Typography>
           </Box>
 
-          <Stack spacing={2}>
-            <TextField
-              fullWidth
-              label="Target Level"
-              type="number"
-              variant="outlined"
-              size="small"
-              value={customGoal}
-              onChange={(e) => setCustomGoal(Math.abs(Number(e.target.value)))}
-              slotProps={{
-                input: {
-                  startAdornment: <InputAdornment position="start">Lvl</InputAdornment>,
-                },
-              }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                  backgroundColor: theme.palette.background.default,
-                },
-              }}
-            />
+          <TextField
+            fullWidth
+            type="number"
+            size="small"
+            value={customGoal}
+            onChange={(e) => setCustomGoal(Math.abs(Number(e.target.value)))}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Typography
+                      variant="caption"
+                      sx={{ fontWeight: 800, color: theme.palette.secondary.main }}
+                    >
+                      LVL
+                    </Typography>
+                  </InputAdornment>
+                ),
+              },
+            }}
+            sx={{
+              mb: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: 2,
+                fontWeight: 700,
+                bgcolor: theme.palette.background.paper,
+              },
+            }}
+          />
 
-            {customGoalData && customGoal > currentLevel ? (
-              <Box
+          {customGoalData && customGoal > currentLevel ? (
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2,
+                bgcolor: alpha(theme.palette.secondary.main, 0.05),
+                border: `1px solid ${alpha(theme.palette.secondary.main, 0.1)}`,
+              }}
+            >
+              <Typography
+                variant="caption"
                 sx={{
-                  p: 2,
-                  borderRadius: 2,
-                  border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
-                  background: alpha(theme.palette.secondary.main, 0.05),
+                  fontWeight: 800,
+                  color: theme.palette.secondary.main,
+                  textTransform: "uppercase",
                 }}
               >
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  sx={{ textTransform: "uppercase", fontWeight: 700 }}
-                >
-                  ETA for Level {customGoal}
-                </Typography>
-                <Typography
-                  variant="h4"
-                  sx={{ fontWeight: 900, color: theme.palette.secondary.main, my: 0.5 }}
-                >
-                  {customGoalData.days ? `~ ${customGoalData.days} days` : "—"}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Requires <strong>{customGoalData.needed.toLocaleString()}</strong> additional exp
-                </Typography>
-              </Box>
-            ) : (
-              <Typography variant="caption" color="error" sx={{ px: 1, fontWeight: 500 }}>
-                {customGoal <= currentLevel
-                  ? `Enter a level higher than ${currentLevel}`
-                  : "Please enter a valid target level"}
+                Reach level {customGoal} in:
               </Typography>
-            )}
-          </Stack>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: 900, color: theme.palette.secondary.main, my: 0.5 }}
+              >
+                {customGoalData.days ? `~ ${customGoalData.days} days` : "—"}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Requires <strong>{customGoalData.needed.toLocaleString()}</strong> more exp
+              </Typography>
+            </Box>
+          ) : (
+            <Typography variant="caption" color="error" sx={{ fontWeight: 600 }}>
+              {customGoal <= currentLevel
+                ? `Enter level > ${currentLevel}`
+                : "Enter a valid target"}
+            </Typography>
+          )}
         </Box>
       </Paper>
 
-      {/* BLOCKED OVERLAY */}
       {currentExp === 0 && (
         <Box
           sx={{
@@ -261,17 +284,17 @@ export function LevelUpPrediction({
             alignItems: "center",
             justifyContent: "center",
             borderRadius: 3,
-            backgroundColor: alpha(theme.palette.background.default, 0.4),
-            backdropFilter: "blur(4px)",
+            bgcolor: alpha(theme.palette.background.paper, 0.8),
+            backdropFilter: "blur(6px)",
             textAlign: "center",
-            p: 3,
+            p: 4,
           }}
         >
-          <Typography variant="h6" sx={{ fontWeight: 800, mb: 0.5 }}>
-            Predictions Unavailable
+          <Typography variant="h6" sx={{ fontWeight: 900, mb: 1 }}>
+            Predictions Locked
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 220 }}>
-            Set your current experience in the profile settings to unlock predictions.
+          <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 240 }}>
+            Please provide your current experience in settings to enable progression forecasting.
           </Typography>
         </Box>
       )}

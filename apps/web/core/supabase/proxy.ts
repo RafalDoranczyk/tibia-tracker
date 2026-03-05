@@ -1,7 +1,7 @@
 import type { Database } from "@repo/database";
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
-import { env } from "../env";
+import { env } from "@/core/env";
 
 export function createSupabaseProxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });

@@ -5,6 +5,7 @@
   "types": "./src/index.ts",
   "scripts": {
     "lint": "biome check --write",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
     "generate-types": "supabase gen types typescript --project-id saoouvvhunyuohwqmbwy > ./src/types/db.ts"
   },
   "dependencies": {
