@@ -9,7 +9,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import type { CharacterCharmDetailed, CharmType } from "@repo/database";
+import type { CharacterCharmDetailed } from "@repo/database/character-charms";
+import type { CharmType } from "@repo/database/charms";
 import { useState } from "react";
 import { getPublicAssetUrl } from "@/core/assets";
 

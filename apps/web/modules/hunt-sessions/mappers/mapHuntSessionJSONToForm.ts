@@ -1,4 +1,5 @@
-import type { ItemPreview, MonsterPreview } from "@repo/database";
+import type { MonsterPreview } from "@repo/database/hunt-sessions";
+import type { ItemPreview } from "@repo/database/items";
 import { parseHuntSessionJSON } from "../parsers/parseHuntSessionJSON";
 import { type HuntSessionForm, HuntSessionLogParsedSchema } from "../schemas";
 

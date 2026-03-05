@@ -1,11 +1,7 @@
 import "server-only";
 
-import {
-  createStaticSupabaseClient,
-  dbGetPreyBonuses,
-  type PreyBonus,
-  PreyBonusSchema,
-} from "@repo/database";
+import { createStaticSupabaseClient } from "@repo/database/client";
+import { type PreyBonus, PreyBonusesRepo, PreyBonusSchema } from "@repo/database/prey-bonuses";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -19,7 +15,7 @@ async function getCachedPreyBonuses() {
 
   const supabase = createStaticSupabaseClient();
 
-  const { data, error } = await dbGetPreyBonuses(supabase);
+  const { data, error } = await PreyBonusesRepo.getAll(supabase);
 
   if (error) throw error;
   return data;

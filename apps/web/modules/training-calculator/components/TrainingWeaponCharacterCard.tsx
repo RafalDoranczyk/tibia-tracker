@@ -22,7 +22,7 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import type { CharacterVocation } from "@repo/database";
+import type { CharacterVocation } from "@repo/database/global-characters";
 import {
   ALLOWED_SKILLS_FOR_VOCATION,
   LOYALTY_MARKS,
@@ -49,12 +49,12 @@ type TrainingWeaponCharacterCardProps = {
 export function TrainingWeaponCharacterCard({ weaponsState }: TrainingWeaponCharacterCardProps) {
   const {
     character,
-    setVocation,
     setSkill,
     setCurrentSkill,
     setTargetSkill,
     setPercentLeft,
     setLoyalty,
+    setVocationAndSkill,
   } = weaponsState;
 
   const allowedSkills = ALLOWED_SKILLS_FOR_VOCATION[character.vocation] || [];
@@ -81,10 +81,12 @@ export function TrainingWeaponCharacterCard({ weaponsState }: TrainingWeaponChar
               onChange={(_, v: CharacterVocation) => {
                 if (!v || v === character.vocation) return;
 
-                const isAllowed = ALLOWED_SKILLS_FOR_VOCATION[v].includes(character.skill);
-                if (!isAllowed) setSkill(ALLOWED_SKILLS_FOR_VOCATION[v][0]);
+                const allowedForNewVocation = ALLOWED_SKILLS_FOR_VOCATION[v];
+                const isSkillStillAllowed = allowedForNewVocation.includes(character.skill);
 
-                setVocation(v);
+                const nextSkill = isSkillStillAllowed ? character.skill : allowedForNewVocation[0];
+
+                setVocationAndSkill(v, nextSkill);
               }}
             >
               <ToggleButton value="knight">
@@ -118,7 +120,7 @@ export function TrainingWeaponCharacterCard({ weaponsState }: TrainingWeaponChar
               onChange={(_, v) => v && setSkill(v)}
             >
               {allowedSkills.map((skillKey) => {
-                const config = SKILL_CONFIG[skillKey as keyof typeof SKILL_CONFIG];
+                const config = SKILL_CONFIG[skillKey];
                 return (
                   <ToggleButton key={skillKey} value={skillKey}>
                     {config.icon}

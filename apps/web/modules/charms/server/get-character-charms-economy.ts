@@ -1,10 +1,10 @@
 import {
   type CharacterCharmEconomy,
   CharacterCharmEconomySchema,
-  CharacterIDSchema,
-  createAdminClient,
-  dbGetCharacterCharmEconomy,
-} from "@repo/database";
+  CharacterCharmsRepo,
+} from "@repo/database/character-charms";
+import { CharacterIDSchema } from "@repo/database/characters";
+import { createAdminSupabaseClient } from "@repo/database/client";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -16,9 +16,9 @@ async function getCachedCharacterCharmsEconomy(characterId: string) {
   cacheLife("hours");
   cacheTag(CharmCache.characterEconomy(characterId));
 
-  const supabase = createAdminClient();
+  const supabase = createAdminSupabaseClient();
 
-  const { data, error } = await dbGetCharacterCharmEconomy({ supabase, characterId });
+  const { data, error } = await CharacterCharmsRepo.getEconomy(supabase, characterId);
 
   if (error) throw error;
   return data;

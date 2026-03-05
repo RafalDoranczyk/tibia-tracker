@@ -1,7 +1,7 @@
 import HealthAndSafety from "@mui/icons-material/HealthAndSafety";
 import InventoryTwoTone from "@mui/icons-material/InventoryTwoTone";
 import { Avatar, Box, Grid, Stack, Typography } from "@mui/material";
-import type { ItemPreview } from "@repo/database";
+import type { ItemPreview } from "@repo/database/items";
 import { useMemo } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Autocomplete, ControlledTextField, EmptyState, TooltipIconButton } from "@/components";

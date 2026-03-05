@@ -15,7 +15,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import type { DamageElement, MonsterPreview } from "@repo/database";
+import type { DamageElement } from "@repo/database/damage-elements";
+import type { MonsterPreview } from "@repo/database/hunt-sessions";
 import { getPublicAssetUrl } from "@/core/assets";
 import type { AIHuntSessionScan } from "../../schemas";
 

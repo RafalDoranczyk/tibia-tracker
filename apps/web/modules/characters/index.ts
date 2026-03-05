@@ -1,8 +1,8 @@
 export { CharactersView } from "./components/CharactersView";
 export {
-  ActiveCharacterContext,
+  ActiveCharacterProvider,
   useActiveCharacter,
   useRequiredCharacterId,
-} from "./context/ActiveCharacterContext";
-export { CharactersContext, useCharacters } from "./context/CharactersContext";
+} from "./providers/ActiveCharacterProvider";
+export { CharactersProvider, useCharacters } from "./providers/CharactersProvider";
 export type { AppCharacter } from "./types";

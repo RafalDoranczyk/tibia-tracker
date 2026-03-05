@@ -1,2 +1,2 @@
-export * from "./queries";
+export { MonstersRepo } from "./repository";
 export * from "./schemas";

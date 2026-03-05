@@ -1,6 +1,7 @@
 "use server";
 
-import { CharacterIDSchema, dbResetCharacterCharmsRPC } from "@repo/database";
+import { CharacterCharmsRepo } from "@repo/database/character-charms";
+import { CharacterIDSchema } from "@repo/database/characters";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
@@ -11,7 +12,7 @@ export async function resetCharacterCharms(payload: unknown): Promise<void> {
 
   const { supabase } = await requireAuthenticatedSupabase();
 
-  const { error } = await dbResetCharacterCharmsRPC({ supabase, characterId });
+  const { error } = await CharacterCharmsRepo.resetAll(supabase, characterId);
 
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to reset character charms");

@@ -1,7 +1,8 @@
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { Avatar, Paper, Stack, Typography } from "@mui/material";
-import type { MonsterPreview, PreyBonus } from "@repo/database";
+import type { MonsterPreview } from "@repo/database/hunt-sessions";
+import type { PreyBonus } from "@repo/database/prey-bonuses";
 import { useFormContext } from "react-hook-form";
 import { useHuntStats } from "../hooks/useHuntStats";
 import type { HuntSessionForm } from "../schemas";

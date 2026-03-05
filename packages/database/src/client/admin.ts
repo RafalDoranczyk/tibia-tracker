@@ -11,9 +11,11 @@ import { SUPABASE_CONFIG } from "../config";
  * before fetching or mutating data with this client.
  * * NEVER export or use this in Client Components.
  */
-export function createAdminClient() {
+export function createAdminSupabaseClient() {
   if (typeof window !== "undefined") {
-    throw new Error("CRITICAL SECURITY ERROR: createAdminClient cannot be used in the browser!");
+    throw new Error(
+      "CRITICAL SECURITY ERROR: createAdminSupabaseClient cannot be used in the browser!"
+    );
   }
 
   if (!SUPABASE_CONFIG.serviceRoleKey) {

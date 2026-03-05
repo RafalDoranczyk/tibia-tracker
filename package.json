@@ -13,6 +13,7 @@
     "commitlint": "commitlint",
     "prepare": "lefthook install",
     "postinstall": "lefthook install",
+    "analyze": "turbo run analyze",
     "generate-types": "turbo run generate-types"
   },
   "devDependencies": {

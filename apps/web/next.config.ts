@@ -1,18 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  cacheComponents: true,
   experimental: {
     optimizePackageImports: [
       "@repo/database",
       "@repo/tibia-utils",
+      "@repo/theme",
       "@mui/material",
       "@mui/icons-material",
+      "@mui/x-charts",
+      "@mui/x-date-pickers",
     ],
     serverActions: {
       bodySizeLimit: "6mb",
     },
   },
-  cacheComponents: true,
   images: {
     remotePatterns: [
       {
@@ -27,19 +30,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  transpilePackages: [
-    "@mui/material",
-    "@mui/system",
-    "@mui/icons-material",
-    "@emotion/react",
-    "@emotion/styled",
-    "@repo/database",
-    "@repo/scrapers",
-    "@repo/tibia-utils",
-    "@repo/tibia-data",
-    "@repo/validation",
-    "@repo/errors",
-  ],
+
   reactStrictMode: true,
 };
 

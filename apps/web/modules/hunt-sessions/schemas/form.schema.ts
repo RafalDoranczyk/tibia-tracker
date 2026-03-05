@@ -1,11 +1,9 @@
-import {
-  CharmSchema,
-  DamageElementSchema,
-  HuntSessionDbBaseFieldsSchema,
-  ItemSchema,
-  MonsterSchema,
-  PreyBonusSchema,
-} from "@repo/database";
+import { CharmSchema } from "@repo/database/charms";
+import { DamageElementSchema } from "@repo/database/damage-elements";
+import { HuntSessionDbBaseFieldsSchema } from "@repo/database/hunt-sessions";
+import { ItemSchema } from "@repo/database/items";
+import { MonsterSchema } from "@repo/database/monsters";
+import { PreyBonusSchema } from "@repo/database/prey-bonuses";
 import { z } from "@repo/validation";
 
 const KilledMonsterSchema = z.object({

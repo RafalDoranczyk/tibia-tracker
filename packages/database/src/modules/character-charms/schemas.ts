@@ -1,22 +1,15 @@
-import { z } from "@repo/validation";
+import { NonNegativeInt, z } from "@repo/validation";
 import type { Tables } from "../../types/db";
 import { CharacterIDSchema } from "../characters/schemas";
 import { CharmSchema } from "../charms/schemas";
 
-/** Valid levels for a charm on a character */
+// --- Enums & Primitives ---
 export const CHARM_LEVELS = [1, 2, 3] as const;
 export type CharmLevel = (typeof CHARM_LEVELS)[number];
+export const CharmLevelSchema = z.union([z.literal(1), z.literal(2), z.literal(3)]);
 
-export const CharmLevelSchema = z.union(
-  CHARM_LEVELS.map((lvl) => z.literal(lvl)) as [
-    z.ZodLiteral<CharmLevel>,
-    z.ZodLiteral<CharmLevel>,
-    z.ZodLiteral<CharmLevel>,
-  ]
-);
+// --- DB Tables & Views ---
 
-/** * Base relation: Link between a specific character and a charm
- */
 export const CharacterCharmSchema = z.object({
   character_id: CharacterIDSchema,
   charm_id: CharmSchema.shape.id,
@@ -25,8 +18,20 @@ export const CharacterCharmSchema = z.object({
 
 export type CharacterCharm = z.infer<typeof CharacterCharmSchema>;
 
-/** * Detailed view: Character's charm with full charm metadata included
- */
+export const CharacterCharmEconomySchema = z.object({
+  character_id: CharacterIDSchema,
+  major_unlocked: NonNegativeInt,
+  major_spent: NonNegativeInt,
+  major_available: NonNegativeInt,
+  minor_unlocked: NonNegativeInt,
+  minor_spent: NonNegativeInt,
+  minor_available: NonNegativeInt,
+}) satisfies z.ZodType<Tables<"character_charm_economy">>;
+
+export type CharacterCharmEconomy = z.infer<typeof CharacterCharmEconomySchema>;
+
+// --- Detailed Views ---
+
 export const CharacterCharmDetailedSchema = CharacterCharmSchema.extend({
   charm: CharmSchema,
 });

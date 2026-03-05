@@ -1,4 +1,5 @@
-import { CHARM_LEVELS, type CharmLevel, CharmLevelSchema, CharmSchema } from "@repo/database";
+import { CHARM_LEVELS, type CharmLevel, CharmLevelSchema } from "@repo/database/character-charms";
+import { CharmSchema } from "@repo/database/charms";
 import { NonEmptyString, PositiveInt, z } from "@repo/validation";
 
 const CharmLevelValuesSchema = z.object({

@@ -10,7 +10,7 @@ export function useCharacterSearch() {
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const search = async (e?: React.FormEvent) => {
+  const search = async (e?: React.SubmitEvent) => {
     e?.preventDefault();
 
     setIsSearching(true);

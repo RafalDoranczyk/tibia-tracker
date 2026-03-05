@@ -1,10 +1,6 @@
-import { type Enums, MonsterClassSchema, MonsterDifficultySchema } from "@repo/database";
+import { BestiaryStageFilterSchema } from "@repo/database/character-bestiary";
+import { MonsterClassSchema, MonsterDifficultySchema } from "@repo/database/monsters";
 import { z } from "@repo/validation";
-
-const BestiaryStageFilterSchema = z.enum(["not_completed", "completed"]) satisfies z.ZodType<
-  Enums<"bestiary_stage_filter">
->;
-export type BestiaryStageFilter = z.infer<typeof BestiaryStageFilterSchema>;
 
 const PaginationSchema = z.object({
   page: z.number().int().min(1).default(1),

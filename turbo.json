@@ -27,7 +27,6 @@
       "cache": true
     },
     "dev": {
-      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
@@ -40,6 +39,10 @@
       "cache": false
     },
     "execute": {
+      "cache": false,
+      "persistent": false
+    },
+    "analyze": {
       "cache": false,
       "persistent": false
     },

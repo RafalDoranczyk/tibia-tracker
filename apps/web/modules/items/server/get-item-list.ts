@@ -1,4 +1,5 @@
-import { createStaticSupabaseClient, dbGetItemList, type Item, ItemSchema } from "@repo/database";
+import { createStaticSupabaseClient } from "@repo/database/client";
+import { type Item, ItemSchema, ItemsRepo } from "@repo/database/items";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -11,9 +12,10 @@ async function getCachedItemList() {
   cacheTag(ItemsCache.items);
   const supabase = createStaticSupabaseClient();
 
-  const { data, error } = await dbGetItemList(supabase);
+  const { data, error } = await ItemsRepo.getAll(supabase);
 
   if (error) throw error;
+
   return data;
 }
 

@@ -1,1 +1,1 @@
-export { fonts, theme } from "./theme";
+export { roboto, theme } from "./theme";

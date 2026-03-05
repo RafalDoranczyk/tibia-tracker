@@ -8,7 +8,8 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import type { ItemPreview, MonsterPreview } from "@repo/database";
+import type { MonsterPreview } from "@repo/database/hunt-sessions";
+import type { ItemPreview } from "@repo/database/items";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { mapHuntSessionJSONToForm } from "../../../mappers/mapHuntSessionJSONToForm";

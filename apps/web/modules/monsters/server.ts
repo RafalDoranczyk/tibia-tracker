@@ -1,11 +1,7 @@
 import "server-only";
 
-import {
-  createStaticSupabaseClient,
-  dbGetMonsterList,
-  type Monster,
-  MonsterSchema,
-} from "@repo/database";
+import { createStaticSupabaseClient } from "@repo/database/client";
+import { type Monster, MonsterSchema, MonstersRepo } from "@repo/database/monsters";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -19,7 +15,7 @@ async function getCachedMonsters() {
 
   const supabase = createStaticSupabaseClient();
 
-  const { data, error } = await dbGetMonsterList(supabase);
+  const { data, error } = await MonstersRepo.getAll(supabase);
 
   if (error) throw error;
   return data;

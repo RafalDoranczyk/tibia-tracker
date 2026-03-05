@@ -130,6 +130,7 @@ export function calculateScrollEconomy({
     profitWithTokens,
     tokenFlipProfit,
     costWithTokens,
+    itemsTotalCost,
   };
 }
 

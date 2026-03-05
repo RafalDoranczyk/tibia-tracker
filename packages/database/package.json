@@ -8,6 +8,26 @@
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "generate-types": "supabase gen types typescript --project-id saoouvvhunyuohwqmbwy > ./src/types/db.ts"
   },
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client/index.ts",
+    "./character-bestiary": "./src/modules/character-bestiary/index.ts",
+    "./character-charms": "./src/modules/character-charms/index.ts",
+    "./characters": "./src/modules/characters/index.ts",
+    "./charms": "./src/modules/charms/index.ts",
+    "./damage-elements": "./src/modules/damage-elements/index.ts",
+    "./experience-log": "./src/modules/experience-log/index.ts",
+    "./global-characters": "./src/modules/global-characters/index.ts",
+    "./hunt-analytics": "./src/modules/hunt-analytics/index.ts",
+    "./hunt-places": "./src/modules/hunt-places/index.ts",
+    "./hunt-sessions": "./src/modules/hunt-sessions/index.ts",
+    "./imbuing-prices": "./src/modules/imbuing-prices/index.ts",
+    "./items": "./src/modules/items/index.ts",
+    "./monsters": "./src/modules/monsters/index.ts",
+    "./prey-bonuses": "./src/modules/prey-bonuses/index.ts",
+    "./supplies": "./src/modules/supplies/index.ts",
+    "./user": "./src/modules/user/index.ts"
+  },
   "dependencies": {
     "@repo/errors": "*",
     "@supabase/supabase-js": "2.95.3"

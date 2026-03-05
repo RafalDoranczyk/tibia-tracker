@@ -1,15 +1,12 @@
 "use client";
 
 import { Box, Container, Divider, Tab, Tabs } from "@mui/material";
-import type {
-  CharacterCharmDetailed,
-  DamageElement,
-  HuntPlace,
-  HuntSession,
-  ItemPreview,
-  MonsterPreview,
-  PreyBonus,
-} from "@repo/database";
+import type { CharacterCharmDetailed } from "@repo/database/character-charms";
+import type { DamageElement } from "@repo/database/damage-elements";
+import type { HuntPlace } from "@repo/database/hunt-places";
+import type { HuntSession, MonsterPreview } from "@repo/database/hunt-sessions";
+import type { ItemPreview } from "@repo/database/items";
+import type { PreyBonus } from "@repo/database/prey-bonuses";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormProvider } from "react-hook-form";

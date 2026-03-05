@@ -1,4 +1,5 @@
-import type { BestiaryStage, Monster } from "@repo/database";
+import type { BestiaryStage } from "@repo/database/character-bestiary";
+import type { Monster } from "@repo/database/monsters";
 import { BESTIARY_STAGE } from "../schemas";
 
 export function calculateBestiaryStage(

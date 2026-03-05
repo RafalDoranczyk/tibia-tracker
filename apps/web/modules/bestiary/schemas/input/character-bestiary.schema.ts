@@ -1,4 +1,6 @@
-import { CharacterBestiarySchema, CharacterIDSchema, MonsterClassSchema } from "@repo/database";
+import { CharacterBestiarySchema } from "@repo/database/character-bestiary";
+import { CharacterIDSchema } from "@repo/database/characters";
+import { MonsterClassSchema } from "@repo/database/monsters";
 import { z } from "@repo/validation";
 import { BestiaryFiltersSchema } from "./bestiary-filters.schema";
 

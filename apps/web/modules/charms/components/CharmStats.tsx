@@ -10,7 +10,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import type { CharacterCharmEconomy } from "@repo/database";
+import type { CharacterCharmEconomy } from "@repo/database/character-charms";
 
 type CharmStatsProps = {
   charmEconomy: CharacterCharmEconomy;
@@ -59,7 +59,7 @@ export function CharmStats({ charmEconomy, totalCharmPoints, progress }: CharmSt
 
       <Stack direction="row" spacing={2} mb={2}>
         {stats.map((s) => (
-          <Card key={s.label} sx={{ flex: 1, borderRadius: 3 }}>
+          <Card key={s.label} sx={{ flex: 1 }}>
             <CardContent>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Box color={s.color}>{s.icon}</Box>
@@ -68,7 +68,7 @@ export function CharmStats({ charmEconomy, totalCharmPoints, progress }: CharmSt
                 </Typography>
               </Stack>
 
-              <Typography variant="h4" fontWeight={800} color={s.color}>
+              <Typography variant="h5" fontWeight={800} color={s.color}>
                 {s.value}
               </Typography>
             </CardContent>

@@ -79,24 +79,24 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
     ],
   },
   {
-    title: "Calculators",
+    title: "Tools",
     elements: [
       {
         id: NAVIGATION_IDS.IMBUING,
         text: "Imbuing",
-        to: PATHS.CALCULATORS.IMBUING,
+        to: PATHS.TOOLS.IMBUING,
         icon: { type: "image", src: NAVIGATION_IMAGES.scroll },
       },
       {
         id: NAVIGATION_IDS.TRAINING_CALCULATOR,
         text: "Training",
-        to: PATHS.CALCULATORS.TRAINING,
+        to: PATHS.TOOLS.TRAINING,
         icon: { type: "image", src: NAVIGATION_IMAGES.training },
       },
       {
         id: NAVIGATION_IDS.STAMINA_CALCULATOR,
         text: "Stamina",
-        to: PATHS.CALCULATORS.STAMINA,
+        to: PATHS.TOOLS.STAMINA,
         icon: { type: "image", src: NAVIGATION_IMAGES.calculator },
       },
     ],

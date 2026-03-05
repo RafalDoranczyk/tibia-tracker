@@ -1,9 +1,5 @@
-import {
-  createAdminClient,
-  dbGetUserSettings,
-  type UserSetting,
-  UserSettingSchema,
-} from "@repo/database";
+import { createAdminSupabaseClient } from "@repo/database/client";
+import { UserRepo, type UserSetting, UserSettingSchema } from "@repo/database/user";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -15,9 +11,9 @@ async function getCachedUserSettings(userId: string) {
   cacheLife("days");
   cacheTag(UserCache.settings(userId));
 
-  const supabase = createAdminClient();
+  const supabase = createAdminSupabaseClient();
 
-  const { data, error } = await dbGetUserSettings({ supabase, userId });
+  const { data, error } = await UserRepo.getSettings(supabase, userId);
 
   if (error) throw error;
 

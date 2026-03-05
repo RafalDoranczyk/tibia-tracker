@@ -1,6 +1,6 @@
 import Inventory2 from "@mui/icons-material/Inventory2";
 import { Avatar, Stack, Typography } from "@mui/material";
-import type { ItemPreview } from "@repo/database";
+import type { ItemPreview } from "@repo/database/items";
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { EmptyState } from "@/components";

@@ -1,9 +1,5 @@
-import {
-  type Character,
-  CharacterSchema,
-  createAdminClient,
-  dbGetCharacterList,
-} from "@repo/database";
+import { type Character, CharacterSchema, CharactersRepo } from "@repo/database/characters";
+import { createAdminSupabaseClient } from "@repo/database/client";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -15,9 +11,9 @@ async function getCachedCharacterList(userId: string) {
   cacheLife("days");
   cacheTag(CharactersCache.characterList(userId));
 
-  const supabase = createAdminClient();
+  const supabase = createAdminSupabaseClient();
 
-  const { data, error } = await dbGetCharacterList({ supabase, userId });
+  const { data, error } = await CharactersRepo.getList(supabase, userId);
 
   if (error) throw error;
 

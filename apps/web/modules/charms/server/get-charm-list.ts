@@ -1,4 +1,5 @@
-import { type Charm, CharmSchema, createStaticSupabaseClient, dbGetCharms } from "@repo/database";
+import { type Charm, CharmSchema, CharmsRepo } from "@repo/database/charms";
+import { createStaticSupabaseClient } from "@repo/database/client";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -12,9 +13,10 @@ async function getCachedCharmList() {
 
   const supabase = createStaticSupabaseClient();
 
-  const { data, error } = await dbGetCharms(supabase);
+  const { data, error } = await CharmsRepo.getAll(supabase);
 
   if (error) throw error;
+
   return data;
 }
 

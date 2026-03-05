@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserRole } from "@repo/database";
+import type { UserRole } from "@repo/database/user";
 import type { ReactNode } from "react";
 import { useUser } from "../providers/UserProvider";
 

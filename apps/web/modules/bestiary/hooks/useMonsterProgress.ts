@@ -1,6 +1,6 @@
 "use client";
 
-import type { MonsterWithCharacterProgress } from "@repo/database";
+import type { MonsterWithCharacterProgress } from "@repo/database/character-bestiary";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks";
 import { useRequiredCharacterId } from "@/modules/characters";

@@ -1,4 +1,4 @@
-import type { HuntSpotAnalytics } from "@repo/database";
+import type { HuntSpotAnalytics } from "@repo/database/hunt-analytics";
 
 export function sortMonstersByExp(
   monstersPerHour: HuntSpotAnalytics["avg_monsters_per_hour"],

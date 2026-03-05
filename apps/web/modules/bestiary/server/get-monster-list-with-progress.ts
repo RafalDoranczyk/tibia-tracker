@@ -1,7 +1,7 @@
 import {
-  dbGetMonsterListWithProgressRPC,
+  CharacterBestiaryRepo,
   MonsterWithCharacterProgressSchema,
-} from "@repo/database";
+} from "@repo/database/character-bestiary";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
@@ -17,8 +17,7 @@ export async function getMonsterListWithProgress(
   const safePage = Math.max(filters.page, 1);
   const safeLimit = Math.min(Math.max(filters.limit, 1), 100);
 
-  const { data, error } = await dbGetMonsterListWithProgressRPC({
-    supabase,
+  const { data, error } = await CharacterBestiaryRepo.getListWithProgress(supabase, {
     characterId,
     filters: {
       ...filters,
@@ -39,7 +38,7 @@ export async function getMonsterListWithProgress(
     MonsterWithCharacterProgressSchema.array(),
     data ?? []
   );
-  // The total count is returned as a separate field in the first item of the data array
+
   const totalCount = monstersWithProgress[0]?.total_count ?? 0;
 
   return {

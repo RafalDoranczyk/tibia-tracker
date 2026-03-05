@@ -1,7 +1,7 @@
 "use client";
 
 import { Container, Divider, Grid, Typography } from "@mui/material";
-import type { CharmLevel } from "@repo/database";
+import type { CharmLevel } from "@repo/database/character-charms";
 import { useMemo, useState, useTransition } from "react";
 import { useToast } from "@/hooks";
 import { useRequiredCharacterId } from "@/modules/characters";
@@ -72,7 +72,7 @@ export function CharmsCards({
     <Container maxWidth="xxl">
       <Grid container spacing={6}>
         <Grid size={{ xl: 6 }}>
-          <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
+          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
             Major Charms
           </Typography>
           <Divider sx={{ mt: 2, mb: 4, bgcolor: "red" }} />
@@ -91,7 +91,7 @@ export function CharmsCards({
         </Grid>
 
         <Grid size={{ xl: 6 }}>
-          <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
+          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
             Minor Charms
           </Typography>
           <Divider sx={{ mt: 2, mb: 4 }} />

@@ -1,1 +1,1 @@
-export { ExpHistoryScraper as GuildStatsExpHistoryScraper } from "./character/exp/ExpHistoryScraper";
+export { ExpHistoryScraper } from "./character/ExpHistoryScraper";

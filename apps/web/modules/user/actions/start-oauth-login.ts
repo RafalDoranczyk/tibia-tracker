@@ -1,6 +1,6 @@
 "use server";
 
-import { mapSupabaseErrorToAppError, OAuthProviderSchema } from "@repo/database";
+import { OAuthProviderSchema } from "@repo/database/user";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { redirect } from "next/navigation";
@@ -17,19 +17,11 @@ export async function startOAuthLogin(payload: unknown): Promise<void> {
     options: { redirectTo: env.NEXT_PUBLIC_AUTH_CALLBACK_URL },
   });
 
-  if (error) {
+  if (error || !data?.url) {
     throwAndLogError(
-      mapSupabaseErrorToAppError(error),
+      error ?? new Error("Missing redirect URL"),
       AppErrorCode.SERVER_ERROR,
       "Failed to initiate OAuth login"
-    );
-  }
-
-  if (!data?.url) {
-    throwAndLogError(
-      null,
-      AppErrorCode.SERVER_ERROR,
-      "Missing redirect URL from Supabase OAuth login"
     );
   }
 

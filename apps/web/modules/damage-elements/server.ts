@@ -1,11 +1,11 @@
 import "server-only";
 
+import { createStaticSupabaseClient } from "@repo/database/client";
 import {
-  createStaticSupabaseClient,
   type DamageElement,
   DamageElementSchema,
-  dbGetDamageElements,
-} from "@repo/database";
+  DamageElementsRepo,
+} from "@repo/database/damage-elements";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { cacheLife, cacheTag } from "next/cache";
@@ -19,7 +19,7 @@ async function getCachedDamageElements() {
 
   const supabase = createStaticSupabaseClient();
 
-  const { data, error } = await dbGetDamageElements(supabase);
+  const { data, error } = await DamageElementsRepo.getAll(supabase);
 
   if (error) throw error;
   return data;

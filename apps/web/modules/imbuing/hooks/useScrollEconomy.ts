@@ -1,4 +1,4 @@
-import type { ImbuingPriceKey } from "@repo/database";
+import type { ImbuingPriceKey } from "@repo/database/imbuing-prices";
 import { useFormContext, useWatch } from "react-hook-form";
 import type { ImbuingFormValues } from "../schemas";
 import type { ImbuingPrices, ImbuingScroll } from "../types";

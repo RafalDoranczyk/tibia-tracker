@@ -1,4 +1,4 @@
-import { CharacterIDSchema } from "@repo/database";
+import { CharacterIDSchema } from "@repo/database/characters";
 import { assertZodParse } from "@repo/validation";
 import { mapCharmToAppCharm } from "../mappers/mapCharmToAppCharm";
 import { mapCharmWithProgress } from "../mappers/mapCharmWithProgress";

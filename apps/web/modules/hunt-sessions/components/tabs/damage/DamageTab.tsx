@@ -2,7 +2,8 @@
 
 import InventoryTwoTone from "@mui/icons-material/InventoryTwoTone";
 import { Grid, Stack } from "@mui/material";
-import type { DamageElement, MonsterPreview } from "@repo/database";
+import type { DamageElement } from "@repo/database/damage-elements";
+import type { MonsterPreview } from "@repo/database/hunt-sessions";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { mapInputAnalyserToForm } from "../../../mappers/mapInputAnalyserToForm";

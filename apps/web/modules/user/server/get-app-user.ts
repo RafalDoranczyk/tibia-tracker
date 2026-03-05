@@ -1,4 +1,4 @@
-import { type AppUser, AppUserSchema, dbGetUserRole } from "@repo/database";
+import { type AppUser, AppUserSchema, UserRepo } from "@repo/database/user";
 import { AppErrorCode, throwAndLogError } from "@repo/errors";
 import { assertZodParse } from "@repo/validation";
 import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
@@ -10,7 +10,7 @@ export async function getAppUser(): Promise<AppUser> {
     throwAndLogError(null, AppErrorCode.UNAUTHORIZED, "User not authenticated");
   }
 
-  const { data, error } = await dbGetUserRole({ supabase, userId: user.id });
+  const { data, error } = await UserRepo.getRole(supabase, user.id);
 
   if (error) {
     throwAndLogError(error, AppErrorCode.SERVER_ERROR, "Failed to fetch user role");

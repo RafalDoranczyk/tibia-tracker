@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
-import { fonts } from "@/core/theme";
+import { roboto } from "@/core/theme";
 import { AppProviders } from "@/providers/app/AppProviders";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en" className={fonts.variable}>
+    <html lang="en" className={roboto.className}>
       <body>
         <AppProviders>{children}</AppProviders>
       </body>

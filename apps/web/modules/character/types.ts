@@ -1,6 +1,6 @@
-import type { CharacterExpHistory } from "@repo/database";
+import type { CharacterExpHistory } from "@repo/database/experience-log";
 
-export type ChartEntry = Omit<CharacterExpHistory, "created_at" | "source" | "vocation" | "world">;
+export type ChartEntry = CharacterExpHistory;
 
 type ChartPoint = {
   date: Date;

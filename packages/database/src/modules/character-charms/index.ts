@@ -1,3 +1,2 @@
-export * from "./mutations";
-export * from "./queries";
+export { CharacterCharmsRepo } from "./repository";
 export * from "./schemas";

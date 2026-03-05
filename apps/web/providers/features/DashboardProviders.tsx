@@ -1,6 +1,10 @@
-import type { AppUser } from "@repo/database";
+import type { AppUser } from "@repo/database/user";
 import type { PropsWithChildren } from "react";
-import { ActiveCharacterContext, type AppCharacter, CharactersContext } from "@/modules/characters";
+import {
+  ActiveCharacterProvider,
+  type AppCharacter,
+  CharactersProvider,
+} from "@/modules/characters";
 import { UserProvider } from "@/modules/user";
 
 type DashboardProvidersProps = PropsWithChildren<{
@@ -17,14 +21,14 @@ export function DashboardProviders({
 }: DashboardProvidersProps) {
   return (
     <UserProvider initialUser={initialUser}>
-      <CharactersContext initialCharacters={initialCharacters}>
-        <ActiveCharacterContext
+      <CharactersProvider initialCharacters={initialCharacters}>
+        <ActiveCharacterProvider
           initialCharacters={initialCharacters}
           initialActiveCharacterId={initialActiveCharacterId}
         >
           {children}
-        </ActiveCharacterContext>
-      </CharactersContext>
+        </ActiveCharacterProvider>
+      </CharactersProvider>
     </UserProvider>
   );
 }

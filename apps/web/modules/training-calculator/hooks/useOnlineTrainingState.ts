@@ -1,5 +1,5 @@
-import type { CharacterVocation } from "@repo/database";
-import { useState } from "react";
+import type { CharacterVocation } from "@repo/database/global-characters";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { CHARACTER_ONLINE_TRAINING_DEFAULT, MAX_LOYALTY_POINTS } from "../constants";
 import type {
   CharacterSkillVariant,
@@ -9,10 +9,17 @@ import type {
 
 const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 
+const KEYS = {
+  CHARACTER: "tibia-online-training-char",
+  DUMMY: "tibia-online-training-dummy",
+  EVENT: "tibia-online-training-event",
+};
+
 export function useOnlineTrainingState() {
-  const [exerciseDummy, setExerciseDummy] = useState(false);
-  const [doubleEvent, setDoubleEvent] = useState(false);
-  const [character, setCharacter] = useState<OnlineTrainingCharacterState>(
+  const [exerciseDummy, setExerciseDummy] = useLocalStorage(KEYS.DUMMY, false);
+  const [doubleEvent, setDoubleEvent] = useLocalStorage(KEYS.EVENT, false);
+  const [character, setCharacter] = useLocalStorage<OnlineTrainingCharacterState>(
+    KEYS.CHARACTER,
     CHARACTER_ONLINE_TRAINING_DEFAULT
   );
 
@@ -24,6 +31,13 @@ export function useOnlineTrainingState() {
     setDoubleEvent,
     setVocation: (vocation: CharacterVocation) => setCharacter((c) => ({ ...c, vocation })),
     setSkill: (skill: CharacterSkillVariant) => setCharacter((c) => ({ ...c, skill })),
+    setVocationAndSkill: (vocation: CharacterVocation, skill: CharacterSkillVariant) => {
+      setCharacter((c) => ({
+        ...c,
+        vocation,
+        skill,
+      }));
+    },
 
     setCurrentSkill: (value: number) =>
       setCharacter((c) => ({
