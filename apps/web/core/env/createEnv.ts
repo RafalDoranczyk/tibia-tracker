@@ -8,7 +8,6 @@ export const env = createEnv({
   server: {
     SUPABASE_SERVICE_ROLE_KEY: NonEmptyString,
     GEMINI_API_KEY: NonEmptyString,
-    GUILDSTATS_SYNC_SECRET_KEY: NonEmptyString,
   },
 
   /**
@@ -37,7 +36,6 @@ export const env = createEnv({
     // server
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
-    GUILDSTATS_SYNC_SECRET_KEY: process.env.GUILDSTATS_SYNC_SECRET_KEY,
     // client
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_AUTH_CALLBACK_URL: process.env.NEXT_PUBLIC_AUTH_CALLBACK_URL,

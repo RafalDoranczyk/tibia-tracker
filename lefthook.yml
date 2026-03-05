@@ -1,8 +1,6 @@
 # Format and lint
 pre-commit:
   commands:
-    generate-types:
-      run: npm run generate-types
     typecheck:
       run: npm run typecheck
     biome:
