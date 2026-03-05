@@ -6,12 +6,12 @@ import {
   DESKTOP_APP_NAVIGATION_DRAWER_WIDTH,
   Navigation,
 } from "@/modules/navigation";
-import { getUser, getUserSettings } from "@/modules/user/server";
+import { getAppUser, getUserSettings } from "@/modules/user/server";
 import { DashboardProviders } from "@/providers/features/DashboardProviders";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const [user, settings, characters] = await Promise.all([
-    getUser(),
+    getAppUser(),
     getUserSettings(),
     loadAppCharacters(),
   ]);

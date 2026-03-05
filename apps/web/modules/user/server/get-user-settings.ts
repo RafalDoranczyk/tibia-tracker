@@ -20,6 +20,7 @@ async function getCachedUserSettings(userId: string) {
   const { data, error } = await dbGetUserSettings({ supabase, userId });
 
   if (error) throw error;
+
   return data;
 }
 

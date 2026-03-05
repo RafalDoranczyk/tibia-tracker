@@ -1,4 +1,4 @@
 import "server-only";
 
-export { getUser } from "./get-user";
+export { getAppUser } from "./get-app-user";
 export { getUserSettings } from "./get-user-settings";

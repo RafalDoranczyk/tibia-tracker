@@ -1,13 +1,14 @@
 import { createAdminClient, type TypedSupabaseClient } from "@repo/database";
-import { env } from "@/core/env";
+// import { env } from "@/core/env";
 import { requireAuthenticatedSupabase } from "@/core/supabase/guard";
 import { executeHistorySync } from "@/modules/character/actions";
 
 export async function POST(req: Request) {
   try {
     // 1. Extract the Authorization header to check for an internal secret key
-    const authHeader = req.headers.get("authorization");
-    const isSecretKeyValid = authHeader === `Bearer ${env.GUILDSTATS_SYNC_SECRET_KEY}`;
+    // const authHeader = req.headers.get("authorization");
+    const isSecretKeyValid = false;
+    // const isSecretKeyValid = authHeader === `Bearer ${env.GUILDSTATS_SYNC_SECRET_KEY}`;
 
     let supabase: TypedSupabaseClient;
 
