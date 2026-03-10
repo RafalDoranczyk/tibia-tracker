@@ -47,12 +47,10 @@ export class ExpHistoryScraper {
     return cheerio.load(html);
   }
 
-  private findBestDay($: cheerio.CheerioAPI): BestDayEntry | null {
+  private findBestDay($: cheerio.CheerioAPI): BestDayEntry {
     const container = $("*:contains('Best recorded day')").closest("table");
     const dataRow = container.find("tr").has("td").first();
     const cols = dataRow.find("td");
-
-    if (cols.length < 4) return null;
 
     const cleanToNumber = (text: string) => Number(text.replace(/[^0-9]/g, ""));
 
@@ -76,6 +74,8 @@ export class ExpHistoryScraper {
       const text = $(table).find("th, td").text();
       return text.includes("Experience") && text.includes("Exp change");
     });
+
+    if (historyTable.length === 0) return history;
 
     historyTable.find("tr").each((_, el) => {
       const cols = $(el).find("td");

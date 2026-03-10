@@ -46,7 +46,14 @@ export async function setupNewGlobalCharacter({
 
     if (records.length > 0) {
       const { error: insertError } = await ExperienceLogRepo.upsertBatch(supabase, records);
-      if (insertError) throw insertError;
+
+      if (insertError) {
+        throwAndLogError(
+          insertError,
+          AppErrorCode.SERVER_ERROR,
+          `Full sync failed: ${character.name}`
+        );
+      }
     }
 
     await GlobalCharactersRepo.completeSync(supabase, {
@@ -54,8 +61,8 @@ export async function setupNewGlobalCharacter({
       name: character.name,
       world: character.world,
       vocation: character.vocation,
-      peak_level: bestDay?.level ?? null,
-      peak_experience: bestDay?.experience ?? null,
+      peak_level: bestDay?.level || 0,
+      peak_experience: bestDay?.experience ?? 0,
       peak_recorded_at: bestDay ? new Date(bestDay.date).toISOString() : null,
     });
 

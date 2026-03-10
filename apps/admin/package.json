@@ -1,0 +1,48 @@
+{
+  "name": "admin",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H localhost -p 4000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome check --write",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "analyze": "next experimental-analyze"
+  },
+  "dependencies": {
+    "@repo/database": "*",
+    "@repo/scrapers": "*",
+    "@repo/tibia-utils": "*",
+    "@repo/tibia-data": "*",
+    "@repo/validation": "*",
+    "@repo/errors": "*",
+    "@repo/theme": "*",
+    "@emotion/cache": "11.14.0",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.0",
+    "@hookform/resolvers": "4.1.3",
+    "@mui/icons-material": "7.1.0",
+    "@mui/lab": "7.0.0-beta.12",
+    "@mui/material": "7.1.0",
+    "@mui/material-nextjs": "7.1.0",
+    "@mui/x-charts": "8.27.0",
+    "@mui/x-date-pickers": "8.5.0",
+    "@supabase/ssr": "0.8.0",
+    "@t3-oss/env-nextjs": "0.13.10",
+    "dayjs": "1.11.13",
+    "next": "16.1.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-hook-form": "7.71.1",
+    "vitest": "4.0.18"
+  },
+  "devDependencies": {
+    "@repo/config-typescript": "*",
+    "@types/node": "25.2.3",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "server-only": "0.0.1"
+  }
+}

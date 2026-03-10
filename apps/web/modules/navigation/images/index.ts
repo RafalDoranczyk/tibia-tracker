@@ -1,5 +1,4 @@
 import BlankImbuementScroll from "./blank_imbuement_scroll.gif";
-import Calculator from "./calculator.png";
 import Character from "./character.png";
 import Characters from "./characters.png";
 import Charms from "./charms.png";
@@ -17,7 +16,6 @@ export const NAVIGATION_IMAGES = {
   huntGold: HuntBowGold,
   character: Character,
   characters: Characters,
-  calculator: Calculator,
   training: Training,
   charms: Charms,
   rashid: Rashid,

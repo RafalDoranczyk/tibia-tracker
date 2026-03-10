@@ -47,7 +47,7 @@ type CharacterExpChartProps = HistoryChartUI & {
 export function CharacterExpChart({
   chartPoints,
   summary,
-  // maxRecordDate,
+  maxRecordDate,
   maxRecordExp,
 }: CharacterExpChartProps) {
   const theme = useTheme();
@@ -80,7 +80,7 @@ export function CharacterExpChart({
         />
 
         <StatCard
-          title="Best Day Record Ever"
+          title={`Best Day Record Ever (${maxRecordDate ? new Date(maxRecordDate).toLocaleDateString() : "N/A"})`}
           value={maxRecordExp ?? 0}
           icon={<StarIcon />}
           color={theme.palette.warning.main}

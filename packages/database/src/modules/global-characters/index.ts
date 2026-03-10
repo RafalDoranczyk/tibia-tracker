@@ -1,2 +1,2 @@
-export { GlobalCharactersRepo } from "./repository";
+export { GlobalCharactersRepo } from "./repositories/client";
 export * from "./schemas";

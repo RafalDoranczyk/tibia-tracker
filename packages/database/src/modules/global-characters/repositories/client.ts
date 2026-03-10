@@ -1,6 +1,6 @@
-import type { Enums, TypedSupabaseClient } from "../../types";
-import type { CharacterID } from "../characters";
-import type { GlobalCharacter } from "./schemas";
+import type { Enums, TypedSupabaseClient } from "../../../types";
+import type { CharacterID } from "../../characters";
+import type { GlobalCharacter } from "../schemas";
 
 export const GlobalCharactersRepo = {
   /**

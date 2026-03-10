@@ -15,10 +15,10 @@ export const getTheme = (fontFamily?: string): ThemeOptions => {
         xxl: 2200,
       },
     },
-    palette,
     typography: {
       fontFamily: fontFamily || '"Roboto", "Helvetica", "Arial", sans-serif',
     },
+    palette,
     components,
   });
 };

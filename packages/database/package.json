@@ -18,6 +18,7 @@
     "./damage-elements": "./src/modules/damage-elements/index.ts",
     "./experience-log": "./src/modules/experience-log/index.ts",
     "./global-characters": "./src/modules/global-characters/index.ts",
+    "./global-characters/admin": "./src/modules/global-characters/repositories/admin.ts",
     "./hunt-analytics": "./src/modules/hunt-analytics/index.ts",
     "./hunt-places": "./src/modules/hunt-places/index.ts",
     "./hunt-sessions": "./src/modules/hunt-sessions/index.ts",

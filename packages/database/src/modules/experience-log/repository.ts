@@ -45,10 +45,7 @@ export const ExperienceLogRepo = {
       .maybeSingle();
   },
 
-  upsertBatch: (
-    supabase: TypedSupabaseClient,
-    records: Omit<Tables<"experience_log">, "id" | "created_at">[]
-  ) => {
+  upsertBatch: (supabase: TypedSupabaseClient, records: UpsertExperienceRecord[]) => {
     return supabase
       .from("experience_log")
       .upsert(records, { onConflict: "global_character_id, recorded_at" });
@@ -60,3 +57,5 @@ type DbGetHistoryPayload = {
   globalCharacterId: string;
   since: string;
 };
+
+type UpsertExperienceRecord = Omit<Tables<"experience_log">, "id" | "created_at">;

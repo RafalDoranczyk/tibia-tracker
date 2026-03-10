@@ -44,21 +44,6 @@ export async function syncExistingGlobalCharacter({
       );
     }
 
-    const bestDay =
-      history.length > 0
-        ? history.reduce((max, entry) => (entry.experience > max.experience ? entry : max))
-        : null;
-
-    await GlobalCharactersRepo.completeSync(supabase, {
-      id: globalCharacterId,
-      name,
-      world,
-      vocation,
-      peak_level: bestDay?.level ?? null,
-      peak_experience: bestDay?.experience ?? null,
-      peak_recorded_at: bestDay ? new Date(bestDay.date).toISOString() : null,
-    });
-
     return records.length;
   } catch (error) {
     console.error(`[Worker] Sync failed for ${character.name}:`, error);
