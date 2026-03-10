@@ -6,26 +6,15 @@ const PUBLIC_ROUTES = ["/", "/auth", "/auth/callback"];
 
 export async function proxy(request: NextRequest) {
   const { supabase, response } = createSupabaseProxy(request);
-  console.log("proxy");
-  // IMPORTANT: DO NOT REMOVE auth.getUser()
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const pathname = request.nextUrl.pathname;
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+  const isPublicRoute = PUBLIC_ROUTES.includes(request.nextUrl.pathname);
 
-  // ========== AUTH LOGIC ==========
-  if (!(isPublicRoute || user)) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
+  if (!(user || isPublicRoute)) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // IMPORTANT: You *must* return the supabaseResponse object as it is.
   return response;
 }
-
-export const config = {
-  matcher: ["/dashboard/:path*", "/api/:path*"],
-};

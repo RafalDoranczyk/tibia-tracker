@@ -38,6 +38,6 @@ export async function loadCharacterDashboardData(characterId: string) {
   return {
     chartData,
     charWithGlobal,
-    logs: logs ?? [],
+    logs,
   };
 }

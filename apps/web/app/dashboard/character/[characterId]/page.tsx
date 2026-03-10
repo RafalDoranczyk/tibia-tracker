@@ -5,11 +5,11 @@ import { PageHeader } from "@/layout/page/PageHeader";
 import {
   CharacterExpChart,
   CharacterExpHistoryTable,
-  CharacterSyncButton,
+  CharacterSyncStatus,
+  isCharacterSyncAllowed,
   LevelUpPrediction,
 } from "@/modules/character";
 import { loadCharacterDashboardData } from "@/modules/character/server";
-import { isCharacterSyncAllowed } from "@/modules/character/utils/isCharacterSyncAllowed";
 import type { CharacterPageProps } from "../../types";
 
 export const metadata: Metadata = {
@@ -22,15 +22,14 @@ export default async function DashboardPage({ params }: CharacterPageProps) {
 
   const { chartData, charWithGlobal, logs } = await loadCharacterDashboardData(characterId);
 
-  const lastEntryDate = logs[0]?.recorded_at;
-  const isSyncAllowed = lastEntryDate ? isCharacterSyncAllowed(new Date(lastEntryDate)) : true;
-
+  const isSyncAllowed = isCharacterSyncAllowed(new Date(logs[0].recorded_at));
+  console.log(charWithGlobal);
   return (
     <>
       <PageHeader
         title={charWithGlobal.name}
         action={
-          <CharacterSyncButton
+          <CharacterSyncStatus
             globalCharacterId={charWithGlobal.global_character_id}
             name={charWithGlobal.name}
             world={charWithGlobal.global.world}

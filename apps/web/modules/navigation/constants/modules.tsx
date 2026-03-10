@@ -12,7 +12,7 @@ export const NAVIGATION_IDS = {
   HUNT_SESSIONS: "hunt-sessions",
   ADD_HUNT_SESSION: "add-hunt-session",
   HUNT_ANALYTICS: "hunt-analytics",
-  // Calculators
+  // Utils
   IMBUING: "imbuing-calculator",
   TRAINING_CALCULATOR: "training-calculator",
   STAMINA_CALCULATOR: "stamina-calculator",
@@ -97,7 +97,7 @@ export const NAVIGATION_MODULES: NavigationSection[] = [
         id: NAVIGATION_IDS.STAMINA_CALCULATOR,
         text: "Stamina",
         to: PATHS.TOOLS.STAMINA,
-        icon: { type: "image", src: NAVIGATION_IMAGES.calculator },
+        icon: { type: "image", src: NAVIGATION_IMAGES.huntGold },
       },
     ],
   },
