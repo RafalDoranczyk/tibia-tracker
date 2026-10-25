@@ -5,7 +5,7 @@ export type FetchOptions = {
   tags?: string[];
 };
 
-const BASE_URL = "https://api.tibiadata.com/v4";
+const BASE_URL = "https://api.tibiadata.com/v5";
 
 export const createTibiaDataClient = (options?: FetchOptions) => ({
   async getCharacter(name: string): Promise<TibiaDataCharacterResponse | null> {
@@ -25,7 +25,7 @@ export const createTibiaDataClient = (options?: FetchOptions) => ({
       const response = await fetch(`${BASE_URL}/character/${encodedName}`, fetchConfig);
 
       if (!response.ok) {
-        if (response.status === 404 || response.status === 502) {
+        if (response.status === 404) {
           return null;
         }
         throw new Error(`TibiaData API error: ${response.status}`);
